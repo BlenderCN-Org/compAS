@@ -1,7 +1,10 @@
-.. _introduction:
+.. _brg-datastructures:
 
 ********************************************************************************
-Introduction
+Package ``brg.datastructures``
 ********************************************************************************
 
-blurp
+.. note::
+
+   Give an overview of the modules in this package
+

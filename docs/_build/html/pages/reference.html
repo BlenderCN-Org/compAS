@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Reference &mdash; brg_framework 0.1 documentation</title>
+  <title>Reference Guide &mdash; brg_framework 0.1 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
 
   
     <link rel="top" title="brg_framework 0.1 documentation" href="../index.html"/>
-        <link rel="next" title="Overview" href="overview.html"/>
-        <link rel="prev" title="Resources" href="resources.html"/> 
+        <link rel="next" title="Package brg.com" href="brg-com.html"/>
+        <link rel="prev" title="Examples" href="examples.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -58,13 +58,15 @@
         
         
             <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resources.html">Resources</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reference Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#brg-rhino">brg_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#brg-maya">brg_maya</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a></li>
 </ul>
 
         
@@ -88,7 +90,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Reference</li>
+    <li>Reference Guide</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/pages/reference.txt" rel="nofollow"> View page source</a>
@@ -99,9 +101,39 @@
 </div>
           <div role="main">
             
-  <div class="section" id="reference">
-<span id="id1"></span><h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
-<p>blurp</p>
+  <div class="section" id="reference-guide">
+<span id="reference"></span><h1>Reference Guide<a class="headerlink" href="#reference-guide" title="Permalink to this headline">¶</a></h1>
+<p>The Block Research Group (BRG) framework is a set of Python packages for
+computational architectural grometry, structural design, and fabrication.
+There is a main package (<code class="docutils literal"><span class="pre">brg</span></code>) that defines the base functionality of the
+framework, and several wrapper packages (<code class="docutils literal"><span class="pre">brg_rhino</span></code>, <code class="docutils literal"><span class="pre">brg_maya</span></code>, ...) that
+provide wrappers for different CAD environments.</p>
+<div class="section" id="brg">
+<h2>brg<a class="headerlink" href="#brg" title="Permalink to this headline">¶</a></h2>
+<p>This is the main package. It defines all base functionality of the framework, and
+the main datastructures.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg-com.html">COM package (brg.com)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-datastructures.html">The datastructures (brg.datastructures)</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="brg-rhino">
+<h2>brg_rhino<a class="headerlink" href="#brg-rhino" title="Permalink to this headline">¶</a></h2>
+<p>This is a wrapper for Rhino. Note that the packages of <code class="docutils literal"><span class="pre">brg_rhino</span></code> are written
+for IronPython, as this is the Python implementation used by Rhino.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg_rhino-conduits.html">Conduits (brg_rhino.conduits)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg_rhino-datastructures.html">Datastructure wrappers (brg_rhino.datastructures)</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="brg-maya">
+<h2>brg_maya<a class="headerlink" href="#brg-maya" title="Permalink to this headline">¶</a></h2>
+<p>This is a wrapper for Maya</p>
+</div>
 </div>
 
 
@@ -110,10 +142,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="overview.html" class="btn btn-neutral float-right" title="Overview"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="brg-com.html" class="btn btn-neutral float-right" title="Package brg.com"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="resources.html" class="btn btn-neutral" title="Resources"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral" title="Examples"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

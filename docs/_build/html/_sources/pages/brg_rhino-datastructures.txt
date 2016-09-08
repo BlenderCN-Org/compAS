@@ -1,7 +1,10 @@
-.. _resources:
+.. _brg_rhino-datastructures:
 
 ********************************************************************************
-Resources
+Package ``brg_rhino.datastructures``
 ********************************************************************************
 
-blurp
+.. note::
+
+   Give an overview of the modules in this package
+

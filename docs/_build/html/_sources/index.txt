@@ -1,7 +1,7 @@
 .. brg_framework documentation master file, created by sphinx-quickstart on Fri Sep  2 08:44:20 2016.
 
 ********************************************************************************
-BRG framework documentation
+BRG Framework Documentation
 ********************************************************************************
 
 This is the documentation of the Block Research Group framework for computational
@@ -10,16 +10,12 @@ architecture, structural design, and (robotic) fabrication.
 Contents:
 
 .. toctree::
-   :maxdepth: 2
-   :glob:
+   :maxdepth: 1
 
-   pages/introduction
    pages/requirements
-   pages/resources
-   pages/reference
-   pages/overview
    pages/examples
-   pages/tools
+   pages/reference
+   Developers Guide <pages/developers>
 
 
 Indices and tables
