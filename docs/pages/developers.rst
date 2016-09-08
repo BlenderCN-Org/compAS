@@ -1,7 +1,14 @@
 .. _developers:
 
 ********************************************************************************
-Developers
+Developers Guide
 ********************************************************************************
 
-blurp
+Stuff to add:
+
+- how contribute
+- naming conventions
+- coding standards
+- templates
+- folder structures
+

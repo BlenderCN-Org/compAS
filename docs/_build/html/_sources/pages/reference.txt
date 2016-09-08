@@ -20,8 +20,15 @@ the main datastructures.
 .. toctree::
    :maxdepth: 1
 
-   COM package (brg.com) <brg-com>
-   The datastructures (brg.datastructures) <brg-datastructures>
+   brg-com
+   brg-datastructures
+   brg-files
+   brg-geometry
+   brg-numerical
+   brg-physics
+   brg-utilities
+   brg-viewers
+   brg-web
 
 
 brg_rhino
@@ -33,8 +40,12 @@ for IronPython, as this is the Python implementation used by Rhino.
 .. toctree::
    :maxdepth: 1
 
-   Conduits (brg_rhino.conduits) <brg_rhino-conduits>
-   Datastructure wrappers (brg_rhino.datastructures) <brg_rhino-datastructures>
+   brg_rhino-conduits
+   brg_rhino-datastructures
+   brg_rhino-forms
+   brg_rhino-geometry
+   brg_rhino-ui
+   brg_rhino-utilities
 
 
 brg_maya
