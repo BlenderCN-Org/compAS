@@ -4,7 +4,12 @@
 brg.geometry
 ********************************************************************************
 
-.. note::
+.. toctree::
+   :maxdepth: 1
 
-   Give an overview of the modules in this package
+   brg-geometry-dot
+   brg-geometry-cross
+   brg-geometry-length
+   brg-geometry-distance
+   brg-geometry-angle
 

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>brg_rhino.datastructures &mdash; brg_framework 0.1 documentation</title>
+  <title>brg.geometry.functions.dot &mdash; brg_framework 0.1 documentation</title>
   
 
   
@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="brg_framework 0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Reference Guide" href="reference.html"/>
-        <link rel="next" title="brg_rhino.forms" href="brg_rhino-forms.html"/>
-        <link rel="prev" title="brg_rhino.conduits" href="brg_rhino-conduits.html"/> 
+        <link rel="up" title="brg.geometry" href="brg-geometry.html"/>
+        <link rel="next" title="brg.geometry.functions.cross" href="brg-geometry-cross.html"/>
+        <link rel="prev" title="brg.geometry" href="brg-geometry.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -62,8 +62,8 @@
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="reference.html#brg">brg</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="reference.html#brg-rhino">brg_rhino</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="reference.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#brg-rhino">brg_rhino</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#brg-maya">brg_maya</a></li>
 </ul>
 </li>
@@ -93,10 +93,12 @@
       
           <li><a href="reference.html">Reference Guide</a> &raquo;</li>
       
-    <li>brg_rhino.datastructures</li>
+          <li><a href="brg-geometry.html">brg.geometry</a> &raquo;</li>
+      
+    <li>brg.geometry.functions.dot</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/pages/brg_rhino-datastructures.txt" rel="nofollow"> View page source</a>
+          <a href="../_sources/pages/brg-geometry-dot.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -104,12 +106,52 @@
 </div>
           <div role="main">
             
-  <div class="section" id="brg-rhino-datastructures">
-<span id="id1"></span><h1>brg_rhino.datastructures<a class="headerlink" href="#brg-rhino-datastructures" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="brg-geometry-functions-dot">
+<span id="dot"></span><h1>brg.geometry.functions.dot<a class="headerlink" href="#brg-geometry-functions-dot" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="brg.geometry.functions.dot">
+<code class="descclassname">brg.geometry.functions.</code><code class="descname">dot</code><span class="sig-paren">(</span><em>v1</em>, <em>v2</em>, <em>dim=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/brg/geometry/functions.html#dot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.functions.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the dot product of two vectors.</p>
+<p>A longer explanation.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Give an overview of the modules in this package</p>
+<p class="last">Note this man!</p>
 </div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Be warned man!</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v1</strong> (<em>tuple, list, Vector</em>) &#8211; The first vector.</li>
+<li><strong>v2</strong> (<em>tuple, list, Vector</em>) &#8211; The second vector.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> &#8211;
+The dot product of the two vectors.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dot</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Todo:</dt>
+<dd><ul class="first last simple">
+<li>item 1</li>
+<li>item 2</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -118,10 +160,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="brg_rhino-forms.html" class="btn btn-neutral float-right" title="brg_rhino.forms"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="brg-geometry-cross.html" class="btn btn-neutral float-right" title="brg.geometry.functions.cross"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="brg_rhino-conduits.html" class="btn btn-neutral" title="brg_rhino.conduits"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="brg-geometry.html" class="btn btn-neutral" title="brg.geometry"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
