@@ -1,0 +1,17 @@
+.. _brg:
+
+********************************************************************************
+brg
+********************************************************************************
+
+.. toctree::
+
+   brg-files
+   brg-datastructures
+   brg-numerical
+   brg-utilities
+   brg-geometry
+   brg-physics
+   brg-viewers
+   brg-com
+   brg-web

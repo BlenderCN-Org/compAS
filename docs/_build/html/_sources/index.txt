@@ -7,10 +7,11 @@ BRG Framework Documentation
 This is the documentation of the Block Research Group framework for computational
 architecture, structural design, and (robotic) fabrication.
 
-Contents:
+Contents
+========
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
    pages/requirements
    pages/examples

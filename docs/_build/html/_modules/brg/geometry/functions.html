@@ -101,8 +101,25 @@
           <div role="main">
             
   <h1>Source code for brg.geometry.functions</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">acos</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">asin</span>
+<span></span><span class="sd">&quot;&quot;&quot;This module defines basic geometry functions.</span>
+<span class="sd">All functions assume the provided input is three-dimensional. A corresponding</span>
+<span class="sd">two-dimensional function can be accessed by appending ``_2d`` to the function</span>
+<span class="sd">name.</span>
+
+<span class="sd">Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from brg.geometry import cross</span>
+<span class="sd">    &gt;&gt;&gt; from brg.geometry import cross_2d</span>
+<span class="sd">    &gt;&gt;&gt; u = [1.0, 0.0, 0.0]</span>
+<span class="sd">    &gt;&gt;&gt; v = [0.0, 1.0, 0.0]</span>
+<span class="sd">    &gt;&gt;&gt; cross(u, v)</span>
+<span class="sd">    [0.0, 0.0, 1.0]</span>
+<span class="sd">    &gt;&gt;&gt; cross_2d(u, v)</span>
+<span class="sd">    [0.0, 0.0, 1.0]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">acos</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
@@ -119,37 +136,31 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;dot&#39;</span><span class="p">,</span>
     <span class="s1">&#39;cross&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;angle&#39;</span><span class="p">,</span>
     <span class="s1">&#39;length&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;length_sqrd&#39;</span><span class="p">,</span>
     <span class="s1">&#39;distance&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;distance_sqrd&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;angles&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;angle_smallest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;midpoint&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;centroid&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;center_of_mass&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;normal&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vector_component&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;area&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;volume&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="n">SQRT_05</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
 
-<span class="c1"># add rst transforms to compute planar 3D problems efficiently in 2D</span>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># general</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<div class="viewcode-block" id="dot"><a class="viewcode-back" href="../../../pages/brg-geometry-dot.html#brg.geometry.functions.dot">[docs]</a><span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<div class="viewcode-block" id="dot"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-dot.html#brg.geometry.functions.dot">[docs]</a><span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the dot product of two vectors.</span>
 
-<span class="sd">    A longer explanation.</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        Note this man!</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        Be warned man!</span>
-
 <span class="sd">    Parameters:</span>
-<span class="sd">        v1 (tuple, list, Vector): The first vector.</span>
-<span class="sd">        v2 (tuple, list, Vector): The second vector.</span>
+<span class="sd">        u (tuple, list, Vector): XYZ components of the first vector.</span>
+<span class="sd">        v (tuple, list, Vector): XYZ components of the second vector.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: The dot product of the two vectors.</span>
@@ -157,171 +168,225 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; dot([1.0, 0, 0], [2.0, 0, 0])</span>
 <span class="sd">        2</span>
-
-<span class="sd">    Todo:</span>
-<span class="sd">        - item 1</span>
-<span class="sd">        - item 2</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">v2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="cross"><a class="viewcode-back" href="../../../pages/brg-geometry-cross.html#brg.geometry.functions.cross">[docs]</a><span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">dot_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="cross"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-cross.html#brg.geometry.functions.cross">[docs]</a><span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the cross product of two vectors.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        u (tuple, list, Vector): The first vector.</span>
-<span class="sd">        v (tuple, list, Vector): The second vector.</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        u x v = |  i   j   k |</span>
-<span class="sd">                | u0  u1  u2 |</span>
-<span class="sd">                | v0  v1  v2 |</span>
-
-<span class="sd">        i = + (u1 * v2 - u2 * v1)</span>
-<span class="sd">        j = - (u0 * v2 - u2 * v0)</span>
-<span class="sd">        k = + (u0 * v1 - u1 * v0)</span>
+<span class="sd">        u (tuple, list, Vector): XYZ components of the first vector.</span>
+<span class="sd">        v (tuple, list, Vector): XYZ components of the second vector.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: The cross product of the two vectors.</span>
+
+<span class="sd">    The components of the cross product of two vectors :math:`\mathbf{u}` and</span>
+<span class="sd">    :math:`\mathbf{v}` can be computed as the *minors* of the following matrix:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       :nowrap:</span>
+
+<span class="sd">        \\begin{bmatrix}</span>
+<span class="sd">        i &amp; j &amp; k \\\\</span>
+<span class="sd">        u_{x} &amp; u_{y} &amp; u_{z} \\\\</span>
+<span class="sd">        v_{x} &amp; v_{y} &amp; v_{z}</span>
+<span class="sd">        \end{bmatrix}</span>
+
+<span class="sd">    Therefore, the cross product can be written as:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       :nowrap:</span>
+
+<span class="sd">        \mathbf{u} \\times \mathbf{v}</span>
+<span class="sd">        =</span>
+<span class="sd">        \\begin{bmatrix}</span>
+<span class="sd">        u_{y} * v_{z} - u_{z} * v_{y} \\\\</span>
+<span class="sd">        u_{z} * v_{x} - u_{x} * v_{z} \\\\</span>
+<span class="sd">        u_{x} * v_{y} - u_{y} * v_{x}</span>
+<span class="sd">        \end{bmatrix}</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])</span>
+<span class="sd">        [0.0, 0.0, 1.0]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
             <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span></div>
 
 
-<span class="c1"># if ccw is False</span>
-<span class="c1"># returns the signed acute angle</span>
-<span class="c1"># ccw angles are positive</span>
-<span class="c1">#</span>
-<span class="c1"># else</span>
-<span class="c1"># returns the angle (acute or obtuse) in ccw direction</span>
-<span class="c1"># always positive</span>
-<span class="c1">#</span>
-<span class="c1"># this only works in 2D</span>
-<div class="viewcode-block" id="angle"><a class="viewcode-back" href="../../../pages/brg-geometry-angle.html#brg.geometry.functions.angle">[docs]</a><span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">ccw</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">SQRT_05</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-    <span class="n">a1</span> <span class="o">=</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># this is the dot product assuming z = 0</span>
-    <span class="n">l1</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">l2</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">v2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">a2</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">l2</span>
-    <span class="n">a3</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">/</span> <span class="n">a2</span>
-    <span class="n">z</span>  <span class="o">=</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># z-comp of cross product</span>
-    <span class="k">if</span> <span class="n">a3</span> <span class="o">&gt;=</span> <span class="o">-</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">a3</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">:</span>
-        <span class="c1"># same as angle_smallest</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">acos</span><span class="p">(</span><span class="n">a3</span><span class="p">)</span>
-    <span class="k">else</span> <span class="p">:</span>
-        <span class="c1"># check</span>
-        <span class="n">a4</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">a2</span>
-        <span class="k">if</span> <span class="n">a3</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">asin</span><span class="p">(</span><span class="n">a4</span><span class="p">)</span>
-        <span class="k">else</span> <span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">-</span> <span class="n">asin</span><span class="p">(</span><span class="n">a4</span><span class="p">)</span>
-    <span class="c1"># post process</span>
-    <span class="k">if</span> <span class="n">ccw</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">-</span> <span class="n">a</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="o">-</span> <span class="n">a</span>
-    <span class="k">if</span> <span class="n">rad</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">a</span>
-    <span class="k">return</span> <span class="mf">180.</span> <span class="o">*</span> <span class="n">a</span> <span class="o">/</span> <span class="n">pi</span></div>
+<span class="k">def</span> <span class="nf">cross_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
 
-<span class="c1"># returns the smallest angle</span>
-<span class="c1"># always positive</span>
-<span class="k">def</span> <span class="nf">angle_smallest</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mf">180.</span> <span class="o">*</span> <span class="n">acos</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">v2</span><span class="p">)))</span> <span class="o">/</span> <span class="n">pi</span>
+<div class="viewcode-block" id="length"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-length.html#brg.geometry.functions.length">[docs]</a><span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the length of a vector.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        v (sequence of float): XYZ components of the vector.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The length.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; length([2.0, 0.0, 0.0])</span>
+<span class="sd">        2.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
 
 
-<span class="k">def</span> <span class="nf">angle_smallest2</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">length_2d</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot_2d</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="length_sqrd"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-length_sqrd.html#brg.geometry.functions.length_sqrd">[docs]</a><span class="k">def</span> <span class="nf">length_sqrd</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the squared length of a vector.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        vector (sequence): XYZ components of the vector.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The squared length.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; length_sqrd([2.0, 0.0, 0.0])</span>
+<span class="sd">        4.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">length_sqrd_2d</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dot_2d</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="distance"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-distance.html#brg.geometry.functions.distance">[docs]</a><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the distance bewteen a and b.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (sequence of float) : XYZ coordinates of point a.</span>
+<span class="sd">        b (sequence of float) : XYZ coordinates of point b.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: distance bewteen a and b.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; distance([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])</span>
+<span class="sd">        2.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">distance_2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">length_2d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="distance_sqrd"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-distance_sqrd.html#brg.geometry.functions.distance_sqrd">[docs]</a><span class="k">def</span> <span class="nf">distance_sqrd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the squared distance bewteen a and b.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (sequence of float) : XYZ coordinates of point a.</span>
+<span class="sd">        b (sequence of float) : XYZ coordinates of point b.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: distance bewteen a and b.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; distance([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])</span>
+<span class="sd">        4.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">distance_sqrd_2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">length_sqrd_2d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="angle_smallest"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-angle_smallest.html#brg.geometry.functions.angle_smallest">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the smallest angle between two vectors.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        u (sequence of float) : XYZ components of the first vector.</span>
+<span class="sd">        v (sequence of float) : XYZ components of the second vector.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float</span>
+<span class="sd">            The smallest angle between the input vectors.</span>
+<span class="sd">            The result is always positive...</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; angle_smallest([0.0, 1.0, 0.0], [1.0, 0.0, 0.0])</span>
+<span class="sd">        90</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">180.</span> <span class="o">*</span> <span class="n">acos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">pi</span></div>
+
+
+<span class="k">def</span> <span class="nf">angle_smallest_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">dot_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">length_2d</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="o">*</span> <span class="n">length_2d</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
     <span class="n">a</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="mf">180.</span> <span class="o">*</span> <span class="n">acos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">pi</span>
 
 
-<span class="c1"># returns both angles</span>
-<span class="c1"># smallest first</span>
-<span class="c1"># both positive</span>
-<span class="k">def</span> <span class="nf">angles</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angle_smallest</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">a</span>
-    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
-
-
-<div class="viewcode-block" id="length"><a class="viewcode-back" href="../../../pages/brg-geometry-length.html#brg.geometry.functions.length">[docs]</a><span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the length of a vector.</span>
+<div class="viewcode-block" id="angles"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-angles.html#brg.geometry.functions.angles">[docs]</a><span class="k">def</span> <span class="nf">angles</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the the 2 angles formed by a pair of vectors.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        vector (sequence): The XYZ coordinates of the vector.</span>
+<span class="sd">        u (sequence of float) : XYZ components of the first vector.</span>
+<span class="sd">        v (sequence of float) : XYZ components of the second vector.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        float: The length.</span>
+<span class="sd">        tuple of floats :</span>
+<span class="sd">            The two angles.</span>
+<span class="sd">            The smallest angle is returned first.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; angles()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span></div>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">angle_smallest</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">a</span></div>
 
 
-<span class="k">def</span> <span class="nf">length_sqrd</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Computes the squared length of a vector.</span>
+<span class="k">def</span> <span class="nf">angles_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">angle_smallest_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">a</span>
+
+
+<div class="viewcode-block" id="vector_component"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-vector_component.html#brg.geometry.functions.vector_component">[docs]</a><span class="k">def</span> <span class="nf">vector_component</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the component of u in the direction of v.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        vector (sequence): The XYZ coordinates of the vector.</span>
+<span class="sd">        u (sequence of float) : XYZ components of the vector.</span>
+<span class="sd">        v (sequence of float) : XYZ components of the direction.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        float: The squared length.</span>
+<span class="sd">        tuple: XYZ components of the component.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; vector_component()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="distance"><a class="viewcode-back" href="../../../pages/brg-geometry-distance.html#brg.geometry.functions.distance">[docs]</a><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;computes distance bewteen p1, p2</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, p2 (tuple): x,y,z point value</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: distance bewteen p1, p2</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span></div>
+<span class="k">def</span> <span class="nf">vector_component_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">dot_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="n">length_sqrd_2d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;computes squared distance bewteen p1, p2</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, p2 (tuple): x,y,z point value</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: squared distance bewteen p1, p2</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">((</span><span class="n">p2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span>
-
-
-<span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the area of a polygon.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        points (sequence): A sequence of points describing the polygon.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The area of the polygon.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">o</span>  <span class="o">=</span> <span class="n">centroid</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-    <span class="n">v1</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-    <span class="n">v2</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-    <span class="n">a</span>  <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.5</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">v1</span> <span class="o">=</span> <span class="n">v2</span>
-        <span class="n">v2</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-        <span class="n">a</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">a</span>
-
-
-<span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="centroid"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-centroid.html#brg.geometry.functions.centroid">[docs]</a><span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the centroid of the sequence of points.</span>
 
-<span class="sd">    Note:</span>
+<span class="sd">    Warning:</span>
 <span class="sd">        Duplicate points are **NOT** removed. If there are duplicates in the</span>
 <span class="sd">        sequence, they should be there intentionally.</span>
 
@@ -330,52 +395,40 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: XYZ coordinates of the centroid.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; centroid()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">axis</span> <span class="o">/</span> <span class="n">p</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">))]</span></div>
+
+
+<span class="k">def</span> <span class="nf">centroid_2d</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">axis</span> <span class="o">/</span> <span class="n">p</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">))]</span>
 
 
-<span class="k">def</span> <span class="nf">center_of_mass</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span> <span class="n">sqrt</span><span class="o">=</span><span class="n">sqrt</span><span class="p">):</span>
-    <span class="n">L</span>  <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">cy</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">cz</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">p</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">p1</span>  <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">p2</span>  <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">l</span>   <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">p2</span><span class="p">[</span><span class="n">_</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="n">_</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
-        <span class="n">cx</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">cy</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">cz</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">L</span>  <span class="o">+=</span> <span class="n">l</span>
-    <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">/</span> <span class="n">L</span>
-    <span class="n">cy</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">/</span> <span class="n">L</span>
-    <span class="n">cz</span> <span class="o">=</span> <span class="n">cz</span> <span class="o">/</span> <span class="n">L</span>
-    <span class="k">return</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span>
-
-
-<span class="c1"># @see: https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/volume.html</span>
-<span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-
-<span class="k">def</span> <span class="nf">midpoint</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+<div class="viewcode-block" id="midpoint"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-midpoint.html#brg.geometry.functions.midpoint">[docs]</a><span class="k">def</span> <span class="nf">midpoint</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the midpoint of two points.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        p1 (tuple): p1 XYZ coordinates.</span>
-<span class="sd">        p2 (tuple): p1 XYZ coordinates.</span>
+<span class="sd">        a (sequence of float): XYZ coordinates of the first point.</span>
+<span class="sd">        b (sequence of float): XYZ coordinates of the second point.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: XYZ coordinates of the midpoint.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; midpoint()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
 
 
-<span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">midpoint_2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="normal"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-normal.html#brg.geometry.functions.normal">[docs]</a><span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the normal of a set of points by computing the average of the</span>
 <span class="sd">    normals of each pair of vectors formed by sets of three consecutive points.</span>
 
@@ -416,7 +469,7 @@
     <span class="n">nz</span> <span class="o">=</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">a</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">unitize</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
-    <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
+    <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span></div>
 
 
 <span class="k">def</span> <span class="nf">normal2</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -443,742 +496,98 @@
     <span class="k">return</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">a2</span><span class="p">,</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">a2</span>
 
 
-<span class="k">def</span> <span class="nf">vector_component</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the component of a in the direction of b&quot;&quot;&quot;</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span> <span class="o">/</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">c</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+<div class="viewcode-block" id="center_of_mass"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-center_of_mass.html#brg.geometry.functions.center_of_mass">[docs]</a><span class="k">def</span> <span class="nf">center_of_mass</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the center of mass of a polygon.</span>
 
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># arithmetic</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<span class="k">def</span> <span class="nf">add_vectorlist</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Adds multiple 3d vectors</span>
+<span class="sd">    The center of mass of a polygon is the centroid of the midpoints of the edges,</span>
+<span class="sd">    each weighted by the length of the corresponding edge.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">       vectors (list): set of vectors.</span>
+<span class="sd">        polygon (sequence) : A sequence of XYZ coordinates representing the</span>
+<span class="sd">            locations of the corners of a polygon.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">       Tuple: Resulting vector</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">])</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">])</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">z</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">])</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">add_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Adds two 3d vectors</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        v1 (tuple, list, Vector): The first vector.</span>
-<span class="sd">        v2 (tuple, list, Vector): The second vector.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Tuple: Resulting vector</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">v2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
-
-<span class="k">def</span> <span class="nf">subtract_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subtracts one vector from another</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        v1 (tuple, list, Vector): The first vector.</span>
-<span class="sd">        v2 (tuple, list, Vector): The second vector.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Tuple: Resulting vector</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">v2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">v2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># queries</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<span class="k">def</span> <span class="nf">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if `c` is on the left of `ab` when looking from `a` to `b`.</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        This implementation is based on the one described in [#ccw]_.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        a (sequence): XYZ coordinates of point `a`.</span>
-<span class="sd">        b (sequence): XYZ coordinates of point `b`.</span>
-<span class="sd">        c (sequence): XYZ coordinates of point `c`.</span>
-<span class="sd">        colinear (bool): Allow points to be colinear. Defaults to False.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: True if ccw, False otherwise.</span>
+<span class="sd">        tuple of floats: The XYZ coordinates of the center of mass.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [0,1,0], [-1, 0, 0])</span>
-<span class="sd">        True</span>
-<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [0,1,0], [+1, 0, 0])</span>
-<span class="sd">        False</span>
-<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [1,0,0], [2,0,0])</span>
-<span class="sd">        False</span>
-<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [1,0,0], [2,0,0], True)</span>
-<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; center_of_mass()</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">colinear</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">0</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">L</span>  <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cz</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">p</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">p1</span>  <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">p2</span>  <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">l</span>   <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+        <span class="n">cx</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cy</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cz</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">L</span>  <span class="o">+=</span> <span class="n">l</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">/</span> <span class="n">L</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">/</span> <span class="n">L</span>
+    <span class="n">cz</span> <span class="o">=</span> <span class="n">cz</span> <span class="o">/</span> <span class="n">L</span>
+    <span class="k">return</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span></div>
 
 
-<span class="k">def</span> <span class="nf">is_collinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if three points are colinear.</span>
+<span class="k">def</span> <span class="nf">center_of_mass_2d</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="n">L</span>  <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">p</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">p1</span>  <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">p2</span>  <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">l</span>   <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+        <span class="n">cx</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cy</span> <span class="o">+=</span> <span class="n">l</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">L</span>  <span class="o">+=</span> <span class="n">l</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">/</span> <span class="n">L</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">/</span> <span class="n">L</span>
+    <span class="k">return</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span>
+
+
+<div class="viewcode-block" id="area"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-area.html#brg.geometry.functions.area">[docs]</a><span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the area of a polygon.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        a (tuple, list, Point): Point 1.</span>
-<span class="sd">        b (tuple, list, Point): Point 2.</span>
-<span class="sd">        c (tuple, list, Point): Point 3.</span>
+<span class="sd">        polygon (sequence): A sequence of XYZ coordinates representing the locations</span>
+<span class="sd">            of the corners of the polygon.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        bool: True if the points are collinear, False otherwise.</span>
+<span class="sd">        float: The area of the polygon.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; area()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
-
-
-<span class="k">def</span> <span class="nf">is_coplanar</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if the points are coplanar.</span>
-
-<span class="sd">    Compute the normal vector (cross product) of the vectors formed by the first</span>
-<span class="sd">    three points. Include one more vector at a time to compute a new normal and</span>
-<span class="sd">    compare with the original normal. If their cross product is not zero, they</span>
-<span class="sd">    are not parallel, which means the point are not in the same plane.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        points (sequence): A sequence of locations in three-dimensional space.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: True if the points are coplanar, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">centroid</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">u</span> <span class="o">=</span> <span class="n">v</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-        <span class="n">wuv</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">is_coplanar4</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check if 4 points are coplanar.</span>
-
-<span class="sd">    Four points are coplanar if the volume of the tetrahedron defined by them is</span>
-<span class="sd">    0. Coplanarity is equivalent to the statement that the pair of lines</span>
-<span class="sd">    determined by the four points are not skew, and can be equivalently stated</span>
-<span class="sd">    in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        points</span>
-<span class="sd">        tol</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: True if the points are coplanar.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">v01</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
-    <span class="n">v02</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
-    <span class="n">v23</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">v02</span><span class="p">,</span> <span class="n">cross</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v23</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">res</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="o">**</span><span class="mi">2</span>
-
-
-<span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">center_of_mass</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">p0</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">v0</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">v1</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">v2</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">a1</span> <span class="o">=</span> <span class="n">angles</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v0</span><span class="p">)</span>
-        <span class="n">a2</span> <span class="o">=</span> <span class="n">angles</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">a1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="c1"># this only works in the XY plane</span>
-<span class="k">def</span> <span class="nf">is_convex2</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">colinear</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if the points form a convex figure.</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        The make_blocks is performed using the projection of the points onto the XY</span>
-<span class="sd">        plane.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        points (sequence): A sequence of points representing the polygon. The</span>
-<span class="sd">            first and last point should not be the sane.</span>
-<span class="sd">        colinear (bool): Are points allowed to be colinear?</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: True if the figure is convex, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">direction</span> <span class="o">=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">c</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if the points form a closed figure.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        points (sequence): A sequence locations in three-dimensional space.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: True if the figure is closed, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">p_</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">_p</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">p_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">_p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
-
-<span class="k">def</span> <span class="nf">is_intersecting</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Do the segments a-b and c-d intersect?</span>
-
-<span class="sd">    Two segments a-b and c-d intersect, if both of the following conditions are true:</span>
-
-<span class="sd">        * c is on the left of ab, and d is on the right, or vice versa</span>
-<span class="sd">        * d is on the left of ac, and on the right of bc, or vice versa</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        a: 2D point</span>
-<span class="sd">        b: 2D point</span>
-<span class="sd">        c: 2D point</span>
-<span class="sd">        d: 2D point</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: True if the segments intersect, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">is_selfintersecting</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
-
-
-<span class="k">def</span> <span class="nf">is_point_in_polygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if a point is in the interior of a polygon.</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        This only makes sense in the x/y plane</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        points (Polygon): list of ordered points.</span>
-<span class="sd">        tp (3-tuple): 3d make_blocks point</span>
-
-<span class="sd">        not implemented:</span>
-<span class="sd">            include_boundary (bool): Should the boundary be included in the make_blocks? Defaults to False.</span>
-<span class="sd">            A tolerance value would be nice too... float errors are problematic</span>
-<span class="sd">            points which are located on the boundary are not always uniquely defines as inside/outside</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: True if the point is in the polygon, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">tp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>  <span class="c1"># make 2D</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-    <span class="n">inside</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="n">p1x</span><span class="p">,</span> <span class="n">p1y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">p2x</span><span class="p">,</span> <span class="n">p2y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">n</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">p1y</span><span class="p">,</span> <span class="n">p2y</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">p1y</span><span class="p">,</span> <span class="n">p2y</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">p1x</span><span class="p">,</span> <span class="n">p2x</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">p1y</span> <span class="o">!=</span> <span class="n">p2y</span><span class="p">:</span>
-                        <span class="n">xinters</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">p1y</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2x</span> <span class="o">-</span> <span class="n">p1x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">p2y</span> <span class="o">-</span> <span class="n">p1y</span><span class="p">)</span> <span class="o">+</span> <span class="n">p1x</span>
-                    <span class="k">if</span> <span class="n">p1x</span> <span class="o">==</span> <span class="n">p2x</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">xinters</span><span class="p">:</span>
-                        <span class="n">inside</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">inside</span>
-        <span class="n">p1x</span><span class="p">,</span> <span class="n">p1y</span> <span class="o">=</span> <span class="n">p2x</span><span class="p">,</span> <span class="n">p2y</span>
-    <span class="k">return</span> <span class="n">inside</span>
-
-
-<span class="k">def</span> <span class="nf">is_point_in_polygon_2</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-    <span class="n">ccw</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">ccw</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">ccw</span> <span class="o">=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">is_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if a point lies in a plane.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        point (Point): A ``Point`` object.</span>
-<span class="sd">        plane (Plane): A ``Plane`` object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
-
-
-<span class="c1"># TODO: can be done much simpler by using the algorithm used in is_point_on_line_segment</span>
-<span class="k">def</span> <span class="nf">is_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if a point (tp) is on line (p1, v1) within a tolerance (tol).</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line</span>
-<span class="sd">        tp (3-tuple): 3d make_blocks point</span>
-<span class="sd">        tol (float): tolerance distance</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        (bool): True if the point is in on the line, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pt2</span> <span class="o">=</span> <span class="n">closest_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">pt2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">pt2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span>
-
-
-<span class="k">def</span> <span class="nf">is_closest_point_on_line_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Verify if the closest point on a line is on line segment (p1, p2) for a testpoint tp.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, p2 (tuples): two 3d points defining the line segment</span>
-<span class="sd">        tp (3-tuple): 3d testpoint</span>
-<span class="sd">        result (bool):  if True the closest point is returned if there is a closest point</span>
-<span class="sd">                        if False, True is returned if there is a closest point</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        (bool/tuple): the point if the point is in on the line, False otherwise.</span>
-<span class="sd">        (bool): True if the point is in on the line, False otherwise.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="n">dis</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="p">((</span><span class="n">tp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-    <span class="n">onlinept</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">disp1</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">onlinept</span><span class="p">)</span>
-    <span class="n">disp2</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">onlinept</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">disp1</span> <span class="o">&gt;</span> <span class="n">dis</span> <span class="ow">or</span> <span class="n">disp2</span> <span class="o">&gt;</span> <span class="n">dis</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">onlinept</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">is_point_on_line_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="n">ha</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="mi">2</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">c</span><span class="p">)))</span> <span class="o">**</span> <span class="mf">0.5</span>
-    <span class="k">if</span> <span class="n">ha</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="p">(</span><span class="n">b</span> <span class="o">&lt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">tol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span>
-
-
-<span class="k">def</span> <span class="nf">is_point_on_polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">clospt</span> <span class="o">=</span> <span class="n">closest_point_on_line_segment</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">tp</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">clospt</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span>
-
-
-<span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if a point (p) is inside line of the triangle a,b,c.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p (tuple): 3d point</span>
-<span class="sd">        a,b,c (tuples): 3d triangle points</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        (bool): True if the point is in inside the triangle, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">is_on_same_side</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="n">cp1</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
-        <span class="n">cp2</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">dot</span><span class="p">(</span><span class="n">cp1</span><span class="p">,</span> <span class="n">cp2</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">if</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span>
-
-
-<span class="k">def</span> <span class="nf">is_point_in_triangle_2</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
-    <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">triangle</span>
-    <span class="n">ccw</span> <span class="o">=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">is_ray_intersecting_triangle</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)</span>
-<span class="sd">    based on Moeller Trumbore intersection algorithm</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line</span>
-<span class="sd">        a,b,c (list of 3-tuples): 3d points of triangle</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        (bool): True if the ray intersects with the triangle, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">EPSILON</span> <span class="o">=</span> <span class="mf">0.000000001</span>
-    <span class="c1"># Find vectors for two edges sharing V1</span>
-    <span class="n">e1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">e2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="c1"># Begin calculating determinant - also used to calculate u parameter</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
-    <span class="c1"># if determinant is near zero, ray lies in plane of triangle</span>
-    <span class="n">det</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-    <span class="c1"># NOT CULLING</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">det</span> <span class="o">&gt;</span> <span class="o">-</span> <span class="n">EPSILON</span> <span class="ow">and</span> <span class="n">det</span> <span class="o">&lt;</span> <span class="n">EPSILON</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="n">inv_det</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">det</span>
-    <span class="c1"># calculate distance from V1 to ray origin</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="c1"># Calculate u parameter and make_blocks bound</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
-    <span class="c1"># The intersection lies outside of the triangle</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">u</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="c1"># Prepare to make_blocks v parameter</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
-    <span class="c1"># Calculate V parameter and make_blocks bound</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
-    <span class="c1"># The intersection lies outside of the triangle</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">+</span> <span class="n">v</span>  <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">EPSILON</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">True</span>
-    <span class="c1"># No hit, no win</span>
-    <span class="k">return</span> <span class="bp">False</span>
-
-
-<span class="k">def</span> <span class="nf">is_line_line_intersection_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if two lines intersect in 2d on the xy plane.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line A</span>
-<span class="sd">        p2, v2 (tuples): 3d point and 3d vector of line B</span>
-<span class="sd">        points (bool): if True v1,v2 will be interpreted as end points of the lines</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        (bool): True if there is a intersection, False otherwise.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">points</span><span class="p">:</span>
-        <span class="n">p1b</span> <span class="o">=</span> <span class="n">v1</span>
-        <span class="n">p2b</span> <span class="o">=</span> <span class="n">v2</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">p1b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
-        <span class="n">p2b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># sorting</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<span class="c1"># please check my kdTree class for an optimized implementation (MR)</span>
-<span class="k">def</span> <span class="nf">sort_points</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">cloud</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Sorts points of a pointcloud to a make_blocks point.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        point (tuple): x,y,z make_blocks point value</span>
-<span class="sd">        cloud (sequence): A sequence locations in three-dimensional space.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        list (floats): min distances</span>
-<span class="sd">        list (tuples): sorted points</span>
-<span class="sd">        list (ints): closest point indices</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">minsq</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cloud</span><span class="p">]</span>
-    <span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">,</span> <span class="n">list3</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">minsq</span><span class="p">,</span> <span class="n">cloud</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">)))))</span>
-    <span class="k">return</span> <span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">,</span> <span class="n">list3</span>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># proximity</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<span class="c1"># please check my kdTree class for an optimized implementation (MR)</span>
-<span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">cloud</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the closest point to a pointcloud.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        point (tuple): x,y,z make_blocks point value</span>
-<span class="sd">        cloud (sequence): A sequence locations in three-dimensional space.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: min distance</span>
-<span class="sd">        tuple: closest point</span>
-<span class="sd">        int: closest point index</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">,</span> <span class="n">list3</span> <span class="o">=</span> <span class="n">sort_points</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">cloud</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">list1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">list2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">list3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-
-<span class="k">def</span> <span class="nf">closest_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes closest point on line (p1, v1) to testpoint.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line</span>
-<span class="sd">        tp (3-tuple): 3d testpoint</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        (3-tuple): closest point on line</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="p">((</span><span class="n">tp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
-         <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
-         <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-            <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-
-
-<span class="k">def</span> <span class="nf">closest_point_on_line_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes closest point on line segment (p1, p2) to testpoint.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, p2 (tuples): two 3d points defining the line segment</span>
-<span class="sd">        tp (3-tuple): 3d testpoint</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        (3-tuple): closest point on line segment</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="n">dis</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="p">((</span><span class="n">tp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
-         <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
-         <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-    <span class="n">onlinept</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">disp1</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">onlinept</span><span class="p">)</span>
-    <span class="n">disp2</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">onlinept</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">disp1</span> <span class="o">&gt;</span> <span class="n">dis</span> <span class="ow">or</span> <span class="n">disp2</span> <span class="o">&gt;</span> <span class="n">dis</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">disp1</span> <span class="o">&lt;</span> <span class="n">disp2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">p1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">p2</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">onlinept</span>
-
-
-<span class="k">def</span> <span class="nf">closest_point_on_polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
-    <span class="c1"># should be straight forward using the closest_point_on_line_segment function</span>
-    <span class="k">pass</span>
-
-
-<span class="c1"># http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane</span>
-<span class="k">def</span> <span class="nf">closest_point_to_plane</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes closest point on plane (p1, v1) to testpoint.</span>
-
-<span class="sd">    Parameters:</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        (3-tuple): closest point on plane</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">v1</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-    <span class="n">d</span>  <span class="o">=</span> <span class="p">((</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">tp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">tp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">tp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">((</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">))</span>
-    <span class="n">v1</span> <span class="o">=</span> <span class="n">scale</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
-    <span class="n">point</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">point</span>
-
-
-<span class="k">def</span> <span class="nf">closest_part_of_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
-    <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">triangle</span>
-    <span class="n">p12</span>  <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">p23</span>  <span class="o">=</span> <span class="n">p3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">p31</span>  <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p3</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p3</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="c1"># check if point is closest to edge triangle[0] - triangle[1]</span>
-    <span class="n">p113</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">p12</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="n">p223</span> <span class="o">=</span> <span class="n">p113</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p12</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p113</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p12</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p113</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p12</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p113</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span>
-    <span class="c1"># check if point is closest to edge triangle[1] - triangle[2]</span>
-    <span class="n">p221</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">p23</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="n">p331</span> <span class="o">=</span> <span class="n">p221</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p23</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p221</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p23</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p221</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p23</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p331</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span>
-    <span class="c1"># check if point is closest to edge triangle[2] - triangle[0]</span>
-    <span class="n">p332</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">p31</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="n">p112</span> <span class="o">=</span> <span class="n">p332</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p31</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p332</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p31</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p332</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p31</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p112</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p332</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p1</span>
-    <span class="c1"># check if point is closest to triangle[1]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p2</span>
-    <span class="c1"># check if point is closest to triangle[1]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p2</span>
-    <span class="c1"># check if point is closest to triangle[1]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p2</span>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># intersections</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<span class="k">def</span> <span class="nf">line_line_intersection_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the intersection point of line A and line B in 2d on the xy plane.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line A</span>
-<span class="sd">        p2, v2 (tuples): 3d point and 3d vector of line B</span>
-<span class="sd">        points (bool): if True v1,v2 will be interpreted as end points of the lines</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        point (tuple): the intersection point if there is any</span>
-<span class="sd">        None: if there is no intersection point</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">points</span><span class="p">:</span>
-        <span class="n">p1b</span> <span class="o">=</span> <span class="n">v1</span>
-        <span class="n">p2b</span> <span class="o">=</span> <span class="n">v2</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">p1b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
-        <span class="n">p2b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span>
-    <span class="n">n_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">ua</span> <span class="o">=</span> <span class="n">n_a</span> <span class="o">/</span> <span class="n">d</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">ua</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">ua</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="mi">0</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">circle_circle_intersections_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">r2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the intersection points of two circles in 2d on the xy plane.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        p1 (tuples): 3d point of circle A</span>
-<span class="sd">        r1 (float): radius of circle A</span>
-<span class="sd">        p2 (tuples): 3d point of circle B</span>
-<span class="sd">        r2 (float): radius of circle B</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        points (list of tuples): the intersection points if there are any</span>
-<span class="sd">        None: if there are no intersection points</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dx</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">dy</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">dist</span> <span class="o">=</span> <span class="p">(</span><span class="n">dx</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">dy</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s1">&#39;No solutions, the circles are too far apart&#39;</span>
-        <span class="k">return</span> <span class="bp">None</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span><span class="p">)):</span>
-        <span class="k">print</span> <span class="s1">&#39;No solutions, one circle contains the other&#39;</span>
-        <span class="k">return</span> <span class="bp">None</span>
-    <span class="k">elif</span> <span class="p">((</span><span class="n">dist</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r1</span> <span class="o">==</span> <span class="n">r2</span><span class="p">)):</span>
-        <span class="k">print</span> <span class="s1">&#39;No solutions, the circles coincide&#39;</span>
-        <span class="k">return</span> <span class="bp">None</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">dist</span> <span class="o">*</span> <span class="n">dist</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dist</span><span class="p">)</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
-        <span class="n">cx2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">dist</span>
-        <span class="n">cy2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">dist</span>
-        <span class="n">intersection1</span> <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">dist</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">dist</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">intersection2</span> <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">dist</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">dist</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">intersection1</span><span class="p">,</span> <span class="n">intersection2</span><span class="p">]</span>
-    <span class="k">return</span> <span class="bp">None</span>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># transformations</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<span class="k">def</span> <span class="nf">translate</span><span class="p">():</span>
-    <span class="k">pass</span>
-
-
-<span class="k">def</span> <span class="nf">rotate</span><span class="p">():</span>
-    <span class="k">pass</span>
-
-
-<span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;normalizes a vector</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        v1 (tuple, list, Vector): The vector.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Tuple: normalized vector</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="mf">1e-9</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">d</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">d</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Scales vector by factor</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        vector (tuple, list, Vector): The vector</span>
-<span class="sd">        f (float): scale factor</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Tuple: Scaled vector</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">mirror</span><span class="p">():</span>
-    <span class="k">pass</span>
-
-
-<span class="k">def</span> <span class="nf">project</span><span class="p">():</span>
-    <span class="k">pass</span>
-
-
-<span class="k">def</span> <span class="nf">skew</span><span class="p">():</span>
-    <span class="k">pass</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+<span class="k">def</span> <span class="nf">area_2d</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">centroid_2d</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length_2d</span><span class="p">(</span><span class="n">cross_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">o</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length_2d</span><span class="p">(</span><span class="n">cross_2d</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">a</span>
+
+
+<span class="c1"># https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/volume.html</span>
+<div class="viewcode-block" id="volume"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-volume.html#brg.geometry.functions.volume">[docs]</a><span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -1186,74 +595,7 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># print is_ccw([0,0,0], [0,1,0], [-1, 0, 0])</span>
-    <span class="c1"># print is_ccw([0,0,0], [0,1,0], [+1, 0, 0])</span>
-    <span class="c1"># print is_ccw([0,0,0], [1,0,0], [2,0,0])</span>
-
-    <span class="c1"># print is_convex([[0,0,0], [0,1,0], [1,0,0], [1,1,0]], True)</span>
-
-    <span class="c1"># print is_coplanar([[0,0,0], [1,0,0], [1,1,0], [1,1,0]])</span>
-
-    <span class="c1"># p1 = (1,1,1)</span>
-    <span class="c1"># v1 = (0,0,0.001)</span>
-    <span class="c1"># tp = (1,2,11)</span>
-    <span class="c1"># tol = 0.9999</span>
-    <span class="c1"># print is_point_on_line(p1, v1, tp,tol)</span>
-
-    <span class="n">v1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">v2</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">ccw</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">ccw</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-
-    <span class="k">print</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">ccw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">ccw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-
-    <span class="k">print</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angle_smallest</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angle_smallest</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-
-    <span class="k">print</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angles</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">angles</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">a</span>
-
-    <span class="c1"># print is_point_in_triangle(p, a,b,c)</span>
-
-    <span class="c1"># p1 = (1.0,1.0,0.0)</span>
-    <span class="c1"># p2 = (0.0,0.0,0.0)</span>
-    <span class="c1"># tp = (3.1,0.0,0.0)</span>
-    <span class="c1"># print closest_point_on_line_segment (p1, p2, tp)</span>
-
-    <span class="c1"># print is_closest_point_on_line_segment (p1, p2, tp)</span>
-
-    <span class="c1"># points = [(0,0,0),(1,0,0),(1,1,0),(0,1,0),(0,0,0)]</span>
-
-    <span class="c1"># points = [map(float, xyz) for xyz in points]</span>
-
-    <span class="c1"># print centroid(points[:-1])</span>
-    <span class="c1"># print [sum(axis) / len(points[:-1]) for axis in zip(*points[:-1])]</span>
-
-    <span class="c1"># print is_point_in_polygon(points,(0.00000001,-0.00000001,0))</span>
-
-    <span class="c1"># p1 = (1.0, 0.0, 1.0)</span>
-    <span class="c1"># p2 = (1.0, 1.0, -1.0)</span>
-    <span class="c1"># p3 = (1.0, -1.0, -1.0)</span>
-
-    <span class="c1"># print is_ray_intersecting_triangle((0,0,1.1),(1,0,-0.2),p1,p2,p3)</span>
-
-    <span class="c1"># points = [[0, 0, 0], [0.5, 0.5, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]</span>
-    <span class="c1"># point = [0.5, 0, 0]</span>
-    <span class="c1"># print is_point_in_polygon_2(point, points)</span>
-    
+    <span class="k">pass</span>
 </pre></div>
 
           </div>

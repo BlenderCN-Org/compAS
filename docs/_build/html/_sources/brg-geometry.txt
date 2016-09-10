@@ -1,0 +1,58 @@
+.. _brg.geometry:
+
+********************************************************************************
+brg.geometry
+********************************************************************************
+
+
+.. _brg.geometry.elements:
+
+brg.geometry.elements
+---------------------
+
+*Insert the docstring of the module here.*
+
+.. toctree::
+   :glob:
+
+   brg-geometry-elements-*
+
+
+.. _brg.geometry.arithmetic:
+
+brg.geometry.arithmetic
+-----------------------
+
+*Insert the docstring of the module here.*
+
+.. toctree::
+   :glob:
+
+   brg-geometry-arithmetic-*
+
+
+.. _brg.geometry.functions:
+
+brg.geometry.functions
+----------------------
+
+*Insert the docstring of the module here.*
+
+.. toctree::
+   :glob:
+
+   brg-geometry-functions-*
+
+
+.. _brg.geometry.intersections:
+
+brg.geometry.intersections
+--------------------------
+
+*Insert the docstring of the module here.*
+
+.. toctree::
+   :glob:
+
+   brg-geometry-intersections-*
+

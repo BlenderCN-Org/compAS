@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sort_points &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="brg.geometry" href="brg-geometry.html"/>
+        <link rel="next" title="closest_point" href="brg-geometry-spatial-closest_point.html"/>
+        <link rel="prev" title="is_ray_intersecting_triangle" href="brg-geometry-queries-is_ray_intersecting_triangle.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="reference.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#brg-rhino">brg_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#brg-maya">brg_maya</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="reference.html">Reference Guide</a> &raquo;</li>
+      
+          <li><a href="brg-geometry.html">brg.geometry</a> &raquo;</li>
+      
+    <li>sort_points</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/pages/brg-geometry-spatial-sort_points.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="sort-points">
+<h1>sort_points<a class="headerlink" href="#sort-points" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="brg.geometry.spatial.sort_points">
+<code class="descclassname">brg.geometry.spatial.</code><code class="descname">sort_points</code><span class="sig-paren">(</span><em>point</em>, <em>cloud</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/brg/geometry/spatial.html#sort_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.spatial.sort_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts points of a pointcloud to a make_blocks point.</p>
+<p class="rubric">Notes</p>
+<p>Check kdTree class for an optimized implementation (MR).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; x,y,z make_blocks point value</li>
+<li><strong>cloud</strong> (<em>sequence</em>) &#8211; A sequence locations in three-dimensional space.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>list</strong> (<em>floats</em>) &#8211;
+min distances
+list (tuples): sorted points
+list (ints): closest point indices</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sort_points</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="brg-geometry-spatial-closest_point.html" class="btn btn-neutral float-right" title="closest_point"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="brg-geometry-queries-is_ray_intersecting_triangle.html" class="btn btn-neutral" title="is_ray_intersecting_triangle"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Tom Van Mele.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
