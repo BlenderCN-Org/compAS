@@ -59,7 +59,15 @@
         
         
             <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="reference.html#brg">brg</a></li>
@@ -68,6 +76,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biblio.html">Bibliography</a></li>
 </ul>
 
         
@@ -106,7 +116,7 @@
             
   <div class="section" id="brg-geometry">
 <h1>brg.geometry<a class="headerlink" href="#brg-geometry" title="Permalink to this headline">¶</a></h1>
-<p>None</p>
+<p>brg.geometry : A package defining common geometric functions and objects.</p>
 <div class="section" id="brg-geometry-arithmetic">
 <h2>brg.geometry.arithmetic<a class="headerlink" href="#brg-geometry-arithmetic" title="Permalink to this headline">¶</a></h2>
 <p>None</p>
@@ -122,11 +132,11 @@
 <h2>brg.geometry.functions<a class="headerlink" href="#brg-geometry-functions" title="Permalink to this headline">¶</a></h2>
 <p>This module defines basic geometry functions.
 All functions assume the provided input is three-dimensional. A corresponding
-two-dimensional function can be accessed by appending <code class="docutils literal"><span class="pre">_2d</span></code> to the function
+two-dimensional function can be accessed by appending <tt class="docutils literal"><span class="pre">_2d</span></tt> to the function
 name.</p>
 <p>Examples:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">brg.geometry</span> <span class="k">import</span> <span class="n">cross</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">brg.geometry</span> <span class="k">import</span> <span class="n">cross_2d</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">brg.geometry</span> <span class="kn">import</span> <span class="n">cross</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">brg.geometry</span> <span class="kn">import</span> <span class="n">cross_2d</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -286,7 +296,7 @@ name.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

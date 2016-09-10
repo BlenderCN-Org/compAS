@@ -3,7 +3,7 @@
 brg.geometry
 ********************************************************************************
 
-None
+brg.geometry : A package defining common geometric functions and objects.
 
 
 brg.geometry.arithmetic

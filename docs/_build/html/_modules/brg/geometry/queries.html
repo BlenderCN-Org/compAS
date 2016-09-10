@@ -57,7 +57,15 @@
         
         
             <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">Reference Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg">brg</a></li>
@@ -66,6 +74,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/biblio.html">Bibliography</a></li>
 </ul>
 
         
@@ -151,9 +161,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if the points are collinear, False otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
 
-
+</div>
 <div class="viewcode-block" id="is_coplanar"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_coplanar.html#brg.geometry.queries.is_coplanar">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if the points are coplanar.</span>
 
@@ -177,9 +187,9 @@
         <span class="n">wuv</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span></div>
+    <span class="k">return</span> <span class="bp">True</span>
 
-
+</div>
 <div class="viewcode-block" id="is_coplanar4"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_coplanar4.html#brg.geometry.queries.is_coplanar4">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar4</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check if 4 points are coplanar.</span>
 
@@ -199,9 +209,9 @@
     <span class="n">v02</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
     <span class="n">v23</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">v02</span><span class="p">,</span> <span class="n">cross</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v23</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">res</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="o">**</span><span class="mi">2</span></div>
+    <span class="k">return</span> <span class="n">res</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="o">**</span><span class="mi">2</span>
 
-
+</div>
 <div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_convex.html#brg.geometry.queries.is_convex">[docs]</a><span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">center_of_mass</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
@@ -215,9 +225,9 @@
         <span class="n">a2</span> <span class="o">=</span> <span class="n">angles</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">a1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span></div>
+    <span class="k">return</span> <span class="bp">True</span>
 
-
+</div>
 <div class="viewcode-block" id="is_closed"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_closed.html#brg.geometry.queries.is_closed">[docs]</a><span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if the points form a closed figure.</span>
 
@@ -229,9 +239,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p_</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">_p</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">p_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">_p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">p_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">_p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
-
+</div>
 <div class="viewcode-block" id="is_point_on_plane"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_on_plane.html#brg.geometry.queries.is_point_on_plane">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if a point lies in a plane.</span>
 
@@ -239,9 +249,9 @@
 <span class="sd">        point (Point): A ``Point`` object.</span>
 <span class="sd">        plane (Plane): A ``Plane`` object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
 
-
+</div>
 <div class="viewcode-block" id="is_point_on_line"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_on_line.html#brg.geometry.queries.is_point_on_line">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if a point (tp) is on line (p1, v1) within a tolerance (tol).</span>
 
@@ -262,9 +272,9 @@
         <span class="k">return</span>
     <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">pt2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span></div>
+    <span class="k">return</span> <span class="bp">False</span>
 
-
+</div>
 <span class="k">def</span> <span class="nf">is_closest_point_on_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Verify if the closest point on a line is on line segment (p1, p2) for a testpoint tp.</span>
@@ -306,17 +316,17 @@
     <span class="n">ha</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="mi">2</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">c</span><span class="p">)))</span> <span class="o">**</span> <span class="mf">0.5</span>
     <span class="k">if</span> <span class="n">ha</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="p">(</span><span class="n">b</span> <span class="o">&lt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">tol</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span></div>
+    <span class="k">return</span> <span class="bp">False</span>
 
-
+</div>
 <div class="viewcode-block" id="is_point_on_polyline"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_on_polyline.html#brg.geometry.queries.is_point_on_polyline">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">clospt</span> <span class="o">=</span> <span class="n">closest_point_on_segment</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">tp</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">clospt</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span></div>
+    <span class="k">return</span> <span class="bp">False</span>
 
-
+</div>
 <div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_in_triangle.html#brg.geometry.queries.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if a point (p) is inside line of the triangle a,b,c.</span>
 
@@ -337,9 +347,9 @@
             <span class="k">return</span> <span class="bp">False</span>
     <span class="k">if</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span></div>
+    <span class="k">return</span> <span class="bp">False</span>
 
-
+</div>
 <div class="viewcode-block" id="is_ray_intersecting_triangle"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_ray_intersecting_triangle.html#brg.geometry.queries.is_ray_intersecting_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_ray_intersecting_triangle</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)</span>
@@ -382,9 +392,9 @@
     <span class="k">if</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">EPSILON</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">True</span>
     <span class="c1"># No hit, no win</span>
-    <span class="k">return</span> <span class="bp">False</span></div>
+    <span class="k">return</span> <span class="bp">False</span>
 
-
+</div>
 <span class="k">def</span> <span class="nf">is_line_line_intersection_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if two lines intersect in 2d on the xy plane.</span>
 
@@ -457,7 +467,7 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

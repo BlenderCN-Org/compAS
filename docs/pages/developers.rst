@@ -11,4 +11,5 @@ Stuff to add:
 - coding standards
 - templates
 - folder structures
+- tools
 

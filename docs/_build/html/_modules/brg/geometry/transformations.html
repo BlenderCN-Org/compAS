@@ -57,7 +57,15 @@
         
         
             <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">Reference Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg">brg</a></li>
@@ -66,6 +74,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/biblio.html">Bibliography</a></li>
 </ul>
 
         
@@ -125,13 +135,13 @@
 
 
 <div class="viewcode-block" id="translate"><a class="viewcode-back" href="../../../pages/brg-geometry-transformations-translate.html#brg.geometry.transformations.translate">[docs]</a><span class="k">def</span> <span class="nf">translate</span><span class="p">():</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
 
-
+</div>
 <div class="viewcode-block" id="rotate"><a class="viewcode-back" href="../../../pages/brg-geometry-transformations-rotate.html#brg.geometry.transformations.rotate">[docs]</a><span class="k">def</span> <span class="nf">rotate</span><span class="p">():</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
 
-
+</div>
 <div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../../../pages/brg-geometry-transformations-normalize.html#brg.geometry.transformations.normalize">[docs]</a><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;normalizes a vector</span>
 
@@ -144,9 +154,9 @@
     <span class="n">l</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">l</span> <span class="o">=</span> <span class="mf">1e-9</span>
-    <span class="k">return</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span></div>
+    <span class="k">return</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span>
 
-
+</div>
 <div class="viewcode-block" id="scale"><a class="viewcode-back" href="../../../pages/brg-geometry-transformations-scale.html#brg.geometry.transformations.scale">[docs]</a><span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Scales vector by factor</span>
 
@@ -157,25 +167,25 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        Tuple: Scaled vector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span></div>
+    <span class="k">return</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span>
 
-
+</div>
 <div class="viewcode-block" id="mirror"><a class="viewcode-back" href="../../../pages/brg-geometry-transformations-mirror.html#brg.geometry.transformations.mirror">[docs]</a><span class="k">def</span> <span class="nf">mirror</span><span class="p">():</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
 
-
+</div>
 <div class="viewcode-block" id="project"><a class="viewcode-back" href="../../../pages/brg-geometry-transformations-project.html#brg.geometry.transformations.project">[docs]</a><span class="k">def</span> <span class="nf">project</span><span class="p">():</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
 
-
+</div>
 <div class="viewcode-block" id="skew"><a class="viewcode-back" href="../../../pages/brg-geometry-transformations-skew.html#brg.geometry.transformations.skew">[docs]</a><span class="k">def</span> <span class="nf">skew</span><span class="p">():</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
 
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
-
+</div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="k">pass</span>
 </pre></div>
@@ -217,7 +227,7 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

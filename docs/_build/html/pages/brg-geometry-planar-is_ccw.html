@@ -59,7 +59,15 @@
         
         
             <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="reference.html#brg">brg</a></li>
@@ -68,6 +76,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biblio.html">Bibliography</a></li>
 </ul>
 
         
@@ -110,7 +120,7 @@
 <h1>is_ccw<a class="headerlink" href="#is-ccw" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="brg.geometry.planar.is_ccw">
-<code class="descclassname">brg.geometry.planar.</code><code class="descname">is_ccw</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>c</em>, <em>colinear=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/brg/geometry/planar.html#is_ccw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.planar.is_ccw" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">brg.geometry.planar.</tt><tt class="descname">is_ccw</tt><big>(</big><em>a</em>, <em>b</em>, <em>c</em>, <em>colinear=False</em><big>)</big><a class="reference internal" href="../_modules/brg/geometry/planar.html#is_ccw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.planar.is_ccw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if <cite>c</cite> is on the left of <cite>ab</cite> when looking from <cite>a</cite> to <cite>b</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -131,25 +141,26 @@ True if ccw, False otherwise.</p>
 </tbody>
 </table>
 <p>This implementation is based on the evaluation of the z-component of the cross
-product <a class="reference internal" href="#r1" id="id1">[r1]</a>. If the z-compnent is positive, the function returns <code class="docutils literal"><span class="pre">True</span></code>.
-Otherwise <code class="docutils literal"><span class="pre">False</span></code>.</p>
+product <a class="reference internal" href="#toptal-computational-geometry-in-python" id="id1">[top]</a>. If the z-compnent is
+positive, the function returns <tt class="docutils literal"><span class="pre">True</span></tt>. Otherwise <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_ccw</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_ccw</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_ccw</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_ccw</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 <span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">is_ccw</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_ccw</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="bp">True</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
-<table class="docutils citation" frame="void" id="r1" rules="none">
+<p id="bibtex-bibliography-pages/brg-geometry-planar-is_ccw-0"><table class="docutils citation" frame="void" id="toptal-computational-geometry-in-python" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[r1]</a></td><td><a class="reference external" href="https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation">Computational Geometry in Python: From Theory to Application</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[top]</a></td><td>Computational geometry in python: from theory to application. <span><a class="reference external" href=""></a></span>https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation. Last visited on: ...</td></tr>
 </tbody>
 </table>
+</p>
 </dd></dl>
 
 </div>
@@ -201,7 +212,7 @@ Otherwise <code class="docutils literal"><span class="pre">False</span></code>.<
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

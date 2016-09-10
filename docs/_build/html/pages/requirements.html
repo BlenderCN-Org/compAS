@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Requirements &mdash; brg_framework 0.1 documentation</title>
+  <title>Getting started &mdash; brg_framework 0.1 documentation</title>
   
 
   
@@ -58,7 +58,14 @@
         
         
             <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Requirements</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-s-in-the-box">What&#8217;s in the box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#first-steps">First steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Reference Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#brg">brg</a></li>
@@ -67,6 +74,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biblio.html">Bibliography</a></li>
 </ul>
 
         
@@ -90,7 +99,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Requirements</li>
+    <li>Getting started</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/pages/requirements.txt" rel="nofollow"> View page source</a>
@@ -101,9 +110,39 @@
 </div>
           <div role="main">
             
-  <div class="section" id="requirements">
-<span id="id1"></span><h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
-<p>blurp</p>
+  <div class="section" id="getting-started">
+<span id="requirements"></span><h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<p>Get the framework from <a class="reference external" href="http://bitbucket.org">bitbucket</a>.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="docutils literal"><span class="pre">pip</span></code> install is in the works</p>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>Environment variables</p>
+</div>
+<div class="section" id="what-s-in-the-box">
+<h2>What&#8217;s in the box<a class="headerlink" href="#what-s-in-the-box" title="Permalink to this headline">¶</a></h2>
+<p>Folder structure etc.</p>
+</div>
+<div class="section" id="first-steps">
+<h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
+<p>Some quick examples...</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">brg</span>
+<span class="kn">from</span> <span class="nn">brg.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">brg</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div>
 </div>
 
 

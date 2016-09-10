@@ -57,7 +57,15 @@
         
         
             <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">Reference Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg">brg</a></li>
@@ -66,6 +74,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/biblio.html">Bibliography</a></li>
 </ul>
 
         
@@ -137,8 +147,8 @@
 <span class="sd">        bool: True if ccw, False otherwise.</span>
 
 <span class="sd">    This implementation is based on the evaluation of the z-component of the cross</span>
-<span class="sd">    product [r1]_. If the z-compnent is positive, the function returns ``True``.</span>
-<span class="sd">    Otherwise ``False``.</span>
+<span class="sd">    product :cite:`toptal:computational-geometry-in-python`. If the z-compnent is</span>
+<span class="sd">    positive, the function returns ``True``. Otherwise ``False``.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [0,1,0], [-1, 0, 0])</span>
@@ -150,14 +160,13 @@
 <span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [1,0,0], [2,0,0], True)</span>
 <span class="sd">        True</span>
 
-
-<span class="sd">    .. [r1] `Computational Geometry in Python: From Theory to Application &lt;https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation&gt;`_</span>
+<span class="sd">    .. bibliography:: ../refs.bib</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">colinear</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">0</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-
+</div>
 <div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../../pages/brg-geometry-planar-is_convex.html#brg.geometry.planar.is_convex">[docs]</a><span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">colinear</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if the points form a convex figure.</span>
 
@@ -183,9 +192,9 @@
         <span class="n">c</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span></div>
+    <span class="k">return</span> <span class="bp">True</span>
 
-
+</div>
 <div class="viewcode-block" id="is_intersecting"><a class="viewcode-back" href="../../../pages/brg-geometry-planar-is_intersecting.html#brg.geometry.planar.is_intersecting">[docs]</a><span class="k">def</span> <span class="nf">is_intersecting</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Do the segments a-b and c-d intersect?</span>
 
@@ -203,12 +212,12 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if the segments intersect, False otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
-
+</div>
 <div class="viewcode-block" id="is_selfintersecting"><a class="viewcode-back" href="../../../pages/brg-geometry-planar-is_selfintersecting.html#brg.geometry.planar.is_selfintersecting">[docs]</a><span class="k">def</span> <span class="nf">is_selfintersecting</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
 
 
 <span class="c1"># def is_point_in_polygon(points, tp):</span>
@@ -246,7 +255,7 @@
 <span class="c1">#         p1x, p1y = p2x, p2y</span>
 <span class="c1">#     return inside</span>
 
-
+</div>
 <div class="viewcode-block" id="is_point_in_polygon"><a class="viewcode-back" href="../../../pages/brg-geometry-planar-is_point_in_polygon.html#brg.geometry.planar.is_point_in_polygon">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_polygon</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
     <span class="n">ccw</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
@@ -257,9 +266,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span></div>
+    <span class="k">return</span> <span class="bp">True</span>
 
-
+</div>
 <div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/brg-geometry-planar-is_point_in_triangle.html#brg.geometry.planar.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
     <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">triangle</span>
     <span class="n">ccw</span> <span class="o">=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
@@ -267,9 +276,9 @@
         <span class="k">return</span> <span class="bp">False</span>
     <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span></div>
+    <span class="k">return</span> <span class="bp">True</span>
 
-
+</div>
 <div class="viewcode-block" id="closest_part_of_triangle"><a class="viewcode-back" href="../../../pages/brg-geometry-planar-closest_part_of_triangle.html#brg.geometry.planar.closest_part_of_triangle">[docs]</a><span class="k">def</span> <span class="nf">closest_part_of_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
     <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">triangle</span>
     <span class="n">p12</span>  <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -298,13 +307,13 @@
         <span class="k">return</span> <span class="n">p2</span>
     <span class="c1"># check if point is closest to triangle[1]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p2</span></div>
+        <span class="k">return</span> <span class="n">p2</span>
 
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
-
+</div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="k">pass</span>
 </pre></div>
@@ -346,7 +355,7 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

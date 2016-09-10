@@ -80,7 +80,14 @@ if __name__ == "__main__":
     import brg
 
     for name in brg.__all__:
-        package_doc(getattr(brg, name))
-
-    for name in brg.geometry.__all__:
-        module_doc(getattr(brg.geometry, name))
+        p = getattr(brg, name)
+        package_doc(p)
+        if not hasattr(p, '__all__'):
+            print 'package {0} has no __all__'.format(p)
+            continue
+        for name in p.__all__:
+            m = getattr(p, name)
+            if inspect.ismodule(m):
+                if not hasattr(m, '__all__'):
+                    print 'module {0} has no __all__'.format(m)
+                module_doc(m)
