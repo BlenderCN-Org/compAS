@@ -24,10 +24,14 @@ __all__ = [
 def is_ccw(a, b, c, colinear=False):
     """Verify if `c` is on the left of `ab` when looking from `a` to `b`.
 
+    Warning:
+        This function is only valid in a horizontal plane. Only the XY coordinates
+        of the input points are used. The Z coordinates are simply ignored.
+
     Parameters:
-        a (sequence): XYZ coordinates of point `a`.
-        b (sequence): XYZ coordinates of point `b`.
-        c (sequence): XYZ coordinates of point `c`.
+        a (sequence): XY(Z) coordinates of point `a`.
+        b (sequence): XY(Z) coordinates of point `b`.
+        c (sequence): XY(Z) coordinates of point `c`.
         colinear (bool): Allow points to be colinear. Defaults to False.
 
     Returns:
@@ -47,7 +51,6 @@ def is_ccw(a, b, c, colinear=False):
         >>> is_ccw([0,0,0], [1,0,0], [2,0,0], True)
         True
 
-    .. bibliography:: ../refs.bib
     """
     if colinear:
         return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1])  * (c[0] - a[0]) >= 0

@@ -77,7 +77,11 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="biblio.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="todo.html">Todolist</a></li>
 </ul>
 
@@ -121,14 +125,19 @@
 <dt id="brg.geometry.planar.is_ccw">
 <tt class="descclassname">brg.geometry.planar.</tt><tt class="descname">is_ccw</tt><big>(</big><em>a</em>, <em>b</em>, <em>c</em>, <em>colinear=False</em><big>)</big><a class="reference internal" href="../_modules/brg/geometry/planar.html#is_ccw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.planar.is_ccw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if <cite>c</cite> is on the left of <cite>ab</cite> when looking from <cite>a</cite> to <cite>b</cite>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function is only valid in a horizontal plane. Only the XY coordinates
+of the input points are used. The Z coordinates are simply ignored.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>a</strong> (<em>sequence</em>) &#8211; XYZ coordinates of point <cite>a</cite>.</li>
-<li><strong>b</strong> (<em>sequence</em>) &#8211; XYZ coordinates of point <cite>b</cite>.</li>
-<li><strong>c</strong> (<em>sequence</em>) &#8211; XYZ coordinates of point <cite>c</cite>.</li>
+<li><strong>a</strong> (<em>sequence</em>) &#8211; XY(Z) coordinates of point <cite>a</cite>.</li>
+<li><strong>b</strong> (<em>sequence</em>) &#8211; XY(Z) coordinates of point <cite>b</cite>.</li>
+<li><strong>c</strong> (<em>sequence</em>) &#8211; XY(Z) coordinates of point <cite>c</cite>.</li>
 <li><strong>colinear</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Allow points to be colinear. Defaults to False.</li>
 </ul>
 </td>
@@ -153,13 +162,6 @@ positive, the function returns <tt class="docutils literal"><span class="pre">Tr
 <span class="go">True</span>
 </pre></div>
 </div>
-<p id="bibtex-bibliography-pages/brg-geometry-planar-is_ccw-0"><table class="docutils citation" frame="void" id="toptal-computational-geometry-in-python" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[top]</a></td><td>Computational geometry in python: from theory to application. <span><a class="reference external" href=""></a></span>https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation. Last visited on: ...</td></tr>
-</tbody>
-</table>
-</p>
 </dd></dl>
 
 </div>
@@ -182,7 +184,7 @@ positive, the function returns <tt class="docutils literal"><span class="pre">Tr
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Tom Van Mele.
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
     </p>
   </div>
 

@@ -67,15 +67,28 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">Reference Guide</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">API reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg">brg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-rhino">brg_rhino</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-maya">brg_maya</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#folder-structure">Folder structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/biblio.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todolist</a></li>
 </ul>
 
@@ -138,10 +151,14 @@
 <div class="viewcode-block" id="is_ccw"><a class="viewcode-back" href="../../../pages/brg-geometry-planar-is_ccw.html#brg.geometry.planar.is_ccw">[docs]</a><span class="k">def</span> <span class="nf">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if `c` is on the left of `ab` when looking from `a` to `b`.</span>
 
+<span class="sd">    Warning:</span>
+<span class="sd">        This function is only valid in a horizontal plane. Only the XY coordinates</span>
+<span class="sd">        of the input points are used. The Z coordinates are simply ignored.</span>
+
 <span class="sd">    Parameters:</span>
-<span class="sd">        a (sequence): XYZ coordinates of point `a`.</span>
-<span class="sd">        b (sequence): XYZ coordinates of point `b`.</span>
-<span class="sd">        c (sequence): XYZ coordinates of point `c`.</span>
+<span class="sd">        a (sequence): XY(Z) coordinates of point `a`.</span>
+<span class="sd">        b (sequence): XY(Z) coordinates of point `b`.</span>
+<span class="sd">        c (sequence): XY(Z) coordinates of point `c`.</span>
 <span class="sd">        colinear (bool): Allow points to be colinear. Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
@@ -161,7 +178,6 @@
 <span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [1,0,0], [2,0,0], True)</span>
 <span class="sd">        True</span>
 
-<span class="sd">    .. bibliography:: ../refs.bib</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">colinear</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">0</span>
@@ -327,7 +343,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Tom Van Mele.
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
     </p>
   </div>
 

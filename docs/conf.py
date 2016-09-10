@@ -75,7 +75,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'brg_framework'
-copyright = u'2016, Tom Van Mele'
+copyright = u'2016, Block Research Group - ETH Zurich'
 author = u'Tom Van Mele'
 
 # The version info for the project you're documenting, acts as replacement for

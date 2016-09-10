@@ -1,15 +1,6 @@
-# generate an rst page per function in a module
-# use only those declared in __all__
-# and preserve order
-
 import inspect
-import os
-import sys
 
 
-# e.g. brg.geometry
-# e.g. brg.geometry.elements
-# write the subpackage and module files
 def package_doc(p):
     with open('pages/' + p.__name__.replace('.', '-') + '.rst', 'w+') as fp:
         fp.write("""
@@ -49,8 +40,6 @@ def package_doc(p):
                 fp.write('\n')
 
 
-# e.g. brg.geometry.functions
-# write the function files
 def module_doc(m):
     try:
         m_all = m.__all__

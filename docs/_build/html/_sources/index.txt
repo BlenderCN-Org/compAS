@@ -4,8 +4,6 @@
 BRG Framework Documentation
 ********************************************************************************
 
-.. sectionauthor:: Tom Van Mele <van.mele@arch.ethz.ch>
-
 This is the documentation of the Block Research Group framework for computational
 architecture, structural design, and (robotic) fabrication.
 
@@ -18,7 +16,7 @@ Contents
 
    pages/gettingstarted
    pages/examples
-   pages/reference
+   API reference <pages/reference>
    Developers Guide <pages/developers>
    pages/license
    pages/biblio
