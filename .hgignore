@@ -1,0 +1,9 @@
+syntax: regexp
+^\.project$
+^\.pydevproject$
+\.in$
+\.out$
+\.rhl$
+\.3dmbak$
+\.rui_bak$
+\.pyc$
