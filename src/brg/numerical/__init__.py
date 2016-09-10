@@ -1,0 +1,9 @@
+# from linalg import normrow
+# from linalg import normalizerow
+# from linalg import connectivity_matrix
+# from linalg import equilibrium_matrix
+# from linalg import identify_nonpivots
+# from linalg import analyse_matrix_rank
+# from linalg import grad
+# from linalg import rot90
+# from linalg import solve_with_known

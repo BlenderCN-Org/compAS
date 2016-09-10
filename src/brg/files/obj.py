@@ -1,0 +1,275 @@
+import urllib2
+
+from brg.utilities.maps import geometric_key
+
+
+__author__     = ['Tom Van Mele', ]
+__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__version__    = '0.1'
+__email__      = 'vanmelet@ethz.ch'
+__status__     = 'Development'
+__date__       = 'Mar 31, 2015'
+
+
+class OBJ(object):
+    """"""
+    def __init__(self, filepath, remote=False, precision=None):
+        self.reader = OBJReader(filepath, remote=remote)
+        self.parser = OBJParser(self.reader, precision=precision)
+
+
+class OBJReader(object):
+    """"""
+    def __init__(self, filepath, remote=False):
+        self.filepath = filepath
+        self.remote = remote
+        self.content = None
+        # vertex data
+        self.vertices = []
+        self.weights = []
+        self.textures = []
+        self.normals = []
+        # polygonal geometry
+        self.points = []
+        self.lines = []
+        self.faces = []
+        # free-form geometry
+        self.curves = []
+        self.curves2 = []
+        self.surfaces = []
+        # free-form attributes
+        self.deg = None
+        self.bmat = None
+        self.step = None
+        self.cstype = None
+        # free-form statements
+        # parm, trim, hole, scrv, sp, end
+        # grouping
+        self.groups = {}
+        self.objects = {}
+        self.group = None
+        # open file path and read
+        self.open()
+        self.pre()
+        self.read()
+        self.post()
+
+    def open(self):
+        if self.remote:
+            resp = urllib2.urlopen(self.filepath)
+            self.content = iter(resp.readlines())
+        else:
+            with open(self.filepath, 'r') as fh:
+                self.content = iter(fh.readlines())
+
+    def pre(self):
+        lines = []
+        is_continuation = False
+        for line in self.content:
+            line = line.rstrip()
+            if not line:
+                continue
+            if is_continuation:
+                lines[-1] = lines[-1][:-2] + line
+            else:
+                lines.append(line)
+            if line[-1] == '\\':
+                is_continuation = True
+            else:
+                is_continuation = False
+        self.content = iter(lines)
+
+    def post(self):
+        pass
+
+    def read(self):
+        if not self.content:
+            return
+        for line in self.content:
+            parts = line.split()
+            if not parts:
+                continue
+            head = parts[0]
+            tail = parts[1:]
+            if head == '#':
+                self._read_comment(tail)
+                continue
+            if head == 'v':
+                self._read_vertex_coordinates(tail)
+                continue
+            if head == 'vt':
+                self._read_vertex_texture(tail)
+                continue
+            if head == 'vn':
+                self._read_vertex_normal(tail)
+                continue
+            if head == 'vp':
+                self._read_parameter_vertex(tail)
+                continue
+            if head in ('p', 'l', 'f'):
+                self._read_polygonal_geometry(head, tail)
+                continue
+            if head in ('deg', 'bmat', 'step', 'cstype'):
+                self._read_freeform_attribute(head, tail)
+                continue
+            if head in ('curv', 'curv2', 'surf'):
+                self._read_freeform_geometry(head, tail)
+                continue
+            if head in ('parm', 'trim', 'hole', 'scrv', 'sp', 'end'):
+                self._read_freeform_statement(head, tail)
+                continue
+            if head in ('g', 's', 'mg', 'o'):
+                self._read_grouping(head, tail)
+                continue
+
+    def _read_comment(self, data):
+        pass
+
+    def _read_vertex_coordinates(self, data):
+        if len(data) == 3:
+            self.vertices.append([float(x) for x in data])
+            self.weights.append(1.0)
+            return
+        if len(data) == 4:
+            self.vertices.append([float(x) for x in data[:3]])
+            self.weights.append(float(data[3]))
+
+    def _read_vertex_texture(self, data):
+        pass
+
+    def _read_vertex_normal(self, data):
+        pass
+
+    def _read_parameter_vertex(self, data):
+        pass
+
+    def _read_polygonal_geometry(self, name, data):
+        if name == 'p':
+            self.points.append(int(data[0]) - 1)
+            if self.group:
+                self.groups[self.group].append(('p', len(self.points) - 1))
+            return
+        if name == 'l':
+            if len(data) < 2:
+                return
+            self.lines.append([int(i) - 1 for i in data])
+            if self.group:
+                self.groups[self.group].append(('l', len(self.lines) - 1))
+            return
+        if name == 'f':
+            if len(data) < 3:
+                return
+            self.faces.append([int(i) - 1 for i in data])
+            if self.group:
+                self.groups[self.group].append(('f', len(self.faces) - 1))
+            return
+
+    def _read_freeform_attribute(self, name, data):
+        if name == 'deg':
+            self.deg = [int(i) for i in data]
+            return
+        if name == 'bmat':
+            return
+        if name == 'step':
+            return
+        if name == 'cstype':
+            self.cstype = data
+            return
+
+    def _read_freeform_geometry(self, name, data):
+        # curv u0 u1 v1 v2 ...
+        # u0: starting parameter value for the curve
+        # u1: ending parameter value for the curve
+        # v1: vertex reference number for control point
+        # v2: vertex reference number for control point
+        # ...
+        if name == 'curv':
+            if self.deg[0] == 1:
+                if len(data) == 4:
+                    self.lines.append((int(data[2]) - 1, int(data[3]) - 1))
+                    if self.group:
+                        self.groups[self.group].append(('l', len(self.lines) - 1))
+                    return
+                if len(data) > 4:
+                    self.lines.append([int(d) - 1 for d in data[2:]])
+                    # if self.group:
+                    #     self.groups[self.group].append(('l', len(self.lines) - 1))
+                    return
+
+    def _read_freeform_statement(self, name, data):
+        pass
+
+    def _read_grouping(self, name, data):
+        if name == 'g':
+            self.group = data[0]
+            self.groups[self.group] = []
+            return
+
+
+class OBJParser(object):
+    """"""
+    def __init__(self, reader, precision=None):
+        self.precision = precision if precision is not None else '3f'
+        self.reader    = reader
+        self.vertices  = None
+        self.weights   = None
+        self.textures  = None
+        self.normals   = None
+        self.points    = None
+        self.lines     = None
+        self.polylines = None
+        self.faces     = None
+        self.curves    = None
+        self.curves2   = None
+        self.surfaces  = None
+        self.groups    = None
+        self.objects   = None
+        self.parse()
+
+    def parse(self):
+        index_to_key = {}
+        vertex = {}
+        for i, xyz in enumerate(iter(self.reader.vertices)):
+            key = geometric_key(xyz, self.precision)
+            index_to_key[i] = key
+            vertex[key] = xyz
+        key_to_index = dict((key, index) for index, key in enumerate(vertex.iterkeys()))
+        index_to_index = dict((index, key_to_index[key]) for index, key in index_to_key.iteritems())
+        self.vertices = [xyz for xyz in vertex.itervalues()]
+        self.points = [index_to_index[index] for index in self.reader.points]
+        self.lines = [(index_to_index[line[0]], index_to_index[line[1]]) for line in self.reader.lines if len(line) == 2]
+        self.polylines = [[index_to_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
+        self.faces = [[index_to_index[index] for index in face] for face in self.reader.faces]
+        self.groups = self.reader.groups
+
+
+class OBJComposer(object):
+    """"""
+    def __init__(self):
+        pass
+
+    def compose(self):
+        pass
+
+
+class OBJWriter(object):
+    """"""
+    def __init__(self):
+        pass
+
+    def write(self):
+        pass
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == '__main__':
+    sample = 'http://block.arch.ethz.ch/labs/samples/saddle.obj'
+
+    obj = OBJ(sample, remote=True)
+    print obj.parser.vertices
+    print obj.parser.lines
+    print obj.parser.points
