@@ -20,8 +20,9 @@ Contents
    pages/examples
    pages/reference
    Developers Guide <pages/developers>
-   pages/todo
+   pages/license
    pages/biblio
+   pages/todo
 
 
 Indices and tables
