@@ -1,4 +1,6 @@
-# import elements
+"""brg.geometry : A package defining common geometric functions and objects."""
+
+import elements
 import arithmetic
 import functions
 import intersections
@@ -9,7 +11,6 @@ import transformations
 import utilities
 
 __all__ = [
-    # 'elements',
     'arithmetic',
     'functions',
     'intersections',
@@ -70,9 +71,3 @@ from queries import is_line_line_intersection_2d
 
 from intersections import line_line_intersection_2d
 from intersections import circle_circle_intersections_2d
-
-# from planar import is_ccw
-# # from planar import is_convex
-# from planar import is_intersecting
-# from planar import is_point_in_polygon
-# from planar import is_point_in_triangle

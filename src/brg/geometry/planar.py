@@ -34,8 +34,8 @@ def is_ccw(a, b, c, colinear=False):
         bool: True if ccw, False otherwise.
 
     This implementation is based on the evaluation of the z-component of the cross
-    product [r1]_. If the z-compnent is positive, the function returns ``True``.
-    Otherwise ``False``.
+    product :cite:`toptal:computational-geometry-in-python`. If the z-compnent is
+    positive, the function returns ``True``. Otherwise ``False``.
 
     Examples:
         >>> is_ccw([0,0,0], [0,1,0], [-1, 0, 0])
@@ -47,8 +47,7 @@ def is_ccw(a, b, c, colinear=False):
         >>> is_ccw([0,0,0], [1,0,0], [2,0,0], True)
         True
 
-
-    .. [r1] `Computational Geometry in Python: From Theory to Application <https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation>`_
+    .. bibliography:: ../refs.bib
     """
     if colinear:
         return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1])  * (c[0] - a[0]) >= 0

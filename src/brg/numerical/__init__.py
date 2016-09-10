@@ -1,9 +1,18 @@
-# from linalg import normrow
-# from linalg import normalizerow
-# from linalg import connectivity_matrix
-# from linalg import equilibrium_matrix
-# from linalg import identify_nonpivots
-# from linalg import analyse_matrix_rank
-# from linalg import grad
-# from linalg import rot90
-# from linalg import solve_with_known
+"""brg.numerical : A package for numerical computation."""
+
+import gpu
+import methods
+
+import linalg
+import matrices
+import operators
+import utilities
+import xforms
+
+__all__ = [
+    'linalg',
+    'matrices',
+    'operators',
+    'utilities',
+    'xforms',
+]
