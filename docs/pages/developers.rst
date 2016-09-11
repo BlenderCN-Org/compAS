@@ -66,12 +66,6 @@ they can be found in the templates folder.
     Provide instructions on how to use them.
 
 
-Folder structure
-================================================================================
-
-- ...
-
-
 Documentation
 ================================================================================
 

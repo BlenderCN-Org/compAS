@@ -62,15 +62,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg">brg</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-rhino">brg_rhino</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-maya">brg_maya</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg-rhino">brg_rhino</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a><ul>
@@ -79,7 +77,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#folder-structure">Folder structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#documentation">Documentation</a></li>
 </ul>
 </li>
@@ -89,7 +86,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#further-reading">Further reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todo list</a></li>
 </ul>
 
         
@@ -179,7 +177,7 @@
 <span class="n">SQRT_05</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="dot"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-dot.html#brg.geometry.functions.dot">[docs]</a><span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="dot"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-dot.html#brg.geometry.functions.dot">[docs]</a><span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the dot product of two vectors.</span>
 
 <span class="sd">    Parameters:</span>
@@ -200,7 +198,7 @@
     <span class="k">return</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="cross"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-cross.html#brg.geometry.functions.cross">[docs]</a><span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="cross"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-cross.html#brg.geometry.functions.cross">[docs]</a><span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the cross product of two vectors.</span>
 
 <span class="sd">    Parameters:</span>
@@ -248,7 +246,7 @@
     <span class="k">return</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
 
-<div class="viewcode-block" id="length"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-length.html#brg.geometry.functions.length">[docs]</a><span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="length"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-length.html#brg.geometry.functions.length">[docs]</a><span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the length of a vector.</span>
 
 <span class="sd">    Parameters:</span>
@@ -268,7 +266,7 @@
     <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot_2d</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="length_sqrd"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-length_sqrd.html#brg.geometry.functions.length_sqrd">[docs]</a><span class="k">def</span> <span class="nf">length_sqrd</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="length_sqrd"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-length_sqrd.html#brg.geometry.functions.length_sqrd">[docs]</a><span class="k">def</span> <span class="nf">length_sqrd</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Computes the squared length of a vector.</span>
 
 <span class="sd">    Parameters:</span>
@@ -288,7 +286,7 @@
     <span class="k">return</span> <span class="n">dot_2d</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="distance"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-distance.html#brg.geometry.functions.distance">[docs]</a><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="distance"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-distance.html#brg.geometry.functions.distance">[docs]</a><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the distance bewteen a and b.</span>
 
 <span class="sd">    Parameters:</span>
@@ -311,7 +309,7 @@
     <span class="k">return</span> <span class="n">length_2d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="distance_sqrd"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-distance_sqrd.html#brg.geometry.functions.distance_sqrd">[docs]</a><span class="k">def</span> <span class="nf">distance_sqrd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="distance_sqrd"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-distance_sqrd.html#brg.geometry.functions.distance_sqrd">[docs]</a><span class="k">def</span> <span class="nf">distance_sqrd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the squared distance bewteen a and b.</span>
 
 <span class="sd">    Parameters:</span>
@@ -334,7 +332,7 @@
     <span class="k">return</span> <span class="n">length_sqrd_2d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="angle_smallest"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-angle_smallest.html#brg.geometry.functions.angle_smallest">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="angle_smallest"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-angle_smallest.html#brg.geometry.functions.angle_smallest">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the smallest angle between two vectors.</span>
 
 <span class="sd">    Parameters:</span>
@@ -361,7 +359,7 @@
     <span class="k">return</span> <span class="mf">180.</span> <span class="o">*</span> <span class="n">acos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">pi</span>
 
 
-<div class="viewcode-block" id="angles"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-angles.html#brg.geometry.functions.angles">[docs]</a><span class="k">def</span> <span class="nf">angles</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="angles"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-angles.html#brg.geometry.functions.angles">[docs]</a><span class="k">def</span> <span class="nf">angles</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the the 2 angles formed by a pair of vectors.</span>
 
 <span class="sd">    Parameters:</span>
@@ -385,7 +383,7 @@
     <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">a</span>
 
 
-<div class="viewcode-block" id="vector_component"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-vector_component.html#brg.geometry.functions.vector_component">[docs]</a><span class="k">def</span> <span class="nf">vector_component</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="vector_component"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-vector_component.html#brg.geometry.functions.vector_component">[docs]</a><span class="k">def</span> <span class="nf">vector_component</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the component of u in the direction of v.</span>
 
 <span class="sd">    Parameters:</span>
@@ -407,7 +405,7 @@
     <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="centroid"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-centroid.html#brg.geometry.functions.centroid">[docs]</a><span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="centroid"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-centroid.html#brg.geometry.functions.centroid">[docs]</a><span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the centroid of the sequence of points.</span>
 
 <span class="sd">    Warning:</span>
@@ -432,7 +430,7 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">axis</span> <span class="o">/</span> <span class="n">p</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">))]</span>
 
 
-<div class="viewcode-block" id="midpoint"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-midpoint.html#brg.geometry.functions.midpoint">[docs]</a><span class="k">def</span> <span class="nf">midpoint</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="midpoint"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-midpoint.html#brg.geometry.functions.midpoint">[docs]</a><span class="k">def</span> <span class="nf">midpoint</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the midpoint of two points.</span>
 
 <span class="sd">    Parameters:</span>
@@ -452,7 +450,7 @@
     <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="normal"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-normal.html#brg.geometry.functions.normal">[docs]</a><span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="normal"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-normal.html#brg.geometry.functions.normal">[docs]</a><span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the normal of a set of points by computing the average of the</span>
 <span class="sd">    normals of each pair of vectors formed by sets of three consecutive points.</span>
 
@@ -520,7 +518,7 @@
     <span class="k">return</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">a2</span><span class="p">,</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">a2</span>
 
 
-<div class="viewcode-block" id="center_of_mass"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-center_of_mass.html#brg.geometry.functions.center_of_mass">[docs]</a><span class="k">def</span> <span class="nf">center_of_mass</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+<div class="viewcode-block" id="center_of_mass"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-center_of_mass.html#brg.geometry.functions.center_of_mass">[docs]</a><span class="k">def</span> <span class="nf">center_of_mass</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the center of mass of a polygon.</span>
 
 <span class="sd">    The center of mass of a polygon is the centroid of the midpoints of the edges,</span>
@@ -573,7 +571,7 @@
     <span class="k">return</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span>
 
 
-<div class="viewcode-block" id="area"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-area.html#brg.geometry.functions.area">[docs]</a><span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+<div class="viewcode-block" id="area"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-area.html#brg.geometry.functions.area">[docs]</a><span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the area of a polygon.</span>
 
 <span class="sd">    Parameters:</span>
@@ -610,7 +608,7 @@
 
 
 <span class="c1"># https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/volume.html</span>
-<div class="viewcode-block" id="volume"><a class="viewcode-back" href="../../../pages/brg-geometry-functions-volume.html#brg.geometry.functions.volume">[docs]</a><span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">):</span>
+<div class="viewcode-block" id="volume"><a class="viewcode-back" href="../../../pages/api/brg-geometry-functions-volume.html#brg.geometry.functions.volume">[docs]</a><span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">):</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 

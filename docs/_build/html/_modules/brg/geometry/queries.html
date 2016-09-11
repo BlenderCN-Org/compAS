@@ -62,15 +62,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg">brg</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-rhino">brg_rhino</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-maya">brg_maya</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg-rhino">brg_rhino</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a><ul>
@@ -79,7 +77,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#folder-structure">Folder structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#documentation">Documentation</a></li>
 </ul>
 </li>
@@ -89,7 +86,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#further-reading">Further reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todo list</a></li>
 </ul>
 
         
@@ -164,7 +162,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="is_colinear"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_colinear.html#brg.geometry.queries.is_colinear">[docs]</a><span class="k">def</span> <span class="nf">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="is_colinear"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_colinear.html#brg.geometry.queries.is_colinear">[docs]</a><span class="k">def</span> <span class="nf">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if three points are colinear.</span>
 
 <span class="sd">    Parameters:</span>
@@ -178,7 +176,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
 
 </div>
-<div class="viewcode-block" id="is_coplanar"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_coplanar.html#brg.geometry.queries.is_coplanar">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="is_coplanar"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_coplanar.html#brg.geometry.queries.is_coplanar">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if the points are coplanar.</span>
 
 <span class="sd">    Compute the normal vector (cross product) of the vectors formed by the first</span>
@@ -204,7 +202,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_coplanar4"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_coplanar4.html#brg.geometry.queries.is_coplanar4">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar4</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<div class="viewcode-block" id="is_coplanar4"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_coplanar4.html#brg.geometry.queries.is_coplanar4">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar4</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check if 4 points are coplanar.</span>
 
 <span class="sd">    Four points are coplanar if the volume of the tetrahedron defined by them is</span>
@@ -226,7 +224,7 @@
     <span class="k">return</span> <span class="n">res</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="o">**</span><span class="mi">2</span>
 
 </div>
-<div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_convex.html#brg.geometry.queries.is_convex">[docs]</a><span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_convex.html#brg.geometry.queries.is_convex">[docs]</a><span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">center_of_mass</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">p0</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -242,7 +240,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_closed"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_closed.html#brg.geometry.queries.is_closed">[docs]</a><span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="is_closed"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_closed.html#brg.geometry.queries.is_closed">[docs]</a><span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if the points form a closed figure.</span>
 
 <span class="sd">    Parameters:</span>
@@ -256,7 +254,7 @@
     <span class="k">return</span> <span class="n">p_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">_p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
 </div>
-<div class="viewcode-block" id="is_point_on_plane"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_on_plane.html#brg.geometry.queries.is_point_on_plane">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+<div class="viewcode-block" id="is_point_on_plane"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_plane.html#brg.geometry.queries.is_point_on_plane">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if a point lies in a plane.</span>
 
 <span class="sd">    Parameters:</span>
@@ -266,7 +264,7 @@
     <span class="k">pass</span>
 
 </div>
-<div class="viewcode-block" id="is_point_on_line"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_on_line.html#brg.geometry.queries.is_point_on_line">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="is_point_on_line"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_line.html#brg.geometry.queries.is_point_on_line">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if a point (tp) is on line (p1, v1) within a tolerance (tol).</span>
 
 <span class="sd">    Parameters:</span>
@@ -320,7 +318,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 
-<div class="viewcode-block" id="is_point_on_segment"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_on_segment.html#brg.geometry.queries.is_point_on_segment">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
+<div class="viewcode-block" id="is_point_on_segment"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_segment.html#brg.geometry.queries.is_point_on_segment">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
@@ -333,7 +331,7 @@
     <span class="k">return</span> <span class="bp">False</span>
 
 </div>
-<div class="viewcode-block" id="is_point_on_polyline"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_on_polyline.html#brg.geometry.queries.is_point_on_polyline">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="is_point_on_polyline"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_polyline.html#brg.geometry.queries.is_point_on_polyline">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">clospt</span> <span class="o">=</span> <span class="n">closest_point_on_segment</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">tp</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">clospt</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
@@ -341,7 +339,7 @@
     <span class="k">return</span> <span class="bp">False</span>
 
 </div>
-<div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_point_in_triangle.html#brg.geometry.queries.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_in_triangle.html#brg.geometry.queries.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify if a point (p) is inside line of the triangle a,b,c.</span>
 
 <span class="sd">    Parameters:</span>
@@ -364,7 +362,7 @@
     <span class="k">return</span> <span class="bp">False</span>
 
 </div>
-<div class="viewcode-block" id="is_ray_intersecting_triangle"><a class="viewcode-back" href="../../../pages/brg-geometry-queries-is_ray_intersecting_triangle.html#brg.geometry.queries.is_ray_intersecting_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_ray_intersecting_triangle</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="is_ray_intersecting_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_ray_intersecting_triangle.html#brg.geometry.queries.is_ray_intersecting_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_ray_intersecting_triangle</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)</span>
 <span class="sd">    based on Moeller Trumbore intersection algorithm</span>

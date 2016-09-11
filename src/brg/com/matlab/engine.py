@@ -15,6 +15,13 @@ __status__     = 'Development'
 __date__       = '2016-08-29 22:00:58'
 
 
+__all__ = [
+    'MatlabEngineError',
+    'MatlabSessionError',
+    'MatlabEngine',
+    'MatlabSession']
+
+
 class MatlabEngineError(Exception):
     def __init__(self, message=None):
         if not message:

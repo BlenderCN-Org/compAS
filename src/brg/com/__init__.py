@@ -10,10 +10,10 @@ from brg.com import threedec
 
 
 __all__ = [
-    'ansys',
-    'blender',
+    # 'ansys',
+    # 'blender',
     'matlab',
     'rhino',
-    'sofystik',
+    # 'sofystik',
     'threedec',
 ]

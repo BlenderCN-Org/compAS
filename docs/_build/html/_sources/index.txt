@@ -16,10 +16,11 @@ Contents
 
    pages/gettingstarted
    pages/examples
-   API reference <pages/reference>
+   API reference <pages/api>
    Developers Guide <pages/developers>
    pages/license
    pages/biblio
+   pages/roadmap
    pages/todo
 
 

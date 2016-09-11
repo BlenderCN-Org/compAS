@@ -62,15 +62,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/reference.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg">brg</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-rhino">brg_rhino</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/reference.html#brg-maya">brg_maya</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg-rhino">brg_rhino</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a><ul>
@@ -79,7 +77,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#folder-structure">Folder structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#documentation">Documentation</a></li>
 </ul>
 </li>
@@ -89,7 +86,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#further-reading">Further reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todo list</a></li>
 </ul>
 
         
@@ -141,7 +139,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="add_vectorlist"><a class="viewcode-back" href="../../../pages/brg-geometry-arithmetic-add_vectorlist.html#brg.geometry.arithmetic.add_vectorlist">[docs]</a><span class="k">def</span> <span class="nf">add_vectorlist</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
+<div class="viewcode-block" id="add_vectorlist"><a class="viewcode-back" href="../../../pages/api/brg-geometry-arithmetic-add_vectorlist.html#brg.geometry.arithmetic.add_vectorlist">[docs]</a><span class="k">def</span> <span class="nf">add_vectorlist</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Adds multiple 3d vectors</span>
 
 <span class="sd">    Parameters:</span>
@@ -156,7 +154,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="add_vectors"><a class="viewcode-back" href="../../../pages/brg-geometry-arithmetic-add_vectors.html#brg.geometry.arithmetic.add_vectors">[docs]</a><span class="k">def</span> <span class="nf">add_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+<div class="viewcode-block" id="add_vectors"><a class="viewcode-back" href="../../../pages/api/brg-geometry-arithmetic-add_vectors.html#brg.geometry.arithmetic.add_vectors">[docs]</a><span class="k">def</span> <span class="nf">add_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Adds two 3d vectors</span>
 
 <span class="sd">    Parameters:</span>
@@ -169,7 +167,7 @@
     <span class="k">return</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">v2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
 </div>
-<div class="viewcode-block" id="subtract_vectors"><a class="viewcode-back" href="../../../pages/brg-geometry-arithmetic-subtract_vectors.html#brg.geometry.arithmetic.subtract_vectors">[docs]</a><span class="k">def</span> <span class="nf">subtract_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+<div class="viewcode-block" id="subtract_vectors"><a class="viewcode-back" href="../../../pages/api/brg-geometry-arithmetic-subtract_vectors.html#brg.geometry.arithmetic.subtract_vectors">[docs]</a><span class="k">def</span> <span class="nf">subtract_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Subtracts the second vector from the first.</span>
 
 <span class="sd">    Parameters:</span>

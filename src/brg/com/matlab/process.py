@@ -1,6 +1,20 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2016-08-29 23:34:28
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
+"""Matlab (sub)process.
+
+
+Examples:
+
+    >>> m = MatlabProcess()
+    >>> m.start()
+    >>> m.write_value('a', 37)
+    >>> m.run_command('tf = isprime(a);')
+    >>> m.read_workspace()
+    >>> m.stop()
+    >>> print m.ws_data
+
+"""
 
 
 from subprocess import Popen
@@ -17,6 +31,12 @@ __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
 __date__       = '2016-08-29 23:34:28'
+
+
+__all__ = [
+    'MatlabProcessError',
+    'MatlabProcess',
+]
 
 
 class MatlabProcessError(Exception):
