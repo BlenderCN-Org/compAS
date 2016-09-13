@@ -3,16 +3,14 @@ All functions assume the provided input is three-dimensional. A corresponding
 two-dimensional function can be accessed by appending ``_2d`` to the function
 name.
 
-Examples:
-
-    >>> from brg.geometry import cross
-    >>> from brg.geometry import cross_2d
-    >>> u = [1.0, 0.0, 0.0]
-    >>> v = [0.0, 1.0, 0.0]
-    >>> cross(u, v)
-    [0.0, 0.0, 1.0]
-    >>> cross_2d(u, v)
-    [0.0, 0.0, 1.0]
+>>> from brg.geometry import cross
+>>> from brg.geometry import cross_2d
+>>> u = [1.0, 0.0, 0.0]
+>>> v = [0.0, 1.0, 0.0]
+>>> cross(u, v)
+[0.0, 0.0, 1.0]
+>>> cross_2d(u, v)
+[0.0, 0.0, 1.0]
 
 """
 
@@ -83,14 +81,14 @@ def cross(u, v):
     Returns:
         list: The cross product of the two vectors.
 
-    The components of the cross product of two vectors :math:`\mathbf{u}` and
-    :math:`\mathbf{v}` can be computed as the *minors* of the following matrix:
+    The xyz components of the cross product of two vectors :math:`\mathbf{u}`
+    and :math:`\mathbf{v}` can be computed as the *minors* of the following matrix:
 
     .. math::
        :nowrap:
 
         \\begin{bmatrix}
-        i & j & k \\\\
+        x & y & z \\\\
         u_{x} & u_{y} & u_{z} \\\\
         v_{x} & v_{y} & v_{z}
         \end{bmatrix}
@@ -108,9 +106,10 @@ def cross(u, v):
         u_{x} * v_{y} - u_{y} * v_{x}
         \end{bmatrix}
 
-    Examples:
-        >>> cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
-        [0.0, 0.0, 1.0]
+
+    >>> cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+    [0.0, 0.0, 1.0]
+
     """
     return [u[1] * v[2] - u[2] * v[1],
             u[2] * v[0] - u[0] * v[2],

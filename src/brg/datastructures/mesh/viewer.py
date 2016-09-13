@@ -64,10 +64,10 @@ class MeshViewer(Viewer):
             * s: subdivide using quad subdivision
         """
         if key == 'u':
-            self.mesh.unify_cycle_directions()
+            self.mesh.unify_cycles()
             return
         if key == 'f':
-            self.mesh.flip_cycle_directions()
+            self.mesh.flip_cycles()
             return
         if key == 's':
             self.mesh.subdivide('quad')

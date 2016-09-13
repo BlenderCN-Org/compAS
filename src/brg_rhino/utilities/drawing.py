@@ -260,12 +260,18 @@ def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
         geo.Add(pcurve)
         p = len(points)
         if p == 4:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]), Point3d(*points[1]), Point3d(*points[2]), TOL)
+            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
+                                               Point3d(*points[1]),
+                                               Point3d(*points[2]),
+                                               TOL)
         elif p == 5:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]), Point3d(*points[1]), Point3d(*points[2]), Point3d(*points[3]), TOL)
+            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
+                                               Point3d(*points[1]),
+                                               Point3d(*points[2]),
+                                               Point3d(*points[3]),
+                                               TOL)
         else:
             brep = Brep.CreatePatch(geo, u, v, TOL)
-            # brep = Brep.CreatePatch(geo, srf, u, v, trim, tangency, spacing, flex, pull, fix, TOL)
         if not brep:
             continue
         guid = add_brep(brep)

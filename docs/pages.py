@@ -1,10 +1,5 @@
 import inspect
 
-# 0: brg.com.__name__
-# 1: brg.com.__doc__
-#
-# append: subpackages section
-# append: module sections
 PACAKGE_PAGE = """
 ********************************************************************************
 {0}
@@ -24,8 +19,6 @@ SUBPACKAGES_SECTION = """
 
 """
 
-# 0: brg.com.matlab.engine.__name__
-# 1: brg.com.matlab.engine.__doc__
 SUBMODULE_SECTION = """
 
 {0}
@@ -38,13 +31,21 @@ SUBMODULE_SECTION = """
 
 """
 
-# 0: brg.geometry.functions.cross.__name__
 FUNCTION_PAGE = """
 ********************************************************************************
 {0}
 ********************************************************************************
 
 .. autofunction:: {1}
+
+"""
+
+CLASS_PAGE = """
+********************************************************************************
+{0}
+********************************************************************************
+
+.. autoclass:: {1}
 
 """
 
@@ -55,15 +56,10 @@ def module_doc(p):
     attrs    = [getattr(p, n) for n in names]
     modules  = [a for a in attrs if inspect.ismodule(a)]
     packages = [m for m in modules if m.__file__[-12:] == '__init__.pyc' or m.__file__[-11:] == '__init__.py']
-    print packages
-    # create a package.rst file
-    # and write the package header
     with open(filepath, 'w+') as fp:
         line = PACAKGE_PAGE.format(p.__name__, p.__doc__)
         fp.write(line)
     if packages:
-        # append a subpackages section to the package file
-        # add an entry to the toctree per subpackage
         with open(filepath, 'a') as fp:
             fp.write(SUBPACKAGES_SECTION)
             for m in packages:
@@ -72,9 +68,6 @@ def module_doc(p):
     for m in modules:
         if m in packages:
             continue
-        # for every module that is not a package
-        # append a module section
-        # add an entry to the toctree per function in the module
         funcs = None
         with open(filepath, 'a') as fp:
             fp.write(SUBMODULE_SECTION.format(m.__name__, m.__doc__))
@@ -93,7 +86,7 @@ def module_doc(p):
             fp.write('\n')
         if clsss:
             for c in clsss:
-                function_doc(c)
+                class_doc(c)
         if funcs:
             for f in funcs:
                 function_doc(f)
@@ -101,12 +94,79 @@ def module_doc(p):
         module_doc(m)
 
 
+def class_doc(c):
+    def isclassattribute(n, o):
+        if (not inspect.ismethod(o) and
+                not inspect.isbuiltin(o) and
+                not inspect.ismethoddescriptor(o) and
+                not inspect.isdatadescriptor(o) and
+                not inspect.isgetsetdescriptor(o) and
+                not inspect.ismemberdescriptor(o) and
+                not n.endswith('__')):
+            return True
+        return False
+    def isspecialmethod(n, o):
+        if (inspect.ismethod(o) and
+                n.endswith('__') and
+                n != '__init__'):
+            return True
+        return False
+    def isclassmethod(n, o, c):
+        if (inspect.ismethod(o) and
+                not n.endswith('__') and
+                type(c.__dict__[n]) == classmethod):
+            return True
+        return False
+    def isnormalmethod(n, o, c):
+        if (inspect.ismethod(o) and
+                not n.endswith('__') and
+                not type(c.__dict__[n]) == classmethod):
+            return True
+        return False
+    def isdescriptor(n, o):
+        if (inspect.isdatadescriptor(o) and
+            not n.endswith('__') and
+            n != 'args' and
+            n != 'message'):
+            return True
+        return False
+    members = inspect.getmembers(c)
+    classattributes = [n for n, o in members if isclassattribute(n, o)]
+    classmethods = [n for n, o in members if isclassmethod(n, o, c)]
+    specialmethods = [n for n, o in members if isspecialmethod(n, o)]
+    normalmethods = [n for n, o in members if isnormalmethod(n, o, c)]
+    descriptors = [n for n, o in members if isdescriptor(n, o)]
+    name = c.__module__ + '.' + c.__name__
+    filepath = 'pages/api/' + name.replace('.', '-') + '.rst'
+    with open(filepath, 'w+') as fp:
+        fp.write(CLASS_PAGE.format(c.__name__, name))
+        # class attributes
+        fp.write('   .. rubric:: **Class attributes**\n\n')
+        for attrname in classattributes:
+            fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, attrname))
+        # class methods
+        fp.write('   .. rubric:: **Class methods**\n\n')
+        for methodname in classmethods:
+            fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+        # descriptors
+        fp.write('   .. rubric:: **Descriptors**\n\n')
+        for descname in descriptors:
+            fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, descname))
+        # special methods
+        fp.write('   .. rubric:: **Special methods**\n\n')
+        for methodname in specialmethods:
+            fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+        # normal methods
+        fp.write('   .. rubric:: **Methods**\n\n')
+        for methodname in normalmethods:
+            fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+
+
 def function_doc(f):
     name = f.__module__ + '.' + f.__name__
     filepath = 'pages/api/' + name.replace('.', '-') + '.rst'
     with open(filepath, 'w+') as fp:
         fp.write(FUNCTION_PAGE.format(f.__name__, name))
-    return
 
 
 # ==============================================================================

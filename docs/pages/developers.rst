@@ -4,6 +4,11 @@
 Developers Guide
 ********************************************************************************
 
+.. note::
+    
+    Add something about data storage: json in combination with from/to functions, not pickle
+
+
 
 How to contribute
 ================================================================================
@@ -11,19 +16,11 @@ How to contribute
 The BRG framework is hosted on bitbucket as a public repository.
 Therefore any bitbucket user may create a branch and submit a pull request.
 
-.. todo::
-    
-    Explain how to do this.
-
 
 Coding standards
 ================================================================================
 
 The BRG framework is coded according to the `PEP8 -- Style Guide for Python Code <https://www.python.org/dev/peps/pep-0008/>`_.
-
-.. todo::
-
-    Provide brief overview of what that means.
 
 
 Naming conventions
@@ -37,10 +34,6 @@ Naming conventions
 - boolean variables: ``is_...``, ``has_...``, ``can_...``
 - boolean valued functions or methods: xxx
 - ...
-
-.. todo::
-    
-    Expand and provide examples.
 
 
 Packages and Subpackages
@@ -57,18 +50,11 @@ Templates and Snippets
 The BRG framework contains many templates and snippets for Eclipse, Sublime, and Atom.
 they can be found in the templates folder.
 
-.. todo::
-
-    Provide a list of templates and snippets.
-
-.. todo::
-
-    Provide instructions on how to use them.
-
 
 Documentation
 ================================================================================
 
+- Docstrings!
 - Documentation generated with Sphinx.
 - Google style docstring support through the napoleon package.
 - Package and module documentation pages generated with custom script
@@ -78,25 +64,27 @@ Documentation
 
     import inspect
 
-
-    def package_doc(p):
-        with open('pages/' + p.__name__.replace('.', '-') + '.rst', 'w+') as fp:
-            fp.write("""
+    PACAKGE_PAGE = """
     ********************************************************************************
     {0}
     ********************************************************************************
 
     {1}
 
-    """.format(p.__name__, p.__doc__))
-            try:
-                p_all = p.__all__
-            except:
-                p_all = []
-            for name in p_all:
-                m = getattr(p, name)
-                if inspect.ismodule(m):
-                    fp.write("""
+    """
+
+    SUBPACKAGES_SECTION = """
+
+    .. rubric:: **Subpackages**
+
+    .. toctree::
+       :glob:
+       :maxdepth: 3
+
+    """
+
+    SUBMODULE_SECTION = """
+
     {0}
     ================================================================================
 
@@ -105,37 +93,143 @@ Documentation
     .. toctree::
        :glob:
 
-    """.format(m.__name__, m.__doc__))
-                    try:
-                        m_all = m.__all__
-                    except:
-                        m_all = []
-                    for name in m_all:
-                        f = getattr(m, name)
-                        if inspect.isfunction(f):
-                            name = f.__module__ + '.' + f.__name__
-                            fp.write('   ' + name.replace('.', '-') + '\n')
-                    fp.write('\n')
+    """
 
-
-    def module_doc(m):
-        try:
-            m_all = m.__all__
-        except:
-            m_all = []
-        for name in m_all:
-            o = getattr(m, name)
-            if inspect.isfunction(o):
-                name = o.__module__ + '.' + o.__name__
-                with open('pages/' + name.replace('.', '-') + '.rst', 'w+') as fp:
-                    fp.write("""
+    FUNCTION_PAGE = """
     ********************************************************************************
     {0}
     ********************************************************************************
 
     .. autofunction:: {1}
 
-    """.format(o.__name__, name))
+    """
+
+    CLASS_PAGE = """
+    ********************************************************************************
+    {0}
+    ********************************************************************************
+
+    .. autoclass:: {1}
+
+    """
+
+
+    def module_doc(p):
+        filepath = 'pages/api/' + p.__name__.replace('.', '-') + '.rst'
+        names    = getattr(p, '__all__', [])
+        attrs    = [getattr(p, n) for n in names]
+        modules  = [a for a in attrs if inspect.ismodule(a)]
+        packages = [m for m in modules if m.__file__[-12:] == '__init__.pyc' or m.__file__[-11:] == '__init__.py']
+        with open(filepath, 'w+') as fp:
+            line = PACAKGE_PAGE.format(p.__name__, p.__doc__)
+            fp.write(line)
+        if packages:
+            with open(filepath, 'a') as fp:
+                fp.write(SUBPACKAGES_SECTION)
+                for m in packages:
+                    line = '   ' + m.__name__.replace('.', '-') + '\n'
+                    fp.write(line)
+        for m in modules:
+            if m in packages:
+                continue
+            funcs = None
+            with open(filepath, 'a') as fp:
+                fp.write(SUBMODULE_SECTION.format(m.__name__, m.__doc__))
+                names = getattr(m, '__all__', [])
+                attrs = [getattr(m, n) for n in names]
+                funcs = [a for a in attrs if inspect.isfunction(a)]
+                clsss = [a for a in attrs if inspect.isclass(a)]
+                for c in clsss:
+                    name = c.__module__ + '.' + c.__name__
+                    line = '   ' + name.replace('.', '-') + '\n'
+                    fp.write(line)
+                for f in funcs:
+                    name = f.__module__ + '.' + f.__name__
+                    line = '   ' + name.replace('.', '-') + '\n'
+                    fp.write(line)
+                fp.write('\n')
+            if clsss:
+                for c in clsss:
+                    class_doc(c)
+            if funcs:
+                for f in funcs:
+                    function_doc(f)
+        for m in packages:
+            module_doc(m)
+
+
+    def class_doc(c):
+        def isclassattribute(n, o):
+            if (not inspect.ismethod(o) and
+                    not inspect.isbuiltin(o) and
+                    not inspect.ismethoddescriptor(o) and
+                    not inspect.isdatadescriptor(o) and
+                    not inspect.isgetsetdescriptor(o) and
+                    not inspect.ismemberdescriptor(o) and
+                    not n.endswith('__')):
+                return True
+            return False
+        def isspecialmethod(n, o):
+            if (inspect.ismethod(o) and
+                    n.endswith('__') and
+                    n != '__init__'):
+                return True
+            return False
+        def isclassmethod(n, o, c):
+            if (inspect.ismethod(o) and
+                    not n.endswith('__') and
+                    type(c.__dict__[n]) == classmethod):
+                return True
+            return False
+        def isnormalmethod(n, o, c):
+            if (inspect.ismethod(o) and
+                    not n.endswith('__') and
+                    not type(c.__dict__[n]) == classmethod):
+                return True
+            return False
+        def isdescriptor(n, o):
+            if (inspect.isdatadescriptor(o) and
+                not n.endswith('__') and
+                n != 'args' and
+                n != 'message'):
+                return True
+            return False
+        classattributes = [n for n, o in members if isclassattribute(n, o)]
+        classmethods    = [n for n, o in members if isclassmethod(n, o, c)]
+        specialmethods  = [n for n, o in members if isspecialmethod(n, o)]
+        normalmethods   = [n for n, o in members if isnormalmethod(n, o, c)]
+        descriptors     = [n for n, o in members if isdescriptor(n, o)]
+        name            = c.__module__ + '.' + c.__name__
+        filepath        = 'pages/api/' + name.replace('.', '-') + '.rst'
+        with open(filepath, 'w+') as fp:
+            fp.write(CLASS_PAGE.format(c.__name__, name))
+            # class attributes
+            fp.write('   .. rubric:: **Class attributes**\n\n')
+            for attrname in classattributes:
+                fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, attrname))
+            # class methods
+            fp.write('   .. rubric:: **Class methods**\n\n')
+            for methodname in classmethods:
+                fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+            # descriptors
+            fp.write('   .. rubric:: **Descriptors**\n\n')
+            for descname in descriptors:
+                fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, descname))
+            # special methods
+            fp.write('   .. rubric:: **Special methods**\n\n')
+            for methodname in specialmethods:
+                fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+            # normal methods
+            fp.write('   .. rubric:: **Methods**\n\n')
+            for methodname in normalmethods:
+                fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+
+
+    def function_doc(f):
+        name = f.__module__ + '.' + f.__name__
+        filepath = 'pages/api/' + name.replace('.', '-') + '.rst'
+        with open(filepath, 'w+') as fp:
+            fp.write(FUNCTION_PAGE.format(f.__name__, name))
 
 
     # ==============================================================================
@@ -148,13 +242,4 @@ Documentation
 
         for name in brg.__all__:
             p = getattr(brg, name)
-            package_doc(p)
-            if not hasattr(p, '__all__'):
-                print 'package {0} has no __all__'.format(p)
-                continue
-            for name in p.__all__:
-                m = getattr(p, name)
-                if inspect.ismodule(m):
-                    if not hasattr(m, '__all__'):
-                        print 'module {0} has no __all__'.format(m)
-                    module_doc(m)
+            module_doc(p)

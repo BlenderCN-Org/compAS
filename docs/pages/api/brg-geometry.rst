@@ -29,16 +29,14 @@ All functions assume the provided input is three-dimensional. A corresponding
 two-dimensional function can be accessed by appending ``_2d`` to the function
 name.
 
-Examples:
-
-    >>> from brg.geometry import cross
-    >>> from brg.geometry import cross_2d
-    >>> u = [1.0, 0.0, 0.0]
-    >>> v = [0.0, 1.0, 0.0]
-    >>> cross(u, v)
-    [0.0, 0.0, 1.0]
-    >>> cross_2d(u, v)
-    [0.0, 0.0, 1.0]
+>>> from brg.geometry import cross
+>>> from brg.geometry import cross_2d
+>>> u = [1.0, 0.0, 0.0]
+>>> v = [0.0, 1.0, 0.0]
+>>> cross(u, v)
+[0.0, 0.0, 1.0]
+>>> cross_2d(u, v)
+[0.0, 0.0, 1.0]
 
 
 

@@ -573,8 +573,9 @@ if __name__ == '__main__':
     # | 3----|-2----|-9----|-13
     # 0------1------8------12
 
-    from brg.viewers import VolMeshViewer
-    from brg.viewers import NetworkViewer
+    import brg
+    from viewer import VolMeshViewer
+    # from brg.viewers import NetworkViewer
 
     # c1 = [[0, 3, 2, 1],
     #       [0, 1, 7, 6],
@@ -640,7 +641,7 @@ if __name__ == '__main__':
     #     cell = mesh.cell_mesh(ckey)
     #     print cell
 
-    mesh = VolMesh.from_json('_data/boxes.json')
+    mesh = VolMesh.from_json(brg.get_data('boxes.json'))
 
     print mesh.name
 

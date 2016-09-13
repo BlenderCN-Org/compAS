@@ -67,7 +67,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
@@ -89,7 +94,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo list</a></li>
 </ul>
 
         
@@ -148,11 +152,11 @@ The cross product of the two vectors.</p>
 </tr>
 </tbody>
 </table>
-<p>The components of the cross product of two vectors <span class="math">\(\mathbf{u}\)</span> and
-<span class="math">\(\mathbf{v}\)</span> can be computed as the <em>minors</em> of the following matrix:</p>
+<p>The xyz components of the cross product of two vectors <span class="math">\(\mathbf{u}\)</span>
+and <span class="math">\(\mathbf{v}\)</span> can be computed as the <em>minors</em> of the following matrix:</p>
 <div class="math">
 \[ \begin{bmatrix}
- i & j & k \\
+ x & y & z \\
  u_{x} & u_{y} & u_{z} \\
  v_{x} & v_{y} & v_{z}
  \end{bmatrix}\]</div><p>Therefore, the cross product can be written as:</p>
@@ -163,8 +167,7 @@ The cross product of the two vectors.</p>
  u_{y} * v_{z} - u_{z} * v_{y} \\
  u_{z} * v_{x} - u_{x} * v_{z} \\
  u_{x} * v_{y} - u_{y} * v_{x}
- \end{bmatrix}\]</div><p class="rubric">Examples</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+ \end{bmatrix}\]</div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
 <span class="go">[0.0, 0.0, 1.0]</span>
 </pre></div>
 </div>

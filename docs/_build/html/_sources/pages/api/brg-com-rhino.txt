@@ -3,5 +3,5 @@
 brg.com.rhino
 ********************************************************************************
 
-None
+Communication with Rhino through the COM interface.
 

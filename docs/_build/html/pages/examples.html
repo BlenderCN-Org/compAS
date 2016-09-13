@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="brg_framework 0.1 documentation" href="../index.html"/>
-        <link rel="next" title="Reference Guide" href="reference.html"/>
+        <link rel="next" title="API Reference" href="api.html"/>
         <link rel="prev" title="Getting started" href="gettingstarted.html"/> 
 
   
@@ -63,25 +63,37 @@
 <li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#setup">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#what-s-in-the-box">What&#8217;s in the box</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#first-steps">First steps</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference.html#brg">brg</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference.html#brg-rhino">brg_rhino</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference.html#brg-maya">brg_maya</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robotic-fabrication">Robotic Fabrication</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="biblio.html">Bibliography</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="biblio.html#references">References</a></li>
 <li class="toctree-l2"><a class="reference internal" href="biblio.html#further-reading">Further reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="todo.html">Todolist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="todo.html">Todo list</a></li>
 </ul>
 
         
@@ -116,14 +128,62 @@
             
   <div class="section" id="examples">
 <span id="id1"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<p>Stuff to add:</p>
+<div class="section" id="architectural-geometry">
+<h2>Architectural Geometry<a class="headerlink" href="#architectural-geometry" title="Permalink to this headline">¶</a></h2>
+<p>...</p>
+</div>
+<div class="section" id="structural-design">
+<h2>Structural Design<a class="headerlink" href="#structural-design" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="truss">
+<h3>Truss<a class="headerlink" href="#truss" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>use brg in scripts</li>
-<li>use brg wrappers to build apps for CAD environments</li>
-<li>use the web api</li>
-<li>use the web viewers</li>
+<li>form force diagrams</li>
+<li>loadpath optimisation</li>
 <li>...</li>
 </ul>
+</div>
+<div class="section" id="cablenet">
+<h3>Cablenet<a class="headerlink" href="#cablenet" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><dl class="first docutils">
+<dt>compute cablenet equilibrium</dt>
+<dd><ul class="first last simple">
+<li>force density</li>
+<li>dynamic relaxation</li>
+<li>...</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">compute mesh equilibrium</p>
+</li>
+<li><p class="first">compute network equilibrium using volmesh</p>
+</li>
+</ul>
+</div>
+<div class="section" id="spline-structure">
+<h3>Spline Structure<a class="headerlink" href="#spline-structure" title="Permalink to this headline">¶</a></h3>
+<p>...</p>
+</div>
+<div class="section" id="thrust-network">
+<h3>Thrust Network<a class="headerlink" href="#thrust-network" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>forward design (TNA)</li>
+<li>backward design (BestFit)</li>
+</ul>
+</div>
+<div class="section" id="discrete-element-assembly">
+<h3>Discrete Element Assembly<a class="headerlink" href="#discrete-element-assembly" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>datastructure</li>
+<li></li>
+</ul>
+</div>
+</div>
+<div class="section" id="robotic-fabrication">
+<h2>Robotic Fabrication<a class="headerlink" href="#robotic-fabrication" title="Permalink to this headline">¶</a></h2>
+<p>...</p>
+</div>
 </div>
 
 
@@ -132,7 +192,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="reference.html" class="btn btn-neutral float-right" title="Reference Guide"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="gettingstarted.html" class="btn btn-neutral" title="Getting started"><span class="fa fa-arrow-circle-left"></span> Previous</a>

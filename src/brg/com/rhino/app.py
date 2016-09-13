@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2016-08-29 13:31:36
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
+"""Communication with Rhino through the COM interface."""
 
 import time
 
@@ -13,8 +14,12 @@ __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = '2016-08-29 13:31:36'
+
+
+__all__ = [
+    'RhinoApp'
+]
 
 
 class RhinoApp(object):

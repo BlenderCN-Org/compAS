@@ -30,7 +30,7 @@
   
     <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
-        <link rel="next" title="brg.datastructures.cellnet" href="brg-datastructures-cellnet.html"/>
+        <link rel="next" title="brg.datastructures.mesh" href="brg-datastructures-mesh.html"/>
         <link rel="prev" title="brg.com.threedec" href="brg-com-threedec.html"/> 
 
   
@@ -67,7 +67,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
@@ -89,7 +94,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo list</a></li>
 </ul>
 
         
@@ -126,15 +130,26 @@
             
   <div class="section" id="brg-datastructures">
 <h1>brg.datastructures<a class="headerlink" href="#brg-datastructures" title="Permalink to this headline">¶</a></h1>
-<p>None</p>
+<p>The datastructures.</p>
+<p>The BRG framework currently provides three types of datastructures:</p>
+<ul class="simple">
+<li>the mesh, implemented as a half-edge datastructure;</li>
+<li>the network, implemented as a graph; and</li>
+<li>the volumetric mesh, implemented as a half-plane datastructure.</li>
+</ul>
 <p class="rubric"><strong>Subpackages</strong></p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="brg-datastructures-cellnet.html">brg.datastructures.cellnet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brg-datastructures-mesh.html">brg.datastructures.mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-datastructures-mesh.html">brg.datastructures.mesh</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brg-datastructures-mesh-quad.html">brg.datastructures.mesh.quad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brg-datastructures-mesh-tri.html">brg.datastructures.mesh.tri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brg-datastructures-mesh.html#brg-datastructures-mesh-mesh">brg.datastructures.mesh.mesh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="brg-datastructures-mesh-mesh-Mesh.html">Mesh</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="brg-datastructures-network.html">brg.datastructures.network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brg-datastructures-spatial.html">brg.datastructures.spatial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brg-datastructures-tree.html">brg.datastructures.tree</a></li>
 <li class="toctree-l1"><a class="reference internal" href="brg-datastructures-volmesh.html">brg.datastructures.volmesh</a></li>
 </ul>
 </div>
@@ -146,7 +161,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="brg-datastructures-cellnet.html" class="btn btn-neutral float-right" title="brg.datastructures.cellnet"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="brg-datastructures-mesh.html" class="btn btn-neutral float-right" title="brg.datastructures.mesh"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="brg-com-threedec.html" class="btn btn-neutral" title="brg.com.threedec"><span class="fa fa-arrow-circle-left"></span> Previous</a>

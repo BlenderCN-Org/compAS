@@ -1,4 +1,5 @@
 syntax: regexp
+data
 ^\.project$
 ^\.pydevproject$
 \.in$

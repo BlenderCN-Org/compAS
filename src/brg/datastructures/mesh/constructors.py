@@ -2,7 +2,6 @@ import os
 import json
 
 from brg.files.obj import OBJ
-from brg.utilities.maps import geometric_key
 
 
 __author__     = ['Tom Van Mele', ]
@@ -23,8 +22,9 @@ __all__ = [
 ]
 
 
-def mesh_from_vertices_and_faces(cls, vertices, faces):
-    mesh = cls()
+def mesh_from_vertices_and_faces(cls, vertices, faces, dva=None, dfa=None, dea=None, **kwargs):
+    mesh = cls(dva=dva, dfa=dfa, dea=dea)
+    mesh.attributes.update(kwargs)
     for x, y, z in vertices:
         mesh.add_vertex(x=x, y=y, z=z)
     for face in faces:
@@ -55,16 +55,16 @@ def mesh_from_vertices_and_faces(cls, vertices, faces):
 #     return mesh
 
 
-def mesh_from_obj(cls, filepath, **kwargs):
+def mesh_from_obj(cls, filepath, dva=None, dfa=None, dea=None, **kwargs):
     """Initialise a mesh from the data described in an obj file.
 
     Parameters:
         filepath (str): The path to the obj file.
 
     Returns:
-        ABCMesh: Mesh of type cls.
+        Mesh: A Mesh of type cls.
     """
-    mesh = cls()
+    mesh = cls(dva=dva, dfa=dfa, dea=dea)
     mesh.attributes.update(kwargs)
     obj = OBJ(filepath)
     vertices = obj.parser.vertices
@@ -76,23 +76,24 @@ def mesh_from_obj(cls, filepath, **kwargs):
     return mesh
 
 
-def mesh_from_dxf(cls, filepath):
+def mesh_from_dxf(cls, filepath, dva=None, dfa=None, dea=None):
     raise NotImplementedError
 
 
-def mesh_from_stl(cls, filepath):
+def mesh_from_stl(cls, filepath, dva=None, dfa=None, dea=None):
     raise NotImplementedError
 
 
-def mesh_from_json(cls, filepath, **kwargs):
+def mesh_from_json(cls, filepath, dva=None, dfa=None, dea=None, **kwargs):
     data = None
     with open(filepath, 'rb') as fp:
         data = json.load(fp)
-    mesh = cls.from_data(data)
+    mesh = cls.from_data(data, dva=dva, dfa=dfa, dea=dea)
+    mesh.attributes.update(kwargs)
     return mesh
 
 
-def mesh_from_data(cls, data):
+def mesh_from_data(cls, data, dva=None, dfa=None, dea=None, **kwargs):
     """Construct a mesh from actual mesh data.
 
     This function should be used in combination with the data obtained from
@@ -104,7 +105,8 @@ def mesh_from_data(cls, data):
     Returns:
         Mesh: A Mesh of type cls.
     """
-    mesh = cls()
+    mesh = cls(dva=dva, dfa=dfa, dea=dea)
+    mesh.attributes.update(kwargs)
     mesh.data = data
     return mesh
 
@@ -117,15 +119,15 @@ def mesh_from_boundary(cls,
                        holes=None,
                        spacing=1.0,
                        do_smooth=False,
+                       dva=None,
+                       dfa=None,
+                       dea=None,
                        **kwargs):
     from brg.utilities.scriptserver import ScriptServer
     scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
     server = ScriptServer(scriptdir)
     config = {
         'do_smooth': do_smooth,
-        'dva': cls.default_vertex_attributes,
-        'dea': cls.default_edge_attributes,
-        'dfa': cls.default_face_attributes
     }
     config.update(kwargs)
     res = server.mesh_from_boundary(
@@ -134,28 +136,24 @@ def mesh_from_boundary(cls,
         spacing=spacing,
         config=config,
     )
-    mesh = cls.from_data(res['data'])
-    return mesh
+    return cls.from_data(res['data'], dva=dva, dfa=dfa, dea=dea, **kwargs)
 
 
 # differentiate between config and **kwargs
 def mesh_from_points(cls,
                      points,
                      do_smooth=False,
+                     dva=None, dfa=None, dea=None,
                      **kwargs):
     from brg.utilities.scriptserver import ScriptServer
     scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
     server = ScriptServer(scriptdir)
     config = {
         'do_smooth': do_smooth,
-        'dva': cls.default_vertex_attributes,
-        'dea': cls.default_edge_attributes,
-        'dfa': cls.default_face_attributes
     }
     config.update(kwargs)
     res = server.mesh_from_points(
         points=points,
         config=config
     )
-    mesh = cls.from_data(res['data'])
-    return mesh
+    return cls.from_data(res['data'], dva=dva, dfa=dfa, dea=dea, **kwargs)

@@ -1,3 +1,0 @@
-# geodesic distance
-# shortest path
-# ...

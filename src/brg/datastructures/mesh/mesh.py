@@ -1,10 +1,15 @@
+"""The (poly) mesh class.
+
+
+"""
+
 import json
 
 from copy import deepcopy
 
 from brg.geometry import length
+from brg.geometry import distance
 from brg.geometry import cross
-from brg.geometry import normal
 from brg.geometry import normal2
 from brg.geometry import centroid
 from brg.geometry import center_of_mass
@@ -37,48 +42,12 @@ __status__     = 'Development'
 __date__       = 'Oct 10, 2014'
 
 
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
-# Base mesh implementation
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
+__all__ = [
+    'Mesh',
+]
 
 
-class _Mesh(object):
-    default_vertex_attributes = {}
-    default_face_attributes = {}
-    default_edge_attributes = {}
-
-    def __init__(self):
-        self._fkey = 0
-        self._vkey = 0
-        self.vertex = {}
-        self.face = {}
-        self.halfedge = {}
-        self.edge = {}
-        self.dualdata = None
-
-    def __contains__(self, key):
-        # if key in mesh: ...
-        return key in self.vertex
-
-    def __len__(self):
-        # len(mesh)
-        return len(self.vertex)
-
-    def __iter__(self):
-        # for key in mesh: ...
-        return iter(self.vertex)
-
-    def __getitem__(self, key):
-        # mesh[key]
-        return self.vertex[key]
-
-    def __str__(self):
-        """"""
-        return """
+TOSTRING = """
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 mesh summary
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -99,19 +68,147 @@ mesh summary
 - is_quadmesh: {11}
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\n"""
 
-""".format(len(self.vertex),
-           len(self.face),
-           len(self.edges()),
-           (0 if not self.vertex else min(self.vertex_degree(key) for key in self.vertex)),
-           (0 if not self.vertex else max(self.vertex_degree(key) for key in self.vertex)),
-           (0 if not self.face else min(len(self.face_vertices(fkey)) for fkey in self.face)),
-           (0 if not self.face else max(len(self.face_vertices(fkey)) for fkey in self.face)),
-           ('True' if self.is_valid() else 'False'),
-           ('True' if self.is_connected() else 'False'),
-           ('True' if self.is_manifold() else 'False'),
-           ('True' if self.is_trimesh() else 'False'),
-           ('True' if self.is_quadmesh() else 'False'),)
+
+class Mesh(object):
+    """Class representing a mesh.
+
+    The datastructure of the mesh is implemented as a half-edge.
+
+    Parameters:
+        vertices (list) : Optional. A sequence of vertices to add to the mesh.
+            Each vertex should be a dictionary of vertex attributes.
+        faces (list) : Optional. A sequence of faces to add to the mesh.
+            Each face should be a list of vertex keys.
+        dva (dict) : Optional. A dictionary of default vertex attributes.
+        dfa (dict) : Optional. A dictionary of default face attributes.
+        dea (dict) : Optional. A dictionary of default edge attributes.
+        kwargs (dict) : The remaining named parameters. These are added to the attributes
+            dictionary of the instance.
+
+    Attributes:
+        vertex (dict) : The vertex dictionary.
+            With every key in the dictionary corresponds a dictionary of attributes.
+        face (dict) : The face dictionary.
+            With every key in the dictionary corresponds a dictionary of half-edges.
+        halfedge (dict) : The half-edge dictionary.
+            Every key in the dictionary corresponds to a vertex of the mesh.
+            With every key corresponds a dictionary of neighbours pointing to face keys.
+        edge (dict) : The edge dictionary.
+            Every key in the dictionary corresponds to a vertex.
+            With every key corresponds a dictionary of neighbours pointing to attribute dictionaries.
+        attributes (dict) : General mesh attributes.
+        dualdata (Mesh, optional) : A ``Mesh`` object for keeping track of face attributes
+            by storing them on dual vertices.
+
+    >>> mesh = Mesh()
+    >>> mesh.add_vertex(x=0.0, y=0.0, z=0.0)
+    '0'
+    >>> mesh.add_vertex(x=1.0, y=0.0, z=0.0)
+    '1'
+    >>> mesh.add_vertex(x=0.5, y=1.0, z=0.0)
+    '2'
+    >>> mesh.add_face([0, 1, 2])
+    '0'
+    >>> mesh.vertex['0']
+    {'y': 0.0, 'x': 0.0, 'z': 0.0}
+    >>> mesh.face['0']
+    {'0': '1', '1': '2', '2': '0'}
+    >>> mesh.halfedge['0']['1']
+    '0'
+
+    """
+
+    from_vertices_and_faces = classmethod(mesh_from_vertices_and_faces)
+    from_data               = classmethod(mesh_from_data)
+    from_obj                = classmethod(mesh_from_obj)
+    from_json               = classmethod(mesh_from_json)
+    from_boundary           = classmethod(mesh_from_boundary)
+    from_points             = classmethod(mesh_from_points)
+
+    unify_cycles = mesh_unify_cycle_directions
+    flip_cycles = mesh_flip_cycle_directions
+
+    def __init__(self, vertices=None, faces=None, dva=None, dfa=None, dea=None, **kwargs):
+        self._fkey = 0
+        self._vkey = 0
+        self.vertex   = {}
+        self.face     = {}
+        self.halfedge = {}
+        self.edge     = {}
+        self.dualdata = None
+        self.dva = dva or {}
+        self.dfa = dfa or {}
+        self.dea = dea or {}
+        self.attributes = {
+            'name'         : 'Mesh',
+            'color.vertex' : (0, 0, 0),
+            'color.edge'   : (0, 0, 0),
+            'color.face'   : (0, 0, 0),
+        }
+        self.attributes.update(kwargs)
+        if vertices:
+            for attr in vertices:
+                self.add_vertex(**attr)
+        if faces:
+            for keys in faces:
+                self.add_face(keys)
+
+    def __contains__(self, key):
+        """Verify if the mesh contains a specific vertex.
+        
+        Parameters:
+            key (str) : The identifier ('key') of the vertex.
+        
+        >>> mesh = Mesh()
+        >>> mesh.add_vertex()
+        >>> '0' in mesh
+        True
+        >>> '1' in mesh
+        False
+        """
+        return key in self.vertex
+
+    def __len__(self):
+        """Defines the length of the mesh as the number of vertices in the mesh.
+
+        >>> len(mesh) == len(mesh.vertex) == len(mesh.vertex.keys())
+        True
+        """
+        return len(self.vertex)
+
+    def __iter__(self):
+        """Defines mesh iteration as iteration over the vertex keys.
+
+        >>> mesh = Mesh()
+        >>> mesh.add_vertex()
+        >>> mesh.add_vertex()
+        >>> for key in mesh: print key
+        '0'
+        '1'
+        """
+        return iter(self.vertex)
+
+    def __getitem__(self, key):
+        """Defines the behaviour of the mesh when it is accessed """
+        return self.vertex[key]
+
+    def __str__(self):
+        """"""
+        return TOSTRING.format(
+            len(self.vertex),
+            len(self.face),
+            len(self.edges()),
+            (0 if not self.vertex else min(self.vertex_degree(key) for key in self.vertex)),
+            (0 if not self.vertex else max(self.vertex_degree(key) for key in self.vertex)),
+            (0 if not self.face else min(len(self.face_vertices(fkey)) for fkey in self.face)),
+            (0 if not self.face else max(len(self.face_vertices(fkey)) for fkey in self.face)),
+            ('True' if self.is_valid() else 'False'),
+            ('True' if self.is_connected() else 'False'),
+            ('True' if self.is_manifold() else 'False'),
+            ('True' if self.is_trimesh() else 'False'),
+            ('True' if self.is_quadmesh() else 'False'))
 
     @property
     def data(self):
@@ -122,12 +219,18 @@ mesh summary
                 'face'       : self.face,
                 'edge'       : self.edge,
                 'vkey'       : self._vkey,
-                'fkey'       : self._fkey, }
+                'fkey'       : self._fkey,
+                'dva'        : self.dva,
+                'dfa'        : self.dfa,
+                'dea'        : self.dea, }
 
     @data.setter
     def data(self, data):
         """"""
         attributes = data.get('attributes')
+        dva        = data.get('dva')
+        dfa        = data.get('dfa')
+        dea        = data.get('dea')
         vertex     = data.get('vertex')
         halfedge   = data.get('halfedge')
         face       = data.get('face')
@@ -137,21 +240,50 @@ mesh summary
         if not vertex or not halfedge or not face:
             return
         self.attributes = attributes or {}
-        self.edge       = edge or {}
+        self.dva        = dva or {}
+        self.dfa        = dfa or {}
+        self.dea        = dea or {}
         self.vertex     = {}
         self.halfedge   = {}
         self.face       = {}
+        self.edge       = edge or {}
         self._fkey      = fkey if fkey else int(max(face.keys(), key=int)) + 1
         self._vkey      = vkey if vkey else int(max(vertex.keys(), key=int)) + 1
         for k, a in vertex.items():
             a = a or {}
-            da = self.default_vertex_attributes.copy()
-            da.update(a)
-            self.vertex[k] = da
+            dva = self.dva.copy()
+            dva.update(a)
+            self.vertex[k] = dva
         for k, n in halfedge.items():
             self.halfedge[k] = n or {}
         for k, c in face.items():
             self.face[k] = c or {}
+
+    @property
+    def name(self):
+        """The name of the mesh."""
+        return self.attributes.get('name', None)
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
+    @property
+    def color(self):
+        return dict(
+            (key[6:], self.attributes[key])
+            for key in self.attributes if key.startswith('color.')
+        )
+
+    @color.setter
+    def color(self, value):
+        try:
+            value[0]
+            value[1]
+            value[1][2]
+        except Exception:
+            return
+        self.attributes['color.{0}'.format(value[0])] = value[1]
 
     # **************************************************************************
     # constructors
@@ -246,8 +378,11 @@ mesh summary
 
         Returns:
             str: The key of the vertex.
+
+        Examples:
+            >>> 
         """
-        attr = self.default_vertex_attributes.copy()
+        attr = self.dva.copy()
         if attr_dict:
             attr.update(attr_dict)
         attr.update(kwattr)
@@ -271,6 +406,9 @@ mesh summary
             self.halfedge[key] = {}
         self.vertex[key].update(attr)
         return key
+
+    def add_vertices(self):
+        raise NotImplementedError
 
     def remove_vertex(self, key):
         nbrs = self.vertex_neighbours(key)
@@ -358,6 +496,9 @@ mesh summary
                 self.halfedge[v][u] = None
         return fkey
 
+    def add_faces(self):
+        raise NotImplementedError
+
     def remove_face(self, fkey):
         for u, v in self.face[fkey].items():
             self.halfedge[u][v] = None
@@ -395,21 +536,21 @@ mesh summary
     # attributes
     # **************************************************************************
 
-    def set_default_vertex_attributes(self, attr_dict=None, **kwargs):
+    def set_dva(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.default_vertex_attributes = attr_dict
+        self.dva = attr_dict
         for key in self.vertex:
             attr = attr_dict.copy()
             attr.update(self.vertex[key])
             self.vertex[key] = attr
 
-    def set_default_face_attributes(self, attr_dict=None, **kwargs):
+    def set_dfa(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.default_face_attributes = attr_dict
+        self.dfa = attr_dict
         if not self.dualdata:
             self.dualdata = Mesh()
             for fkey in self.face:
@@ -444,11 +585,11 @@ mesh summary
     # - unused edges can be culled
     # ..........................................................................
 
-    def set_default_edge_attributes(self, attr_dict=None, **kwargs):
+    def set_dea(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.default_edge_attributes = attr_dict
+        self.dea = attr_dict
         for u, v in self.edges():
             attr = attr_dict.copy()
             attr.update(self.edge[u][v])
@@ -575,7 +716,7 @@ mesh summary
                             yield v, u
                     else:
                         attr = {}
-                        attr.update(self.default_edge_attributes)
+                        attr.update(self.dea)
                         if u not in self.edge:
                             self.edge[u] = {}
                         self.edge[u][v] = attr
@@ -841,8 +982,6 @@ mesh summary
                 break
         return vertices
 
-    boundary_vertices = vertices_on_boundary
-
     # **************************************************************************
     # face topology
     # **************************************************************************
@@ -919,8 +1058,6 @@ mesh summary
                     faces[self.halfedge[nbr][key]] = 1
         return faces.keys()
 
-    boundary_faces = faces_on_boundary
-
     def face_tree(self, root, algo=bfs):
         return algo(self.face_adjacency(), root)
 
@@ -936,8 +1073,6 @@ mesh summary
 
     def edges_on_boundary(self):
         return [(u, v) for u, v in self.edges_iter() if self.is_edge_naked(u, v)]
-
-    boundary_edges = edges_on_boundary
 
     # **************************************************************************
     # geometry
@@ -1007,8 +1142,7 @@ mesh summary
     def edge_length(self, u, v):
         sp = self.vertex_coordinates(u)
         ep = self.vertex_coordinates(v)
-        l = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
-        return l
+        return distance(sp, ep)
 
     def edge_midpoint(self, u, v):
         sp = self.vertex_coordinates(u)
@@ -1029,74 +1163,16 @@ mesh summary
         vec = [ep[i] - sp[i] for i in range(3)]
         if not unitized:
             return vec
-        l = sum(axis ** 2 for axis in vec) ** 0.5
-        return [axis / l for axis in vec]
+        vec_len = length(vec)
+        return [axis / vec_len for axis in vec]
 
+    # **************************************************************************
+    # environment-specific
+    # **************************************************************************
 
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
-# Mesh implementation with functionality for practical use
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
-
-
-class Mesh(_Mesh):
-    """"""
-
-    unify_cycles = mesh_unify_cycle_directions
-    flip_cycles = mesh_flip_cycle_directions
-
-    def __init__(self):
-        super(Mesh, self).__init__()
-        self.attributes = {
-            'name'         : 'Mesh',
-            'color.vertex' : (0, 0, 0),
-            'color.edge'   : (0, 0, 0),
-            'color.face'   : (0, 0, 0),
-        }
-
-    @property
-    def name(self):
-        """The name of the mesh."""
-        return self.attributes.get('name', None)
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
-
-    @property
-    def color(self):
-        return dict(
-            (key[6:], self.attributes[key])
-            for key in self.attributes if key.startswith('color.')
-        )
-
-    @color.setter
-    def color(self, value):
-        try:
-            value[0]
-            value[1]
-            value[1][2]
-        except Exception:
-            return
-        self.attributes['color.{0}'.format(value[0])] = value[1]
-
-    # move this somewhere else
-    # with other repr functions...
-    # this function has to be overwritten by environment-specific wrappers!!
     def draw(self, **kwargs):
         from brg.datastructures.mesh.drawing import draw_mesh
         draw_mesh(self, **kwargs)
-
-
-Mesh.from_vertices_and_faces = classmethod(mesh_from_vertices_and_faces)
-Mesh.from_data               = classmethod(mesh_from_data)
-Mesh.from_obj                = classmethod(mesh_from_obj)
-Mesh.from_json               = classmethod(mesh_from_json)
-Mesh.from_boundary           = classmethod(mesh_from_boundary)
-Mesh.from_points             = classmethod(mesh_from_points)
 
 
 # ==============================================================================
@@ -1107,11 +1183,20 @@ if __name__ == '__main__':
 
     import brg
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    # data = brg.get_data('faces.obj')
+    # mesh = Mesh.from_obj(data)
+
+    vertices = [
+        {'x': 0, 'y': 0, 'z': 0.},
+        {'x': 1., 'y': 0, 'z': 0},
+        {'x': 0.5, 'y': 1., 'z': 0}
+    ]
+
+    faces = [['0', '1', '2'], ]
+
+    mesh = Mesh(vertices, faces)
 
     print mesh
-    print 'is_valid', mesh.is_valid()
-    print 'is_regular:', mesh.is_regular()
 
     mesh.draw(
         show_vertices=True,

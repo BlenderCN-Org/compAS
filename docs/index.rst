@@ -12,7 +12,7 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
 
    pages/gettingstarted
    pages/examples
@@ -21,7 +21,6 @@ Contents
    pages/license
    pages/biblio
    pages/roadmap
-   pages/todo
 
 
 Indices and tables

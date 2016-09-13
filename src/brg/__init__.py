@@ -7,7 +7,7 @@ import os
 import warnings
 
 
-DATA = os.path.abspath(os.path.join(__file__, '../../../../data'))
+DATA = os.path.abspath(os.path.join(__file__, '../../../data'))
 
 
 def get_full_datafile_path(filename):
@@ -34,7 +34,6 @@ from brg import numerical
 from brg import physics
 from brg import utilities
 from brg import viewers
-from brg import web
 
 
 __all__ = [
@@ -46,5 +45,4 @@ __all__ = [
     'physics',
     'utilities',
     'viewers',
-    'web',
 ]

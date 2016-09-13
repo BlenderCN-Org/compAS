@@ -65,7 +65,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/api.html">API reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg">brg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg-rhino">brg_rhino</a></li>
@@ -87,7 +92,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pages/roadmap.html">Roadmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pages/todo.html">Todo list</a></li>
 </ul>
 
         
@@ -128,16 +132,14 @@
 <span class="sd">two-dimensional function can be accessed by appending ``_2d`` to the function</span>
 <span class="sd">name.</span>
 
-<span class="sd">Examples:</span>
-
-<span class="sd">    &gt;&gt;&gt; from brg.geometry import cross</span>
-<span class="sd">    &gt;&gt;&gt; from brg.geometry import cross_2d</span>
-<span class="sd">    &gt;&gt;&gt; u = [1.0, 0.0, 0.0]</span>
-<span class="sd">    &gt;&gt;&gt; v = [0.0, 1.0, 0.0]</span>
-<span class="sd">    &gt;&gt;&gt; cross(u, v)</span>
-<span class="sd">    [0.0, 0.0, 1.0]</span>
-<span class="sd">    &gt;&gt;&gt; cross_2d(u, v)</span>
-<span class="sd">    [0.0, 0.0, 1.0]</span>
+<span class="sd">&gt;&gt;&gt; from brg.geometry import cross</span>
+<span class="sd">&gt;&gt;&gt; from brg.geometry import cross_2d</span>
+<span class="sd">&gt;&gt;&gt; u = [1.0, 0.0, 0.0]</span>
+<span class="sd">&gt;&gt;&gt; v = [0.0, 1.0, 0.0]</span>
+<span class="sd">&gt;&gt;&gt; cross(u, v)</span>
+<span class="sd">[0.0, 0.0, 1.0]</span>
+<span class="sd">&gt;&gt;&gt; cross_2d(u, v)</span>
+<span class="sd">[0.0, 0.0, 1.0]</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -208,14 +210,14 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        list: The cross product of the two vectors.</span>
 
-<span class="sd">    The components of the cross product of two vectors :math:`\mathbf{u}` and</span>
-<span class="sd">    :math:`\mathbf{v}` can be computed as the *minors* of the following matrix:</span>
+<span class="sd">    The xyz components of the cross product of two vectors :math:`\mathbf{u}`</span>
+<span class="sd">    and :math:`\mathbf{v}` can be computed as the *minors* of the following matrix:</span>
 
 <span class="sd">    .. math::</span>
 <span class="sd">       :nowrap:</span>
 
 <span class="sd">        \\begin{bmatrix}</span>
-<span class="sd">        i &amp; j &amp; k \\\\</span>
+<span class="sd">        x &amp; y &amp; z \\\\</span>
 <span class="sd">        u_{x} &amp; u_{y} &amp; u_{z} \\\\</span>
 <span class="sd">        v_{x} &amp; v_{y} &amp; v_{z}</span>
 <span class="sd">        \end{bmatrix}</span>
@@ -233,9 +235,10 @@
 <span class="sd">        u_{x} * v_{y} - u_{y} * v_{x}</span>
 <span class="sd">        \end{bmatrix}</span>
 
-<span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])</span>
-<span class="sd">        [0.0, 0.0, 1.0]</span>
+
+<span class="sd">    &gt;&gt;&gt; cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])</span>
+<span class="sd">    [0.0, 0.0, 1.0]</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>

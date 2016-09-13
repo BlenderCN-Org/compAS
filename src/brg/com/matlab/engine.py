@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2016-08-29 22:00:58
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
+"""Matlab communication through the Matlab Engine.
+
+This module defines classes for starting and interacting with the Matlab Engine,
+and for interacting with an existing (shared) Matlab Session.
+
+>>> m = MatlabEngine()
+>>> m.isprime(37)
+True
+
+"""
 
 
 import matlab.engine
@@ -19,7 +29,8 @@ __all__ = [
     'MatlabEngineError',
     'MatlabSessionError',
     'MatlabEngine',
-    'MatlabSession']
+    'MatlabSession',
+]
 
 
 class MatlabEngineError(Exception):

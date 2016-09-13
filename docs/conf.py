@@ -15,6 +15,7 @@
 import sys
 import os
 
+import alabaster
 import sphinx_rtd_theme
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -37,13 +38,14 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinxcontrib.napoleon',
-    'sphinxcontrib.bibtex',
+    # 'sphinxcontrib.bibtex',
+    # 'alabaster',
 ]
 
 autodoc_member_order = 'bysource'
 
 # todo settings
-todo_include_todos = True
+todo_include_todos = False
 
 # napoleon settings
 napoleon_google_docstring = True
@@ -137,6 +139,8 @@ todo_include_todos = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
+# html_theme = 'default'
+# html_theme = 'alabaster'
 html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -145,11 +149,13 @@ html_theme = 'sphinx_rtd_theme'
 #html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
+# html_theme_path = []
+# html_theme_path = [alabaster.get_path()]
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
-#html_title = u'brg_framework v0.1'
+# html_title = u'brg_framework v0.1'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
