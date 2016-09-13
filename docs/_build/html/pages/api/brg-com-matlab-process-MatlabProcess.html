@@ -170,18 +170,36 @@ Defaults to <cite>&#8216;./workspace.mat&#8217;</cite>.</li>
 <p class="rubric"><strong>Special methods</strong></p>
 <p class="rubric"><strong>Methods</strong></p>
 <dl class="method">
+<dt id="brg.com.matlab.process.MatlabProcess.start">
+<tt class="descname">start</tt><big>(</big><em>options=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the subprocess.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> (<em>list, optional</em>) &#8211; <p>A list of command line options for the Matlab
+executable. Available options:</p>
+<blockquote>
+<div><ul class="simple">
+<li>-nosplash</li>
+<li>-wait (Windows)</li>
+<li>...</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="brg.com.matlab.process.MatlabProcess._wait_until">
 <tt class="descname">_wait_until</tt><big>(</big><em>str_to_wait_for</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess._wait_until"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess._wait_until" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="brg.com.matlab.process.MatlabProcess.read_value">
-<tt class="descname">read_value</tt><big>(</big><em>name</em>, <em>default=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.read_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.read_value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="brg.com.matlab.process.MatlabProcess.read_workspace">
-<tt class="descname">read_workspace</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.read_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.read_workspace" title="Permalink to this definition">¶</a></dt>
+<dt id="brg.com.matlab.process.MatlabProcess.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.stop" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -216,41 +234,23 @@ values to write to the Matlab workspace.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="brg.com.matlab.process.MatlabProcess.start">
-<tt class="descname">start</tt><big>(</big><em>options=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start the subprocess.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> (<em>list, optional</em>) &#8211; <p>A list of command line options for the Matlab
-executable. Available options:</p>
-<blockquote>
-<div><ul class="simple">
-<li>-nosplash</li>
-<li>-wait (Windows)</li>
-<li>...</li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="brg.com.matlab.process.MatlabProcess.stop">
-<tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.stop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="brg.com.matlab.process.MatlabProcess.write_value">
 <tt class="descname">write_value</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.write_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.write_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="brg.com.matlab.process.MatlabProcess.read_value">
+<tt class="descname">read_value</tt><big>(</big><em>name</em>, <em>default=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.read_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.read_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="brg.com.matlab.process.MatlabProcess.write_workspace">
 <tt class="descname">write_workspace</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.write_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.write_workspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.com.matlab.process.MatlabProcess.read_workspace">
+<tt class="descname">read_workspace</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/com/matlab/process.html#MatlabProcess.read_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.matlab.process.MatlabProcess.read_workspace" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

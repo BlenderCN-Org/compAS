@@ -131,35 +131,35 @@ def class_doc(c):
             return True
         return False
     members = inspect.getmembers(c)
-    classattributes = [n for n, o in members if isclassattribute(n, o)]
-    classmethods = [n for n, o in members if isclassmethod(n, o, c)]
-    specialmethods = [n for n, o in members if isspecialmethod(n, o)]
-    normalmethods = [n for n, o in members if isnormalmethod(n, o, c)]
-    descriptors = [n for n, o in members if isdescriptor(n, o)]
+    classattributes = sorted([(n, o) for n, o in members if isclassattribute(n, o)], key=lambda m: inspect.getsourcelines(m[1])[1])
+    classmethods = sorted([(n, o) for n, o in members if isclassmethod(n, o, c)], key=lambda m: inspect.getsourcelines(m[1])[1])
+    specialmethods = sorted([(n, o) for n, o in members if isspecialmethod(n, o)], key=lambda m: inspect.getsourcelines(m[1])[1])
+    normalmethods = sorted([(n, o) for n, o in members if isnormalmethod(n, o, c)], key=lambda m: inspect.getsourcelines(m[1])[1])
+    descriptors = [(n, o) for n, o in members if isdescriptor(n, o)]
     name = c.__module__ + '.' + c.__name__
     filepath = 'pages/api/' + name.replace('.', '-') + '.rst'
     with open(filepath, 'w+') as fp:
         fp.write(CLASS_PAGE.format(c.__name__, name))
         # class attributes
         fp.write('   .. rubric:: **Class attributes**\n\n')
-        for attrname in classattributes:
-            fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, attrname))
+        for n, o in classattributes:
+            fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, n))
         # class methods
         fp.write('   .. rubric:: **Class methods**\n\n')
-        for methodname in classmethods:
-            fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+        for n, o in classmethods:
+            fp.write('   .. automethod:: {0}.{1}\n'.format(name, n))
         # descriptors
         fp.write('   .. rubric:: **Descriptors**\n\n')
-        for descname in descriptors:
-            fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, descname))
+        for n, o in descriptors:
+            fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, n))
         # special methods
         fp.write('   .. rubric:: **Special methods**\n\n')
-        for methodname in specialmethods:
-            fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+        for n, o in specialmethods:
+            fp.write('   .. automethod:: {0}.{1}\n'.format(name, n))
         # normal methods
         fp.write('   .. rubric:: **Methods**\n\n')
-        for methodname in normalmethods:
-            fp.write('   .. automethod:: {0}.{1}\n'.format(name, methodname))
+        for n, o in normalmethods:
+            fp.write('   .. automethod:: {0}.{1}\n'.format(name, n))
 
 
 def function_doc(f):
@@ -176,6 +176,7 @@ def function_doc(f):
 if __name__ == "__main__":
 
     import brg
+    reload(brg)
 
     for name in brg.__all__:
         p = getattr(brg, name)

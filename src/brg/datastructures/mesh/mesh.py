@@ -7,6 +7,8 @@ import json
 
 from copy import deepcopy
 
+from types import MethodType
+
 from brg.geometry import length
 from brg.geometry import distance
 from brg.geometry import cross
@@ -77,9 +79,9 @@ class Mesh(object):
     The datastructure of the mesh is implemented as a half-edge.
 
     Parameters:
-        vertices (list) : Optional. A sequence of vertices to add to the mesh.
+        vertices (:obj:`list` of :obj:`dict`) : Optional. A sequence of vertices to add to the mesh.
             Each vertex should be a dictionary of vertex attributes.
-        faces (list) : Optional. A sequence of faces to add to the mesh.
+        faces (:obj:`list` of :obj:`list`) : Optional. A sequence of faces to add to the mesh.
             Each face should be a list of vertex keys.
         dva (dict) : Optional. A dictionary of default vertex attributes.
         dfa (dict) : Optional. A dictionary of default face attributes.
@@ -102,22 +104,22 @@ class Mesh(object):
         dualdata (Mesh, optional) : A ``Mesh`` object for keeping track of face attributes
             by storing them on dual vertices.
 
-    >>> mesh = Mesh()
-    >>> mesh.add_vertex(x=0.0, y=0.0, z=0.0)
-    '0'
-    >>> mesh.add_vertex(x=1.0, y=0.0, z=0.0)
-    '1'
-    >>> mesh.add_vertex(x=0.5, y=1.0, z=0.0)
-    '2'
-    >>> mesh.add_face([0, 1, 2])
-    '0'
-    >>> mesh.vertex['0']
-    {'y': 0.0, 'x': 0.0, 'z': 0.0}
-    >>> mesh.face['0']
-    {'0': '1', '1': '2', '2': '0'}
-    >>> mesh.halfedge['0']['1']
-    '0'
-
+    >>> import brg
+    >>> from brg.datastructures import Mesh
+    >>> datafile = brg.get_data('faces.obj')
+    >>> mesh = Mesh.from_obj(datafile)
+    >>> '0' in mesh
+    True
+    >>> str(mesh.next_vkey) in mesh
+    False
+    >>> mesh.is_quadmesh()
+    True
+    >>> mesh.is_trimesh()
+    False
+    >>> key = mesh.get_any_vertex()
+    >>> mesh[key] == mesh.vertex[key]
+    True
+    
     """
 
     from_vertices_and_faces = classmethod(mesh_from_vertices_and_faces)
@@ -127,9 +129,6 @@ class Mesh(object):
     from_boundary           = classmethod(mesh_from_boundary)
     from_points             = classmethod(mesh_from_points)
 
-    unify_cycles = mesh_unify_cycle_directions
-    flip_cycles = mesh_flip_cycle_directions
-
     def __init__(self, vertices=None, faces=None, dva=None, dfa=None, dea=None, **kwargs):
         self._fkey = 0
         self._vkey = 0
@@ -138,7 +137,9 @@ class Mesh(object):
         self.halfedge = {}
         self.edge     = {}
         self.dualdata = None
-        self.dva = dva or {}
+        dva = dva or {}
+        self.dva = {'x': 0, 'y': 0, 'z': 0}
+        self.dva.update(dva)
         self.dfa = dfa or {}
         self.dea = dea or {}
         self.attributes = {
@@ -163,6 +164,7 @@ class Mesh(object):
         
         >>> mesh = Mesh()
         >>> mesh.add_vertex()
+        '0'
         >>> '0' in mesh
         True
         >>> '1' in mesh
@@ -212,7 +214,13 @@ class Mesh(object):
 
     @property
     def data(self):
-        """The data representing the mesh."""
+        """:obj:`dict` : The data representing the mesh.
+
+        By assigning a data dict to this property, the current data of the mesh
+        will be replaced by the data in the dict. The data getter and setter should
+        always be used in combination with each other. They are also used by the
+        Mesh.from_data() class method and the mesh.to_data() instance method.
+        """
         return {'attributes' : self.attributes,
                 'vertex'     : self.vertex,
                 'halfedge'   : self.halfedge,
@@ -226,7 +234,6 @@ class Mesh(object):
 
     @data.setter
     def data(self, data):
-        """"""
         attributes = data.get('attributes')
         dva        = data.get('dva')
         dfa        = data.get('dfa')
@@ -261,7 +268,11 @@ class Mesh(object):
 
     @property
     def name(self):
-        """The name of the mesh."""
+        """:obj:`str` : The name of the mesh.
+        
+        Any value of appropriate type assigned to this property will be stored in
+        the instance's attribute dict.
+        """
         return self.attributes.get('name', None)
 
     @name.setter
@@ -270,6 +281,13 @@ class Mesh(object):
 
     @property
     def color(self):
+        """:obj:`dict` : The color specification of the elements of the mesh.
+
+        Only key-value pairs can be assigned to this property, with the key specifying
+        the element type, and the value the color as an rgb tuple. For example::
+
+            >>> mesh.color = ('vertex', (255, 0, 0))
+        """
         return dict(
             (key[6:], self.attributes[key])
             for key in self.attributes if key.startswith('color.')
@@ -299,6 +317,8 @@ class Mesh(object):
     # **************************************************************************
 
     def to_data(self):
+        """Return the data dict that represents the mesh, and from which it can
+        be reconstructed."""
         return self.data
 
     def to_obj(self, filepath):
@@ -332,6 +352,7 @@ class Mesh(object):
         with open(filepath, 'wb+') as fh:
             json.dump(data, fh)
 
+    # only valid for poly and quad
     def to_trimesh(self):
         from tri import TriMesh
         mesh = TriMesh()
@@ -343,6 +364,7 @@ class Mesh(object):
             mesh.add_face(vertices, fkey=fkey)
         return mesh
 
+    # only valid for poly
     def to_quadmesh(self):
         from quad import QuadMesh
         mesh = QuadMesh()
@@ -380,7 +402,15 @@ class Mesh(object):
             str: The key of the vertex.
 
         Examples:
-            >>> 
+            >>> mesh = Mesh()
+            >>> mesh.add_vertex()
+            '0'
+            >>> mesh.add_vertex(x=0, y=0, z=0)
+            '1'
+            >>> mesh.add_vertex(key=2)
+            '2'
+            >>> mesh.add_vertex(key=0, x=1)
+            '0'
         """
         attr = self.dva.copy()
         if attr_dict:
@@ -1165,6 +1195,18 @@ class Mesh(object):
             return vec
         vec_len = length(vec)
         return [axis / vec_len for axis in vec]
+
+    # **************************************************************************
+    # add-ons
+    # **************************************************************************
+
+    # move to extended mesh implementation?
+    def unify_cycles(self):
+        return mesh_unify_cycle_directions(self)
+
+    # move to extended mesh implementation?
+    def flip_cycles(self):
+        return mesh_flip_cycle_directions(self)
 
     # **************************************************************************
     # environment-specific
