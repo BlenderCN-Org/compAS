@@ -22,6 +22,15 @@ __status__     = 'Development'
 __date__       = 'Oct 14, 2014'
 
 
+__all__ = [
+    'adjacency_matrix',
+    'degree_matrix',
+    'connectivity_matrix',
+    'laplacian_matrix',
+    'equilibrium_matrix',
+]
+
+
 def adjacency_matrix():
     pass
 

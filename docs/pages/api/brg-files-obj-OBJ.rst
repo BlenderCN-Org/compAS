@@ -1,9 +1,9 @@
 
 ********************************************************************************
-MatlabSession
+OBJ
 ********************************************************************************
 
-.. autoclass:: brg.com.matlab.engine.MatlabSession
+.. autoclass:: brg.files.obj.OBJ
 
    .. rubric:: **Class attributes**
 
@@ -13,9 +13,5 @@ MatlabSession
 
    .. rubric:: **Special methods**
 
-   .. automethod:: brg.com.matlab.engine.MatlabSession.__getattr__
    .. rubric:: **Methods**
 
-   .. automethod:: brg.com.matlab.engine.MatlabSession.find
-   .. automethod:: brg.com.matlab.engine.MatlabSession.connect
-   .. automethod:: brg.com.matlab.engine.MatlabSession.disconnect

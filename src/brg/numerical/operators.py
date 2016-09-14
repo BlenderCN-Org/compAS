@@ -26,6 +26,13 @@ __status__     = 'Development'
 __date__       = 'Oct 14, 2014'
 
 
+__all__ = [
+    'div',
+    'grad',
+    'curl',
+]
+
+
 def grad(V, F, rtype='array'):
     """Construct the gradient operator of a triangle mesh.
 

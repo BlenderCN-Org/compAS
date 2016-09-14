@@ -7,30 +7,6 @@ Matlab communication through engine or (sub)process.
 
 
 
-brg.com.matlab.engine
-================================================================================
-
-Matlab communication through the Matlab Engine.
-
-This module defines classes for starting and interacting with the Matlab Engine,
-and for interacting with an existing (shared) Matlab Session.
-
->>> m = MatlabEngine()
->>> m.isprime(37)
-True
-
-
-
-.. toctree::
-   :glob:
-
-   brg-com-matlab-engine-MatlabEngineError
-   brg-com-matlab-engine-MatlabSessionError
-   brg-com-matlab-engine-MatlabEngine
-   brg-com-matlab-engine-MatlabSession
-
-
-
 brg.com.matlab.process
 ================================================================================
 
@@ -58,4 +34,46 @@ Todo:
 
    brg-com-matlab-process-MatlabProcessError
    brg-com-matlab-process-MatlabProcess
+
+
+
+brg.com.matlab.engine
+================================================================================
+
+Matlab communication through the Matlab Engine.
+
+This module defines a class for starting and interacting with the Matlab Engine.
+
+>>> m = MatlabEngine()
+>>> m.isprime(37)
+True
+
+
+
+.. toctree::
+   :glob:
+
+   brg-com-matlab-engine-MatlabEngineError
+   brg-com-matlab-engine-MatlabEngine
+
+
+
+brg.com.matlab.session
+================================================================================
+
+Matlab communication through the Matlab Engine.
+
+This module defines a class for interacting with an existing (shared) Matlab Session.
+
+>>> m = MatlabSession()
+>>> m.isprime(37)
+True
+
+
+
+.. toctree::
+   :glob:
+
+   brg-com-matlab-session-MatlabSessionError
+   brg-com-matlab-session-MatlabSession
 

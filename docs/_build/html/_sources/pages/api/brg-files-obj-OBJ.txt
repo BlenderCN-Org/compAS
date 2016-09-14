@@ -1,9 +1,9 @@
 
 ********************************************************************************
-MatlabSessionError
+OBJ
 ********************************************************************************
 
-.. autoclass:: brg.com.matlab.engine.MatlabSessionError
+.. autoclass:: brg.files.obj.OBJ
 
    .. rubric:: **Class attributes**
 

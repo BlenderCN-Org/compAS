@@ -1,3 +1,29 @@
+import colors
+import drawing
+import maps
+import mixing
+import names
+import scriptserver
+import units
+import webapi
+import xfunc
+import xfuncio
+
+
+__all__ = [
+    'colors',
+    'drawing',
+    'maps',
+    'mixing',
+    'names',
+    'scriptserver',
+    'units',
+    'webapi',
+    'xfunc',
+    'xfuncio',
+]
+
+
 from colors import i2rgb
 from colors import i2red
 from colors import i2green

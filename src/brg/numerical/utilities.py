@@ -10,6 +10,12 @@ __status__     = 'Development'
 __date__       = 'Oct 14, 2014'
 
 
+__all__ = [
+    'set_array_print_precision',
+    'unset_array_print_precision',
+]
+
+
 OLD_SETTINGS = None
 FLOAT_PRECISION = '2f'
 

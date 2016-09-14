@@ -42,6 +42,21 @@ __status__     = 'Development'
 __date__       = 'Oct 14, 2014'
 
 
+__all__ = [
+    'nullspace',
+    'rank',
+    'dof',
+    'pivots',
+    'nonpivots',
+    'rref',
+    'normrow',
+    'normalizerow',
+    'rot90',
+    'solve_with_known',
+    'spsolve_with_known',
+]
+
+
 old_settings = seterr(all='ignore')
 
 

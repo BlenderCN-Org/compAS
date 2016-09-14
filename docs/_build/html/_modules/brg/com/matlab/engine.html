@@ -132,8 +132,7 @@
 <span class="c1"># @Author  : Tom Van Mele (vanmelet@ethz.ch)</span>
 <span class="sd">&quot;&quot;&quot;Matlab communication through the Matlab Engine.</span>
 
-<span class="sd">This module defines classes for starting and interacting with the Matlab Engine,</span>
-<span class="sd">and for interacting with an existing (shared) Matlab Session.</span>
+<span class="sd">This module defines a class for starting and interacting with the Matlab Engine.</span>
 
 <span class="sd">&gt;&gt;&gt; m = MatlabEngine()</span>
 <span class="sd">&gt;&gt;&gt; m.isprime(37)</span>
@@ -142,7 +141,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">import</span> <span class="nn">matlab.engine</span>
+<span class="kn">from</span> <span class="nn">brg</span> <span class="kn">import</span> <span class="n">matlab_engine</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
@@ -156,14 +155,12 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;MatlabEngineError&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;MatlabSessionError&#39;</span><span class="p">,</span>
     <span class="s1">&#39;MatlabEngine&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;MatlabSession&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="MatlabEngineError"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabEngineError.html#brg.com.matlab.engine.MatlabEngineError">[docs]</a><span class="k">class</span> <span class="nc">MatlabEngineError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<div class="viewcode-block" id="MatlabEngineError.__init__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabEngineError.html#brg.com.matlab.engine.MatlabEngineError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;Could not start the Matlab engine.</span>
 <span class="s1">Note that the Matlab engine for Python is only available since R2014b.</span>
@@ -172,27 +169,15 @@
 <span class="s1">&#39;&#39;&#39;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MatlabEngineError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-</div></div>
-<div class="viewcode-block" id="MatlabSessionError"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSessionError.html#brg.com.matlab.engine.MatlabSessionError">[docs]</a><span class="k">class</span> <span class="nc">MatlabSessionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<div class="viewcode-block" id="MatlabSessionError.__init__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSessionError.html#brg.com.matlab.engine.MatlabSessionError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;There is no active Matlab session, or could not connect to one...</span>
-<span class="s1">Don&#39;t forget to run &quot;matlab.engine.shareEngine&quot; in Matlab!</span>
-<span class="s1">Note that the Matlab engine for Python is only available since R2014b.</span>
-<span class="s1">For older versions of Matlab, use *MatlabProcess* instead.</span>
-<span class="s1">On Windows, *MatlabClient* is also available.</span>
-<span class="s1">&#39;&#39;&#39;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MatlabSessionError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-
-</div></div>
+</div>
 <div class="viewcode-block" id="MatlabEngine"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabEngine.html#brg.com.matlab.engine.MatlabEngine">[docs]</a><span class="k">class</span> <span class="nc">MatlabEngine</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MatlabEngine.__init__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabEngine.html#brg.com.matlab.engine.MatlabEngine.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay_start</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay_start</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">delay_start</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</div>
+
 <div class="viewcode-block" id="MatlabEngine.__getattr__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabEngine.html#brg.com.matlab.engine.MatlabEngine.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">:</span>
             <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
@@ -204,46 +189,13 @@
 </div>
 <div class="viewcode-block" id="MatlabEngine.start"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabEngine.html#brg.com.matlab.engine.MatlabEngine.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">print</span> <span class="s1">&#39;starting engine. this may take a few seconds...&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">start_matlab</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">matlab_engine</span><span class="o">.</span><span class="n">start_matlab</span><span class="p">()</span>
         <span class="k">print</span> <span class="s1">&#39;engine started!&#39;</span>
 </div>
 <div class="viewcode-block" id="MatlabEngine.stop"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabEngine.html#brg.com.matlab.engine.MatlabEngine.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">print</span> <span class="s1">&#39;stopping engine...&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
         <span class="k">print</span> <span class="s1">&#39;engine stopped!&#39;</span>
-
-</div></div>
-<div class="viewcode-block" id="MatlabSession"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSession.html#brg.com.matlab.engine.MatlabSession">[docs]</a><span class="k">class</span> <span class="nc">MatlabSession</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Connect to an existing, shared Matlab session.</span>
-
-<span class="sd">    Note that the Matlab engine for Python is only available since R2014b.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="MatlabSession.__init__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSession.html#brg.com.matlab.engine.MatlabSession.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="MatlabSession.__getattr__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSession.html#brg.com.matlab.engine.MatlabSession.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">:</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">wrapper</span>
-</div>
-<div class="viewcode-block" id="MatlabSession.find"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSession.html#brg.com.matlab.engine.MatlabSession.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">session</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">find_matlab</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">MatlabSessionError</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
-</div>
-<div class="viewcode-block" id="MatlabSession.connect"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSession.html#brg.com.matlab.engine.MatlabSession.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">connect_matlab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="MatlabSession.disconnect"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-engine-MatlabSession.html#brg.com.matlab.engine.MatlabSession.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -252,10 +204,9 @@
 </div></div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-    <span class="c1"># m1 = MatlabEngine()</span>
-    <span class="n">m2</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">()</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">MatlabEngine</span><span class="p">()</span>
 
-    <span class="k">print</span> <span class="n">m2</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
 </pre></div>
 
           </div>

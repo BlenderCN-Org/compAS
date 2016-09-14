@@ -30,7 +30,7 @@
   
     <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="brg.com" href="brg-com.html"/>
-        <link rel="next" title="MatlabEngineError" href="brg-com-matlab-engine-MatlabEngineError.html"/>
+        <link rel="next" title="MatlabProcessError" href="brg-com-matlab-process-MatlabProcessError.html"/>
         <link rel="prev" title="brg.com" href="brg-com.html"/> 
 
   
@@ -133,25 +133,6 @@
   <div class="section" id="brg-com-matlab">
 <h1>brg.com.matlab<a class="headerlink" href="#brg-com-matlab" title="Permalink to this headline">¶</a></h1>
 <p>Matlab communication through engine or (sub)process.</p>
-<div class="section" id="brg-com-matlab-engine">
-<h2>brg.com.matlab.engine<a class="headerlink" href="#brg-com-matlab-engine" title="Permalink to this headline">¶</a></h2>
-<p>Matlab communication through the Matlab Engine.</p>
-<p>This module defines classes for starting and interacting with the Matlab Engine,
-and for interacting with an existing (shared) Matlab Session.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabEngine</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-engine-MatlabEngineError.html">MatlabEngineError</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-engine-MatlabSessionError.html">MatlabSessionError</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-engine-MatlabEngine.html">MatlabEngine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-engine-MatlabSession.html">MatlabSession</a></li>
-</ul>
-</div>
-</div>
 <div class="section" id="brg-com-matlab-process">
 <h2>brg.com.matlab.process<a class="headerlink" href="#brg-com-matlab-process" title="Permalink to this headline">¶</a></h2>
 <p>Matlab (sub)process.</p>
@@ -181,6 +162,38 @@ and for interacting with an existing (shared) Matlab Session.</p>
 </ul>
 </div>
 </div>
+<div class="section" id="brg-com-matlab-engine">
+<h2>brg.com.matlab.engine<a class="headerlink" href="#brg-com-matlab-engine" title="Permalink to this headline">¶</a></h2>
+<p>Matlab communication through the Matlab Engine.</p>
+<p>This module defines a class for starting and interacting with the Matlab Engine.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabEngine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-engine-MatlabEngineError.html">MatlabEngineError</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-engine-MatlabEngine.html">MatlabEngine</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="brg-com-matlab-session">
+<h2>brg.com.matlab.session<a class="headerlink" href="#brg-com-matlab-session" title="Permalink to this headline">¶</a></h2>
+<p>Matlab communication through the Matlab Engine.</p>
+<p>This module defines a class for interacting with an existing (shared) Matlab Session.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-session-MatlabSessionError.html">MatlabSessionError</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-com-matlab-session-MatlabSession.html">MatlabSession</a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -189,7 +202,7 @@ and for interacting with an existing (shared) Matlab Session.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="brg-com-matlab-engine-MatlabEngineError.html" class="btn btn-neutral float-right" title="MatlabEngineError"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="brg-com-matlab-process-MatlabProcessError.html" class="btn btn-neutral float-right" title="MatlabProcessError"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="brg-com.html" class="btn btn-neutral" title="brg.com"><span class="fa fa-arrow-circle-left"></span> Previous</a>
