@@ -3,11 +3,12 @@
 
 """
 
+import os
 import json
 
 from copy import deepcopy
 
-from types import MethodType
+from brg.files.obj import OBJ
 
 from brg.geometry import length
 from brg.geometry import distance
@@ -19,20 +20,8 @@ from brg.geometry import area
 
 from brg.geometry.elements.line import Line
 
-from brg.datastructures.mesh.exceptions import MeshError
-
 from brg.datastructures.traversal import bfs
 from brg.datastructures.traversal import bfs2
-
-from brg.datastructures.mesh.algorithms.orientation import mesh_unify_cycle_directions
-from brg.datastructures.mesh.algorithms.orientation import mesh_flip_cycle_directions
-
-from brg.datastructures.mesh.constructors import mesh_from_data
-from brg.datastructures.mesh.constructors import mesh_from_obj
-from brg.datastructures.mesh.constructors import mesh_from_json
-from brg.datastructures.mesh.constructors import mesh_from_vertices_and_faces
-from brg.datastructures.mesh.constructors import mesh_from_boundary
-from brg.datastructures.mesh.constructors import mesh_from_points
 
 
 __author__     = ['Tom Van Mele', ]
@@ -44,6 +33,7 @@ __status__     = 'Development'
 __date__       = 'Oct 10, 2014'
 
 
+# should there not be a mesh with all bells and whistles added on?!
 __all__ = [
     'Mesh',
 ]
@@ -119,15 +109,15 @@ class Mesh(object):
     >>> key = mesh.get_any_vertex()
     >>> mesh[key] == mesh.vertex[key]
     True
-    
+
     """
 
-    from_vertices_and_faces = classmethod(mesh_from_vertices_and_faces)
-    from_data               = classmethod(mesh_from_data)
-    from_obj                = classmethod(mesh_from_obj)
-    from_json               = classmethod(mesh_from_json)
-    from_boundary           = classmethod(mesh_from_boundary)
-    from_points             = classmethod(mesh_from_points)
+    # from_vertices_and_faces = classmethod(mesh_from_vertices_and_faces)
+    # from_data               = classmethod(mesh_from_data)
+    # from_obj                = classmethod(mesh_from_obj)
+    # from_json               = classmethod(mesh_from_json)
+    # from_boundary           = classmethod(mesh_from_boundary)
+    # from_points             = classmethod(mesh_from_points)
 
     def __init__(self, vertices=None, faces=None, dva=None, dfa=None, dea=None, **kwargs):
         self._fkey = 0
@@ -158,10 +148,10 @@ class Mesh(object):
 
     def __contains__(self, key):
         """Verify if the mesh contains a specific vertex.
-        
+
         Parameters:
             key (str) : The identifier ('key') of the vertex.
-        
+
         >>> mesh = Mesh()
         >>> mesh.add_vertex()
         '0'
@@ -197,7 +187,13 @@ class Mesh(object):
         return self.vertex[key]
 
     def __str__(self):
-        """"""
+        """Defines the bahaviour of the mesh when it is converted to a string,
+        printed, or used by :obj:`format`.
+
+        >>> str(mesh)
+        >>> print mesh
+        >>> "{}".format(mesh)
+        """
         return TOSTRING.format(
             len(self.vertex),
             len(self.face),
@@ -211,6 +207,18 @@ class Mesh(object):
             ('True' if self.is_manifold() else 'False'),
             ('True' if self.is_trimesh() else 'False'),
             ('True' if self.is_quadmesh() else 'False'))
+
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # descriptors
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
 
     @property
     def data(self):
@@ -269,7 +277,7 @@ class Mesh(object):
     @property
     def name(self):
         """:obj:`str` : The name of the mesh.
-        
+
         Any value of appropriate type assigned to this property will be stored in
         the instance's attribute dict.
         """
@@ -281,7 +289,7 @@ class Mesh(object):
 
     @property
     def color(self):
-        """:obj:`dict` : The color specification of the elements of the mesh.
+        """:obj:`dict` : The color specification of the mesh.
 
         Only key-value pairs can be assigned to this property, with the key specifying
         the element type, and the value the color as an rgb tuple. For example::
@@ -304,16 +312,260 @@ class Mesh(object):
         self.attributes['color.{0}'.format(value[0])] = value[1]
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # helpers
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+
+    def key_index(self):
+        """Returns a *key-to-index* map.
+
+        This function is primarily intended for working with arrays.
+        For example::
+
+            >>> import brg
+            >>> import numpy as np
+            >>> mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+            >>> xyz = np.array(mesh.vertex_coordinates(xyz='xyz'), dtype=float)
+            >>> k2i = mesh.key_index()
+
+            # do stuff to the coordinates
+            # for example, apply smoothing
+            # then update the vertex coordinates in the data structure
+
+            >>> for key in mesh:
+            ...     index = k2i[key]
+            ...     mesh.vertex[key]['x'] = xyz[index, 0]
+            ...     mesh.vertex[key]['y'] = xyz[index, 1]
+            ...     mesh.vertex[key]['z'] = xyz[index, 2]
+
+        >>> mesh = Mesh()
+        >>> mesh.add_vertex()
+        '0'
+        >>> k2i = mesh.key_index()
+        >>> k2i['0']
+        0
+        """
+        return dict((k, i) for i, k in self.vertices_enum())
+
+    def index_key(self):
+        """Returns an *index-to-key* map.
+
+        This function is primarily intended for working with arrays.
+        For example::
+
+            >>>
+
+        >>> mesh = Mesh()
+        >>> mesh.add_vertex()
+        '0'
+        >>> i2k = mesh.index_key()
+        >>> i2k[0]
+        '0'
+        """
+        return dict(self.vertices_enum())
+
+    def copy(self):
+        cls  = type(self)
+        data = deepcopy(self.data)
+        mesh = cls.from_data(data)
+        return mesh
+
+    def get_any_vertex(self):
+        return next(self.vertices_iter())
+
+    def get_any_face(self):
+        return next(self.faces_iter())
+
+    def get_any_face_vertex(self, fkey):
+        return self.face_vertices(fkey)[0]
+
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # constructors
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
 
-    # @see: brg.datastructures.mesh.constructors
-    # not to self: move them in
+    @classmethod
+    def from_data(cls, data, dva=None, dfa=None, dea=None, **kwargs):
+        """Construct a mesh from actual mesh data.
+
+        This function should be used in combination with the data obtained from
+        ``mesh.data``.
+
+        Parameters:
+            data (dict): The data dictionary.
+            dva (dict) : Default vertex attributes. Optional. Default is ``None``.
+            dfa (dict) : Default face attributes. Optional. Default is ``None``.
+            dea (dict) : Default edge attributes. Optional. Default is ``None``.
+            kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.
+
+        Returns:
+            Mesh: A ``Mesh`` of class ``cls``.
+
+        >>> data = m1.to_data()
+        >>> m2 = Mesh.from_data(data)
+
+        """
+        mesh = cls(dva=dva, dfa=dfa, dea=dea)
+        mesh.attributes.update(kwargs)
+        mesh.data = data
+        return mesh
+
+    @classmethod
+    def from_vertices_and_faces(cls, vertices, faces, dva=None, dfa=None, dea=None, **kwargs):
+        """Initialise a mesh from a list of vertices and faces.
+
+        Parameters:
+            vertices (list) : A list of vertices, represented by their XYZ coordinates.
+            faces (list) : A list of faces. Each face is a list of indices referencing
+                the list of vertex coordinates.
+            dva (dict) : Default vertex attributes. Optional. Default is ``None``.
+            dfa (dict) : Default face attributes. Optional. Default is ``None``.
+            dea (dict) : Default edge attributes. Optional. Default is ``None``.
+            kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.
+
+        Returns:
+            Mesh: A ``Mesh`` of class ``cls``.
+
+        >>> vertices = []
+        >>> faces = []
+        >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+        """
+        mesh = cls(dva=dva, dfa=dfa, dea=dea)
+        mesh.attributes.update(kwargs)
+        for x, y, z in vertices:
+            mesh.add_vertex(x=x, y=y, z=z)
+        for face in faces:
+            mesh.add_face(face)
+        return mesh
+
+    @classmethod
+    def from_obj(cls, filepath, dva=None, dfa=None, dea=None, **kwargs):
+        """Initialise a mesh from the data described in an obj file.
+
+        Parameters:
+            filepath (str): The path to the obj file.
+            dva (dict) : Default vertex attributes. Optional. Default is ``None``.
+            dfa (dict) : Default face attributes. Optional. Default is ``None``.
+            dea (dict) : Default edge attributes. Optional. Default is ``None``.
+            kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.
+
+        Returns:
+            Mesh: A ``Mesh`` of class ``cls``.
+
+        >>> mesh = Mesh.from_obj('path/to/file.obj')
+
+        """
+        mesh = cls(dva=dva, dfa=dfa, dea=dea)
+        mesh.attributes.update(kwargs)
+        obj = OBJ(filepath)
+        vertices = obj.parser.vertices
+        faces = obj.parser.faces
+        for x, y, z in vertices:
+            mesh.add_vertex(x=x, y=y, z=z)
+        for face in faces:
+            mesh.add_face(face)
+        return mesh
+
+    @classmethod
+    def from_dxf(cls, filepath, dva=None, dfa=None, dea=None):
+        raise NotImplementedError
+
+    @classmethod
+    def from_stl(cls, filepath, dva=None, dfa=None, dea=None):
+        raise NotImplementedError
+
+    @classmethod
+    def from_json(cls, filepath, dva=None, dfa=None, dea=None, **kwargs):
+        data = None
+        with open(filepath, 'rb') as fp:
+            data = json.load(fp)
+        mesh = cls.from_data(data, dva=dva, dfa=dfa, dea=dea)
+        mesh.attributes.update(kwargs)
+        return mesh
+
+    # differentiate between delaunay of boundary and delaunay in boundary
+    # use nurbs curves?
+    # differentiate between config and **kwargs
+    @classmethod
+    def from_boundary(cls,
+                      boundary,
+                      holes=None,
+                      spacing=1.0,
+                      do_smooth=False,
+                      dva=None,
+                      dfa=None,
+                      dea=None,
+                      **kwargs):
+        from brg.utilities.scriptserver import ScriptServer
+        scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
+        server = ScriptServer(scriptdir)
+        config = {
+            'do_smooth': do_smooth,
+        }
+        config.update(kwargs)
+        res = server.mesh_from_boundary(
+            boundary=boundary,
+            holes=holes,
+            spacing=spacing,
+            config=config,
+        )
+        return cls.from_data(res['data'],
+                             dva=dva,
+                             dfa=dfa,
+                             dea=dea,
+                             **kwargs)
+
+    # differentiate between config and **kwargs
+    @classmethod
+    def from_points(cls,
+                    points,
+                    do_smooth=False,
+                    dva=None,
+                    dfa=None,
+                    dea=None,
+                    **kwargs):
+        from brg.utilities.scriptserver import ScriptServer
+        scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
+        server = ScriptServer(scriptdir)
+        config = {
+            'do_smooth': do_smooth,
+        }
+        config.update(kwargs)
+        res = server.mesh_from_points(
+            points=points,
+            config=config
+        )
+        return cls.from_data(res['data'],
+                             dva=dva,
+                             dfa=dfa,
+                             dea=dea,
+                             **kwargs)
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # conversion methods
-    # ------------------
-    # to_...
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def to_data(self):
@@ -327,8 +579,10 @@ class Mesh(object):
         Parameters:
             filepath (str): Full path of the file to write.
 
-        Returns:
-            None
+        Notes:
+            Use the framework ``OBJ`` functionality for this. How to write vertices
+            and faces to an ``OBJ`` is not necessarily something a mesh knows how
+            to do.
         """
         key_index = dict((key, index) for index, key in self.vertices_enum())
         with open(filepath, 'wb+') as fh:
@@ -377,9 +631,17 @@ class Mesh(object):
         return mesh
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # modify the mesh
     # ---------------
     # add / remove / ...
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
@@ -395,8 +657,8 @@ class Mesh(object):
         Parameters:
             key (int): An identifier for the vertex. Defaults to None. The key
                 is converted to a string before it is used.
-            attr_dict (dict): Vertex attributes, defaults to None.
-            **attr: Other named vertex attributes, defaults to None.
+            attr_dict (dict): Vertex attributes, defaults to ``None``.
+            **attr: Other named vertex attributes, defaults to an empty :obj:`dict`.
 
         Returns:
             str: The key of the vertex.
@@ -538,34 +800,18 @@ class Mesh(object):
         del self.face[fkey]
 
     # **************************************************************************
-    # helpers
     # **************************************************************************
-
-    def key_index(self):
-        return dict((key, index) for index, key in self.vertices_enum())
-
-    def index_key(self):
-        return dict((index, key) for index, key in self.vertices_enum())
-
-    def copy(self):
-        cls  = type(self)
-        data = deepcopy(self.data)
-        mesh = cls.from_data(data)
-        return mesh
-
-    def get_any_vertex(self):
-        return next(self.vertices_iter())
-
-    def get_any_face(self):
-        return next(self.faces_iter())
-
-    def get_any_face_vertex(self, fkey):
-        return self.face_vertices(fkey)[0]
-
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
     # attributes
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
 
+    # write out full name?
     def set_dva(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
@@ -576,6 +822,7 @@ class Mesh(object):
             attr.update(self.vertex[key])
             self.vertex[key] = attr
 
+    # write out full name?
     def set_dfa(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
@@ -647,7 +894,15 @@ class Mesh(object):
         return default
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # culling
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def cull_unused_vertices(self):
@@ -669,7 +924,15 @@ class Mesh(object):
                 del self.edge[u]
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # accessors
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def vertices(self, data=False):
@@ -703,7 +966,24 @@ class Mesh(object):
         return self.vertex.iterkeys()
 
     def vertices_enum(self, data=False):
-        """Get an enumeration of the vertex keys."""
+        """Get an enumeration of the vertex keys.
+
+        Parameters:
+            data (bool) : If ``True``, return the vertex attributes as part of
+                the enumeration. Default is ``False``.
+
+        Returns:
+            iter : The enumerating iterator of vertex keys.
+
+        >>> for index, key in mesh.vertices_enum():
+        ...     print index, key
+        ...
+
+        >>> for index, key, attr in mesh.vertices_enum(data=True):
+        ...     print index, key, attr
+        ...
+
+        """
         return enumerate(self.vertices_iter(data))
 
     def faces(self):
@@ -760,7 +1040,15 @@ class Mesh(object):
         return enumerate(self.edges_iter())
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # properties
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def is_valid(self):
@@ -890,13 +1178,15 @@ class Mesh(object):
         return True
 
     # **************************************************************************
-    # duality
     # **************************************************************************
-
-    # @see: brg.datastructures.mesh.algorithms.duality
-
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
     # vertex topology
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def vertex_adjacency(self, ordered=False):
@@ -919,8 +1209,8 @@ class Mesh(object):
                 start = nbr
                 break
         fkey = self.halfedge[start][key]
-        if fkey is None:
-            raise MeshError
+        # if fkey is None:
+        #     raise MeshError
         nbrs = []
         nbrs.append(start)
         count = 1000
@@ -935,7 +1225,7 @@ class Mesh(object):
                 break
         return nbrs
 
-    def vertex_ring(self, key):
+    def vertex_neighbourhood(self, key, ring=1):
         raise NotImplementedError
 
     def vertex_cycle(self, key):
@@ -943,16 +1233,30 @@ class Mesh(object):
         return dict((nbrs[i], nbrs[i + 1]) for i in range(-1, len(nbrs) - 1))
 
     def vertex_descendant(self, u, v):
-        """Return the key of the vertex after v in the face that contains uv."""
+        """Return the descendant vertex of halfedge ``uv``.
+
+        Parameters:
+            u (str) : The *from* vertex.
+            v (str) : The *to* vertex.
+
+        Returns:
+            str : The key of the descendant.
+            None : If ``uv`` has no descendant.
+
+        Raises:
+            KeyError : If the halfedge is not part of the mesh.
+            MeshError : If something else went wrong.
+        """
         fkey = self.halfedge[u][v]
-        # the face is on the inside
         if fkey is not None:
+            # the face is on the inside
             return self.face[fkey][v]
         # the face is on the outside
         for nbr in self.halfedge[v]:
             if nbr != u:
                 if self.halfedge[v][nbr] is None:
                     return nbr
+        # raise a ``MeshError`` here.
         return None
 
     def vertex_ancestor(self, u, v):
@@ -1013,7 +1317,15 @@ class Mesh(object):
         return vertices
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # face topology
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def face_vertices(self, fkey, ordered=False):
@@ -1092,7 +1404,15 @@ class Mesh(object):
         return algo(self.face_adjacency(), root)
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # (half)edge topology
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def has_edge(self, u, v, strict=False):
@@ -1105,7 +1425,15 @@ class Mesh(object):
         return [(u, v) for u, v in self.edges_iter() if self.is_edge_naked(u, v)]
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # geometry
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def vertex_area(self, key, length=length, cross=cross):
@@ -1149,25 +1477,30 @@ class Mesh(object):
 
     def face_coordinates(self, fkey=None, ordered=False):
         if fkey is not None:
+            coords = self.vertex_coordinates
             vertices = self.face_vertices(fkey, ordered=ordered)
-            return [self.vertex_coordinates(key) for key in vertices]
+            return [coords(key) for key in vertices]
         return [self.face_coordinates(k, ordered=ordered) for k in self.face]
 
     def face_normal(self, fkey, unitized=True):
+        coords = self.vertex_coordinates
         vertices = self.face_vertices(fkey, ordered=True)
-        return normal2([self.vertex_coordinates(key) for key in vertices], unitized)
+        return normal2([coords(key) for key in vertices], unitized)
 
     def face_centroid(self, fkey):
+        coords = self.vertex_coordinates
         vertices = self.face_vertices(fkey, ordered=True)
-        return centroid([self.vertex_coordinates(key) for key in vertices])
+        return centroid([coords(key) for key in vertices])
 
     def face_center(self, fkey):
+        coords = self.vertex_coordinates
         vertices = self.face_vertices(fkey, ordered=True)
-        return center_of_mass([self.vertex_coordinates(key) for key in vertices])
+        return center_of_mass([coords(key) for key in vertices])
 
     def face_area(self, fkey):
+        coords = self.vertex_coordinates
         vertices = self.face_vertices(fkey, ordered=True)
-        return area([self.vertex_coordinates(key) for key in vertices])
+        return area([coords(key) for key in vertices])
 
     def edge_length(self, u, v):
         sp = self.vertex_coordinates(u)
@@ -1197,19 +1530,35 @@ class Mesh(object):
         return [axis / vec_len for axis in vec]
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # add-ons
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
 
-    # move to extended mesh implementation?
-    def unify_cycles(self):
-        return mesh_unify_cycle_directions(self)
+    # # move to extended mesh implementation?
+    # def unify_cycles(self):
+    #     return mesh_unify_cycle_directions(self)
 
-    # move to extended mesh implementation?
-    def flip_cycles(self):
-        return mesh_flip_cycle_directions(self)
+    # # move to extended mesh implementation?
+    # def flip_cycles(self):
+    #     return mesh_flip_cycle_directions(self)
 
     # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # environment-specific
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
     # **************************************************************************
 
     def draw(self, **kwargs):
@@ -1225,18 +1574,8 @@ if __name__ == '__main__':
 
     import brg
 
-    # data = brg.get_data('faces.obj')
-    # mesh = Mesh.from_obj(data)
-
-    vertices = [
-        {'x': 0, 'y': 0, 'z': 0.},
-        {'x': 1., 'y': 0, 'z': 0},
-        {'x': 0.5, 'y': 1., 'z': 0}
-    ]
-
-    faces = [['0', '1', '2'], ]
-
-    mesh = Mesh(vertices, faces)
+    data = brg.get_data('faces.obj')
+    mesh = Mesh.from_obj(data)
 
     print mesh
 

@@ -1,3 +1,7 @@
 """Communication with Rhino through the COM interface."""
 
-__all__ = []
+import client
+
+__all__ = [
+    'client'
+]

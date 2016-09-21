@@ -1,19 +1,16 @@
+# -*- coding: utf-8 -*-
+# @Date    : 2016-09-19 13:07:49
+# @Author  : Tom Van Mele (vanmelet@ethz.ch)
+
+
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
-__date__       = '2015-12-03 13:43:05'
+__date__       = '2016-09-19 13:07:49'
 
 
-def cull_unused_vertices(mesh):
-    pass
-
-
-def cull_unused_edges(mesh):
-    pass
-
-
-def cull_degenerate_faces(mesh):
+def laplacian_smoothing():
     pass

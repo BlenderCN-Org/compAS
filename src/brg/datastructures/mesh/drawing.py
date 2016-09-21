@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
-# from mpl_toolkits.mplot3d import Axes3D
 
 from brg.geometry import centroid
 from brg.utilities import color_to_colordict

@@ -13,8 +13,8 @@ import network
 import volmesh
 
 from mesh.mesh import Mesh
-from mesh.tri.mesh import TriMesh
-from mesh.quad.mesh import QuadMesh
+from mesh.tri import TriMesh
+from mesh.quad import QuadMesh
 
 from network.network import Network
 

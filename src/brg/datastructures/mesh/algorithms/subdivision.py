@@ -1,4 +1,4 @@
-from brg.datastructures.mesh.algorithms.split import split_edge
+from brg.datastructures.mesh.operations.split import split_edge
 from brg.datastructures.mesh.exceptions import MeshError
 
 
