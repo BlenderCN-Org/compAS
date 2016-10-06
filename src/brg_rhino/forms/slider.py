@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 
-import scriptcontext as sc
+from brg_rhino.forms import Form
 
-import System
+try:
+    import scriptcontext as sc
+    import System
+    from System.Drawing import Size
+    from System.Drawing import Point
+    from System.Drawing import Color
+    from System.Windows.Forms import TextBox
+    from System.Windows.Forms import TrackBar
 
-from System.Drawing import Size
-from System.Drawing import Point
-from System.Drawing import Color
+except ImportError as e:
 
-from System.Windows.Forms import TextBox
-from System.Windows.Forms import TrackBar
-
-from _form import Form
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'

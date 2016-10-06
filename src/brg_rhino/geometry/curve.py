@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
-import rhinoscriptsyntax as rs
 
 import brg_rhino.utilities as rhino
+
+try:
+    import rhinoscriptsyntax as rs
+
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
@@ -41,14 +49,14 @@ class Curve(object):
         self.guid = None
 
     def is_line(self):
-        return (rs.IsLine(self.guid)
-                and rs.CurveDegree(self.guid) == 1
-                and len(rs.CurvePoints(self.guid)) == 2)
+        return (rs.IsLine(self.guid) and
+                rs.CurveDegree(self.guid) == 1 and
+                len(rs.CurvePoints(self.guid)) == 2)
 
     def is_polyline(self):
-        return (rs.IsPolyline(self.guid)
-                and rs.CurveDegree(self.guid) == 1
-                and len(rs.CurvePoints(self.guid)) > 2)
+        return (rs.IsPolyline(self.guid) and
+                rs.CurveDegree(self.guid) == 1 and
+                len(rs.CurvePoints(self.guid)) > 2)
 
     def space(self, density=10):
         space = []

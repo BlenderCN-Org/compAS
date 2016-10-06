@@ -3,26 +3,29 @@
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
 # @Version : $Id$
 
-import System
-import Rhino
-import scriptcontext as sc
-
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Line
-
-from System.Collections.Generic import List
-from System.Drawing.Color import FromArgb
-
 from brg_rhino.conduits import Conduit
 from brg_rhino.ui.mouse import Mouse
 
 from brg.geometry import length
 from brg.geometry import cross
 
+try:
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Line
+
+    from System.Collections.Generic import List
+    from System.Drawing.Color import FromArgb
+
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'

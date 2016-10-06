@@ -3,26 +3,37 @@
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
 # @Version : $Id$
 
-import Rhino
-import scriptcontext as sc
+from brg_rhino.conduits import Conduit
 
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Line
+try:
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Line
 
-from System.Collections.Generic import List
-from System.Drawing.Color import FromArgb
+    from System.Collections.Generic import List
+    from System.Drawing.Color import FromArgb
+
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
 __date__       = 'Oct 14, 2014'
 
 
-class SplinesConduit(Rhino.Display.DisplayConduit):
+__all__ = [
+    'SplinesConduit',
+]
+
+
+class SplinesConduit(Conduit):
     """"""
     def __init__(self, points, lines, splines,
                  thickness=1,
@@ -33,7 +44,7 @@ class SplinesConduit(Rhino.Display.DisplayConduit):
         self.points = points
         self.lines = lines
         self.splines = splines
-        self.l = len(lines)
+        self.lines_count = len(lines)
         self.thickness = thickness
         self.spline_thickness = spline_thickness
         color = color or (255, 0, 0)
@@ -42,7 +53,7 @@ class SplinesConduit(Rhino.Display.DisplayConduit):
         self.spline_color = FromArgb(*spline_color)
 
     def DrawForeground(self, e):
-        lines = List[Line](self.l)
+        lines = List[Line](self.lines_count)
         for i, j in self.lines:
             sp = self.points[i]
             ep = self.points[j]
@@ -76,9 +87,9 @@ if __name__ == "__main__":
         for i in range(100):
             conduit.points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(10)]
 
-            sc.doc.Views.Redraw()
+            conduit.redraw()
+
             time.sleep(0.1)
-            Rhino.RhinoApp.Wait()
 
     except Exception as e:
         print e

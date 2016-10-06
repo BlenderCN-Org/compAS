@@ -1,14 +1,22 @@
 # -*- coding: utf-8 -*-
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
 
-find_object = sc.doc.Objects.Find
-purge_object = sc.doc.Objects.Purge
+try:
+    import rhinoscriptsyntax as rs
+    import scriptcontext as sc
+
+    find_object = sc.doc.Objects.Find
+    purge_object = sc.doc.Objects.Purge
+
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
@@ -34,6 +42,7 @@ def create_layers(layers):
                 attr = layers[name]
             except TypeError:
                 attr = {}
+            attr = attr or {}
             color   = attr.get('color', (0, 0, 0))
             visible = attr.get('visible', True)
             locked  = attr.get('locked', False)

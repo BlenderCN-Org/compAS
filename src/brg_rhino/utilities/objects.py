@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
-import os
 
-import System
+try:
+    import System
+    import Rhino
+    import rhinoscriptsyntax as rs
+    import scriptcontext as sc
 
-import Rhino
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
+    find_object = sc.doc.Objects.Find
+    purge_object = sc.doc.Objects.Purge
 
-find_object = sc.doc.Objects.Find
-purge_object = sc.doc.Objects.Purge
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
@@ -94,16 +99,21 @@ def get_object_attributes():
     raise NotImplementedError
 
 
+# use ast for this
+# ast.literal_eval
+# @see: https://docs.python.org/2/library/ast.html#ast.literal_eval
 def get_object_attributes_from_name(name, separator=';', assignment=':'):
     attr  = {}
     if name:
+        name = name.lstrip('{')
+        name = name.rstrip('}')
         parts = name.split(separator)
         for part in parts:
             pair = part.split(assignment)
             if len(pair) == 2:
                 key, value = pair
                 try:
-                    attr[key] = eval(value)
+                    attr[eval(key)] = eval(value)
                 except:
                     pass
     return attr

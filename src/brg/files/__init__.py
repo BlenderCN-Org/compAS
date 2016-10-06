@@ -6,7 +6,6 @@ import dxf
 import obj
 import ply
 import stl
-import xml
 
 __all__ = [
     'amf',
@@ -15,7 +14,6 @@ __all__ = [
     'obj',
     'ply',
     'stl',
-    'xml',
 ]
 
 from obj import OBJ

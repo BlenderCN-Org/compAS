@@ -37,7 +37,7 @@ class TriMesh(Mesh):
         if vertices[-1] == vertices[0]:
             del vertices[-1]
         if len(vertices) != 3:
-            raise TriMeshError('The face has too many vertices: {0}'.format(vertices))
+            raise Exception('The face has too many vertices: {0}'.format(vertices))
         return super(TriMesh, self).add_face(vertices, fkey=fkey)
 
 

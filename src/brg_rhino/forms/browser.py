@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from System import Uri
+from brg_rhino.forms import Form
 
-from System.Windows.Forms import WebBrowser
-from System.Windows.Forms import StatusStrip
-from System.Windows.Forms import ToolStripStatusLabel
-from System.Windows.Forms import FormBorderStyle
-from System.Windows.Forms import DockStyle
+try:
+    from System import Uri
+    from System.Windows.Forms import WebBrowser
+    from System.Windows.Forms import StatusStrip
+    from System.Windows.Forms import ToolStripStatusLabel
+    from System.Windows.Forms import FormBorderStyle
+    from System.Windows.Forms import DockStyle
 
-from _form import Form
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'

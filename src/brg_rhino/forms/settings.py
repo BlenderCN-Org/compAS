@@ -1,42 +1,42 @@
 # -*- coding: utf-8 -*-
 
-import System
+from brg_rhino.forms import Form
 
-from System.Windows.Forms import TabControl
-from System.Windows.Forms import Button
-from System.Windows.Forms import DialogResult
-from System.Windows.Forms import FlowLayoutPanel
-from System.Windows.Forms import DataGridViewColumnSortMode
-# from System.Windows.Forms import Keys
-# from System.Windows.Forms import ScrollBars
-from System.Windows.Forms import TabPage
-from System.Windows.Forms import Padding
+try:
+    import System
+    from System.Windows.Forms import TabControl
+    from System.Windows.Forms import Button
+    from System.Windows.Forms import DialogResult
+    from System.Windows.Forms import FlowLayoutPanel
+    from System.Windows.Forms import DataGridViewColumnSortMode
+    from System.Windows.Forms import TabPage
+    from System.Windows.Forms import Padding
+    from System.Windows.Forms import BorderStyle
+    from System.Windows.Forms import DockStyle
+    from System.Windows.Forms import FlowDirection
+    from System.Windows.Forms import DataGridView
+    from System.Windows.Forms import DataGridViewAutoSizeColumnsMode
+    from System.Windows.Forms import DataGridViewAutoSizeRowsMode
+    from System.Windows.Forms import DataGridViewCellBorderStyle
+    from System.Windows.Forms import DataGridViewHeaderBorderStyle
+    from System.Windows.Forms import DataGridViewSelectionMode
+    from System.Windows.Forms import DataGridViewContentAlignment
+    from System.Drawing import Point
+    from System.Drawing import Size
+    from System.Drawing import Color
+    from System.Drawing import Font
+    from System.Drawing import FontStyle
 
-from System.Windows.Forms import BorderStyle
-from System.Windows.Forms import DockStyle
-from System.Windows.Forms import FlowDirection
+except ImportError as e:
 
-from System.Windows.Forms import DataGridView
-from System.Windows.Forms import DataGridViewAutoSizeColumnsMode
-from System.Windows.Forms import DataGridViewAutoSizeRowsMode
-from System.Windows.Forms import DataGridViewCellBorderStyle
-from System.Windows.Forms import DataGridViewHeaderBorderStyle
-from System.Windows.Forms import DataGridViewSelectionMode
-from System.Windows.Forms import DataGridViewContentAlignment
-
-from System.Drawing import Point
-from System.Drawing import Size
-from System.Drawing import Color
-from System.Drawing import Font
-from System.Drawing import FontStyle
-
-
-from _form import Form
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
@@ -123,6 +123,7 @@ class SettingsForm(Form):
 # ==============================================================================
 # Helpers
 # ==============================================================================
+
 
 def depth(x):
     if type(x) is dict and x:

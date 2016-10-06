@@ -12,19 +12,33 @@ import brg_rhino.utilities as rhino
 @rhino.add_gui_helpers((EditAttributes, EditGeometry, DisplayGeometry, GetKeys, DisplayLabels))
 class RhinoNetwork(Network):
 
-    def __init__(self):
-        super(RhinoNetwork, self).__init__()
+    def __init__(self, **kwargs):
+        super(RhinoNetwork, self).__init__(**kwargs)
         self.attributes.update({
             'layer'        : None,
             'color.vertex' : (0, 0, 0),
             'color.edge'   : (53, 53, 53),
         })
+        self.attributes.update(kwargs)
 
     # --------------------------------------------------------------------------
     # descriptors
     #
     # NOTE: some descriptors are inherited from the base Mixin class
     # --------------------------------------------------------------------------
+
+    @property
+    def layer(self):
+        """:obj:`str` : The layer of the network.
+
+        Any value of appropriate type assigned to this property will be stored in
+        the instance's attribute dict.
+        """
+        return self.attributes.get('layer', None)
+
+    @layer.setter
+    def layer(self, value):
+        self.attributes['layer'] = value
 
     # --------------------------------------------------------------------------
     # constructors
@@ -75,6 +89,6 @@ class RhinoNetwork(Network):
         rhino.delete_objects(rhino.get_objects('{0}.vertex.*'.format(self.name)))
         rhino.delete_objects(rhino.get_objects('{0}.edge.*'.format(self.name)))
         if show_vertices:
-            rhino.xdraw_points(points, layer=layer, clear=clear, redraw=False)
+            rhino.xdraw_points(points, layer=self.layer, clear=clear, redraw=False)
         if show_edges:
-            rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
+            rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=True)

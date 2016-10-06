@@ -119,7 +119,7 @@ class Mesh(object):
     # from_boundary           = classmethod(mesh_from_boundary)
     # from_points             = classmethod(mesh_from_points)
 
-    def __init__(self, vertices=None, faces=None, dva=None, dfa=None, dea=None, **kwargs):
+    def __init__(self, **kwargs):
         self._fkey = 0
         self._vkey = 0
         self.vertex   = {}
@@ -127,11 +127,9 @@ class Mesh(object):
         self.halfedge = {}
         self.edge     = {}
         self.dualdata = None
-        dva = dva or {}
         self.dva = {'x': 0, 'y': 0, 'z': 0}
-        self.dva.update(dva)
-        self.dfa = dfa or {}
-        self.dea = dea or {}
+        self.dfa = {}
+        self.dea = {}
         self.attributes = {
             'name'         : 'Mesh',
             'color.vertex' : (0, 0, 0),
@@ -139,12 +137,6 @@ class Mesh(object):
             'color.face'   : (0, 0, 0),
         }
         self.attributes.update(kwargs)
-        if vertices:
-            for attr in vertices:
-                self.add_vertex(**attr)
-        if faces:
-            for keys in faces:
-                self.add_face(keys)
 
     def __contains__(self, key):
         """Verify if the mesh contains a specific vertex.
@@ -230,15 +222,15 @@ class Mesh(object):
         Mesh.from_data() class method and the mesh.to_data() instance method.
         """
         return {'attributes' : self.attributes,
+                'dva'        : self.dva,
+                'dea'        : self.dea,
+                'dfa'        : self.dfa,
                 'vertex'     : self.vertex,
                 'halfedge'   : self.halfedge,
                 'face'       : self.face,
                 'edge'       : self.edge,
                 'vkey'       : self._vkey,
-                'fkey'       : self._fkey,
-                'dva'        : self.dva,
-                'dfa'        : self.dfa,
-                'dea'        : self.dea, }
+                'fkey'       : self._fkey}
 
     @data.setter
     def data(self, data):
@@ -386,6 +378,12 @@ class Mesh(object):
     def get_any_face_vertex(self, fkey):
         return self.face_vertices(fkey)[0]
 
+    def vertex_color(self, key, qualifier=None):
+        if qualifier:
+            if self.vertex[key][qualifier]:
+                return self.attributes.get('color.vertex:{0}'.format(qualifier))
+        return self.attributes['color.vertex']
+
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
@@ -399,7 +397,7 @@ class Mesh(object):
     # **************************************************************************
 
     @classmethod
-    def from_data(cls, data, dva=None, dfa=None, dea=None, **kwargs):
+    def from_data(cls, data, **kwargs):
         """Construct a mesh from actual mesh data.
 
         This function should be used in combination with the data obtained from
@@ -407,9 +405,6 @@ class Mesh(object):
 
         Parameters:
             data (dict): The data dictionary.
-            dva (dict) : Default vertex attributes. Optional. Default is ``None``.
-            dfa (dict) : Default face attributes. Optional. Default is ``None``.
-            dea (dict) : Default edge attributes. Optional. Default is ``None``.
             kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.
 
         Returns:
@@ -419,22 +414,19 @@ class Mesh(object):
         >>> m2 = Mesh.from_data(data)
 
         """
-        mesh = cls(dva=dva, dfa=dfa, dea=dea)
+        mesh = cls()
         mesh.attributes.update(kwargs)
         mesh.data = data
         return mesh
 
     @classmethod
-    def from_vertices_and_faces(cls, vertices, faces, dva=None, dfa=None, dea=None, **kwargs):
+    def from_vertices_and_faces(cls, vertices, faces, **kwargs):
         """Initialise a mesh from a list of vertices and faces.
 
         Parameters:
             vertices (list) : A list of vertices, represented by their XYZ coordinates.
             faces (list) : A list of faces. Each face is a list of indices referencing
                 the list of vertex coordinates.
-            dva (dict) : Default vertex attributes. Optional. Default is ``None``.
-            dfa (dict) : Default face attributes. Optional. Default is ``None``.
-            dea (dict) : Default edge attributes. Optional. Default is ``None``.
             kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.
 
         Returns:
@@ -445,7 +437,7 @@ class Mesh(object):
         >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
         """
-        mesh = cls(dva=dva, dfa=dfa, dea=dea)
+        mesh = cls()
         mesh.attributes.update(kwargs)
         for x, y, z in vertices:
             mesh.add_vertex(x=x, y=y, z=z)
@@ -454,14 +446,11 @@ class Mesh(object):
         return mesh
 
     @classmethod
-    def from_obj(cls, filepath, dva=None, dfa=None, dea=None, **kwargs):
+    def from_obj(cls, filepath, **kwargs):
         """Initialise a mesh from the data described in an obj file.
 
         Parameters:
             filepath (str): The path to the obj file.
-            dva (dict) : Default vertex attributes. Optional. Default is ``None``.
-            dfa (dict) : Default face attributes. Optional. Default is ``None``.
-            dea (dict) : Default edge attributes. Optional. Default is ``None``.
             kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.
 
         Returns:
@@ -470,7 +459,7 @@ class Mesh(object):
         >>> mesh = Mesh.from_obj('path/to/file.obj')
 
         """
-        mesh = cls(dva=dva, dfa=dfa, dea=dea)
+        mesh = cls()
         mesh.attributes.update(kwargs)
         obj = OBJ(filepath)
         vertices = obj.parser.vertices
@@ -482,19 +471,19 @@ class Mesh(object):
         return mesh
 
     @classmethod
-    def from_dxf(cls, filepath, dva=None, dfa=None, dea=None):
+    def from_dxf(cls, filepath, **kwargs):
         raise NotImplementedError
 
     @classmethod
-    def from_stl(cls, filepath, dva=None, dfa=None, dea=None):
+    def from_stl(cls, filepath, **kwargs):
         raise NotImplementedError
 
     @classmethod
-    def from_json(cls, filepath, dva=None, dfa=None, dea=None, **kwargs):
+    def from_json(cls, filepath, **kwargs):
         data = None
         with open(filepath, 'rb') as fp:
             data = json.load(fp)
-        mesh = cls.from_data(data, dva=dva, dfa=dfa, dea=dea)
+        mesh = cls.from_data(data)
         mesh.attributes.update(kwargs)
         return mesh
 
@@ -507,9 +496,6 @@ class Mesh(object):
                       holes=None,
                       spacing=1.0,
                       do_smooth=False,
-                      dva=None,
-                      dfa=None,
-                      dea=None,
                       **kwargs):
         from brg.utilities.scriptserver import ScriptServer
         scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
@@ -524,20 +510,13 @@ class Mesh(object):
             spacing=spacing,
             config=config,
         )
-        return cls.from_data(res['data'],
-                             dva=dva,
-                             dfa=dfa,
-                             dea=dea,
-                             **kwargs)
+        return cls.from_data(res['data'], **kwargs)
 
     # differentiate between config and **kwargs
     @classmethod
     def from_points(cls,
                     points,
                     do_smooth=False,
-                    dva=None,
-                    dfa=None,
-                    dea=None,
                     **kwargs):
         from brg.utilities.scriptserver import ScriptServer
         scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
@@ -550,11 +529,7 @@ class Mesh(object):
             points=points,
             config=config
         )
-        return cls.from_data(res['data'],
-                             dva=dva,
-                             dfa=dfa,
-                             dea=dea,
-                             **kwargs)
+        return cls.from_data(res['data'], **kwargs)
 
     # **************************************************************************
     # **************************************************************************
@@ -1454,10 +1429,8 @@ class Mesh(object):
                 a  += 0.25 * length(cross(v01, v03))
         return a
 
-    def vertex_coordinates(self, key=None, xyz='xyz'):
-        if key is not None:
-            return [self.vertex[key][_] for _ in xyz]
-        return [self.vertex_coordinates(k, xyz=xyz) for k in self.vertex]
+    def vertex_coordinates(self, key, xyz='xyz'):
+        return [self.vertex[key][_] for _ in xyz]
 
     def vertex_normal(self, key):
         a  = 0
@@ -1475,12 +1448,10 @@ class Mesh(object):
             a  += self.face_area(fkey)
         return nx / a, ny / a, nz / a
 
-    def face_coordinates(self, fkey=None, ordered=False):
-        if fkey is not None:
-            coords = self.vertex_coordinates
-            vertices = self.face_vertices(fkey, ordered=ordered)
-            return [coords(key) for key in vertices]
-        return [self.face_coordinates(k, ordered=ordered) for k in self.face]
+    def face_coordinates(self, fkey, ordered=False):
+        coords = self.vertex_coordinates
+        vertices = self.face_vertices(fkey, ordered=ordered)
+        return [coords(key) for key in vertices]
 
     def face_normal(self, fkey, unitized=True):
         coords = self.vertex_coordinates
@@ -1528,26 +1499,6 @@ class Mesh(object):
             return vec
         vec_len = length(vec)
         return [axis / vec_len for axis in vec]
-
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # add-ons
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-
-    # # move to extended mesh implementation?
-    # def unify_cycles(self):
-    #     return mesh_unify_cycle_directions(self)
-
-    # # move to extended mesh implementation?
-    # def flip_cycles(self):
-    #     return mesh_flip_cycle_directions(self)
 
     # **************************************************************************
     # **************************************************************************

@@ -3,87 +3,32 @@
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
 # @Version : $Id$
 
-
-import Rhino
-from Rhino.Geometry import Point3d
-
 from brg_rhino.datastructures.mixins import Mixin
-
 import brg_rhino.utilities as rhino
 
+try:
+    import Rhino
+    from Rhino.Geometry import Point3d
 
-TOL = rhino.get_tolerance()
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
 __date__       = 'Oct 14, 2014'
 
 
-# def move_vertices(self, keys):
-#     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-#     guids = []
-#     for key in keys:
-#         name = '{0}.vertex.{1}'.format(self.name, key)
-#         guids += rhino.get_objects(name)
-#     if not guids:
-#         return
-#     lines = []
-#     anchored_lines  = []
-#     moving_vertices = []
-#     moved_vertices  = [None] * len(keys)
-#     visited = {}
-#     for key in keys:
-#         u = len(moving_vertices)
-#         moving_vertices.append([self.vertex[key][_] for _ in 'xyz'])
-#         nbrs = self.halfedge[key]
-#         for nbr in nbrs:
-#             if (key, nbr) in visited or (nbr, key) in visited:
-#                 continue
-#             if nbr in keys:
-#                 v = keys.index(nbr)
-#                 lines.append((u, v))
-#             else:
-#                 anchor = [self.vertex[nbr][_] for _ in 'xyz']
-#                 anchored_lines.append((anchor, u))
-#             if nbr in self.edge[key]:
-#                 visited[(key, nbr)] = 1
-#             else:
-#                 visited[(nbr, key)] = 1
-#     to_delete = list(guids)
-#     for u, v in visited.iterkeys():
-#         to_delete += rhino.get_objects('{0}.edge.{1}-{2}'.format(self.name, u, v))
-#     start = rhino.pick_point('Point to move from?')
-#     rhino.delete_objects(to_delete)
-#     def OnDynamicDraw(sender, eargs):
-#         current = list(eargs.CurrentPoint)
-#         vec = [current[i] - start[i] for i in range(3)]
-#         for i in xrange(len(moving_vertices)):
-#             moved_vertices[i] = [moving_vertices[i][_] + vec[_] for _ in range(3)]
-#         for anchor, index in iter(anchored_lines):
-#             sp = Rhino.Geometry.Point3d(*anchor)
-#             ep = Rhino.Geometry.Point3d(*moved_vertices[index])
-#             eargs.Display.DrawDottedLine(sp, ep, color)
-#         for u, v in iter(lines):
-#             sp = Rhino.Geometry.Point3d(*moved_vertices[u])
-#             ep = Rhino.Geometry.Point3d(*moved_vertices[v])
-#             eargs.Display.DrawDottedLine(sp, ep, color)
-#     gp = Rhino.Input.Custom.GetPoint()
-#     gp.SetCommandPrompt('Point to move to?')
-#     gp.DynamicDraw += OnDynamicDraw
-#     gp.Get()
-#     if gp.CommandResult() == Rhino.Commands.Result.Success:
-#         end = list(gp.Point())
-#         vec = [end[i] - start[i] for i in range(3)]
-#         for key in keys:
-#             self.vertex[key]['x'] += vec[0]
-#             self.vertex[key]['y'] += vec[1]
-#             self.vertex[key]['z'] += vec[2]
-#     self.draw()
+__all__ = [
+    'EditGeometry'
+]
 
 
 class EditGeometry(Mixin):

@@ -49,6 +49,9 @@ def split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     line.scale(t)
     x, y, z = line.end
     # --------------------------------------------------------------------------
+    # this interpolates the attributes
+    # perhaps this should be left up to a user function
+    # btw, all algorithms should have ufuncs...
     u_attr = mesh.vertex[u]
     v_attr = mesh.vertex[v]
     w_attr = {}
@@ -80,3 +83,36 @@ def split_edge(mesh, u, v, t=0.5, allow_boundary=False):
         mesh.face[fkey_vu][w] = u
     # return the key of the split vertex
     return w
+
+
+def split_face(mesh, fkey, u, v):
+    """Split a face by inserting an edge between two specified vertices.
+
+    Parameters:
+        fkey (str) : The face key.
+        u (str) : The key of the first split vertex.
+        v (str) : The key of the second split vertex.
+
+    """
+    if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
+        raise ValueError('The split vertices do not belong to the split face.')
+    if mesh.face[fkey][u] == v:
+        raise ValueError('The split vertices are neighbours.')
+    d = mesh.face[fkey][u]
+    f = [u]
+    while True:
+        f.append(d)
+        if d == v:
+            break
+        d = mesh.face[fkey][d]
+    d = mesh.face[fkey][v]
+    g = [v]
+    while True:
+        g.append(d)
+        if d == u:
+            break
+        d = mesh.face[fkey][d]
+    f = mesh.add_face(f)
+    g = mesh.add_face(g)
+    del mesh.face[fkey]
+    return f, g

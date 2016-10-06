@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
-import rhinoscriptsyntax as rs
+
+try:
+    import rhinoscriptsyntax as rs
+
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
@@ -88,7 +96,7 @@ class Surface(object):
                     for j in xrange(dv):
                         seed = xmin + i * xstep, ymin + j * ystep, 0
                         seeds.append(seed)
-                points = map(list, rs.ProjectPointToSurface(seeds, guid, [0,0,1]))
+                points = map(list, rs.ProjectPointToSurface(seeds, guid, [0, 0, 1]))
                 xyz += points
         if len(faces) > 1:
             rs.DeleteObjects(faces)
@@ -175,7 +183,7 @@ class Surface(object):
             return
         projections = []
         for point in points:
-            ppoints = rs.ProjectPointToSurface(point, self.guid, [0,0,1])
+            ppoints = rs.ProjectPointToSurface(point, self.guid, [0, 0, 1])
             if not ppoints:
                 raise SurfaceError('Could not project point to surface.')
             ppoint = ppoints[0]

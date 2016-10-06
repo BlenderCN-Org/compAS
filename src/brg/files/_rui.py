@@ -18,7 +18,7 @@ from xml.dom import minidom
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
@@ -166,6 +166,16 @@ class Rui(object):
 
     Parameters:
         filepath (str): The path to the rui file.
+
+    Attributes:
+        filepath (str) : The path to the rui file.
+        clear_file_contents (bool) : If `True`, clear the contents of the rui file
+            before writing. Default is `True`.
+        separator (str) : The token used as a separator between names and values
+            in the comments. Default is `'=>'`.
+
+    >>> rui = Rui('path/to/file.rui')
+    >>> rui.add_macrocontroller()
     """
     def __init__(self, filepath, **config):
         self.filepath = filepath
@@ -537,4 +547,41 @@ class Rui(object):
 
 if __name__ == '__main__':
 
-    pass
+    class Controller(object):
+
+        def __init__(self):
+            pass
+
+        # tooltip           => init MeshTools
+        # help_text         => init MeshTools
+        # menu              => MeshTools
+        # toolbar           => MeshTools
+        # script            => -_RunPythonScript ResetEngine (import sys)
+        def init(self):
+            pass
+
+    menus = [
+        {'name': 'MeshTools', 'menus': []}
+    ]
+
+    toolbargroups = [
+        {'name': 'MeshTools', 'toolbars': ['MeshTools']}
+    ]
+
+    toolbars = [
+        {'name': 'MeshTools', },
+    ]
+
+    rui = Rui('./data/test.rui')
+
+    rui.add_menus(menus)
+    rui.add_toolbars(toolbars)
+    rui.add_toolbargroups(toolbargroups)
+
+    methods = rui.get_public_class_methods(Controller)
+
+    rui.add_macros(methods, 'meshtools')
+    rui.add_menuitems(methods)
+    rui.add_toolbaritems(methods)
+
+    rui.write()

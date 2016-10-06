@@ -1,5 +1,3 @@
-import rhinoscriptsyntax as rs
-
 from brg.datastructures import Mesh
 from brg.utilities.maps import geometric_key
 
@@ -13,17 +11,31 @@ from brg_rhino.geometry.surface import Surface
 
 import brg_rhino.utilities as rhino
 
+try:
+    import rhinoscriptsyntax as rs
 
-# rename to RhinoMesh
-@rhino.add_gui_helpers((EditAttributes, EditGeometry, DisplayGeometry, GetKeys, DisplayLabels))
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
+
+
+@rhino.add_gui_helpers((
+    EditAttributes,
+    EditGeometry,
+    DisplayGeometry,
+    GetKeys,
+    DisplayLabels
+))
 class RhinoMesh(Mesh):
 
-    def __init__(self):
-        super(RhinoMesh, self).__init__()
+    def __init__(self, **kwargs):
+        super(RhinoMesh, self).__init__(**kwargs)
         self.attributes.update({
             'layer'               : None,
             'color.normal:vertex' : (0, 255, 0),
-            'color.normal:face' : (0, 255, 0),
+            'color.normal:face'   : (0, 255, 0),
         })
 
     # --------------------------------------------------------------------------
@@ -32,25 +44,40 @@ class RhinoMesh(Mesh):
     # NOTE: some descriptors are inherited from the base Mixin class
     # --------------------------------------------------------------------------
 
+    @property
+    def layer(self):
+        """:obj:`str` : The layer of the mesh.
+
+        Any value of appropriate type assigned to this property will be stored in
+        the instance's attribute dict.
+        """
+        return self.attributes.get('layer', None)
+
+    @layer.setter
+    def layer(self, value):
+        self.attributes['layer'] = value
+
     # --------------------------------------------------------------------------
     # constructors
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_guid(cls, guid):
+    def from_guid(cls, guid, **kwargs):
         vertices, faces = rhino.get_mesh_vertices_and_faces(guid)
         faces = [face[: -1] if face[-2] == face[-1] else face for face in faces]
-        mesh = cls.from_vertices_and_faces(vertices, faces)
+        mesh  = cls.from_vertices_and_faces(vertices, faces)
+        mesh.attributes.update(kwargs)
         return mesh
 
     @classmethod
-    def from_surface(cls, guid, density=(10, 10)):
+    def from_surface(cls, guid, density=(10, 10), **kwargs):
         surface = Surface(guid)
         try:
             u, v = density
         except:
             u, v = density, density
         mesh = cls()
+        mesh.attributes.update(kwargs)
         vertices = surface.heightfield(density=(u, v), over_space=True)
         for x, y, z in vertices:
             mesh.add_vertex(x=x, y=y, z=z)
@@ -68,7 +95,7 @@ class RhinoMesh(Mesh):
     # for example, measure distance between potentail split point
     # and the corresponding curved surface
     @classmethod
-    def from_polysurface(cls, guid):
+    def from_polysurface(cls, guid, **kwargs):
         vertices = {}
         faces    = []
         gkey_key = {}
@@ -121,7 +148,7 @@ class RhinoMesh(Mesh):
         vertices  = [xyz for key, xyz in vertices.items()]
         faces     = [[key_index[key] for key in face] for face in faces]
         mesh      = cls.from_vertices_and_faces(vertices, faces)
-        mesh.unify_cycle_directions()
+        mesh.attributes.update(kwargs)
         return mesh
 
     # --------------------------------------------------------------------------
@@ -133,9 +160,9 @@ class RhinoMesh(Mesh):
              layer=None,
              clear=True,
              redraw=True,
-             show_faces=True,  # rename to display_faces?
-             show_vertices=True,  # rename to display_vertices?
-             show_edges=True,  # rename to display_edges?
+             show_faces=True,
+             show_vertices=True,
+             show_edges=True,
              vertex_color=None,
              edge_color=None,
              face_color=None):
@@ -165,6 +192,7 @@ class RhinoMesh(Mesh):
                 v = len(face)
                 if v < 3:
                     print 'Degenerate face: {0} => {1}'.format(fkey, face)
+                    continue
                 if v == 3:
                     faces.append([key_index[k] for k in face + [face[-1]]])
                 elif v == 4:

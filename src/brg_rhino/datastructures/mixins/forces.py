@@ -6,16 +6,19 @@
 from brg_rhino.datastructures.mixins import Mixin
 import brg_rhino.utilities as rhino
 
-TOL = rhino.get_tolerance()
-
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
 __date__       = 'Oct 14, 2014'
+
+
+__all__ = [
+    'DisplayForces'
+]
 
 
 class DisplayForces(Mixin):
@@ -27,6 +30,7 @@ class DisplayForces(Mixin):
                              scale=1.0,
                              color_tension=None,
                              color_compression=None):
+        tol = rhino.get_tolerance()
         objects = rhino.get_objects(name='{0}.force:axial.*'.format(self.name))
         rhino.delete_objects(objects)
         if not display:
@@ -42,7 +46,7 @@ class DisplayForces(Mixin):
             color  = color_tension if force > 0.0 else color_compression
             radius = scale * ((force ** 2) ** 0.5 / 3.14159) ** 0.5
             name   = '{0}.force:axial.{1}-{2}'.format(self.name, u, v)
-            if radius < TOL:
+            if radius < tol:
                 continue
             lines.append({
                 'start'  : sp,
@@ -58,6 +62,7 @@ class DisplayForces(Mixin):
                                 layer=None,
                                 scale=1.0,
                                 color=None):
+        tol = rhino.get_tolerance()
         objects = rhino.get_objects(name='{0}.force:reaction.*'.format(self.name))
         rhino.delete_objects(objects)
         if not display:
@@ -74,7 +79,7 @@ class DisplayForces(Mixin):
             l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
             arrow = 'start'
             name  = '{0}.force:reaction.{1}'.format(self.name, key)
-            if l < TOL:
+            if l < tol:
                 continue
             lines.append({
                 'start' : sp,
@@ -90,6 +95,7 @@ class DisplayForces(Mixin):
                                 layer=None,
                                 scale=1.0,
                                 color=None):
+        tol = rhino.get_tolerance()
         objects = rhino.get_objects(name='{0}.force:residual.*'.format(self.name))
         rhino.delete_objects(objects)
         if not display:
@@ -106,7 +112,7 @@ class DisplayForces(Mixin):
             l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
             arrow = 'end'
             name  = '{0}.force:residual.{1}'.format(self.name, key)
-            if l < TOL:
+            if l < tol:
                 continue
             lines.append({'start' : sp,
                           'end'   : ep,
@@ -181,4 +187,3 @@ class DisplayForces(Mixin):
                       'color': color,
                       'arrow': arrow, })
         rhino.xdraw_lines(lines, layer=layer, clear=False)
-

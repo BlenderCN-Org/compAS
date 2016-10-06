@@ -1,17 +1,23 @@
-import Rhino
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
-
 from brg.datastructures import VolMesh
 from brg.utilities.maps import geometric_key
 
 import brg_rhino.utilities as rhino
 
+try:
+    import Rhino
+    import scriptcontext as sc
 
-class VolMeshRhino(VolMesh):
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
+
+
+class RhinoVolMesh(VolMesh):
 
     def __init__(self):
-        super(VolMeshRhino, self).__init__()
+        super(RhinoVolMesh, self).__init__()
         self.attributes.update({
             'layer' : None,
         })

@@ -1,7 +1,14 @@
 import os
 import json
 
-from System.Diagnostics import Process
+try:
+    from System.Diagnostics import Process
+
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]

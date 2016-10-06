@@ -18,7 +18,6 @@
 """
 
 from brg.datastructures.mesh.mesh import Mesh
-from brg.datastructures.mesh.exceptions import MeshError
 
 
 __author__     = ['Tom Van Mele', ]
@@ -51,7 +50,7 @@ class QuadMesh(Mesh):
         if vertices[-1] == vertices[0]:
             del vertices[-1]
         if len(vertices) > 4:
-            raise MeshError('The face has too many vertices: {0}'.format(vertices))
+            raise Exception('The face has too many vertices: {0}'.format(vertices))
         super(QuadMesh, self).add_face(vertices, fkey=fkey)
 
 

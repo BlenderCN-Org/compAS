@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from System.Windows.Forms import TextBox
-from System.Windows.Forms import DockStyle
-from System.Windows.Forms import ScrollBars
+from brg_rhino.forms import Form
 
-from System.Drawing import Font
-from System.Drawing import FontFamily
+try:
+    from System.Windows.Forms import TextBox
+    from System.Windows.Forms import DockStyle
+    from System.Windows.Forms import ScrollBars
+    from System.Drawing import Font
+    from System.Drawing import FontFamily
+    from System.Environment import NewLine
 
-from System.Environment import NewLine
+except ImportError as e:
 
-from _form import Form
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'

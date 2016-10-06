@@ -8,11 +8,16 @@ from brg_rhino.datastructures.mixins import Mixin
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
 __date__       = 'Jun 19, 2015'
+
+
+__all__ = [
+    'Descriptors',
+]
 
 
 class Descriptors(Mixin):
@@ -24,4 +29,3 @@ class Descriptors(Mixin):
     @layer.setter
     def layer(self, layer):
         self.attributes['layer'] = layer
-

@@ -5,7 +5,9 @@
 
 
 # import os
-# import json
+import json
+
+from brg.files.obj import OBJ
 
 from brg.geometry.functions import centroid
 from brg.geometry.functions import center_of_mass
@@ -29,23 +31,23 @@ __date__       = 'Oct 7, 2014'
 class Network(object):
     """"""
 
-    default_vertex_attributes = {}
-    default_edge_attributes = {}
-    default_face_attributes = {}
-
-    def __init__(self, dva=None, dea=None, dfa=None):
-        self.vertex = {}
-        self.edge = {}
-        self.halfedge = {}
-        self.face = {}
-        self.dualdata = None
+    def __init__(self, **kwargs):
+        self.vertex       = {}
+        self.edge         = {}
+        self.halfedge     = {}
+        self.face         = {}
+        self.dualdata     = None
         self.vertex_count = 0
-        self.face_count = 0
-        self.attributes = {
+        self.face_count   = 0
+        self.attributes   = {
             'name'         : 'Network',
             'color.vertex' : (0, 0, 0),
             'color.edge'   : (0, 0, 0),
         }
+        self.attributes.update(kwargs)
+        self.dva = {}
+        self.dea = {}
+        self.dfa = {}
 
     def __contains__(self, key):
         # if key in network: ...
@@ -117,18 +119,23 @@ name: {0}
 
     @property
     def data(self):
-        data = {'attributes' : self.attributes,
+        return {'attributes' : self.attributes,
+                'dva'        : self.dva,
+                'dea'        : self.dea,
+                'dfa'        : self.dfa,
                 'vertex'     : self.vertex,
                 'edge'       : self.edge,
                 'halfedge'   : self.halfedge,
                 'face'       : self.face,
                 'vcount'     : self.vertex_count,
-                'fcount'     : self.face_count, }
-        return data
+                'fcount'     : self.face_count}
 
     @data.setter
     def data(self, data):
         attributes = data.get('attributes') or {}
+        dva        = data.get('dva') or {}
+        dea        = data.get('dea') or {}
+        dfa        = data.get('dfa') or {}
         vertex     = data.get('vertex') or {}
         edge       = data.get('edge') or {}
         halfedge   = data.get('halfedge') or {}
@@ -142,12 +149,15 @@ name: {0}
         del self.halfedge
         del self.face
         self.attributes.update(attributes)
-        self.vertex = {}
-        self.edge = {}
+        self.dva.update(dva)
+        self.dea.update(dea)
+        self.dfa.update(dfa)
+        self.vertex   = {}
+        self.edge     = {}
         self.halfedge = {}
-        self.face = {}
+        self.face     = {}
         for key, attr in vertex.iteritems():
-            self.vertex[key] = self.default_vertex_attributes.copy()
+            self.vertex[key] = self.dva.copy()
             if attr:
                 self.vertex[key].update(attr)
         for u, nbrs in edge.iteritems():
@@ -155,7 +165,7 @@ name: {0}
                 self.edge[u] = {}
             nbrs = nbrs or {}
             for v, attr in nbrs.iteritems():
-                self.edge[u][v] = self.default_edge_attributes.copy()
+                self.edge[u][v] = self.dea.copy()
                 if attr:
                     self.edge[u][v].update(attr)
         for key, nbrs in halfedge.iteritems():
@@ -175,67 +185,69 @@ name: {0}
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_data(cls, data, dva=None, dea=None, dfa=None):
-        network = cls()
+    def from_data(cls, data, **kwargs):
+        network = cls(**kwargs)
         network.data = data
         return network
 
     @classmethod
-    def from_obj(cls, filepath, precision='3f', dva=None, dea=None, dfa=None):
-        from brg.files.obj import OBJ
-        # end of local imports
-        network  = cls()
+    def from_json(cls, filepath, **kwargs):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        network = cls(**kwargs)
+        network.data = data
+        return network
+
+    # should the processing of anchors be implicit?
+    # no, but there should be (a) function(s) to identify features based on
+    # data info from an obj
+    @classmethod
+    def from_obj(cls, filepath, precision='3f', **kwargs):
+        network  = cls(**kwargs)
         obj      = OBJ(filepath, precision=precision)
         vertices = obj.parser.vertices
         edges    = obj.parser.lines
         points   = obj.parser.points
-        for i, xyz in enumerate(vertices):
+        for i, (x, y, z) in enumerate(vertices):
             if i in points:
-                network.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2], is_anchor=True)
+                network.add_vertex(i, x=x, y=y, z=z, is_anchor=True)
             else:
-                network.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2], is_anchor=False)
+                network.add_vertex(i, x=x, y=y, z=z, is_anchor=False)
         for u, v in edges:
             network.add_edge(u, v)
         return network
 
     @classmethod
-    def from_lines(cls, lines, precision='3f', dva=None, dea=None, dfa=None):
-        network = cls()
-        edges = []
-        vertex = {}
+    def from_lines(cls, lines, precision='3f', **kwargs):
+        network = cls(**kwargs)
+        edges   = []
+        vertex  = {}
         for line in lines:
             sp = line[0]
             ep = line[1]
-            sp_gkey = geometric_key(sp, precision)
-            ep_gkey = geometric_key(ep, precision)
-            vertex[sp_gkey] = sp
-            vertex[ep_gkey] = ep
-            edges.append((sp_gkey, ep_gkey))
-        key_to_index = dict((key, index) for index, key in enumerate(iter(vertex)))
+            a  = geometric_key(sp, precision)
+            b  = geometric_key(ep, precision)
+            vertex[a] = sp
+            vertex[b] = ep
+            edges.append((a, b))
+        key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
         for key, xyz in vertex.iteritems():
-            network.add_vertex(key_to_index[key], x=xyz[0], y=xyz[1], z=xyz[2])
+            i = key_index[key]
+            network.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
         for u, v in edges:
-            network.add_edge(key_to_index[u], key_to_index[v])
+            i = key_index[u]
+            j = key_index[v]
+            network.add_edge(i, j)
         return network
 
     @classmethod
-    def from_vertices_and_edges(cls, vertices, edges, dva=None, dea=None, dfa=None):
-        network = cls()
+    def from_vertices_and_edges(cls, vertices, edges, **kwargs):
+        network = cls(**kwargs)
         for x, y, z in vertices:
             network.add_vertex(x=x, y=y, z=z)
         for u, v in edges:
             network.add_edge(u, v)
         return network
-
-    # @classmethod
-    # def from_mesh(cls, mesh, dva=None, dea=None, dfa=None):
-    #     network = cls()
-    #     network.vertex = mesh.vertex
-    #     network.halfedge = mesh.halfedge
-    #     network.face = mesh.face
-    #     for u, v in mesh.edges_iter():
-    #         network.edge[u][v] = {}
-    #     return network
 
     # --------------------------------------------------------------------------
     # converters
@@ -244,13 +256,26 @@ name: {0}
     def to_data(self):
         return self.data
 
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as fp:
+            json.dump(self.data, fp)
+
+    def to_obj(self, filepath):
+        raise NotImplementedError
+
+    def to_lines(self):
+        raise NotImplementedError
+
+    def to_vertices_and_edges(self):
+        raise NotImplementedError
+
     # --------------------------------------------------------------------------
     # modify
     # --------------------------------------------------------------------------
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
         """"""
-        attr = self.default_vertex_attributes.copy()
+        attr = self.dva.copy()
         if attr_dict is None:
             attr_dict = kwattr
         else:
@@ -272,7 +297,7 @@ name: {0}
 
     def add_edge(self, u, v, attr_dict=None, **kwattr):
         """"""
-        attr = self.default_edge_attributes.copy()
+        attr = self.dea.copy()
         if attr_dict is None:
             attr_dict = kwattr
         else:
@@ -292,7 +317,7 @@ name: {0}
         return u, v
 
     def add_face(self, vertices, fkey=None):
-        attr = self.default_face_attributes.copy()
+        attr = self.dfa.copy()
         if vertices[-2] == vertices[-1]:
             del vertices[-1]
         if len(vertices) < 3:
@@ -330,6 +355,8 @@ name: {0}
     # face construction
     # --------------------------------------------------------------------------
 
+    # remove this
+    # add it to the face finding algorithm
     def breakpoints(self, key_index=None):
         return self.leaves(key_index=key_index)
 
@@ -487,31 +514,31 @@ name: {0}
     # attributes
     # --------------------------------------------------------------------------
 
-    def set_default_vertex_attributes(self, attr_dict=None, **kwargs):
+    def set_dva(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.default_vertex_attributes = attr_dict
+        self.dva = attr_dict
         for key in self.vertex:
             attr = attr_dict.copy()
             attr.update(self.vertex[key])
             self.vertex[key] = attr
 
-    def set_default_edge_attributes(self, attr_dict=None, **kwargs):
+    def set_dea(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.default_edge_attributes = attr_dict
+        self.dea = attr_dict
         for u, v in self.edges_iter():
             attr = attr_dict.copy()
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
 
-    def set_default_face_attributes(self, attr_dict=None, **kwargs):
+    def set_dfa(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.default_face_attributes = attr_dict
+        self.dfa = attr_dict
         if not self.dualdata:
             self.dualdata = Network()
         for fkey in self.face:
@@ -525,29 +552,17 @@ name: {0}
     def get_vertex_attribute(self, key, name, default=None):
         return self.vertex[key].get(name, default)
 
-    def get_vertex_attribute_list(self, name, default=None):
-        return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
-
     def set_edge_attribute(self, u, v, name, value):
         self.edge[u][v][name] = value
 
     def get_edge_attribute(self, u, v, name, default=None):
         return self.edge[u][v].get(name, default)
 
-    def get_edge_attribute_list(self, name, default=None):
-        return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
-
     def set_face_attribute(self, fkey, name, value):
-        # self.dualdata = DualData()
         if not self.dualdata:
+            # self.dualdata = DualData()
             self.dualdata = Network()
         self.dualdata.vertex[fkey][name] = value
-
-    def set_face_attributes(self, fkey, attr):
-        # self.dualdata = DualData()
-        if not self.dualdata:
-            self.dualdata = Network()
-        self.dualdata.vertex[fkey] = attr
 
     def get_face_attribute(self, fkey, name, default=None):
         if not self.dualdata:
@@ -556,48 +571,55 @@ name: {0}
 
     # --------------------------------------------------------------------------
 
-    def set_vertices_attribute(self, name, value):
-        if not isinstance(value, (list, tuple)):
-            for i, key, attr in self.vertices_enum(True):
-                attr[name] = value
-        else:
-            for i, key, attr in self.vertices_enum(True):
-                attr[name] = value[i]
+    # def set_vertices_attribute(self, name, value):
+    #     if not isinstance(value, (list, tuple)):
+    #         for i, key, attr in self.vertices_enum(True):
+    #             attr[name] = value
+    #     else:
+    #         for i, key, attr in self.vertices_enum(True):
+    #             attr[name] = value[i]
 
-    def get_vertices_attribute(self, name, default=None):
-        return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+    # def get_vertices_attribute(self, name, default=None):
+    #     return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
 
-    def get_vertices_attributes(self, names, default=None):
-        return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
+    # def get_vertices_attributes(self, names, default=None):
+    #     return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
 
-    def set_edges_attribute(self, name, values):
-        for i, u, v, attr in self.edges_enum(True):
-            attr[name] = values[i]
+    # def set_edges_attribute(self, name, values):
+    #     for i, u, v, attr in self.edges_enum(True):
+    #         attr[name] = values[i]
 
-    def get_edges_attribute(self, name, default=None):
-        return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
+    # def get_edges_attribute(self, name, default=None):
+    #     return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
 
-    def get_edges_attributes(self, names, default=None):
-        return [[attr.get(name, default) for name in names] for u, v, attr in self.edges_iter(True)]
+    # def get_edges_attributes(self, names, default=None):
+    #     return [[attr.get(name, default) for name in names] for u, v, attr in self.edges_iter(True)]
 
-    def set_faces_attribute(self, name, values):
-        for i, fkey, attr in self.edges_enum(True):
-            attr[name] = values[i]
+    # def set_faces_attribute(self, name, values):
+    #     for i, fkey, attr in self.edges_enum(True):
+    #         attr[name] = values[i]
 
-    def get_faces_attribute(self, name, default=None):
-        return [self.get_face_attribute(fkey, name, default) for fkey in self.face]
+    # def get_faces_attribute(self, name, default=None):
+    #     return [self.get_face_attribute(fkey, name, default) for fkey in self.face]
 
-    def get_faces_attributes(self, names, default=None):
-        return [[self.get_face_attribute(fkey, name, default) for name in names] for fkey in self.face]
+    # def get_faces_attributes(self, names, default=None):
+    #     return [[self.get_face_attribute(fkey, name, default) for name in names] for fkey in self.face]
 
     # --------------------------------------------------------------------------
     # vertex geometry
     # --------------------------------------------------------------------------
 
-    def vertex_coordinates(self, key=None, xyz='xyz'):
-        if key is None:
-            return [[attr[axis] for axis in xyz] for k, attr in self.vertices_iter(True)]
+    def vertex_coordinates(self, key, xyz='xyz'):
         return [self.vertex[key][axis] for axis in xyz]
+
+    def vertex_area(self, key):
+        key_xyz = self.vertex_coordinates()
+        fkey_centroid = {}
+        for fkey, vertices in self.face.items():
+            if vertices[0] != vertices[-1] and len(vertices) > 4:
+                continue
+            fkey_centroid[fkey] = centroid([key_xyz[k] for k in set(vertices)])
+        return self._vertex_area(key, key_xyz, fkey_centroid)
 
     def _vertex_area(self, key, key_xyz, fkey_centroid):
         area = 0
@@ -617,31 +639,10 @@ name: {0}
                 area += 0.25 * length(cross(v01, v03))
         return area
 
-    def vertex_area(self, key=None):
-        key_xyz = self.vertex_coordinates()
-        fkey_centroid = {}
-        for fkey, vertices in self.face.items():
-            if vertices[0] != vertices[-1] and len(vertices) > 4:
-                continue
-            fkey_centroid[fkey] = centroid([key_xyz[k] for k in set(vertices)])
-        if key is None:
-            return dict(
-                (key, self._vertex_area(key, key_xyz, fkey_centroid))
-                for key in self.vertex)
-        return self._vertex_area(key, key_xyz, fkey_centroid)
-
-    def edge_length(self, u=None, v=None):
-        if u is not None:
-            if v is not None:
-                sp = self.vertex_coordinates(u)
-                ep = self.vertex_coordinates(v)
-                return (sum([(ep[i] - sp[i])**2 for i in range(len(ep))]))**0.5
-            else:
-                return dict(((u, v), self.edge_length(u, v)) for v in self.edge[u])
-        else:
-            return dict(
-                ((u, v), self.edge_length(u, v))
-                for u, v in self.edges_iter())
+    def edge_length(self, u, v):
+        sp = self.vertex_coordinates(u)
+        ep = self.vertex_coordinates(v)
+        return (sum([(ep[i] - sp[i])**2 for i in range(len(ep))]))**0.5
 
     # --------------------------------------------------------------------------
     # edge geometry
@@ -659,14 +660,10 @@ name: {0}
     # face geometry
     # --------------------------------------------------------------------------
 
-    def face_centroid(self, fkey=None):
-        if fkey is None:
-            return dict((fkey, self.face_centroid(fkey)) for fkey in self.face)
+    def face_centroid(self, fkey):
         return centroid([self.vertex_coordinates(key) for key in set(self.face[fkey])])
 
-    def face_center(self, fkey=None):
-        if fkey is None:
-            return dict((fkey, self.face_center(fkey)) for fkey in self.face)
+    def face_center(self, fkey):
         vertices = self.face[fkey]
         if vertices[-1] == vertices[0]:
             vertices = vertices[0:-1]
@@ -736,6 +733,13 @@ name: {0}
 
     def index_uv(self):
         return dict((index, (u, v)) for index, u, v in self.edges_enum())
+
+    def vertex_color(self, key, qualifier=None):
+        if qualifier:
+            if self.vertex[key][qualifier]:
+                return self.attributes.get('color.vertex:{0}'.format(qualifier))
+            return self.attributes.get('color.vertex')
+        return self.attributes.get('color.vertex')
 
     # --------------------------------------------------------------------------
     # drawing

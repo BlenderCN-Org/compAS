@@ -1,4 +1,16 @@
-from Rhino.Display import DisplayConduit
+try:
+    import Rhino
+    import scriptcontext as sc
+    from Rhino.Display import DisplayConduit
+
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
+
+    class DisplayConduit(object):
+        pass
 
 
 class Conduit(DisplayConduit):
@@ -12,10 +24,18 @@ class Conduit(DisplayConduit):
     def disable(self):
         self.Enabled = False
 
+    def redraw(self):
+        sc.doc.Views.Redraw()
+        Rhino.RhinoApp.Wait()
 
-# from lines import LinesConduit
-# from points import PointsConduit
-# from splines import SplinesConduit
+
+import lines
+import points
+import splines
 
 
-__all__ = []
+__all__ = [
+    'lines',
+    'points',
+    'splines',
+]

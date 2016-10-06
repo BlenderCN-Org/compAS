@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 
-import clr
-import System
+from brg_rhino.forms import Form
 
-from System.Drawing import Size
-from System.Drawing import Point
-from System.Drawing import Color
+try:
+    import clr
+    from System.Drawing import Size
+    from System.Drawing import Point
+    from System.Drawing import Color
 
-from _form import Form
+    clr.AddReference("System.Windows.Forms.DataVisualization")
+    from System.Windows.Forms.DataVisualization import Charting
 
-clr.AddReference("System.Windows.Forms.DataVisualization")
+except ImportError as e:
 
-from System.Windows.Forms.DataVisualization import Charting
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'

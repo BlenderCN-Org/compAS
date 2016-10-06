@@ -1,51 +1,53 @@
 # -*- coding: utf-8 -*-
-import Rhino
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
-import System
-from System.Collections.Generic import List
 
-from brg.geometry import length
-
-from misc import get_tolerance
 from layers import clear_layers
 
-from System.Drawing.Color import FromArgb
-from System.Enum import ToObject
+try:
+    import rhinoscriptsyntax as rs
+    import scriptcontext as sc
+    import System
 
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Polyline
-from Rhino.Geometry import PolylineCurve
-from Rhino.Geometry import GeometryBase
-from Rhino.Geometry import Brep
-from Rhino.Geometry import Cylinder
-from Rhino.Geometry import Circle
-from Rhino.Geometry import Plane
-from Rhino.Geometry import PipeCapMode
-from Rhino.Geometry import Curve
-from Rhino.Geometry import Sphere
+    from System.Collections.Generic import List
+    from System.Drawing.Color import FromArgb
+    from System.Enum import ToObject
 
-from Rhino.DocObjects.ObjectColorSource import ColorFromObject
-from Rhino.DocObjects.ObjectDecoration import EndArrowhead
-from Rhino.DocObjects.ObjectDecoration import StartArrowhead
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Polyline
+    from Rhino.Geometry import PolylineCurve
+    from Rhino.Geometry import GeometryBase
+    from Rhino.Geometry import Brep
+    from Rhino.Geometry import Cylinder
+    from Rhino.Geometry import Circle
+    from Rhino.Geometry import Plane
+    from Rhino.Geometry import PipeCapMode
+    from Rhino.Geometry import Curve
+    from Rhino.Geometry import Sphere
+    from Rhino.DocObjects.ObjectColorSource import ColorFromObject
+    from Rhino.DocObjects.ObjectDecoration import EndArrowhead
+    from Rhino.DocObjects.ObjectDecoration import StartArrowhead
 
-find_object = sc.doc.Objects.Find
-find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
+    find_object = sc.doc.Objects.Find
+    find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
+    add_point = sc.doc.Objects.AddPoint
+    add_line = sc.doc.Objects.AddLine
+    add_dot = sc.doc.Objects.AddTextDot
+    add_curve = sc.doc.Objects.AddCurve
+    add_polyline = sc.doc.Objects.AddPolyline
+    add_brep = sc.doc.Objects.AddBrep
+    add_sphere = sc.doc.Objects.AddSphere
 
-add_point = sc.doc.Objects.AddPoint
-add_line = sc.doc.Objects.AddLine
-add_dot = sc.doc.Objects.AddTextDot
-add_curve = sc.doc.Objects.AddCurve
-add_polyline = sc.doc.Objects.AddPolyline
-add_brep = sc.doc.Objects.AddBrep
-add_sphere = sc.doc.Objects.AddSphere
+    TOL = sc.doc.ModelAbsoluteTolerance
 
-TOL = sc.doc.ModelAbsoluteTolerance
+except ImportError as e:
+
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
@@ -58,7 +60,7 @@ __all__ = [
     'xdraw_lines',
     'xdraw_geodesics',
     'xdraw_polylines',
-    'xdraw_faces'
+    'xdraw_faces',
     'xdraw_cylinders',
     'xdraw_pipes',
     'xdraw_spheres',

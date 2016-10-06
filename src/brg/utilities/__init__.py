@@ -1,26 +1,26 @@
 import colors
-import drawing
+# import drawing
 import maps
 import mixing
 import names
-import scriptserver
+import scripts
 import units
-import webapi
-import xfunc
-import xfuncio
+# import webapi
+# import xfunc
+# import xfuncio
 
 
 __all__ = [
     'colors',
-    'drawing',
+    # 'drawing',
     'maps',
     'mixing',
     'names',
-    'scriptserver',
+    'scripts',
     'units',
-    'webapi',
-    'xfunc',
-    'xfuncio',
+    # 'webapi',
+    # 'xfunc',
+    # 'xfuncio',
 ]
 
 

@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
 
-import System
+from brg_rhino.forms import Form
 
-from System.Windows.Forms import PictureBox
-from System.Windows.Forms import PictureBoxSizeMode
-from System.Windows.Forms import DockStyle
+try:
+    from System.Windows.Forms import PictureBox
+    from System.Windows.Forms import PictureBoxSizeMode
+    from System.Windows.Forms import DockStyle
+    from System.Drawing import Image
 
-from System.Drawing import Image
+except ImportError as e:
 
-from _form import Form
+    import platform
+    if platform.system() == 'Windows':
+        raise e
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'Apache License, Version 2.0'
+__license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
 __status__     = 'Development'
