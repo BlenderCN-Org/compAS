@@ -1,4 +1,4 @@
-from brg.geometry import Line
+from brg.geometry.elements.line import Line
 
 
 __author__     = ['Tom Van Mele', ]
@@ -12,6 +12,7 @@ __date__       = '2015-12-03 13:43:05'
 
 __all__ = [
     'split_edge',
+    'split_face',
 ]
 
 
@@ -116,3 +117,33 @@ def split_face(mesh, fkey, u, v):
     g = mesh.add_face(g)
     del mesh.face[fkey]
     return f, g
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    import brg
+    from brg.datastructures.mesh.mesh import Mesh
+
+    data = brg.get_data('faces.obj')
+    mesh = Mesh.from_obj(data)
+
+    split_edge(mesh, '17', '32')
+
+    print mesh.face_vertices('11', ordered=True)
+    print mesh.face_vertices('16', ordered=True)
+
+    print mesh.halfedge['32']['36']
+    print mesh.halfedge['36']['32']
+
+    print mesh.halfedge['36']['17']
+    print mesh.halfedge['17']['36']
+
+    mesh.draw(
+        show_vertices=True,
+        vertex_label=dict((key, key) for key in mesh),
+        face_label=dict((fkey, fkey) for fkey in mesh.face)
+    )

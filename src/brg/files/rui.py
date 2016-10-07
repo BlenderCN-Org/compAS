@@ -183,7 +183,7 @@ class Rui(object):
             tooltip     = macro.get('tooltip', '')
             help_text   = macro.get('help_text', '')
             button_text = macro.get('button_text', name)
-            menu_text   = macro.get('menu_text', name)
+            menu_text   = macro.get('menu_text', name.replace('_', ' '))
             self.add_macro(name, guid, script, tooltip, help_text, button_text, menu_text)
 
     def add_macro(self, name, guid, script, tooltip, help_text, button_text, menu_text):

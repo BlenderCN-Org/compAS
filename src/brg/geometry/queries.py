@@ -214,12 +214,12 @@ def is_point_on_polyline(points, tp, tol=0):
     return False
 
 
-def is_point_in_triangle(p, a, b, c):
-    """Verify if a point (p) is inside line of the triangle a,b,c.
+def is_point_in_triangle(p, abc):
+    """Verify if a point (p) is inside line of the triangle abc.
 
     Parameters:
         p (tuple): 3d point
-        a,b,c (tuples): 3d triangle points
+        abc (tuples): 3d triangle points
 
     Returns:
         (bool): True if the point is in inside the triangle, False otherwise.
@@ -232,6 +232,7 @@ def is_point_in_triangle(p, a, b, c):
             return True
         else:
             return False
+    a, b, c = abc
     if is_on_same_side(p, a, b, c) and is_on_same_side(p, b, a, c) and is_on_same_side(p, c, a, b):
         return True
     return False
