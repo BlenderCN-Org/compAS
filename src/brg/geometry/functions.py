@@ -12,6 +12,10 @@ name.
 >>> cross_2d(u, v)
 [0.0, 0.0, 1.0]
 
+
+For notes and algorithms dealing with polygons and meshes see [paulbourke]_
+
+.. [paulbourke] `http://paulbourke.net/geometry/polygonmesh/`_
 """
 
 from math import acos
@@ -324,7 +328,7 @@ def midpoint_2d(a, b):
     return 0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1])
 
 
-def normal(points, unitize=False):
+def normal(points):
     """Compute the normal of a set of points by computing the average of the
     normals of each pair of vectors formed by sets of three consecutive points.
 
@@ -342,9 +346,8 @@ def normal(points, unitize=False):
         ValueError: If less than three points are provided.
     """
     p = len(points)
-    if p < 3:
-        raise ValueError('At least three points are required.')
-    a  = 0
+    assert p > 2, "At least three points required"
+    a2 = 0
     nx = 0
     ny = 0
     nz = 0
@@ -352,20 +355,14 @@ def normal(points, unitize=False):
         p1  = points[i - 1]
         p2  = points[i]
         p3  = points[i + 1]
-        v1  = [p1[_] - p2[_] for _ in range(3)]
-        v2  = [p3[_] - p2[_] for _ in range(3)]
+        v1  = [p1[axis] - p2[axis] for axis in range(3)]
+        v2  = [p3[axis] - p2[axis] for axis in range(3)]
         n   = cross(v1, v2)
-        l   = sqrt(n[0] ** 2 + n[1] ** 2 + n[2] ** 2)
-        a  += l
+        a2 += length(n)
         nx += n[0]
         ny += n[1]
         nz += n[2]
-    nx = nx / a
-    ny = ny / a
-    nz = nz / a
-    if not unitize:
-        return nx, ny, nz
-    return nx, ny, nz
+    return nx / a2, ny / a2, nz / a2
 
 
 def normal2(points, unitize=False):
@@ -382,8 +379,7 @@ def normal2(points, unitize=False):
         v1  = p1[0] - o[0], p1[1] - o[1], p1[2] - o[2]
         v2  = p2[0] - o[0], p2[1] - o[1], p2[2] - o[2]
         n   = cross(v1, v2)
-        l   = sqrt(n[0] ** 2 + n[1] ** 2 + n[2] ** 2)
-        a2 += l
+        a2 += length(n)
         nx += n[0]
         ny += n[1]
         nz += n[2]
@@ -418,9 +414,9 @@ def center_of_mass(polygon):
         p1  = polygon[i]
         p2  = polygon[i + 1]
         l   = distance(p1, p2)
-        cx += l * 0.5 * (p1[0] + p2[0])
-        cy += l * 0.5 * (p1[1] + p2[1])
-        cz += l * 0.5 * (p1[2] + p2[2])
+        cx += 0.5 * l * (p1[0] + p2[0])
+        cy += 0.5 * l * (p1[1] + p2[1])
+        cz += 0.5 * l * (p1[2] + p2[2])
         L  += l
     cx = cx / L
     cy = cy / L
@@ -437,8 +433,8 @@ def center_of_mass_2d(polygon):
         p1  = polygon[i]
         p2  = polygon[i + 1]
         l   = distance(p1, p2)
-        cx += l * 0.5 * (p1[0] + p2[0])
-        cy += l * 0.5 * (p1[1] + p2[1])
+        cx += 0.5 * l * (p1[0] + p2[0])
+        cy += 0.5 * l * (p1[1] + p2[1])
         L  += l
     cx = cx / L
     cy = cy / L
@@ -481,9 +477,40 @@ def area_2d(polygon):
     return a
 
 
-# https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/volume.html
 def volume(polyhedron):
-    raise NotImplementedError
+    """Compute the volume of a polyhedron represented by a closed mesh.
+
+    This is an implementation of the technique described in [centroid]_.
+    It is based on the divergence theorem, the fact that the *area vector* is
+    constant for each face, and the fact that the area of each face can be computed
+    as half the length of the cross product of two adjacent edge vectors::
+
+        V = \int_{P} 1
+          = \frac{1}{3} \int_{\partial P} \mathbf{x} \cdot \mathbf{n}
+          = \frac{1}{3} \sum_{i=0}^{N-1} \int{A_{i}} a_{i} \cdot n_{i}
+          = \frac{1}{6} = \sum_{i=0}^(N-1) a_{i} \cdot \hat n_{i}
+
+    References:
+        .. [centroid] `www.ma.ic.ac.uk/~rn/centroid.pdf`_
+    """
+    V = 0
+    for fkey in polyhedron.face:
+        vertices = polyhedron.face_vertices(fkey, ordered=True)
+        if len(vertices) == 3:
+            faces = [vertices]
+        else:
+            faces = []
+            for i in range(1, len(vertices) - 1):
+                faces.append(vertices[0:1] + vertices[i:i + 2])
+        for face in faces:
+            a  = polyhedron.vertex_coordinates(face[0])
+            b  = polyhedron.vertex_coordinates(face[1])
+            c  = polyhedron.vertex_coordinates(face[2])
+            ab = [b[i] - a[i] for i in range(3)]
+            ac = [c[i] - a[i] for i in range(3)]
+            n  = cross(ab, ac)
+            V += dot(a, n)
+    return V / 6.
 
 
 # ==============================================================================
@@ -491,4 +518,28 @@ def volume(polyhedron):
 # ==============================================================================
 
 if __name__ == '__main__':
-    pass
+
+    from brg.datastructures.mesh.mesh import Mesh
+
+    vertices = [
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+        [1.0, 1.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+        [1.0, 0.0, 1.0],
+        [1.0, 1.0, 1.0],
+        [0.0, 1.0, 1.0],
+    ]
+    faces = [
+        [0, 1, 2, 3],
+        [4, 7, 6, 5],
+        [1, 5, 6, 2],
+        [2, 6, 7, 3],
+        [0, 4, 5, 1],
+        [3, 7, 4, 0]
+    ]
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    print volume(mesh)

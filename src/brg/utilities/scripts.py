@@ -14,6 +14,48 @@ __status__     = 'Development'
 __date__       = 'Mar 5, 2015'
 
 
+# def wrap(f):
+#     import sys
+#     import json
+#     import cStringIO
+#     import cProfile
+#     import pstats
+#     import traceback
+#     ipath = sys.argv[1]
+#     opath = sys.argv[2]
+#     with open(ipath, 'rb') as f:
+#         idict = json.load(f)
+#     try:
+#         profile = cProfile.Profile()
+#         profile.enable()
+#         # ----------------------------------------------------------------------
+#         # profiler enabled
+#         # ----------------------------------------------------------------------
+#         data = f(idict)
+#         # ----------------------------------------------------------------------
+#         # profiler disabled
+#         # ----------------------------------------------------------------------
+#         profile.disable()
+#         stream = cStringIO.StringIO()
+#         stats  = pstats.Stats(profile, stream=stream)
+#         stats.strip_dirs()
+#         stats.sort_stats(1)
+#         stats.print_stats(20)
+#         odict = {}
+#         odict['data']       = data
+#         odict['error']      = None
+#         odict['profile']    = stream.getvalue()
+#         odict['iterations'] = None
+#     except:
+#         odict = {}
+#         odict['data']       = None
+#         odict['error']      = traceback.format_exc()
+#         odict['profile']    = None
+#         odict['iterations'] = None
+#     with open(opath, 'wb+') as f:
+#         json.dump(odict, f)
+
+
 class ScriptServerError(Exception):
     pass
 

@@ -79,7 +79,6 @@ if __name__ == '__main__':
     from Rhino.Geometry import Plane
     from Rhino.Geometry import Circle
     from Rhino.Geometry import Cylinder
-    from Rhino.Geometry import Brep
 
     from Rhino.Display import DisplayMaterial
 

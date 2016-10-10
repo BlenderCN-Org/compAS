@@ -49,6 +49,9 @@ class Mesh(object):
     def set_vertex_colors(self, colors):
         return rs.MeshVertexColors(self.guid, colors)
 
+    def unset_vertex_colors(self):
+        return rs.MeshVertexColors(self.guid, None)
+
     def get_vertices_and_faces(self):
         vertices = [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]
         faces = map(list, rs.MeshFaceVertices(self.guid))
