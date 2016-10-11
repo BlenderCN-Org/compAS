@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>brg.com.matlab.process &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/roadmap.html">Roadmap</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>brg.com.matlab.process</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for brg.com.matlab.process</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># @Date    : 2016-08-29 23:34:28</span>
+<span class="c1"># @Author  : Tom Van Mele (vanmelet@ethz.ch)</span>
+
+<span class="sd">&quot;&quot;&quot;Matlab (sub)process.</span>
+
+<span class="sd">Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; m = MatlabProcess(verbose=False)</span>
+<span class="sd">    &gt;&gt;&gt; m.start()</span>
+<span class="sd">    &gt;&gt;&gt; m.write_value(&#39;a&#39;, 17)</span>
+<span class="sd">    &gt;&gt;&gt; m.run_command(&#39;res = isprime(a);&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; m.read_value(&#39;res&#39;)</span>
+<span class="sd">    1</span>
+<span class="sd">    &gt;&gt;&gt; m.stop()</span>
+
+<span class="sd">Todo:</span>
+<span class="sd">    - handle timeouts properly</span>
+<span class="sd">    - check for availability of Matlab</span>
+<span class="sd">    - catch Matlab errors</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">PIPE</span>
+
+<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">savemat</span>
+<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">loadmat</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__version__</span>    <span class="o">=</span> <span class="s1">&#39;0.1&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__status__</span>     <span class="o">=</span> <span class="s1">&#39;Development&#39;</span>
+<span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;2016-08-29 23:34:28&#39;</span>
+
+
+<span class="n">__all__</span>  <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;MatlabProcessError&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MatlabProcess&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="MatlabProcessError"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcessError.html#brg.com.matlab.process.MatlabProcessError">[docs]</a><span class="k">class</span> <span class="nc">MatlabProcessError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcessError.__init__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcessError.html#brg.com.matlab.process.MatlabProcessError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MatlabProcessError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="MatlabProcess"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess">[docs]</a><span class="k">class</span> <span class="nc">MatlabProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for communication with Matlab through a subprocess.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        matlab_exec (str, optional) : Path to the Matlab executable.</span>
+<span class="sd">            Defaults to `matlab`.</span>
+<span class="sd">        ws_data (dict, optional) : Workspace data to be loaded at startup.</span>
+<span class="sd">            Defaults to an empty dict.</span>
+<span class="sd">        ws_filename (str, optional) : Filename for workspace storage.</span>
+<span class="sd">            Defaults to `&#39;./workspace.mat&#39;`.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; m = MatlabProcess()</span>
+<span class="sd">        &gt;&gt;&gt; m.start()</span>
+<span class="sd">        &gt;&gt;&gt; m.write_value(&#39;a&#39;, 37)</span>
+<span class="sd">        &gt;&gt;&gt; m.run_command(&#39;tf = isprime(a);&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; m.read_workspace()</span>
+<span class="sd">        &gt;&gt;&gt; m.stop()</span>
+<span class="sd">        &gt;&gt;&gt; print m.ws_data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MatlabProcess.__init__"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matlab_exec</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ws_data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ws_filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matlab_exec</span>    <span class="o">=</span> <span class="n">matlab_exec</span> <span class="ow">or</span> <span class="s1">&#39;matlab&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matlab_options</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-nosplash&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span>        <span class="o">=</span> <span class="n">ws_data</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span>    <span class="o">=</span> <span class="n">ws_filename</span> <span class="ow">or</span> <span class="s1">&#39;./workspace.mat&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>        <span class="o">=</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span>        <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>        <span class="o">=</span> <span class="n">verbose</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess.start"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start the subprocess.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            options (list, optional) : A list of command line options for the Matlab</span>
+<span class="sd">                executable. Available options:</span>
+
+<span class="sd">                    * -nosplash</span>
+<span class="sd">                    * -wait (Windows)</span>
+<span class="sd">                    * ...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">options</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">matlab_options</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;create workspace file.&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;starting Matlab process...&#39;</span>
+        <span class="n">pargs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">matlab_exec</span><span class="p">]</span>
+        <span class="n">pargs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">pargs</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">&#39;__READY__&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">79</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess._wait_until"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess._wait_until">[docs]</a>    <span class="k">def</span> <span class="nf">_wait_until</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">str_to_wait_for</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&#39;{0}&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">str_to_wait_for</span><span class="p">))</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="n">str_to_wait_for</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+                <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess.stop"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">79</span>
+            <span class="k">print</span> <span class="s1">&#39;stopping Matlab process...&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;exit;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;closing streams...&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess.run_command"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.run_command">[docs]</a>    <span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ovars</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run a command in Matlab.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            command (str) : The command string.</span>
+<span class="sd">            ivars (dict, optional) : A dictionary of pairs of variable names and</span>
+<span class="sd">                values to write to the Matlab workspace.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; m.write_value(&#39;a&#39;, 17)</span>
+<span class="sd">            &gt;&gt;&gt; m.run_command(&#39;res = isprime(a);&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; m.read_value(&#39;res&#39;)</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; m.run_command(&#39;res = isprime(a);&#39;, ivars={&#39;a&#39;: 17})</span>
+<span class="sd">            &gt;&gt;&gt; m.read_value(&#39;res&#39;)</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; m.run_command(&#39;res = isprime(a);&#39;, ivars={&#39;a&#39;: 17}, ovars={&#39;res&#39;: None})</span>
+<span class="sd">            {&#39;res&#39;: True}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;run Matlab command: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ivars</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">ivars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">&#39;__COMPLETED__&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ovars</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">ovars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">ovars</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ovars</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess.write_value"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.write_value">[docs]</a>    <span class="k">def</span> <span class="nf">write_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;write Matlab value: {0} =&gt; {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;{0}={1};</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess.read_value"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.read_value">[docs]</a>    <span class="k">def</span> <span class="nf">read_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;read Matlab value: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;save(&#39;{0}&#39;, &#39;{1}&#39;);</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">&#39;__SAVED__&#39;</span><span class="p">)</span>
+        <span class="n">loadmat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="n">mdict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">default</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess.write_workspace"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.write_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">write_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;write Matlab workspace.&#39;</span>
+        <span class="n">savemat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;load({0});</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">&#39;__LOADED__&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MatlabProcess.read_workspace"><a class="viewcode-back" href="../../../../pages/api/brg-com-matlab-process-MatlabProcess.html#brg.com.matlab.process.MatlabProcess.read_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">read_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;read Matlab workspace.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;save(&#39;{0}&#39;);</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">&#39;__SAVED__&#39;</span><span class="p">)</span>
+        <span class="n">loadmat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="n">mdict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">MatlabProcess</span><span class="p">()</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">&#39;res = isprime(a);&#39;</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="s1">&#39;res&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">&#39;res = isprime(a);&#39;</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">},</span> <span class="n">ovars</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;res&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">})</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">read_workspace</span><span class="p">()</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">ws_data</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

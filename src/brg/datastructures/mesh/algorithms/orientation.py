@@ -1,0 +1,64 @@
+from brg.datastructures.traversal import bfs
+
+
+__author__     = ['Tom Van Mele', ]
+__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__version__    = '0.1'
+__email__      = 'vanmelet@ethz.ch'
+__status__     = 'Development'
+__date__       = '2015-12-03 13:43:05'
+
+
+def mesh_unify_cycle_directions(mesh, root=None, direction=None):
+    """Unify the cycle directions of all faces.
+
+    Unified cycle directions is a necessary condition for the data structure to
+    work properly. When in doubt, run this function on your mesh.
+
+    Parameters:
+        root (str): The key of the root face. Defaults to None.
+        direction (str): The direction of the cycles. The value of this
+            parameter should be one of `None`, `ccw`, `cw`.
+
+    Returns:
+        None
+
+    Raises:
+        ValueError: If `direction` is not one of (None, `ccw`, `cw`)
+    """
+    def unify(node, nbr):
+        for u, v in mesh.face[nbr].iteritems():
+            if u in mesh.face[node]:
+                if v == mesh.face[node][u]:
+                    mesh.face[nbr] = dict((v, u) for u, v in mesh.face[nbr].iteritems())
+                    return
+    if root is None:
+        root = mesh.face.iterkeys().next()
+    if direction not in (None, 'ccw', 'cw'):
+        raise ValueError('Not a valid cycle direction.')
+    bfs(mesh.face_adjacency(), root, unify)
+    mesh.halfedge = dict((key, {}) for key in mesh.vertices_iter())
+    for fkey, face in mesh.face.iteritems():
+        for u, v in face.iteritems():
+            mesh.halfedge[u][v] = fkey
+            if u not in mesh.halfedge[v]:
+                mesh.halfedge[v][u] = None
+
+
+def mesh_flip_cycle_directions(mesh):
+    """Flip the cycle directions of all faces.
+
+    This function does not care about the directions being unified or not. It
+    just reverses whatever direction it finds.
+
+    Returns:
+        None
+    """
+    mesh.halfedge = dict((key, {}) for key in mesh.vertices_iter())
+    for fkey, face in mesh.face.iteritems():
+        mesh.face[fkey] = dict((nbr, key) for key, nbr in face.items())
+        for u, v in face.iteritems():
+            mesh.halfedge[v][u] = fkey
+            if v not in mesh.halfedge[u]:
+                mesh.halfedge[u][v] = None
