@@ -12,19 +12,17 @@ True
 """
 
 
-from brg import matlab_engine
+import matlab
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = '2016-08-29 22:00:58'
 
 
-__all__ = [
+docs = [
     'MatlabSessionError',
     'MatlabSession',
 ]
@@ -61,7 +59,7 @@ class MatlabSession(object):
             return wrapper
 
     def find(self):
-        session = matlab_engine.find_matlab()
+        session = matlab.engine.find_matlab()
         if not session or not len(session):
             raise MatlabSessionError()
         self.session = session[0]
@@ -69,7 +67,7 @@ class MatlabSession(object):
 
     def connect(self):
         self.find()
-        self.engine = matlab_engine.connect_matlab(self.session)
+        self.engine = matlab.engine.connect_matlab(self.session)
 
     def disconnect(self):
         raise NotImplementedError

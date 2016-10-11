@@ -12,19 +12,17 @@ True
 """
 
 
-from brg import matlab_engine
+import matlab
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = '2016-08-29 22:00:58'
 
 
-__all__ = [
+docs = [
     'MatlabEngineError',
     'MatlabEngine',
 ]
@@ -60,7 +58,7 @@ class MatlabEngine(object):
 
     def start(self):
         print 'starting engine. this may take a few seconds...'
-        self.engine = matlab_engine.start_matlab()
+        self.engine = matlab.engine.start_matlab()
         print 'engine started!'
 
     def stop(self):
