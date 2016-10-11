@@ -26,8 +26,6 @@ def get_all_datafile_paths():
     return os.listdir(DATA)
 
 
-# from matlab import engine as matlab_engine
-
 # from brg import com
 # from brg import datastructures
 # from brg import files
@@ -37,9 +35,8 @@ def get_all_datafile_paths():
 # from brg import utilities
 # from brg import viewers
 
-
 # __all__ = [
-#     # 'com',
+#     'com',
 #     'datastructures',
 #     'files',
 #     'geometry',
@@ -48,3 +45,14 @@ def get_all_datafile_paths():
 #     'utilities',
 #     'viewers',
 # ]
+
+docs = [
+    'com',
+    'datastructures',
+    'files',
+    'geometry',
+    'numerical',
+    'physics',
+    'utilities',
+    'viewers',
+]

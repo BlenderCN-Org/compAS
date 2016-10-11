@@ -10,7 +10,7 @@ brg.numerical : A package for numerical computation.
 brg.numerical.linalg
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -32,7 +32,7 @@ None
 brg.numerical.matrices
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -48,7 +48,7 @@ None
 brg.numerical.operators
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -62,7 +62,7 @@ None
 brg.numerical.utilities
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -75,7 +75,7 @@ None
 brg.numerical.xforms
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:

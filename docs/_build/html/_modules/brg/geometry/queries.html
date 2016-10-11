@@ -142,16 +142,14 @@
 <span class="kn">from</span> <span class="nn">spatial</span> <span class="kn">import</span> <span class="n">closest_point_on_segment</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele &lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span> <span class="p">]</span>
 <span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
 <span class="n">__version__</span>    <span class="o">=</span> <span class="s1">&#39;0.1&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
-<span class="n">__status__</span>     <span class="o">=</span> <span class="s1">&#39;Development&#39;</span>
 <span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;Oct 3, 2014&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;is_colinear&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_coplanar&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_coplanar4&#39;</span><span class="p">,</span>
@@ -343,12 +341,12 @@
     <span class="k">return</span> <span class="bp">False</span>
 
 </div>
-<div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_in_triangle.html#brg.geometry.queries.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify if a point (p) is inside line of the triangle a,b,c.</span>
+<div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_in_triangle.html#brg.geometry.queries.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">abc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if a point (p) is inside line of the triangle abc.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        p (tuple): 3d point</span>
-<span class="sd">        a,b,c (tuples): 3d triangle points</span>
+<span class="sd">        abc (tuples): 3d triangle points</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (bool): True if the point is in inside the triangle, False otherwise.</span>
@@ -361,6 +359,7 @@
             <span class="k">return</span> <span class="bp">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">abc</span>
     <span class="k">if</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">True</span>
     <span class="k">return</span> <span class="bp">False</span>

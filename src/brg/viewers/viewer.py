@@ -8,12 +8,10 @@ from grid import Grid
 from axes import Axes
 
 
-__author__     = ['Tom Van Mele', 'Shajay Bhooshan']
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Shajay Bhooshan']
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = 'Oct 2, 2014'
 
 

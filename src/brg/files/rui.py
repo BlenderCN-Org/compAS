@@ -6,6 +6,18 @@ from xml.etree import ElementTree as ET
 from xml.dom import minidom
 
 
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__version__    = '0.1'
+__date__       = 'May 7, 2015'
+
+
+docs = [
+    'Rui',
+]
+
+
 TPL_RUI = '''<?xml version="1.0" encoding="utf-8"?>
 <RhinoUI major_ver="2"
          minor_ver="0"

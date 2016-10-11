@@ -9,10 +9,12 @@ Mesh
 
    .. rubric:: **Class methods**
 
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_data
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_vertices_and_faces
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_obj
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_dxf
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_stl
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_json
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_data
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_boundary
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.from_points
    .. rubric:: **Descriptors**
@@ -29,6 +31,13 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.__str__
    .. rubric:: **Methods**
 
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.key_index
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.index_key
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.copy
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_vertex
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_face
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_face_vertex
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_color
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_data
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_obj
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_json
@@ -41,12 +50,6 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.add_face
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.add_faces
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.remove_face
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.key_index
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.index_key
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.copy
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_vertex
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_face
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_face_vertex
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.set_dva
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.set_dfa
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.set_vertex_attribute
@@ -78,7 +81,7 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_quadmesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_adjacency
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_neighbours
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_ring
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_neighbourhood
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_cycle
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_descendant
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_ancestor
@@ -111,6 +114,4 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.edge_midpoint
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.point_on_edge
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.edge_vector
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.unify_cycles
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.flip_cycles
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.draw

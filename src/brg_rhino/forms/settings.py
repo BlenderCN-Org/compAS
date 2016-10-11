@@ -44,6 +44,62 @@ __date__       = 'Jun 19, 2015'
 
 
 class SettingsForm(Form):
+    """"""
+
+    def __init__(self, settings):
+        self.settings = settings
+        self.table = None
+        super(SettingsForm, self).__init__()
+
+    def init(self):
+        # table
+        table = make_table('main', False)
+        table.Size = Size(580, 700)
+        table.Location = Point(10, 10)
+        table.ColumnCount = 2
+        table.Columns[0].Name = 'Key'
+        table.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable
+        table.Columns[0].ReadOnly = True
+        table.Columns[0].DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 238, 238)
+        table.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(238, 238, 238)
+        table.Columns[1].Name = 'Value'
+        table.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable
+        keys = sorted(self.settings.keys())
+        for key in keys:
+            table.Rows.Add(key, self.settings[key])
+        self.table = table
+        # buttons
+        ok = Button()
+        ok.Text = 'OK'
+        ok.DialogResult = DialogResult.OK
+        cancel = Button()
+        cancel.Text = 'Cancel'
+        cancel.DialogResult = DialogResult.Cancel
+        buttons = FlowLayoutPanel()
+        buttons.FlowDirection = FlowDirection.RightToLeft
+        buttons.BorderStyle = BorderStyle.None
+        buttons.Controls.Add(cancel)
+        buttons.Controls.Add(ok)
+        buttons.Size = Size(580, 30)
+        buttons.Location = Point(10, 720)
+        # layout
+        self.ClientSize = Size(600, 800)
+        self.Controls.Add(table)
+        self.Controls.Add(buttons)
+
+    def on_form_closed(self, sender, e):
+        if sender.DialogResult == DialogResult.OK:
+            for row in self.table.Rows:
+                key   = row.Cells[0].Value
+                value = row.Cells[1].Value
+                try:
+                    self.settings[key] = eval(value)
+                except:
+                    self.settings[key] = value
+
+
+class SectionedSettingsForm(Form):
+    """"""
 
     def __init__(self, settings):
         self.settings = settings
@@ -95,18 +151,6 @@ class SettingsForm(Form):
             self.tables[name] = table
             index += 1
 
-#     def on_key_down(self, sender, e):
-#         if e.KeyCode == Keys.Tab:
-#             e.SuppressKeyPress = True
-#             print sender.CurrentCell
-#             i = sender.CurrentCell.RowIndex
-#             j = sender.CurrentCell.ColumnIndex
-#             print i, j
-#             if i == sender.Rows.Count - 1:
-#                 sender.CurrentCell = sender[1, 0]
-#             else:
-#                 sender.CurrentCell = sender[1, i+1]
-
     def on_form_closed(self, sender, e):
         if sender.DialogResult == DialogResult.OK:
             for name in self.tables:
@@ -118,6 +162,18 @@ class SettingsForm(Form):
                         self.settings[name][key] = eval(value)
                     except:
                         self.settings[name][key] = value
+
+#     def on_key_down(self, sender, e):
+#         if e.KeyCode == Keys.Tab:
+#             e.SuppressKeyPress = True
+#             print sender.CurrentCell
+#             i = sender.CurrentCell.RowIndex
+#             j = sender.CurrentCell.ColumnIndex
+#             print i, j
+#             if i == sender.Rows.Count - 1:
+#                 sender.CurrentCell = sender[1, 0]
+#             else:
+#                 sender.CurrentCell = sender[1, i+1]
 
 
 # ==============================================================================
@@ -131,7 +187,7 @@ def depth(x):
     return 0
 
 
-def make_table(name):
+def make_table(name, autosize=True):
     table = DataGridView()
     # allow user
     table.AllowUserToResizeColumns = False
@@ -139,7 +195,7 @@ def make_table(name):
     table.AllowUserToAddRows = False
     table.AllowUserToDeleteRows = False
     # auto size
-    table.AutoSize = True
+    table.AutoSize = autosize
     table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
     table.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
     # back
@@ -158,7 +214,8 @@ def make_table(name):
     table.DefaultCellStyle.SelectionBackColor = Color.White
     table.DefaultCellStyle.SelectionForeColor = Color.Black
     # dock
-    table.Dock = System.Windows.Forms.DockStyle.Fill
+    if autosize:
+        table.Dock = System.Windows.Forms.DockStyle.Fill
     # enable
     table.EnableHeadersVisualStyles = False
     # grid

@@ -1,8 +1,0 @@
-.. _brg-geometry-functions-distance:
-
-********************************************************************************
-brg.geometry.functions.distance
-********************************************************************************
-
-.. autofunction:: brg.geometry.functions.distance
-

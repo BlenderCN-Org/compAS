@@ -127,16 +127,14 @@
           <div role="main">
             
   <h1>Source code for brg.datastructures.mesh.mesh</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;The (poly) mesh class.</span>
+<span></span><span class="sd">&quot;&quot;&quot;The (poly) mesh class.&quot;&quot;&quot;</span>
 
-
-<span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
-<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">MethodType</span>
+<span class="kn">from</span> <span class="nn">brg.files.obj</span> <span class="kn">import</span> <span class="n">OBJ</span>
 
 <span class="kn">from</span> <span class="nn">brg.geometry</span> <span class="kn">import</span> <span class="n">length</span>
 <span class="kn">from</span> <span class="nn">brg.geometry</span> <span class="kn">import</span> <span class="n">distance</span>
@@ -148,32 +146,18 @@
 
 <span class="kn">from</span> <span class="nn">brg.geometry.elements.line</span> <span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.exceptions</span> <span class="kn">import</span> <span class="n">MeshError</span>
-
 <span class="kn">from</span> <span class="nn">brg.datastructures.traversal</span> <span class="kn">import</span> <span class="n">bfs</span>
 <span class="kn">from</span> <span class="nn">brg.datastructures.traversal</span> <span class="kn">import</span> <span class="n">bfs2</span>
 
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.algorithms.orientation</span> <span class="kn">import</span> <span class="n">mesh_unify_cycle_directions</span>
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.algorithms.orientation</span> <span class="kn">import</span> <span class="n">mesh_flip_cycle_directions</span>
 
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.constructors</span> <span class="kn">import</span> <span class="n">mesh_from_data</span>
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.constructors</span> <span class="kn">import</span> <span class="n">mesh_from_obj</span>
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.constructors</span> <span class="kn">import</span> <span class="n">mesh_from_json</span>
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.constructors</span> <span class="kn">import</span> <span class="n">mesh_from_vertices_and_faces</span>
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.constructors</span> <span class="kn">import</span> <span class="n">mesh_from_boundary</span>
-<span class="kn">from</span> <span class="nn">brg.datastructures.mesh.constructors</span> <span class="kn">import</span> <span class="n">mesh_from_points</span>
-
-
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele &lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span> <span class="p">]</span>
 <span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
 <span class="n">__version__</span>    <span class="o">=</span> <span class="s1">&#39;0.1&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
-<span class="n">__status__</span>     <span class="o">=</span> <span class="s1">&#39;Development&#39;</span>
 <span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;Oct 10, 2014&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;Mesh&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -248,17 +232,17 @@
 <span class="sd">    &gt;&gt;&gt; key = mesh.get_any_vertex()</span>
 <span class="sd">    &gt;&gt;&gt; mesh[key] == mesh.vertex[key]</span>
 <span class="sd">    True</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">from_vertices_and_faces</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">mesh_from_vertices_and_faces</span><span class="p">)</span>
-    <span class="n">from_data</span>               <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">mesh_from_data</span><span class="p">)</span>
-    <span class="n">from_obj</span>                <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">mesh_from_obj</span><span class="p">)</span>
-    <span class="n">from_json</span>               <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">mesh_from_json</span><span class="p">)</span>
-    <span class="n">from_boundary</span>           <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">mesh_from_boundary</span><span class="p">)</span>
-    <span class="n">from_points</span>             <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">mesh_from_points</span><span class="p">)</span>
+    <span class="c1"># from_vertices_and_faces = classmethod(mesh_from_vertices_and_faces)</span>
+    <span class="c1"># from_data               = classmethod(mesh_from_data)</span>
+    <span class="c1"># from_obj                = classmethod(mesh_from_obj)</span>
+    <span class="c1"># from_json               = classmethod(mesh_from_json)</span>
+    <span class="c1"># from_boundary           = classmethod(mesh_from_boundary)</span>
+    <span class="c1"># from_points             = classmethod(mesh_from_points)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dva</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dfa</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dea</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fkey</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vkey</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span>   <span class="o">=</span> <span class="p">{}</span>
@@ -266,11 +250,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edge</span>     <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">dva</span> <span class="o">=</span> <span class="n">dva</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dva</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dva</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span> <span class="o">=</span> <span class="n">dfa</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dea</span> <span class="o">=</span> <span class="n">dea</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dea</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;name&#39;</span>         <span class="p">:</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">,</span>
             <span class="s1">&#39;color.vertex&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
@@ -278,19 +260,13 @@
             <span class="s1">&#39;color.face&#39;</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">vertices</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="o">**</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Mesh.__contains__"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.__contains__">[docs]</a>    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify if the mesh contains a specific vertex.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters:</span>
 <span class="sd">            key (str) : The identifier (&#39;key&#39;) of the vertex.</span>
-<span class="sd">        </span>
+
 <span class="sd">        &gt;&gt;&gt; mesh = Mesh()</span>
 <span class="sd">        &gt;&gt;&gt; mesh.add_vertex()</span>
 <span class="sd">        &#39;0&#39;</span>
@@ -326,7 +302,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="Mesh.__str__"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.__str__">[docs]</a>    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Defines the bahaviour of the mesh when it is converted to a string,</span>
+<span class="sd">        printed, or used by :obj:`format`.</span>
+
+<span class="sd">        &gt;&gt;&gt; str(mesh)</span>
+<span class="sd">        &gt;&gt;&gt; print mesh</span>
+<span class="sd">        &gt;&gt;&gt; &quot;{}&quot;.format(mesh)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">TOSTRING</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">),</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">),</span>
@@ -340,6 +322,18 @@
             <span class="p">(</span><span class="s1">&#39;True&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_manifold</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;False&#39;</span><span class="p">),</span>
             <span class="p">(</span><span class="s1">&#39;True&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_trimesh</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;False&#39;</span><span class="p">),</span>
             <span class="p">(</span><span class="s1">&#39;True&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_quadmesh</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;False&#39;</span><span class="p">))</span>
+
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># descriptors</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -351,15 +345,15 @@
 <span class="sd">        Mesh.from_data() class method and the mesh.to_data() instance method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;attributes&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+                <span class="s1">&#39;dva&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="p">,</span>
+                <span class="s1">&#39;dea&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dea</span><span class="p">,</span>
+                <span class="s1">&#39;dfa&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span><span class="p">,</span>
                 <span class="s1">&#39;vertex&#39;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">,</span>
                 <span class="s1">&#39;halfedge&#39;</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">,</span>
                 <span class="s1">&#39;face&#39;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
                 <span class="s1">&#39;edge&#39;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">,</span>
                 <span class="s1">&#39;vkey&#39;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vkey</span><span class="p">,</span>
-                <span class="s1">&#39;fkey&#39;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fkey</span><span class="p">,</span>
-                <span class="s1">&#39;dva&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="p">,</span>
-                <span class="s1">&#39;dfa&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span><span class="p">,</span>
-                <span class="s1">&#39;dea&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dea</span><span class="p">,</span> <span class="p">}</span>
+                <span class="s1">&#39;fkey&#39;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fkey</span><span class="p">}</span>
 
     <span class="nd">@data.setter</span>
 <div class="viewcode-block" id="Mesh.data"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -398,7 +392,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:obj:`str` : The name of the mesh.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Any value of appropriate type assigned to this property will be stored in</span>
 <span class="sd">        the instance&#39;s attribute dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -410,7 +404,7 @@
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;:obj:`dict` : The color specification of the elements of the mesh.</span>
+        <span class="sd">&quot;&quot;&quot;:obj:`dict` : The color specification of the mesh.</span>
 
 <span class="sd">        Only key-value pairs can be assigned to this property, with the key specifying</span>
 <span class="sd">        the element type, and the value the color as an rgb tuple. For example::</span>
@@ -433,16 +427,243 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;color.{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># helpers</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+</div>
+<div class="viewcode-block" id="Mesh.key_index"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.key_index">[docs]</a>    <span class="k">def</span> <span class="nf">key_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a *key-to-index* map.</span>
+
+<span class="sd">        This function is primarily intended for working with arrays.</span>
+<span class="sd">        For example::</span>
+
+<span class="sd">            &gt;&gt;&gt; import brg</span>
+<span class="sd">            &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">            &gt;&gt;&gt; mesh = Mesh.from_obj(brg.get_data(&#39;faces.obj&#39;))</span>
+<span class="sd">            &gt;&gt;&gt; xyz = np.array(mesh.vertex_coordinates(xyz=&#39;xyz&#39;), dtype=float)</span>
+<span class="sd">            &gt;&gt;&gt; k2i = mesh.key_index()</span>
+
+<span class="sd">            # do stuff to the coordinates</span>
+<span class="sd">            # for example, apply smoothing</span>
+<span class="sd">            # then update the vertex coordinates in the data structure</span>
+
+<span class="sd">            &gt;&gt;&gt; for key in mesh:</span>
+<span class="sd">            ...     index = k2i[key]</span>
+<span class="sd">            ...     mesh.vertex[key][&#39;x&#39;] = xyz[index, 0]</span>
+<span class="sd">            ...     mesh.vertex[key][&#39;y&#39;] = xyz[index, 1]</span>
+<span class="sd">            ...     mesh.vertex[key][&#39;z&#39;] = xyz[index, 2]</span>
+
+<span class="sd">        &gt;&gt;&gt; mesh = Mesh()</span>
+<span class="sd">        &gt;&gt;&gt; mesh.add_vertex()</span>
+<span class="sd">        &#39;0&#39;</span>
+<span class="sd">        &gt;&gt;&gt; k2i = mesh.key_index()</span>
+<span class="sd">        &gt;&gt;&gt; k2i[&#39;0&#39;]</span>
+<span class="sd">        0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Mesh.index_key"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.index_key">[docs]</a>    <span class="k">def</span> <span class="nf">index_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an *index-to-key* map.</span>
+
+<span class="sd">        This function is primarily intended for working with arrays.</span>
+<span class="sd">        For example::</span>
+
+<span class="sd">            &gt;&gt;&gt;</span>
+
+<span class="sd">        &gt;&gt;&gt; mesh = Mesh()</span>
+<span class="sd">        &gt;&gt;&gt; mesh.add_vertex()</span>
+<span class="sd">        &#39;0&#39;</span>
+<span class="sd">        &gt;&gt;&gt; i2k = mesh.index_key()</span>
+<span class="sd">        &gt;&gt;&gt; i2k[0]</span>
+<span class="sd">        &#39;0&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Mesh.copy"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cls</span>  <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+</div>
+<div class="viewcode-block" id="Mesh.get_any_vertex"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.get_any_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">get_any_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_iter</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Mesh.get_any_face"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.get_any_face">[docs]</a>    <span class="k">def</span> <span class="nf">get_any_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces_iter</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Mesh.get_any_face_vertex"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.get_any_face_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">get_any_face_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Mesh.vertex_color"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_color">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">qualifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">qualifier</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">qualifier</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.vertex:{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">qualifier</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;color.vertex&#39;</span><span class="p">]</span>
+
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># constructors</span>
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_data"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_data">[docs]</a>    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a mesh from actual mesh data.</span>
 
-    <span class="c1"># @see: brg.datastructures.mesh.constructors</span>
-    <span class="c1"># not to self: move them in</span>
+<span class="sd">        This function should be used in combination with the data obtained from</span>
+<span class="sd">        ``mesh.data``.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            data (dict): The data dictionary.</span>
+<span class="sd">            kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Mesh: A ``Mesh`` of class ``cls``.</span>
+
+<span class="sd">        &gt;&gt;&gt; data = m1.to_data()</span>
+<span class="sd">        &gt;&gt;&gt; m2 = Mesh.from_data(data)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_vertices_and_faces"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">from_vertices_and_faces</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise a mesh from a list of vertices and faces.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            vertices (list) : A list of vertices, represented by their XYZ coordinates.</span>
+<span class="sd">            faces (list) : A list of faces. Each face is a list of indices referencing</span>
+<span class="sd">                the list of vertex coordinates.</span>
+<span class="sd">            kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Mesh: A ``Mesh`` of class ``cls``.</span>
+
+<span class="sd">        &gt;&gt;&gt; vertices = []</span>
+<span class="sd">        &gt;&gt;&gt; faces = []</span>
+<span class="sd">        &gt;&gt;&gt; mesh = Mesh.from_vertices_and_faces(vertices, faces)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_obj"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_obj">[docs]</a>    <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise a mesh from the data described in an obj file.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            filepath (str): The path to the obj file.</span>
+<span class="sd">            kwargs (dict) : Remaining named parameters. Default is an empty :obj:`dict`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Mesh: A ``Mesh`` of class ``cls``.</span>
+
+<span class="sd">        &gt;&gt;&gt; mesh = Mesh.from_obj(&#39;path/to/file.obj&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">faces</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_dxf"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_dxf">[docs]</a>    <span class="k">def</span> <span class="nf">from_dxf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_stl"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_stl">[docs]</a>    <span class="k">def</span> <span class="nf">from_stl</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_json"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_json">[docs]</a>    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+
+    <span class="c1"># differentiate between delaunay of boundary and delaunay in boundary</span>
+    <span class="c1"># use nurbs curves?</span>
+    <span class="c1"># differentiate between config and **kwargs</span></div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_boundary"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">from_boundary</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span>
+                      <span class="n">boundary</span><span class="p">,</span>
+                      <span class="n">holes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                      <span class="n">spacing</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                      <span class="n">do_smooth</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                      <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">brg.utilities.scriptserver</span> <span class="kn">import</span> <span class="n">ScriptServer</span>
+        <span class="n">scriptdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s1">&#39;_scripts&#39;</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">ScriptServer</span><span class="p">(</span><span class="n">scriptdir</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;do_smooth&#39;</span><span class="p">:</span> <span class="n">do_smooth</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">mesh_from_boundary</span><span class="p">(</span>
+            <span class="n">boundary</span><span class="o">=</span><span class="n">boundary</span><span class="p">,</span>
+            <span class="n">holes</span><span class="o">=</span><span class="n">holes</span><span class="p">,</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># differentiate between config and **kwargs</span></div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_points"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.from_points">[docs]</a>    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span>
+                    <span class="n">points</span><span class="p">,</span>
+                    <span class="n">do_smooth</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">brg.utilities.scriptserver</span> <span class="kn">import</span> <span class="n">ScriptServer</span>
+        <span class="n">scriptdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s1">&#39;_scripts&#39;</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">ScriptServer</span><span class="p">(</span><span class="n">scriptdir</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;do_smooth&#39;</span><span class="p">:</span> <span class="n">do_smooth</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">mesh_from_points</span><span class="p">(</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># conversion methods</span>
-    <span class="c1"># ------------------</span>
-    <span class="c1"># to_...</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.to_data"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -456,8 +677,10 @@
 <span class="sd">        Parameters:</span>
 <span class="sd">            filepath (str): Full path of the file to write.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        Notes:</span>
+<span class="sd">            Use the framework ``OBJ`` functionality for this. How to write vertices</span>
+<span class="sd">            and faces to an ``OBJ`` is not necessarily something a mesh knows how</span>
+<span class="sd">            to do.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;wb+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
@@ -506,9 +729,17 @@
         <span class="k">return</span> <span class="n">mesh</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># modify the mesh</span>
     <span class="c1"># ---------------</span>
     <span class="c1"># add / remove / ...</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.add_vertex"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
@@ -524,8 +755,8 @@
 <span class="sd">        Parameters:</span>
 <span class="sd">            key (int): An identifier for the vertex. Defaults to None. The key</span>
 <span class="sd">                is converted to a string before it is used.</span>
-<span class="sd">            attr_dict (dict): Vertex attributes, defaults to None.</span>
-<span class="sd">            **attr: Other named vertex attributes, defaults to None.</span>
+<span class="sd">            attr_dict (dict): Vertex attributes, defaults to ``None``.</span>
+<span class="sd">            **attr: Other named vertex attributes, defaults to an empty :obj:`dict`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: The key of the vertex.</span>
@@ -667,34 +898,18 @@
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
 
     <span class="c1"># **************************************************************************</span>
-    <span class="c1"># helpers</span>
     <span class="c1"># **************************************************************************</span>
-</div>
-<div class="viewcode-block" id="Mesh.key_index"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.key_index">[docs]</a>    <span class="k">def</span> <span class="nf">key_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
-</div>
-<div class="viewcode-block" id="Mesh.index_key"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.index_key">[docs]</a>    <span class="k">def</span> <span class="nf">index_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">index</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
-</div>
-<div class="viewcode-block" id="Mesh.copy"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">cls</span>  <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">mesh</span>
-</div>
-<div class="viewcode-block" id="Mesh.get_any_vertex"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.get_any_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">get_any_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_iter</span><span class="p">())</span>
-</div>
-<div class="viewcode-block" id="Mesh.get_any_face"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.get_any_face">[docs]</a>    <span class="k">def</span> <span class="nf">get_any_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces_iter</span><span class="p">())</span>
-</div>
-<div class="viewcode-block" id="Mesh.get_any_face_vertex"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.get_any_face_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">get_any_face_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
     <span class="c1"># attributes</span>
     <span class="c1"># **************************************************************************</span>
-</div>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+
+    <span class="c1"># write out full name?</span></div>
 <div class="viewcode-block" id="Mesh.set_dva"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.set_dva">[docs]</a>    <span class="k">def</span> <span class="nf">set_dva</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -704,7 +919,8 @@
             <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
-</div>
+
+    <span class="c1"># write out full name?</span></div>
 <div class="viewcode-block" id="Mesh.set_dfa"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.set_dfa">[docs]</a>    <span class="k">def</span> <span class="nf">set_dfa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -776,7 +992,15 @@
         <span class="k">return</span> <span class="n">default</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># culling</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.cull_unused_vertices"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.cull_unused_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">cull_unused_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -798,7 +1022,15 @@
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># accessors</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertices"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertices">[docs]</a>    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -832,7 +1064,24 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertices_enum"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertices_enum">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get an enumeration of the vertex keys.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get an enumeration of the vertex keys.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            data (bool) : If ``True``, return the vertex attributes as part of</span>
+<span class="sd">                the enumeration. Default is ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            iter : The enumerating iterator of vertex keys.</span>
+
+<span class="sd">        &gt;&gt;&gt; for index, key in mesh.vertices_enum():</span>
+<span class="sd">        ...     print index, key</span>
+<span class="sd">        ...</span>
+
+<span class="sd">        &gt;&gt;&gt; for index, key, attr in mesh.vertices_enum(data=True):</span>
+<span class="sd">        ...     print index, key, attr</span>
+<span class="sd">        ...</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_iter</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Mesh.faces"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.faces">[docs]</a>    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -889,7 +1138,15 @@
         <span class="k">return</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">())</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># properties</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.is_valid"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1019,13 +1276,15 @@
         <span class="k">return</span> <span class="bp">True</span>
 
     <span class="c1"># **************************************************************************</span>
-    <span class="c1"># duality</span>
     <span class="c1"># **************************************************************************</span>
-
-    <span class="c1"># @see: brg.datastructures.mesh.algorithms.duality</span>
-
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
     <span class="c1"># vertex topology</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertex_adjacency"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -1048,8 +1307,8 @@
                 <span class="n">start</span> <span class="o">=</span> <span class="n">nbr</span>
                 <span class="k">break</span>
         <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">start</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">MeshError</span>
+        <span class="c1"># if fkey is None:</span>
+        <span class="c1">#     raise MeshError</span>
         <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
         <span class="n">count</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -1064,7 +1323,7 @@
                 <span class="k">break</span>
         <span class="k">return</span> <span class="n">nbrs</span>
 </div>
-<div class="viewcode-block" id="Mesh.vertex_ring"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_ring">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Mesh.vertex_neighbourhood"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_neighbourhood">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighbourhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertex_cycle"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_cycle">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_cycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -1072,16 +1331,30 @@
         <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">nbrs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">nbrs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertex_descendant"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_descendant">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_descendant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the key of the vertex after v in the face that contains uv.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the descendant vertex of halfedge ``uv``.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            u (str) : The *from* vertex.</span>
+<span class="sd">            v (str) : The *to* vertex.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str : The key of the descendant.</span>
+<span class="sd">            None : If ``uv`` has no descendant.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError : If the halfedge is not part of the mesh.</span>
+<span class="sd">            MeshError : If something else went wrong.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-        <span class="c1"># the face is on the inside</span>
         <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c1"># the face is on the inside</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
         <span class="c1"># the face is on the outside</span>
         <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">nbr</span> <span class="o">!=</span> <span class="n">u</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">nbr</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">nbr</span>
+        <span class="c1"># raise a ``MeshError`` here.</span>
         <span class="k">return</span> <span class="bp">None</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertex_ancestor"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
@@ -1142,7 +1415,15 @@
         <span class="k">return</span> <span class="n">vertices</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># face topology</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.face_vertices"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.face_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -1221,7 +1502,15 @@
         <span class="k">return</span> <span class="n">algo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_adjacency</span><span class="p">(),</span> <span class="n">root</span><span class="p">)</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># (half)edge topology</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.has_edge"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.has_edge">[docs]</a>    <span class="k">def</span> <span class="nf">has_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -1234,7 +1523,15 @@
         <span class="k">return</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_naked</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
 
     <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># geometry</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertex_area"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_area">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">cross</span><span class="o">=</span><span class="n">cross</span><span class="p">):</span>
@@ -1255,10 +1552,8 @@
                 <span class="n">a</span>  <span class="o">+=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v03</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">a</span>
 </div>
-<div class="viewcode-block" id="Mesh.vertex_coordinates"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">_</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">]</span>
+<div class="viewcode-block" id="Mesh.vertex_coordinates"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">_</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="Mesh.vertex_normal"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.vertex_normal">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="n">a</span>  <span class="o">=</span> <span class="mi">0</span>
@@ -1276,27 +1571,30 @@
             <span class="n">a</span>  <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">a</span><span class="p">,</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">a</span><span class="p">,</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">a</span>
 </div>
-<div class="viewcode-block" id="Mesh.face_coordinates"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="n">ordered</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="n">ordered</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">]</span>
+<div class="viewcode-block" id="Mesh.face_coordinates"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="n">ordered</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">coords</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="Mesh.face_normal"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.face_normal">[docs]</a>    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">normal2</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">],</span> <span class="n">unitized</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">normal2</span><span class="p">([</span><span class="n">coords</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">],</span> <span class="n">unitized</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Mesh.face_centroid"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.face_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">centroid</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">centroid</span><span class="p">([</span><span class="n">coords</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
 </div>
 <div class="viewcode-block" id="Mesh.face_center"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.face_center">[docs]</a>    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">center_of_mass</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">center_of_mass</span><span class="p">([</span><span class="n">coords</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
 </div>
 <div class="viewcode-block" id="Mesh.face_area"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.face_area">[docs]</a>    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">area</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">area</span><span class="p">([</span><span class="n">coords</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
 </div>
 <div class="viewcode-block" id="Mesh.edge_length"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.edge_length">[docs]</a>    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
@@ -1326,19 +1624,15 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">axis</span> <span class="o">/</span> <span class="n">vec_len</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">vec</span><span class="p">]</span>
 
     <span class="c1"># **************************************************************************</span>
-    <span class="c1"># add-ons</span>
     <span class="c1"># **************************************************************************</span>
-
-    <span class="c1"># move to extended mesh implementation?</span></div>
-<div class="viewcode-block" id="Mesh.unify_cycles"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.unify_cycles">[docs]</a>    <span class="k">def</span> <span class="nf">unify_cycles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">mesh_unify_cycle_directions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-    <span class="c1"># move to extended mesh implementation?</span></div>
-<div class="viewcode-block" id="Mesh.flip_cycles"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.flip_cycles">[docs]</a>    <span class="k">def</span> <span class="nf">flip_cycles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">mesh_flip_cycle_directions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
     <span class="c1"># environment-specific</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># **************************************************************************</span>
     <span class="c1"># **************************************************************************</span>
 </div>
 <div class="viewcode-block" id="Mesh.draw"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1354,18 +1648,8 @@
 
     <span class="kn">import</span> <span class="nn">brg</span>
 
-    <span class="c1"># data = brg.get_data(&#39;faces.obj&#39;)</span>
-    <span class="c1"># mesh = Mesh.from_obj(data)</span>
-
-    <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-    <span class="p">]</span>
-
-    <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">],</span> <span class="p">]</span>
-
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">brg</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">)</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
     <span class="k">print</span> <span class="n">mesh</span>
 

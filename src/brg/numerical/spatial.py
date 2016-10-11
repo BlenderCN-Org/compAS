@@ -12,6 +12,12 @@ __version__    = '0.1'
 __date__       = 'Oct 14, 2014'
 
 
+docs = [
+    'closest_points',
+    'project_points'
+]
+
+
 def closest_points(points, cloud):
     """Find the closest points in a cloud to a set of sample points.
 

@@ -1,7 +1,11 @@
 """Communication with Rhino through the COM interface."""
 
-import client
+# import client
 
-__all__ = [
-    'client'
+# __all__ = [
+#     'client'
+# ]
+
+docs = [
+    'client',
 ]

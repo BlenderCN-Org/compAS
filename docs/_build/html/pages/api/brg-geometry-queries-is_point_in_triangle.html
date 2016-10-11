@@ -134,15 +134,20 @@
 <h1>is_point_in_triangle<a class="headerlink" href="#is-point-in-triangle" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="brg.geometry.queries.is_point_in_triangle">
-<tt class="descclassname">brg.geometry.queries.</tt><tt class="descname">is_point_in_triangle</tt><big>(</big><em>p</em>, <em>a</em>, <em>b</em>, <em>c</em><big>)</big><a class="reference internal" href="../../_modules/brg/geometry/queries.html#is_point_in_triangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.queries.is_point_in_triangle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify if a point (p) is inside line of the triangle a,b,c.</p>
+<tt class="descclassname">brg.geometry.queries.</tt><tt class="descname">is_point_in_triangle</tt><big>(</big><em>p</em>, <em>abc</em><big>)</big><a class="reference internal" href="../../_modules/brg/geometry/queries.html#is_point_in_triangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.queries.is_point_in_triangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify if a point (p) is inside line of the triangle abc.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>p</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; 3d point</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; 3d point</li>
+<li><strong>abc</strong> (<em>tuples</em>) &#8211; 3d triangle points</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(bool): True if the point is in inside the triangle, False otherwise.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool): True if the point is in inside the triangle, False otherwise.</p>
+</td>
 </tr>
 </tbody>
 </table>

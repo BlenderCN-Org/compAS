@@ -1,8 +1,0 @@
-.. _brg-geometry-functions-cross:
-
-********************************************************************************
-brg.geometry.functions.cross
-********************************************************************************
-
-.. autofunction:: brg.geometry.functions.cross
-

@@ -1,7 +1,11 @@
 """Communication with Maya through a Python subprocess."""
 
-import sock
+# import sock
 
-__all__ = [
+# __all__ = [
+#     'sock',
+# ]
+
+docs = [
     'sock',
 ]

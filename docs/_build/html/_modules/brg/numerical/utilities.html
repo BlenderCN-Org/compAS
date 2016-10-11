@@ -130,16 +130,14 @@
 <span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">set_printoptions</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele &lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span> <span class="p">]</span>
 <span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
 <span class="n">__version__</span>    <span class="o">=</span> <span class="s1">&#39;0.1&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
-<span class="n">__status__</span>     <span class="o">=</span> <span class="s1">&#39;Development&#39;</span>
 <span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;Oct 14, 2014&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;set_array_print_precision&#39;</span><span class="p">,</span>
     <span class="s1">&#39;unset_array_print_precision&#39;</span><span class="p">,</span>
 <span class="p">]</span>
@@ -151,12 +149,12 @@
 
 <span class="c1"># http://stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array</span>
 <span class="c1"># float_formatter = lambda x: &#39;%.2f&#39; % x</span>
-<div class="viewcode-block" id="float_formatter"><a class="viewcode-back" href="../../../pages/api/brg-numerical-utilities-float_formatter.html#brg.numerical.utilities.float_formatter">[docs]</a><span class="k">def</span> <span class="nf">float_formatter</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">float_formatter</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="s1">&#39;{0:+.{1}}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">FLOAT_PRECISION</span><span class="p">)</span>
 
 
 <span class="c1"># http://stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array</span>
-<span class="c1"># set_printoptions(formatter={&#39;float_kind&#39;: float_formatter})</span></div>
+<span class="c1"># set_printoptions(formatter={&#39;float_kind&#39;: float_formatter})</span>
 <div class="viewcode-block" id="set_array_print_precision"><a class="viewcode-back" href="../../../pages/api/brg-numerical-utilities-set_array_print_precision.html#brg.numerical.utilities.set_array_print_precision">[docs]</a><span class="k">def</span> <span class="nf">set_array_print_precision</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="s1">&#39;2f&#39;</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">FLOAT_PRECISION</span>
     <span class="n">FLOAT_PRECISION</span> <span class="o">=</span> <span class="n">precision</span>

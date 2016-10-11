@@ -1,25 +1,25 @@
 """brg.geometry : A package defining common geometric functions and objects."""
 
-import elements
-import arithmetic
-import functions
-import intersections
-import planar
-import queries
-import spatial
-import transformations
-import utilities
+# import elements
+# import arithmetic
+# import functions
+# import intersections
+# import planar
+# import queries
+# import spatial
+# import transformations
+# import utilities
 
-__all__ = [
-    'arithmetic',
-    'functions',
-    'intersections',
-    'planar',
-    'queries',
-    'spatial',
-    'transformations',
-    'utilities'
-]
+# __all__ = [
+#     'arithmetic',
+#     'functions',
+#     'intersections',
+#     'planar',
+#     'queries',
+#     'spatial',
+#     'transformations',
+#     'utilities'
+# ]
 
 from functions import cross
 from functions import dot
@@ -71,3 +71,14 @@ from queries import is_line_line_intersection_2d
 
 from intersections import line_line_intersection_2d
 from intersections import circle_circle_intersections_2d
+
+docs = [
+    'arithmetic',
+    'functions',
+    'intersections',
+    'planar',
+    'queries',
+    'spatial',
+    'transformations',
+    'utilities'
+]

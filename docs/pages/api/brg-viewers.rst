@@ -3,14 +3,14 @@
 brg.viewers
 ********************************************************************************
 
-None
+<docstring missing>
 
 
 
 brg.viewers.axes
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -21,7 +21,7 @@ None
 brg.viewers.camera
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -32,7 +32,7 @@ None
 brg.viewers.drawing
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -43,7 +43,7 @@ None
 brg.viewers.grid
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -54,7 +54,7 @@ None
 brg.viewers.mouse
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -76,7 +76,7 @@ A module which implements a trackball class.
 brg.viewers.viewer
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:

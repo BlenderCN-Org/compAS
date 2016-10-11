@@ -8,20 +8,24 @@ The BRG framework currently provides three types of datastructures:
 
 """
 
-import mesh
-import network
-import volmesh
+# import mesh
+# import network
+# import volmesh
 
 from mesh.mesh import Mesh
 from mesh.tri import TriMesh
 from mesh.quad import QuadMesh
-
 from network.network import Network
-
 from volmesh.volmesh import VolMesh
 
 
-__all__ = [
+# __all__ = [
+#     'mesh',
+#     'network',
+#     'volmesh',
+# ]
+
+docs = [
     'mesh',
     'network',
     'volmesh',

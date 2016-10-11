@@ -3,16 +3,14 @@
 import urllib2
 
 
-__author__     = ['Tom Van Mele',]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = 'May 7, 2015'
 
 
-__all__ = [
+docs = [
     'CSVReader',
     'CSVWriter',
 ]
@@ -20,7 +18,7 @@ __all__ = [
 
 class CSVReader(object):
     """"""
-    
+
     def __init__(self, filepath, delimiter=',', remote=False):
         self.filepath = filepath
         self.delimiter = delimiter
@@ -30,7 +28,7 @@ class CSVReader(object):
         self._rows = []
         self.open()
         self.read()
-    
+
     # this actually opens AND reads
     # too many responsibilities
     # is resp similar to fh ?
@@ -41,42 +39,41 @@ class CSVReader(object):
         else:
             with open(self.filepath) as fh:
                 self._content = fh.readlines()
-                
+
     def read(self):
         self._headers = self._content[0].strip().split(self.delimiter)
         for line in iter(self._content[1:]):
             line = line.strip()
             row = line.split(self.delimiter)
             self._rows.append(row)
-    
+
     def headers(self):
         return self._headers
-    
+
     def rows(self, headers=False):
         if headers:
             return [dict((self._headers[i], row[i]) for i in range(len(row))) for row in self._rows]
         return self._rows
 
     def columns(self, headers=False):
-        columns = zip(*self._rows) 
+        columns = zip(*self._rows)
         if headers:
             return dict((self._headers[i], columns[i]) for i in range(len(columns)))
         return columns
-    
+
 
 class CSVWriter(object):
     """"""
     pass
 
 
-#===============================================================================
+# ==============================================================================
 # Debugging
-#===============================================================================
+# ==============================================================================
 
 if __name__ == '__main__':
+
     csv = CSVReader('make_blocks.csv', ',')
     print csv.headers()
     print csv.rows()
     print csv.columns(True)
-
-

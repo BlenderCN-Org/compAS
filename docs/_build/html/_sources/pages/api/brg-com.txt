@@ -13,7 +13,7 @@ brg.com: A package for communication with other software.
    :glob:
    :maxdepth: 3
 
-   brg-com-matlab
+   brg-com-mlab
    brg-com-rhino
    brg-com-maya
    brg-com-blender

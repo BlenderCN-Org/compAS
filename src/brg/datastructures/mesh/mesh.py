@@ -1,7 +1,4 @@
-"""The (poly) mesh class.
-
-
-"""
+"""The (poly) mesh class."""
 
 import os
 import json
@@ -24,17 +21,14 @@ from brg.datastructures.traversal import bfs
 from brg.datastructures.traversal import bfs2
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = 'Oct 10, 2014'
 
 
-# should there not be a mesh with all bells and whistles added on?!
-__all__ = [
+docs = [
     'Mesh',
 ]
 

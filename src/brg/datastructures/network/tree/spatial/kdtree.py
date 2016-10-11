@@ -7,12 +7,10 @@ import time
 from random import random
 
 
-__author__     = ['Matthias Rippmann', ]
+__author__     = ['Matthias Rippmann <rippmann@arch.ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = 'Nov 4, 2014'
 
 

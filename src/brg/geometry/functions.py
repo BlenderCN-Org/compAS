@@ -15,7 +15,9 @@ name.
 
 For notes and algorithms dealing with polygons and meshes see [paulbourke]_
 
-.. [paulbourke] `http://paulbourke.net/geometry/polygonmesh/`_
+.. rubric:: References
+
+.. [paulbourke] `<http://paulbourke.net/geometry/polygonmesh/>`_
 """
 
 from math import acos
@@ -23,16 +25,14 @@ from math import pi
 from math import sqrt
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = 'Oct 3, 2014'
 
 
-__all__ = [
+docs = [
     'dot',
     'cross',
     'length',
@@ -483,15 +483,19 @@ def volume(polyhedron):
     This is an implementation of the technique described in [centroid]_.
     It is based on the divergence theorem, the fact that the *area vector* is
     constant for each face, and the fact that the area of each face can be computed
-    as half the length of the cross product of two adjacent edge vectors::
+    as half the length of the cross product of two adjacent edge vectors
+
+    .. math::
+        :nowrap:
 
         V = \int_{P} 1
-          = \frac{1}{3} \int_{\partial P} \mathbf{x} \cdot \mathbf{n}
-          = \frac{1}{3} \sum_{i=0}^{N-1} \int{A_{i}} a_{i} \cdot n_{i}
-          = \frac{1}{6} = \sum_{i=0}^(N-1) a_{i} \cdot \hat n_{i}
+          = \\frac{1}{3} \int_{\partial P} \mathbf{x} \cdot \mathbf{n}
+          = \\frac{1}{3} \sum_{i=0}^{N-1} \int{A_{i}} a_{i} \cdot n_{i}
+          = \\frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}
 
-    References:
-        .. [centroid] `www.ma.ic.ac.uk/~rn/centroid.pdf`_
+    .. rubric:: References
+
+    .. [centroid] `<www.ma.ic.ac.uk/~rn/centroid.pdf>`_
     """
     V = 0
     for fkey in polyhedron.face:

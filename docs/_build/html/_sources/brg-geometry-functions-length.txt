@@ -1,8 +1,0 @@
-.. _brg-geometry-functions-length:
-
-********************************************************************************
-brg.geometry.functions.length
-********************************************************************************
-
-.. autofunction:: brg.geometry.functions.length
-

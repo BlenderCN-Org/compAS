@@ -1,4 +1,5 @@
 import inspect
+import importlib
 
 PACAKGE_PAGE = """
 ********************************************************************************
@@ -52,12 +53,16 @@ CLASS_PAGE = """
 
 def module_doc(p):
     filepath = 'pages/api/' + p.__name__.replace('.', '-') + '.rst'
-    names    = getattr(p, '__all__', [])
-    attrs    = [getattr(p, n) for n in names]
+    names    = getattr(p, 'docs', [])
+    # attrs    = [getattr(p, n) for n in names]
+    attrs    = [importlib.import_module(p.__name__ + '.' + n) for n in names]
     modules  = [a for a in attrs if inspect.ismodule(a)]
     packages = [m for m in modules if m.__file__[-12:] == '__init__.pyc' or m.__file__[-11:] == '__init__.py']
     with open(filepath, 'w+') as fp:
-        line = PACAKGE_PAGE.format(p.__name__, p.__doc__)
+        if p.__doc__:
+            line = PACAKGE_PAGE.format(p.__name__, p.__doc__)
+        else:
+            line = PACAKGE_PAGE.format(p.__name__, '<docstring missing>')
         fp.write(line)
     if packages:
         with open(filepath, 'a') as fp:
@@ -70,8 +75,11 @@ def module_doc(p):
             continue
         funcs = None
         with open(filepath, 'a') as fp:
-            fp.write(SUBMODULE_SECTION.format(m.__name__, m.__doc__))
-            names = getattr(m, '__all__', [])
+            if m.__doc__:
+                fp.write(SUBMODULE_SECTION.format(m.__name__, m.__doc__))
+            else:
+                fp.write(SUBMODULE_SECTION.format(m.__name__, '<docstring missing>'))
+            names = getattr(m, 'docs', [])
             attrs = [getattr(m, n) for n in names]
             funcs = [a for a in attrs if inspect.isfunction(a)]
             clsss = [a for a in attrs if inspect.isclass(a)]
@@ -185,6 +193,7 @@ if __name__ == "__main__":
     reload(brg)
     # reload(brg_rhino)
 
-    for name in brg.__all__:
-        p = getattr(brg, name)
+    for name in brg.docs:
+        # p = getattr(brg, name)
+        p = importlib.import_module(brg.__name__ + '.' + name)
         module_doc(p)

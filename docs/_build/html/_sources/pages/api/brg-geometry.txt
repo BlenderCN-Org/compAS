@@ -10,7 +10,7 @@ brg.geometry : A package defining common geometric functions and objects.
 brg.geometry.arithmetic
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -39,6 +39,12 @@ name.
 [0.0, 0.0, 1.0]
 
 
+For notes and algorithms dealing with polygons and meshes see [paulbourke]_
+
+.. rubric:: References
+
+.. [paulbourke] `<http://paulbourke.net/geometry/polygonmesh/>`_
+
 
 .. toctree::
    :glob:
@@ -64,7 +70,7 @@ name.
 brg.geometry.intersections
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -78,7 +84,7 @@ None
 brg.geometry.planar
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -96,7 +102,7 @@ None
 brg.geometry.queries
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -118,7 +124,7 @@ None
 brg.geometry.spatial
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -135,7 +141,7 @@ None
 brg.geometry.transformations
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -153,7 +159,7 @@ None
 brg.geometry.utilities
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:

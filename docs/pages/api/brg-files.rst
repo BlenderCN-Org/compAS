@@ -10,7 +10,7 @@ brg.files : A package for working with different types of files.
 brg.files.amf
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -21,7 +21,7 @@ None
 brg.files.csv
 ================================================================================
 
-
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -34,7 +34,7 @@ brg.files.csv
 brg.files.dxf
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -45,7 +45,7 @@ None
 brg.files.obj
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -61,7 +61,7 @@ None
 brg.files.ply
 ================================================================================
 
-None
+<docstring missing>
 
 .. toctree::
    :glob:
@@ -72,18 +72,7 @@ None
 brg.files.stl
 ================================================================================
 
-None
-
-.. toctree::
-   :glob:
-
-
-
-
-brg.files.xml
-================================================================================
-
-None
+<docstring missing>
 
 .. toctree::
    :glob:

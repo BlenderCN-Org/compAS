@@ -10,7 +10,7 @@ Communication with Maya through a Python subprocess.
 brg.com.maya.sock
 ================================================================================
 
-
+<docstring missing>
 
 .. toctree::
    :glob:

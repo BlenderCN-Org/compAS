@@ -1,8 +1,0 @@
-.. _brg-geometry-functions-angle:
-
-********************************************************************************
-brg.geometry.functions.angle
-********************************************************************************
-
-.. autofunction:: brg.geometry.functions.angle
-
