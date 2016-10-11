@@ -125,17 +125,21 @@ def class_doc(c):
         return False
     def isdescriptor(n, o):
         if (inspect.isdatadescriptor(o) and
-            not n.endswith('__') and
-            n != 'args' and
-            n != 'message'):
+                not n.endswith('__') and
+                n != 'args' and
+                n != 'message'):
             return True
         return False
     members = inspect.getmembers(c)
-    classattributes = sorted([(n, o) for n, o in members if isclassattribute(n, o)], key=lambda m: inspect.getsourcelines(m[1])[1])
-    classmethods = sorted([(n, o) for n, o in members if isclassmethod(n, o, c)], key=lambda m: inspect.getsourcelines(m[1])[1])
-    specialmethods = sorted([(n, o) for n, o in members if isspecialmethod(n, o)], key=lambda m: inspect.getsourcelines(m[1])[1])
-    normalmethods = sorted([(n, o) for n, o in members if isnormalmethod(n, o, c)], key=lambda m: inspect.getsourcelines(m[1])[1])
-    descriptors = [(n, o) for n, o in members if isdescriptor(n, o)]
+    classattributes = [(n, o) for n, o in members if isclassattribute(n, o)]
+    classmethods    = [(n, o) for n, o in members if isclassmethod(n, o, c)]
+    specialmethods  = [(n, o) for n, o in members if isspecialmethod(n, o)]
+    normalmethods   = [(n, o) for n, o in members if isnormalmethod(n, o, c)]
+    descriptors     = [(n, o) for n, o in members if isdescriptor(n, o)]
+    classattributes = sorted(classattributes, key=lambda m: inspect.getsourcelines(m[1])[1])
+    classmethods    = sorted(classmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
+    specialmethods  = sorted(specialmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
+    normalmethods   = sorted(normalmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
     name = c.__module__ + '.' + c.__name__
     filepath = 'pages/api/' + name.replace('.', '-') + '.rst'
     with open(filepath, 'w+') as fp:
@@ -176,7 +180,10 @@ def function_doc(f):
 if __name__ == "__main__":
 
     import brg
+    # import brg_rhino
+
     reload(brg)
+    # reload(brg_rhino)
 
     for name in brg.__all__:
         p = getattr(brg, name)

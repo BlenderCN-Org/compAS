@@ -3,5 +3,18 @@
 brg.com.threedec
 ********************************************************************************
 
-None
+
+
+
+
+brg.com.threedec.sock
+================================================================================
+
+
+
+.. toctree::
+   :glob:
+
+   brg-com-threedec-sock-ThreeDECSockError
+   brg-com-threedec-sock-ThreeDECSock
 

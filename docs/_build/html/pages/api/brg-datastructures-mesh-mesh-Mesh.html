@@ -1,0 +1,1022 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Mesh &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="brg.datastructures.mesh" href="brg-datastructures-mesh.html"/>
+        <link rel="next" title="brg.datastructures.network" href="brg-datastructures-network.html"/>
+        <link rel="prev" title="brg.datastructures.mesh.tri" href="brg-datastructures-mesh-tri.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+      
+          <li><a href="brg-datastructures.html">brg.datastructures</a> &raquo;</li>
+      
+          <li><a href="brg-datastructures-mesh.html">brg.datastructures.mesh</a> &raquo;</li>
+      
+    <li>Mesh</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="mesh">
+<h1>Mesh<a class="headerlink" href="#mesh" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="brg.datastructures.mesh.mesh.Mesh">
+<em class="property">class </em><tt class="descclassname">brg.datastructures.mesh.mesh.</tt><tt class="descname">Mesh</tt><big>(</big><em>vertices=None</em>, <em>faces=None</em>, <em>dva=None</em>, <em>dfa=None</em>, <em>dea=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing a mesh.</p>
+<p>The datastructure of the mesh is implemented as a half-edge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>vertices</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> of <a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a>) &#8211; Optional. A sequence of vertices to add to the mesh.
+Each vertex should be a dictionary of vertex attributes.</li>
+<li><strong>faces</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> of <a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a>) &#8211; Optional. A sequence of faces to add to the mesh.
+Each face should be a list of vertex keys.</li>
+<li><strong>dva</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Optional. A dictionary of default vertex attributes.</li>
+<li><strong>dfa</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Optional. A dictionary of default face attributes.</li>
+<li><strong>dea</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Optional. A dictionary of default edge attributes.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The remaining named parameters. These are added to the attributes
+dictionary of the instance.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Mesh.vertex">
+<tt class="descname">vertex</tt><a class="headerlink" href="#Mesh.vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict</em></p>
+<p>The vertex dictionary.
+With every key in the dictionary corresponds a dictionary of attributes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Mesh.face">
+<tt class="descname">face</tt><a class="headerlink" href="#Mesh.face" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict</em></p>
+<p>The face dictionary.
+With every key in the dictionary corresponds a dictionary of half-edges.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Mesh.halfedge">
+<tt class="descname">halfedge</tt><a class="headerlink" href="#Mesh.halfedge" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict</em></p>
+<p>The half-edge dictionary.
+Every key in the dictionary corresponds to a vertex of the mesh.
+With every key corresponds a dictionary of neighbours pointing to face keys.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Mesh.edge">
+<tt class="descname">edge</tt><a class="headerlink" href="#Mesh.edge" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict</em></p>
+<p>The edge dictionary.
+Every key in the dictionary corresponds to a vertex.
+With every key corresponds a dictionary of neighbours pointing to attribute dictionaries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Mesh.attributes">
+<tt class="descname">attributes</tt><a class="headerlink" href="#Mesh.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict</em></p>
+<p>General mesh attributes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Mesh.dualdata">
+<tt class="descname">dualdata</tt><a class="headerlink" href="#Mesh.dualdata" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Mesh, optional</em></p>
+<p>A <tt class="docutils literal"><span class="pre">Mesh</span></tt> object for keeping track of face attributes
+by storing them on dual vertices.</p>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">brg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">brg.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datafile</span> <span class="o">=</span> <span class="n">brg</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">datafile</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;0&#39;</span> <span class="ow">in</span> <span class="n">mesh</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">next_vkey</span><span class="p">)</span> <span class="ow">in</span> <span class="n">mesh</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">is_quadmesh</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">is_trimesh</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_any_vertex</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p class="rubric"><strong>Class attributes</strong></p>
+<p class="rubric"><strong>Class methods</strong></p>
+<dl class="classmethod">
+<dt id="brg.datastructures.mesh.mesh.Mesh.from_vertices_and_faces">
+<em class="property">classmethod </em><tt class="descname">from_vertices_and_faces</tt><big>(</big><em>vertices</em>, <em>faces</em>, <em>dva=None</em>, <em>dfa=None</em>, <em>dea=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.from_vertices_and_faces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.mesh.mesh.Mesh.from_obj">
+<em class="property">classmethod </em><tt class="descname">from_obj</tt><big>(</big><em>filepath</em>, <em>dva=None</em>, <em>dfa=None</em>, <em>dea=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.from_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise a mesh from the data described in an obj file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The path to the obj file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>Mesh</em> &#8211;
+A Mesh of type cls.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.mesh.mesh.Mesh.from_json">
+<em class="property">classmethod </em><tt class="descname">from_json</tt><big>(</big><em>filepath</em>, <em>dva=None</em>, <em>dfa=None</em>, <em>dea=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.from_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.mesh.mesh.Mesh.from_data">
+<em class="property">classmethod </em><tt class="descname">from_data</tt><big>(</big><em>data</em>, <em>dva=None</em>, <em>dfa=None</em>, <em>dea=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.from_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a mesh from actual mesh data.</p>
+<p>This function should be used in combination with the data obtained from
+<cite>mesh.data</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The data dictionary.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>Mesh</em> &#8211;
+A Mesh of type cls.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.mesh.mesh.Mesh.from_boundary">
+<em class="property">classmethod </em><tt class="descname">from_boundary</tt><big>(</big><em>boundary</em>, <em>holes=None</em>, <em>spacing=1.0</em>, <em>do_smooth=False</em>, <em>dva=None</em>, <em>dfa=None</em>, <em>dea=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.from_boundary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.mesh.mesh.Mesh.from_points">
+<em class="property">classmethod </em><tt class="descname">from_points</tt><big>(</big><em>points</em>, <em>do_smooth=False</em>, <em>dva=None</em>, <em>dfa=None</em>, <em>dea=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.from_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric"><strong>Descriptors</strong></p>
+<dl class="attribute">
+<dt id="brg.datastructures.mesh.mesh.Mesh.color">
+<tt class="descname">color</tt><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.color" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> : The color specification of the elements of the mesh.</p>
+<p>Only key-value pairs can be assigned to this property, with the key specifying
+the element type, and the value the color as an rgb tuple. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;vertex&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="brg.datastructures.mesh.mesh.Mesh.data">
+<tt class="descname">data</tt><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.data" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> : The data representing the mesh.</p>
+<p>By assigning a data dict to this property, the current data of the mesh
+will be replaced by the data in the dict. The data getter and setter should
+always be used in combination with each other. They are also used by the
+Mesh.from_data() class method and the mesh.to_data() instance method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="brg.datastructures.mesh.mesh.Mesh.name">
+<tt class="descname">name</tt><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.name" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> : The name of the mesh.</p>
+<p>Any value of appropriate type assigned to this property will be stored in
+the instance&#8217;s attribute dict.</p>
+</dd></dl>
+
+<p class="rubric"><strong>Special methods</strong></p>
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.__contains__">
+<tt class="descname">__contains__</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.__contains__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify if the mesh contains a specific vertex.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The identifier (&#8216;key&#8217;) of the vertex.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">()</span>
+<span class="go">&#39;0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;0&#39;</span> <span class="ow">in</span> <span class="n">mesh</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;1&#39;</span> <span class="ow">in</span> <span class="n">mesh</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.__len__">
+<tt class="descname">__len__</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.__len__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the length of the mesh as the number of vertices in the mesh.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.__iter__">
+<tt class="descname">__iter__</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines mesh iteration as iteration over the vertex keys.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="p">:</span> <span class="k">print</span> <span class="n">key</span>
+<span class="go">&#39;0&#39;</span>
+<span class="go">&#39;1&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the behaviour of the mesh when it is accessed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.__str__">
+<tt class="descname">__str__</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric"><strong>Methods</strong></p>
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.to_data">
+<tt class="descname">to_data</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.to_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.to_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the data dict that represents the mesh, and from which it can
+be reconstructed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.to_obj">
+<tt class="descname">to_obj</tt><big>(</big><em>filepath</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.to_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.to_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the mesh to an OBJ file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Full path of the file to write.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.to_json">
+<tt class="descname">to_json</tt><big>(</big><em>filepath</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize the mesh data to a JSON file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Path to the file to write.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.to_trimesh">
+<tt class="descname">to_trimesh</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.to_trimesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.to_trimesh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.to_quadmesh">
+<tt class="descname">to_quadmesh</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.to_quadmesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.to_quadmesh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.add_vertex">
+<tt class="descname">add_vertex</tt><big>(</big><em>key=None</em>, <em>attr_dict=None</em>, <em>**kwattr</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.add_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.add_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a single vertex.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If no key is provided for the vertex, one is generated
+automatically. An automatically generated key increments the highest
+key in use by 1:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; An identifier for the vertex. Defaults to None. The key
+is converted to a string before it is used.</li>
+<li><strong>attr_dict</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Vertex attributes, defaults to None.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> &#8211;
+The key of the vertex.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">()</span>
+<span class="go">&#39;0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&#39;1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&#39;2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;0&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.add_vertices">
+<tt class="descname">add_vertices</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.add_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.add_vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.remove_vertex">
+<tt class="descname">remove_vertex</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.remove_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.remove_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.insert_vertex">
+<tt class="descname">insert_vertex</tt><big>(</big><em>fkey</em>, <em>xyz=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.insert_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.insert_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a vertex in the specified face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fkey</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The key of the face in which the vertex should be inserted.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>str</em> &#8211;
+The keys of the newly created faces.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">VelueError</span></tt> &#8211; 
+If the face does not exist.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.add_face">
+<tt class="descname">add_face</tt><big>(</big><em>vertices</em>, <em>fkey=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.add_face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.add_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a topological relation between vertices in the form of a face.
+A dictionary key for the face will be generated automatically, based on
+the keys of its vertices.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All faces are closed. The closing link is implied and, therefore,
+the last vertex in the list should be different from the first.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Building a face_adjacency list is slow, if we can&#8217;t rely on the fact
+that all faces have the same cycle directions. Therefore, it is
+worth considering to ensure unified cycle directions upon addition
+of a new face.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vertices</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of vertex keys.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>str</em> &#8211;
+The key of the face.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.add_faces">
+<tt class="descname">add_faces</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.add_faces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.add_faces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.remove_face">
+<tt class="descname">remove_face</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.remove_face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.remove_face" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.key_index">
+<tt class="descname">key_index</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.key_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.key_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.index_key">
+<tt class="descname">index_key</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.index_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.index_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.get_any_vertex">
+<tt class="descname">get_any_vertex</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.get_any_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.get_any_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.get_any_face">
+<tt class="descname">get_any_face</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.get_any_face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.get_any_face" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.get_any_face_vertex">
+<tt class="descname">get_any_face_vertex</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.get_any_face_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.get_any_face_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.set_dva">
+<tt class="descname">set_dva</tt><big>(</big><em>attr_dict=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.set_dva"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.set_dva" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.set_dfa">
+<tt class="descname">set_dfa</tt><big>(</big><em>attr_dict=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.set_dfa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.set_dfa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.set_vertex_attribute">
+<tt class="descname">set_vertex_attribute</tt><big>(</big><em>key</em>, <em>name</em>, <em>value</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.set_vertex_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.set_vertex_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.get_vertex_attribute">
+<tt class="descname">get_vertex_attribute</tt><big>(</big><em>key</em>, <em>name</em>, <em>default=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.get_vertex_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.get_vertex_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.set_face_attribute">
+<tt class="descname">set_face_attribute</tt><big>(</big><em>fkey</em>, <em>name</em>, <em>value</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.set_face_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.set_face_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.get_face_attribute">
+<tt class="descname">get_face_attribute</tt><big>(</big><em>fkey</em>, <em>name</em>, <em>default=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.get_face_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.get_face_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.set_dea">
+<tt class="descname">set_dea</tt><big>(</big><em>attr_dict=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.set_dea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.set_dea" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.set_edge_attribute">
+<tt class="descname">set_edge_attribute</tt><big>(</big><em>u</em>, <em>v</em>, <em>name</em>, <em>value</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.set_edge_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.set_edge_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.get_edge_attribute">
+<tt class="descname">get_edge_attribute</tt><big>(</big><em>u</em>, <em>v</em>, <em>name</em>, <em>default=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.get_edge_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.get_edge_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.cull_unused_vertices">
+<tt class="descname">cull_unused_vertices</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.cull_unused_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.cull_unused_vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.cull_unused_edges">
+<tt class="descname">cull_unused_edges</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.cull_unused_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.cull_unused_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertices">
+<tt class="descname">vertices</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of vertex keys. If <cite>data</cite> is True, get a list of key, data
+pairs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Return key, data pairs, defaults to False.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>list</em> &#8211;
+A list of vertex keys, if data is False.
+list: A list of key, data pairs, if data is True.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertices_iter">
+<tt class="descname">vertices_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertices_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertices_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an iterator over the list of vertex keys. If <cite>data</cite> is True, get
+an iterator over key, data pairs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Return key, data pairs, defaults to False.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>iter</em> &#8211;
+An iterator of vertex keys, if data is False.
+iter: An iterator of key, data pairs, if data is True.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertices_enum">
+<tt class="descname">vertices_enum</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertices_enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertices_enum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an enumeration of the vertex keys.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.faces">
+<tt class="descname">faces</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.faces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.faces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.faces_iter">
+<tt class="descname">faces_iter</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.faces_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.faces_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.faces_enum">
+<tt class="descname">faces_enum</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.faces_enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.faces_enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.edges">
+<tt class="descname">edges</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.edges_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.edges_enum">
+<tt class="descname">edges_enum</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.edges_enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.edges_enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_valid">
+<tt class="descname">is_valid</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_regular">
+<tt class="descname">is_regular</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_regular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_regular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if all faces have the same number of edges, and all vertices
+have the same degree (i.e. have the same valence: are incident to the same
+number of edges).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Not sure if the second condition makes sense.
+Example of a regular mesh?</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_connected">
+<tt class="descname">is_connected</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_connected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if for every two vertices a path exists connecting them.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_manifold">
+<tt class="descname">is_manifold</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_manifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_manifold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if each edge is incident to only one or two faces, and the
+faces incident to a vertex form a closed or an open fan.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The first condition seems to be fullfilled by construction?!</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_orientable">
+<tt class="descname">is_orientable</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_orientable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_orientable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A manifold mesh is orientable if any two adjacent faces have compatible
+orientation (i.e. if the faces have a unified cycle direction).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_closed">
+<tt class="descname">is_closed</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_closed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_closed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_planar">
+<tt class="descname">is_planar</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_planar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_planar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_trimesh">
+<tt class="descname">is_trimesh</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_trimesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_trimesh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_quadmesh">
+<tt class="descname">is_quadmesh</tt><big>(</big><em>strict=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_quadmesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_quadmesh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_adjacency">
+<tt class="descname">vertex_adjacency</tt><big>(</big><em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_adjacency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_adjacency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_neighbours">
+<tt class="descname">vertex_neighbours</tt><big>(</big><em>key</em>, <em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_ring">
+<tt class="descname">vertex_ring</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_ring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_ring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_cycle">
+<tt class="descname">vertex_cycle</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_cycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_descendant">
+<tt class="descname">vertex_descendant</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_descendant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_descendant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the key of the vertex after v in the face that contains uv.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_ancestor">
+<tt class="descname">vertex_ancestor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_ancestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_ancestor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the key of the vertex before u in the face that contains uv.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_faces">
+<tt class="descname">vertex_faces</tt><big>(</big><em>key</em>, <em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_faces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_faces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_degree">
+<tt class="descname">vertex_degree</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_degree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_vertex_leaf">
+<tt class="descname">is_vertex_leaf</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_vertex_leaf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_vertex_leaf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_vertex_orphan">
+<tt class="descname">is_vertex_orphan</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_vertex_orphan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_vertex_orphan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_vertex_connected">
+<tt class="descname">is_vertex_connected</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_vertex_connected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_vertex_connected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_vertex_on_boundary">
+<tt class="descname">is_vertex_on_boundary</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_vertex_on_boundary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_vertex_on_boundary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertices_on_boundary">
+<tt class="descname">vertices_on_boundary</tt><big>(</big><em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertices_on_boundary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertices_on_boundary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_vertices">
+<tt class="descname">face_vertices</tt><big>(</big><em>fkey</em>, <em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_neighbours">
+<tt class="descname">face_neighbours</tt><big>(</big><em>fkey</em>, <em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_vertex_neighbours">
+<tt class="descname">face_vertex_neighbours</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_vertex_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_vertex_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_neighbourhood">
+<tt class="descname">face_neighbourhood</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_neighbourhood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_neighbourhood" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_adjacency">
+<tt class="descname">face_adjacency</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_adjacency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_adjacency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.faces_on_boundary">
+<tt class="descname">faces_on_boundary</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.faces_on_boundary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.faces_on_boundary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_tree">
+<tt class="descname">face_tree</tt><big>(</big><em>root</em>, <em>algo=&lt;function bfs at 0x117150050&gt;</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>strict=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.has_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.is_edge_naked">
+<tt class="descname">is_edge_naked</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.is_edge_naked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.is_edge_naked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.edges_on_boundary">
+<tt class="descname">edges_on_boundary</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.edges_on_boundary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.edges_on_boundary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_area">
+<tt class="descname">vertex_area</tt><big>(</big><em>key</em>, <em>length=&lt;function length at 0x11710fed8&gt;</em>, <em>cross=&lt;function cross at 0x11710fde8&gt;</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_area" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_coordinates">
+<tt class="descname">vertex_coordinates</tt><big>(</big><em>key=None</em>, <em>xyz='xyz'</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.vertex_normal">
+<tt class="descname">vertex_normal</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.vertex_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.vertex_normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_coordinates">
+<tt class="descname">face_coordinates</tt><big>(</big><em>fkey=None</em>, <em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_normal">
+<tt class="descname">face_normal</tt><big>(</big><em>fkey</em>, <em>unitized=True</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_centroid">
+<tt class="descname">face_centroid</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_centroid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_centroid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_center">
+<tt class="descname">face_center</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.face_area">
+<tt class="descname">face_area</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.face_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.face_area" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.edge_length">
+<tt class="descname">edge_length</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.edge_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.edge_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.edge_midpoint">
+<tt class="descname">edge_midpoint</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.edge_midpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.edge_midpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.point_on_edge">
+<tt class="descname">point_on_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>t=0.5</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.point_on_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.point_on_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.edge_vector">
+<tt class="descname">edge_vector</tt><big>(</big><em>u</em>, <em>v</em>, <em>unitized=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.edge_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.edge_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.unify_cycles">
+<tt class="descname">unify_cycles</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.unify_cycles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.unify_cycles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.flip_cycles">
+<tt class="descname">flip_cycles</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.flip_cycles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.flip_cycles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.mesh.mesh.Mesh.draw">
+<tt class="descname">draw</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/mesh.html#Mesh.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.mesh.Mesh.draw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="brg-datastructures-network.html" class="btn btn-neutral float-right" title="brg.datastructures.network"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="brg-datastructures-mesh-tri.html" class="btn btn-neutral" title="brg.datastructures.mesh.tri"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
