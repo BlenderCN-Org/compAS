@@ -20,7 +20,7 @@ RhinoMesh
 
    .. autoattribute:: brg_rhino.datastructures.mesh.RhinoMesh.layer
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. rst-class:: class-section
    .. rubric:: **Methods**

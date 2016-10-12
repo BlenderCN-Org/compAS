@@ -64,18 +64,30 @@ __all__ = [
 # ==============================================================================
 
 
-def get_object(name=None, color=None):
-    guids = get_objects(name, color)
+def get_object(name=None, color=None, layer=None):
+    guids = get_objects(name=name, color=color, layer=layer)
     if guids:
         return guids[0]
     return None
 
 
-def get_objects(name=None, color=None):
-    guids = []
+def get_objects(name=None, color=None, layer=None):
+    guids = None
     if name:
-        guids = rs.ObjectsByName(name)
-    return guids
+        guids = set(rs.ObjectsByName(name))
+    if color:
+        temp = set(rs.ObjectsByColor(color))
+        if guids is not None:
+            guids = temp & guids
+        else:
+            guids = temp
+    if layer:
+        temp = set(rs.ObjectsByLayer(layer))
+        if guids is not None:
+            guids = temp & guids
+        else:
+            guids = temp
+    return list(guids)
 
 
 def delete_object(guid):
@@ -124,7 +136,7 @@ def get_object_attributes_from_name(name, separator=';', assignment=':'):
 # ==============================================================================
 
 
-# get point objects
+# change this name to select_...
 def get_points(message='Select points.'):
     guids = []
     temp = rs.GetObjects(message, filter=rs.filter.point)
@@ -148,10 +160,12 @@ def get_point_coordinates(guids):
 # ==============================================================================
 
 
+# change this name to select_...
 def get_curve(message='Select curve.'):
     return rs.GetObject(message, filter=rs.filter.curve)
 
 
+# change this name to select_...
 def get_curves(message='Select curves.'):
     guids = []
     temp = rs.GetObjects(message, filter=rs.filter.curve)
@@ -160,6 +174,7 @@ def get_curves(message='Select curves.'):
     return guids
 
 
+# change this name to select_...
 def get_lines(message='Select lines.'):
     guids = []
     temp = rs.GetObjects(message, filter=rs.filter.curve)

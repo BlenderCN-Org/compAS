@@ -16,7 +16,7 @@ MatlabSession
    .. rubric:: **Descriptors**
 
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. automethod:: brg.com.mlab.session.MatlabSession.__getattr__
    .. rst-class:: class-section

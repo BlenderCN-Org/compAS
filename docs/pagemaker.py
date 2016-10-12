@@ -193,7 +193,7 @@ def class_doc(c):
             fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, n))
         # special methods
         fp.write('   .. rst-class:: class-section\n')
-        fp.write('   .. rubric:: **Special methods**\n\n')
+        fp.write('   .. rubric:: **Magic methods**\n\n')
         for n, o in specialmethods:
             fp.write('   .. automethod:: {0}.{1}\n'.format(name, n))
         # normal methods

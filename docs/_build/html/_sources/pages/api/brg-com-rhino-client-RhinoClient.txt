@@ -16,7 +16,7 @@ RhinoClient
    .. rubric:: **Descriptors**
 
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. automethod:: brg.com.rhino.client.RhinoClient.__getattr__
    .. rst-class:: class-section

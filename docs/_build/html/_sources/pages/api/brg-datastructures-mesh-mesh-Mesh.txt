@@ -27,7 +27,7 @@ Mesh
    .. autoattribute:: brg.datastructures.mesh.mesh.Mesh.data
    .. autoattribute:: brg.datastructures.mesh.mesh.Mesh.name
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.__contains__
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.__getitem__

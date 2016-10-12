@@ -16,7 +16,7 @@ MatlabEngine
    .. rubric:: **Descriptors**
 
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. automethod:: brg.com.mlab.engine.MatlabEngine.__getattr__
    .. rst-class:: class-section

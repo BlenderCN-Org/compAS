@@ -34,6 +34,11 @@ __version__    = '0.1'
 __date__       = 'Dec 15, 2014'
 
 
+docs = [
+    'VolMesh',
+]
+
+
 def center_of_mass(edges, sqrt=sqrt):
     L  = 0
     cx = 0

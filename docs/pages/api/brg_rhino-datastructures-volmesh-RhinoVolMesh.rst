@@ -19,7 +19,7 @@ RhinoVolMesh
 
    .. autoattribute:: brg_rhino.datastructures.volmesh.RhinoVolMesh.layer
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. rst-class:: class-section
    .. rubric:: **Methods**

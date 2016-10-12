@@ -17,7 +17,7 @@ Descriptors
 
    .. autoattribute:: brg_rhino.datastructures.mixins.descriptors.Descriptors.layer
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. rst-class:: class-section
    .. rubric:: **Methods**

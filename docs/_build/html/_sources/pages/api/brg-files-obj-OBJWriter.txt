@@ -16,7 +16,7 @@ OBJWriter
    .. rubric:: **Descriptors**
 
    .. rst-class:: class-section
-   .. rubric:: **Special methods**
+   .. rubric:: **Magic methods**
 
    .. rst-class:: class-section
    .. rubric:: **Methods**
