@@ -1,0 +1,504 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>brg.geometry.queries &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/roadmap.html">Roadmap</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>brg.geometry.queries</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for brg.geometry.queries</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">cross</span>
+<span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">dot</span>
+<span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">center_of_mass</span>
+<span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">distance</span>
+<span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">distance_sqrd</span>
+<span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">angles</span>
+<span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">length_sqrd</span>
+
+<span class="kn">from</span> <span class="nn">arithmetic</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">arithmetic</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+
+<span class="kn">from</span> <span class="nn">spatial</span> <span class="kn">import</span> <span class="n">closest_point_on_line</span>
+<span class="kn">from</span> <span class="nn">spatial</span> <span class="kn">import</span> <span class="n">closest_point_on_segment</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele &lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__version__</span>    <span class="o">=</span> <span class="s1">&#39;0.1&#39;</span>
+<span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;Oct 3, 2014&#39;</span>
+
+
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;is_colinear&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_coplanar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_coplanar4&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_convex&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_closed&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_plane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_line&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_segment&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_polyline&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_in_triangle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_ray_intersecting_triangle&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="is_colinear"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_colinear.html#brg.geometry.queries.is_colinear">[docs]</a><span class="k">def</span> <span class="nf">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if three points are colinear.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (tuple, list, Point): Point 1.</span>
+<span class="sd">        b (tuple, list, Point): Point 2.</span>
+<span class="sd">        c (tuple, list, Point): Point 3.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the points are collinear, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="is_coplanar"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_coplanar.html#brg.geometry.queries.is_coplanar">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if the points are coplanar.</span>
+
+<span class="sd">    Compute the normal vector (cross product) of the vectors formed by the first</span>
+<span class="sd">    three points. Include one more vector at a time to compute a new normal and</span>
+<span class="sd">    compare with the original normal. If their cross product is not zero, they</span>
+<span class="sd">    are not parallel, which means the point are not in the same plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence): A sequence of locations in three-dimensional space.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the points are coplanar, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+        <span class="n">wuv</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="is_coplanar4"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_coplanar4.html#brg.geometry.queries.is_coplanar4">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar4</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if 4 points are coplanar.</span>
+
+<span class="sd">    Four points are coplanar if the volume of the tetrahedron defined by them is</span>
+<span class="sd">    0. Coplanarity is equivalent to the statement that the pair of lines</span>
+<span class="sd">    determined by the four points are not skew, and can be equivalently stated</span>
+<span class="sd">    in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points</span>
+<span class="sd">        tol</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the points are coplanar.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v01</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
+    <span class="n">v02</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
+    <span class="n">v23</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">v02</span><span class="p">,</span> <span class="n">cross</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v23</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="o">**</span><span class="mi">2</span>
+
+</div>
+<div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_convex.html#brg.geometry.queries.is_convex">[docs]</a><span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">center_of_mass</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">v0</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="n">angles</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v0</span><span class="p">)</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="n">angles</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">a1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="is_closed"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_closed.html#brg.geometry.queries.is_closed">[docs]</a><span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if the points form a closed figure.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence): A sequence locations in three-dimensional space.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the figure is closed, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p_</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_p</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">p_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">_p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">_p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="is_point_on_plane"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_plane.html#brg.geometry.queries.is_point_on_plane">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if a point lies in a plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        point (Point): A ``Point`` object.</span>
+<span class="sd">        plane (Plane): A ``Plane`` object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="is_point_on_line"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_line.html#brg.geometry.queries.is_point_on_line">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if a point (tp) is on line (p1, v1) within a tolerance (tol).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line</span>
+<span class="sd">        tp (3-tuple): 3d make_blocks point</span>
+<span class="sd">        tol (float): tolerance distance</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (bool): True if the point is in on the line, False otherwise.</span>
+
+<span class="sd">    Todo:</span>
+<span class="sd">        - can be done much simpler by using the algorithm used in is_point_on_line_segment</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pt2</span> <span class="o">=</span> <span class="n">closest_point_on_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pt2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">pt2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<span class="k">def</span> <span class="nf">is_closest_point_on_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify if the closest point on a line is on line segment (p1, p2) for a testpoint tp.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        p1, p2 (tuples): two 3d points defining the line segment</span>
+<span class="sd">        tp (3-tuple): 3d testpoint</span>
+<span class="sd">        result (bool):  if True the closest point is returned if there is a closest point</span>
+<span class="sd">                        if False, True is returned if there is a closest point</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (bool/tuple): the point if the point is in on the line, False otherwise.</span>
+<span class="sd">        (bool): True if the point is in on the line, False otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">length_sqrd</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">dis</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="p">((</span><span class="n">tp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">onlinept</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">disp1</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">onlinept</span><span class="p">)</span>
+    <span class="n">disp2</span> <span class="o">=</span> <span class="n">distance_sqrd</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">onlinept</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">disp1</span> <span class="o">&gt;</span> <span class="n">dis</span> <span class="ow">or</span> <span class="n">disp2</span> <span class="o">&gt;</span> <span class="n">dis</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">onlinept</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<div class="viewcode-block" id="is_point_on_segment"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_segment.html#brg.geometry.queries.is_point_on_segment">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_segment</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">ha</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="mi">2</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">c</span><span class="p">)))</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="k">if</span> <span class="n">ha</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="p">(</span><span class="n">b</span> <span class="o">&lt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="is_point_on_polyline"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_on_polyline.html#brg.geometry.queries.is_point_on_polyline">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">clospt</span> <span class="o">=</span> <span class="n">closest_point_on_segment</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">tp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">clospt</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_point_in_triangle.html#brg.geometry.queries.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">abc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if a point (p) is inside line of the triangle abc.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        p (tuple): 3d point</span>
+<span class="sd">        abc (tuples): 3d triangle points</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (bool): True if the point is in inside the triangle, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">is_on_same_side</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">cp1</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+        <span class="n">cp2</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">dot</span><span class="p">(</span><span class="n">cp1</span><span class="p">,</span> <span class="n">cp2</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">abc</span>
+    <span class="k">if</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="is_ray_intersecting_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-queries-is_ray_intersecting_triangle.html#brg.geometry.queries.is_ray_intersecting_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_ray_intersecting_triangle</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)</span>
+<span class="sd">    based on Moeller Trumbore intersection algorithm</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line</span>
+<span class="sd">        a,b,c (list of 3-tuples): 3d points of triangle</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (bool): True if the ray intersects with the triangle, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">EPSILON</span> <span class="o">=</span> <span class="mf">0.000000001</span>
+    <span class="c1"># Find vectors for two edges sharing V1</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="c1"># Begin calculating determinant - also used to calculate u parameter</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+    <span class="c1"># if determinant is near zero, ray lies in plane of triangle</span>
+    <span class="n">det</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="c1"># NOT CULLING</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">det</span> <span class="o">&gt;</span> <span class="o">-</span> <span class="n">EPSILON</span> <span class="ow">and</span> <span class="n">det</span> <span class="o">&lt;</span> <span class="n">EPSILON</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">inv_det</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">det</span>
+    <span class="c1"># calculate distance from V1 to ray origin</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="c1"># Calculate u parameter and make_blocks bound</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+    <span class="c1"># The intersection lies outside of the triangle</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">u</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="c1"># Prepare to make_blocks v parameter</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    <span class="c1"># Calculate V parameter and make_blocks bound</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+    <span class="c1"># The intersection lies outside of the triangle</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">+</span> <span class="n">v</span>  <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">EPSILON</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="c1"># No hit, no win</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<span class="k">def</span> <span class="nf">is_line_line_intersection_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if two lines intersect in 2d on the xy plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        p1, v1 (tuples): 3d point and 3d vector of line A</span>
+<span class="sd">        p2, v2 (tuples): 3d point and 3d vector of line B</span>
+<span class="sd">        points (bool): if True v1,v2 will be interpreted as end points of the lines</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        (bool): True if there is a intersection, False otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">p1b</span> <span class="o">=</span> <span class="n">v1</span>
+        <span class="n">p2b</span> <span class="o">=</span> <span class="n">v2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">p1b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+        <span class="n">p2b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="c1"># def lines_intersect_in_2d():</span>
+<span class="c1">#     return False</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
