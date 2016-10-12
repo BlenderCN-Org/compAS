@@ -28,6 +28,8 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/css/theme_customize.css" type="text/css" />
+  
     <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="brg.com.rhino" href="brg-com-rhino.html"/>
         <link rel="next" title="brg.com.maya" href="brg-com-maya.html"/>
@@ -93,7 +95,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../biblio.html#further-reading">Further reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
 </ul>
 
         
@@ -137,7 +138,8 @@
 <dl class="class">
 <dt id="brg.com.rhino.client.RhinoClient">
 <em class="property">class </em><tt class="descclassname">brg.com.rhino.client.</tt><tt class="descname">RhinoClient</tt><big>(</big><em>delay_start=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/rhino/client.html#RhinoClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.rhino.client.RhinoClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class creates a connection to Rhino from an external Python process
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
+<p>This class creates a connection to Rhino from an external Python process
 through Window&#8217;s COM interface.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -178,16 +180,21 @@ through Window&#8217;s COM interface.</p>
 <span class="go">&lt;guid&gt;</span>
 </pre></div>
 </div>
-<p class="rubric"><strong>Class attributes</strong></p>
-<p class="rubric"><strong>Class methods</strong></p>
-<p class="rubric"><strong>Descriptors</strong></p>
-<p class="rubric"><strong>Special methods</strong></p>
+<p class="class-section rubric"><strong>Class attributes</strong></p>
+<p class="class-section rubric"><strong>Class methods</strong></p>
+<p class="class-section rubric"><strong>Descriptors</strong></p>
+<p class="class-section rubric"><strong>Special methods</strong></p>
 <dl class="method">
 <dt id="brg.com.rhino.client.RhinoClient.__getattr__">
 <tt class="descname">__getattr__</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/rhino/client.html#RhinoClient.__getattr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.rhino.client.RhinoClient.__getattr__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p class="rubric"><strong>Methods</strong></p>
+<p class="class-section rubric"><strong>Methods</strong></p>
+<dl class="method">
+<dt id="brg.com.rhino.client.RhinoClient.show">
+<tt class="descname">show</tt><big>(</big><em>flag=1</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/rhino/client.html#RhinoClient.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.rhino.client.RhinoClient.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="brg.com.rhino.client.RhinoClient.start">
 <tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/com/rhino/client.html#RhinoClient.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.rhino.client.RhinoClient.start" title="Permalink to this definition">¶</a></dt>
@@ -196,11 +203,6 @@ through Window&#8217;s COM interface.</p>
 <dl class="method">
 <dt id="brg.com.rhino.client.RhinoClient.stop">
 <tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/com/rhino/client.html#RhinoClient.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.rhino.client.RhinoClient.stop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="brg.com.rhino.client.RhinoClient.show">
-<tt class="descname">show</tt><big>(</big><em>flag=1</em><big>)</big><a class="reference internal" href="../../_modules/brg/com/rhino/client.html#RhinoClient.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.com.rhino.client.RhinoClient.show" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

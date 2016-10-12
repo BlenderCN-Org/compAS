@@ -11,7 +11,7 @@ brg.com: A package for communication with other software.
 
 .. toctree::
    :glob:
-   :maxdepth: 3
+   :maxdepth: 1
 
    brg-com-mlab
    brg-com-rhino

@@ -8,22 +8,22 @@ class Mixin(object):
         raise NotImplementedError
 
 
-import attributes
-import descriptors
-import forces
-import geometry
-import keys
-import labels
+# import attributes
+# import descriptors
+# import forces
+# import geometry
+# import keys
+# import labels
 
-from attributes import EditAttributes
-from descriptors import Descriptors
-from forces import DisplayForces
-from geometry import EditGeometry
-from keys import GetKeys
-from labels import DisplayLabels
+# from attributes import EditAttributes
+# from descriptors import Descriptors
+# from forces import DisplayForces
+# from geometry import EditGeometry
+# from keys import GetKeys
+# from labels import DisplayLabels
 
 
-__all__ = [
+docs = [
     'attributes',
     'descriptors',
     'forces',

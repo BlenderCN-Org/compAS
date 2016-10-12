@@ -29,12 +29,7 @@ class Conduit(DisplayConduit):
         Rhino.RhinoApp.Wait()
 
 
-import lines
-import points
-import splines
-
-
-__all__ = [
+docs = [
     'lines',
     'points',
     'splines',

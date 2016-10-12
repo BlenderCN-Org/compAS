@@ -6,16 +6,14 @@
 from brg_rhino.datastructures.mixins import Mixin
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = 'Jun 19, 2015'
 
 
-__all__ = [
+docs = [
     'Descriptors',
 ]
 
@@ -24,6 +22,11 @@ class Descriptors(Mixin):
 
     @property
     def layer(self):
+        """:obj:`str` : The layer of the network.
+
+        Any value of appropriate type assigned to this property will be stored in
+        the instance's attribute dict.
+        """
         return self.attributes.get('layer')
 
     @layer.setter

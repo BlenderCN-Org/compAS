@@ -5,12 +5,35 @@ from brg_rhino.datastructures.mixins.geometry import EditGeometry
 from brg_rhino.datastructures.mixins.geometry import DisplayGeometry
 from brg_rhino.datastructures.mixins.keys import GetKeys
 from brg_rhino.datastructures.mixins.labels import DisplayLabels
+from brg_rhino.datastructures.mixins.descriptors import Descriptors
 
 import brg_rhino.utilities as rhino
 
 
-@rhino.add_gui_helpers((EditAttributes, EditGeometry, DisplayGeometry, GetKeys, DisplayLabels))
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__version__    = '0.1'
+__date__       = 'Jun 19, 2015'
+
+
+docs = [
+    'RhinoNetwork'
+]
+
+
+@rhino.add_gui_helpers((
+    EditAttributes,
+    EditGeometry,
+    DisplayGeometry,
+    GetKeys,
+    DisplayLabels,
+    Descriptors
+))
 class RhinoNetwork(Network):
+    """This class extends the basic network datastructure with Rhino-specific
+    functionality.
+    """
 
     def __init__(self, **kwargs):
         super(RhinoNetwork, self).__init__(**kwargs)
@@ -27,18 +50,18 @@ class RhinoNetwork(Network):
     # NOTE: some descriptors are inherited from the base Mixin class
     # --------------------------------------------------------------------------
 
-    @property
-    def layer(self):
-        """:obj:`str` : The layer of the network.
+    # @property
+    # def layer(self):
+    #     """:obj:`str` : The layer of the network.
 
-        Any value of appropriate type assigned to this property will be stored in
-        the instance's attribute dict.
-        """
-        return self.attributes.get('layer', None)
+    #     Any value of appropriate type assigned to this property will be stored in
+    #     the instance's attribute dict.
+    #     """
+    #     return self.attributes.get('layer', None)
 
-    @layer.setter
-    def layer(self, value):
-        self.attributes['layer'] = value
+    # @layer.setter
+    # def layer(self, value):
+    #     self.attributes['layer'] = value
 
     # --------------------------------------------------------------------------
     # constructors
