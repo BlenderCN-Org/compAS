@@ -14,7 +14,25 @@ except ImportError as e:
         raise e
 
 
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__version__    = '0.1'
+__date__       = 'Jun 19, 2015'
+
+
+docs = [
+    'RhinoVolMesh'
+]
+
+
 class RhinoVolMesh(VolMesh):
+    """This class extends the `VolMesh` datastructure with Rhino-specific
+    functionality.
+
+    Attributes:
+        attributes (dict) : Miscellaneous mesh properties.
+    """
 
     def __init__(self):
         super(RhinoVolMesh, self).__init__()

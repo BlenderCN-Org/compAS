@@ -16,7 +16,7 @@ SUBPACKAGES_SECTION = """
 
 .. toctree::
    :glob:
-   :maxdepth: 3
+   :maxdepth: 1
 
 """
 
@@ -47,8 +47,21 @@ CLASS_PAGE = """
 ********************************************************************************
 
 .. autoclass:: {1}
+   :show-inheritance:
 
 """
+
+
+def ssorted(seq, **kwargs):
+    key = kwargs['key']
+    values = {}
+    for item in seq:
+        try:
+            value = key(item)
+            values[item] = value
+        except TypeError:
+            pass
+    return sorted(values.iterkeys(), key=lambda item: values[item])
 
 
 def module_doc(p):
@@ -59,10 +72,8 @@ def module_doc(p):
     modules  = [a for a in attrs if inspect.ismodule(a)]
     packages = [m for m in modules if m.__file__[-12:] == '__init__.pyc' or m.__file__[-11:] == '__init__.py']
     with open(filepath, 'w+') as fp:
-        if p.__doc__:
-            line = PACAKGE_PAGE.format(p.__name__, p.__doc__)
-        else:
-            line = PACAKGE_PAGE.format(p.__name__, '<docstring missing>')
+        docs = p.__doc__ or '<docstring missing>'
+        line = PACAKGE_PAGE.format(p.__name__, docs)
         fp.write(line)
     if packages:
         with open(filepath, 'a') as fp:
@@ -75,10 +86,8 @@ def module_doc(p):
             continue
         funcs = None
         with open(filepath, 'a') as fp:
-            if m.__doc__:
-                fp.write(SUBMODULE_SECTION.format(m.__name__, m.__doc__))
-            else:
-                fp.write(SUBMODULE_SECTION.format(m.__name__, '<docstring missing>'))
+            docs = m.__doc__ or '<docstring missing>'
+            fp.write(SUBMODULE_SECTION.format(m.__name__, docs))
             names = getattr(m, 'docs', [])
             attrs = [getattr(m, n) for n in names]
             funcs = [a for a in attrs if inspect.isfunction(a)]
@@ -103,6 +112,7 @@ def module_doc(p):
 
 
 def class_doc(c):
+    bases = list(c.mro())
     def isclassattribute(n, o):
         if (not inspect.ismethod(o) and
                 not inspect.isbuiltin(o) and
@@ -117,17 +127,23 @@ def class_doc(c):
         if (inspect.ismethod(o) and
                 n.endswith('__') and
                 n != '__init__'):
+            if len(bases) > 1:
+                for b in bases[1:]:
+                    if hasattr(b, n):
+                        return False
             return True
         return False
     def isclassmethod(n, o, c):
         if (inspect.ismethod(o) and
                 not n.endswith('__') and
+                n in c.__dict__ and
                 type(c.__dict__[n]) == classmethod):
             return True
         return False
     def isnormalmethod(n, o, c):
         if (inspect.ismethod(o) and
                 not n.endswith('__') and
+                n in c.__dict__ and
                 not type(c.__dict__[n]) == classmethod):
             return True
         return False
@@ -136,6 +152,10 @@ def class_doc(c):
                 not n.endswith('__') and
                 n != 'args' and
                 n != 'message'):
+            if len(bases) > 1:
+                for b in bases[1:]:
+                    if hasattr(b, n):
+                        return False
             return True
         return False
     members = inspect.getmembers(c)
@@ -144,31 +164,40 @@ def class_doc(c):
     specialmethods  = [(n, o) for n, o in members if isspecialmethod(n, o)]
     normalmethods   = [(n, o) for n, o in members if isnormalmethod(n, o, c)]
     descriptors     = [(n, o) for n, o in members if isdescriptor(n, o)]
-    classattributes = sorted(classattributes, key=lambda m: inspect.getsourcelines(m[1])[1])
-    classmethods    = sorted(classmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
-    specialmethods  = sorted(specialmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
-    normalmethods   = sorted(normalmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
+    # classattributes = ssorted(classattributes, key=lambda m: inspect.getsourcelines(m[1])[1])
+    # classmethods    = ssorted(classmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
+    # specialmethods  = ssorted(specialmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
+    # normalmethods   = ssorted(normalmethods, key=lambda m: inspect.getsourcelines(m[1])[1])
+    classattributes = ssorted(classattributes, key=lambda m: m[0])
+    classmethods    = ssorted(classmethods, key=lambda m: m[0])
+    specialmethods  = ssorted(specialmethods, key=lambda m: m[0])
+    normalmethods   = ssorted(normalmethods, key=lambda m: m[0])
     name = c.__module__ + '.' + c.__name__
     filepath = 'pages/api/' + name.replace('.', '-') + '.rst'
     with open(filepath, 'w+') as fp:
         fp.write(CLASS_PAGE.format(c.__name__, name))
         # class attributes
+        fp.write('   .. rst-class:: class-section\n')
         fp.write('   .. rubric:: **Class attributes**\n\n')
         for n, o in classattributes:
             fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, n))
         # class methods
+        fp.write('   .. rst-class:: class-section\n')
         fp.write('   .. rubric:: **Class methods**\n\n')
         for n, o in classmethods:
             fp.write('   .. automethod:: {0}.{1}\n'.format(name, n))
         # descriptors
+        fp.write('   .. rst-class:: class-section\n')
         fp.write('   .. rubric:: **Descriptors**\n\n')
         for n, o in descriptors:
             fp.write('   .. autoattribute:: {0}.{1}\n'.format(name, n))
         # special methods
+        fp.write('   .. rst-class:: class-section\n')
         fp.write('   .. rubric:: **Special methods**\n\n')
         for n, o in specialmethods:
             fp.write('   .. automethod:: {0}.{1}\n'.format(name, n))
         # normal methods
+        fp.write('   .. rst-class:: class-section\n')
         fp.write('   .. rubric:: **Methods**\n\n')
         for n, o in normalmethods:
             fp.write('   .. automethod:: {0}.{1}\n'.format(name, n))
@@ -188,12 +217,15 @@ def function_doc(f):
 if __name__ == "__main__":
 
     import brg
-    # import brg_rhino
+    import brg_rhino
 
-    reload(brg)
+    # reload(brg)
     # reload(brg_rhino)
 
     for name in brg.docs:
-        # p = getattr(brg, name)
         p = importlib.import_module(brg.__name__ + '.' + name)
+        module_doc(p)
+
+    for name in brg_rhino.docs:
+        p = importlib.import_module(brg_rhino.__name__ + '.' + name)
         module_doc(p)

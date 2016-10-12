@@ -1,18 +1,25 @@
-""""""
+"""This package defines Rhino-specific functionality for the core datastructures.
 
-import conduits
-import mixins
-import toolbars
-import mesh
-import network
-import volmesh
-
-from mesh import RhinoMesh
-from network import RhinoNetwork
-from volmesh import RhinoVolMesh
+- `brg.datastructures.mesh`
+- `brg.datastructures.network`
+- `brg.datastructures.volmesh`
 
 
-__all__ = [
+"""
+
+# import conduits
+# import mixins
+# import toolbars
+# import mesh
+# import network
+# import volmesh
+
+# from mesh import RhinoMesh
+# from network import RhinoNetwork
+# from volmesh import RhinoVolMesh
+
+
+docs = [
     'conduits',
     'mixins',
     'toolbars',

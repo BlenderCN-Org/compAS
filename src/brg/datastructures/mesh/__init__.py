@@ -14,4 +14,7 @@ docs = [
     'mesh',
     'quad',
     'tri',
+    'algorithms',
+    'operations',
+    'viewers',
 ]
