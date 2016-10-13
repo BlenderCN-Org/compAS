@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>brg.geometry.planar &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/css/theme_customize.css" type="text/css" />
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pages/biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>brg.geometry.planar</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for brg.geometry.planar</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">cross</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele &lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__version__</span>    <span class="o">=</span> <span class="s1">&#39;0.1&#39;</span>
+<span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;Oct 3, 2014&#39;</span>
+
+
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;is_ccw&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_convex&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_intersecting&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_selfintersecting&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_in_polygon&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_in_triangle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;closest_part_of_triangle&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="is_ccw"><a class="viewcode-back" href="../../../pages/api/brg-geometry-planar-is_ccw.html#brg.geometry.planar.is_ccw">[docs]</a><span class="k">def</span> <span class="nf">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if `c` is on the left of `ab` when looking from `a` to `b`.</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        This function is only valid in a horizontal plane. Only the XY coordinates</span>
+<span class="sd">        of the input points are used. The Z coordinates are simply ignored.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (sequence): XY(Z) coordinates of point `a`.</span>
+<span class="sd">        b (sequence): XY(Z) coordinates of point `b`.</span>
+<span class="sd">        c (sequence): XY(Z) coordinates of point `c`.</span>
+<span class="sd">        colinear (bool): Allow points to be colinear. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if ccw, False otherwise.</span>
+
+<span class="sd">    This implementation is based on the evaluation of the z-component of the cross</span>
+<span class="sd">    product [toptal]_. If the z-compnent is</span>
+<span class="sd">    positive, the function returns ``True``. Otherwise ``False``.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [0,1,0], [-1, 0, 0])</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [0,1,0], [+1, 0, 0])</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [1,0,0], [2,0,0])</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; is_ccw([0,0,0], [1,0,0], [2,0,0], True)</span>
+<span class="sd">        True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">colinear</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../../pages/api/brg-geometry-planar-is_convex.html#brg.geometry.planar.is_convex">[docs]</a><span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">colinear</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify if the points form a convex figure.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The make_blocks is performed using the projection of the points onto the XY</span>
+<span class="sd">        plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence): A sequence of points representing the polygon. The</span>
+<span class="sd">            first and last point should not be the sane.</span>
+<span class="sd">        colinear (bool): Are points allowed to be colinear?</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the figure is convex, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">colinear</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="is_intersecting"><a class="viewcode-back" href="../../../pages/api/brg-geometry-planar-is_intersecting.html#brg.geometry.planar.is_intersecting">[docs]</a><span class="k">def</span> <span class="nf">is_intersecting</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Do the segments a-b and c-d intersect?</span>
+
+<span class="sd">    Two segments a-b and c-d intersect, if both of the following conditions are true:</span>
+
+<span class="sd">        * c is on the left of ab, and d is on the right, or vice versa</span>
+<span class="sd">        * d is on the left of ac, and on the right of bc, or vice versa</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a: 2D point</span>
+<span class="sd">        b: 2D point</span>
+<span class="sd">        c: 2D point</span>
+<span class="sd">        d: 2D point</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the segments intersect, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="is_selfintersecting"><a class="viewcode-back" href="../../../pages/api/brg-geometry-planar-is_selfintersecting.html#brg.geometry.planar.is_selfintersecting">[docs]</a><span class="k">def</span> <span class="nf">is_selfintersecting</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># def is_point_in_polygon(points, tp):</span>
+<span class="c1">#     &quot;&quot;&quot;Verify if a point is in the interior of a polygon.</span>
+
+<span class="c1">#     Note:</span>
+<span class="c1">#         This only makes sense in the x/y plane</span>
+
+<span class="c1">#     Parameters:</span>
+<span class="c1">#         points (Polygon): list of ordered points.</span>
+<span class="c1">#         tp (3-tuple): 3d make_blocks point</span>
+
+<span class="c1">#         not implemented:</span>
+<span class="c1">#             include_boundary (bool): Should the boundary be included in the make_blocks? Defaults to False.</span>
+<span class="c1">#             A tolerance value would be nice too... float errors are problematic</span>
+<span class="c1">#             points which are located on the boundary are not always uniquely defines as inside/outside</span>
+
+<span class="c1">#     Returns:</span>
+<span class="c1">#         bool: True if the point is in the polygon, False otherwise.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     x, y = tp[0], tp[1]</span>
+<span class="c1">#     points = [(pt[0], pt[1]) for pt in points]  # make 2D</span>
+<span class="c1">#     n = len(points)</span>
+<span class="c1">#     inside = False</span>
+<span class="c1">#     p1x, p1y = points[0]</span>
+<span class="c1">#     for i in range(n + 1):</span>
+<span class="c1">#         p2x, p2y = points[i % n]</span>
+<span class="c1">#         if y &gt; min(p1y, p2y):</span>
+<span class="c1">#             if y &lt;= max(p1y, p2y):</span>
+<span class="c1">#                 if x &lt;= max(p1x, p2x):</span>
+<span class="c1">#                     if p1y != p2y:</span>
+<span class="c1">#                         xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x</span>
+<span class="c1">#                     if p1x == p2x or x &lt;= xinters:</span>
+<span class="c1">#                         inside = not inside</span>
+<span class="c1">#         p1x, p1y = p2x, p2y</span>
+<span class="c1">#     return inside</span>
+
+</div>
+<div class="viewcode-block" id="is_point_in_polygon"><a class="viewcode-back" href="../../../pages/api/brg-geometry-planar-is_point_in_polygon.html#brg.geometry.planar.is_point_in_polygon">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_polygon</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+    <span class="n">ccw</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ccw</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">ccw</span> <span class="o">=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-planar-is_point_in_triangle.html#brg.geometry.planar.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
+    <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">triangle</span>
+    <span class="n">ccw</span> <span class="o">=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">ccw</span> <span class="o">!=</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="closest_part_of_triangle"><a class="viewcode-back" href="../../../pages/api/brg-geometry-planar-closest_part_of_triangle.html#brg.geometry.planar.closest_part_of_triangle">[docs]</a><span class="k">def</span> <span class="nf">closest_part_of_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
+    <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">triangle</span>
+    <span class="n">p12</span>  <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">p23</span>  <span class="o">=</span> <span class="n">p3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">p31</span>  <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p3</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p3</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># check if point is closest to edge triangle[0] - triangle[1]</span>
+    <span class="n">p113</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">p12</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">p223</span> <span class="o">=</span> <span class="n">p113</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p12</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p113</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p12</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p113</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p12</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p113</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span>
+    <span class="c1"># check if point is closest to edge triangle[1] - triangle[2]</span>
+    <span class="n">p221</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">p23</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">p331</span> <span class="o">=</span> <span class="n">p221</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p23</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p221</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p23</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p221</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p23</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p331</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span>
+    <span class="c1"># check if point is closest to edge triangle[2] - triangle[0]</span>
+    <span class="n">p332</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">p31</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">p112</span> <span class="o">=</span> <span class="n">p332</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p31</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p332</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p31</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p332</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p31</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p112</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p332</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p1</span>
+    <span class="c1"># check if point is closest to triangle[1]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p2</span>
+    <span class="c1"># check if point is closest to triangle[1]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p2</span>
+    <span class="c1"># check if point is closest to triangle[1]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p221</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ccw</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p223</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p2</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

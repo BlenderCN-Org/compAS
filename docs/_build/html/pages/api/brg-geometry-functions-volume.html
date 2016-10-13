@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>volume &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/css/theme_customize.css" type="text/css" />
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="brg.geometry" href="brg-geometry.html"/>
+        <link rel="next" title="line_line_intersection" href="brg-geometry-intersections-line_line_intersection.html"/>
+        <link rel="prev" title="area" href="brg-geometry-functions-area.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+      
+          <li><a href="brg-geometry.html">brg.geometry</a> &raquo;</li>
+      
+    <li>volume</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="volume">
+<h1>volume<a class="headerlink" href="#volume" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="brg.geometry.functions.volume">
+<tt class="descclassname">brg.geometry.functions.</tt><tt class="descname">volume</tt><big>(</big><em>polyhedron</em><big>)</big><a class="reference internal" href="../../_modules/brg/geometry/functions.html#volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.functions.volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the volume of a polyhedron represented by a closed mesh.</p>
+<p>This is an implementation of the technique described in <a class="reference internal" href="#centroid" id="id1">[centroid]</a>.
+It is based on the divergence theorem, the fact that the <em>area vector</em> is
+constant for each face, and the fact that the area of each face can be computed
+as half the length of the cross product of two adjacent edge vectors</p>
+<div class="math">
+\[V = \int_{P} 1
+  = \frac{1}{3} \int_{\partial P} \mathbf{x} \cdot \mathbf{n}
+  = \frac{1}{3} \sum_{i=0}^{N-1} \int{A_{i}} a_{i} \cdot n_{i}
+  = \frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}\]</div><p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="centroid" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[centroid]</a></td><td><a class="reference external" href="www.ma.ic.ac.uk/~rn/centroid.pdf">www.ma.ic.ac.uk/~rn/centroid.pdf</a></td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="brg-geometry-intersections-line_line_intersection.html" class="btn btn-neutral float-right" title="line_line_intersection"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="brg-geometry-functions-area.html" class="btn btn-neutral" title="area"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>VolMesh &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/css/theme_customize.css" type="text/css" />
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="brg.datastructures.volmesh" href="brg-datastructures-volmesh.html"/>
+        <link rel="next" title="brg.files" href="brg-files.html"/>
+        <link rel="prev" title="brg.datastructures.volmesh.operations" href="brg-datastructures-volmesh-operations.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+      
+          <li><a href="brg-datastructures.html">brg.datastructures</a> &raquo;</li>
+      
+          <li><a href="brg-datastructures-volmesh.html">brg.datastructures.volmesh</a> &raquo;</li>
+      
+    <li>VolMesh</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="volmesh">
+<h1>VolMesh<a class="headerlink" href="#volmesh" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh">
+<em class="property">class </em><tt class="descclassname">brg.datastructures.volmesh.volmesh.</tt><tt class="descname">VolMesh</tt><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
+<p class="class-section rubric"><strong>Class attributes</strong></p>
+<p class="class-section rubric"><strong>Class methods</strong></p>
+<dl class="classmethod">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.from_data">
+<em class="property">classmethod </em><tt class="descname">from_data</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.from_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.from_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.from_json">
+<em class="property">classmethod </em><tt class="descname">from_json</tt><big>(</big><em>filepath</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.from_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.from_obj">
+<em class="property">classmethod </em><tt class="descname">from_obj</tt><big>(</big><em>filepath</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.from_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.from_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.from_vertices_and_cells">
+<em class="property">classmethod </em><tt class="descname">from_vertices_and_cells</tt><big>(</big><em>vertices</em>, <em>cells</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.from_vertices_and_cells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.from_vertices_and_cells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.from_vertices_and_edges">
+<em class="property">classmethod </em><tt class="descname">from_vertices_and_edges</tt><big>(</big><em>vertices</em>, <em>edges</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.from_vertices_and_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.from_vertices_and_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="class-section rubric"><strong>Descriptors</strong></p>
+<dl class="attribute">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.color">
+<tt class="descname">color</tt><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.data">
+<tt class="descname">data</tt><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data representing the mesh.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.name">
+<tt class="descname">name</tt><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the mesh.</p>
+</dd></dl>
+
+<p class="class-section rubric"><strong>Magic methods</strong></p>
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.__contains__">
+<tt class="descname">__contains__</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.__contains__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.__iter__">
+<tt class="descname">__iter__</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.__len__">
+<tt class="descname">__len__</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.__len__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="class-section rubric"><strong>Methods</strong></p>
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.add_cell">
+<tt class="descname">add_cell</tt><big>(</big><em>halffaces</em>, <em>ckey=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.add_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.add_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.add_halfface">
+<tt class="descname">add_halfface</tt><big>(</big><em>vertices</em>, <em>fkey=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.add_halfface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.add_halfface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.add_vertex">
+<tt class="descname">add_vertex</tt><big>(</big><em>vkey=None</em>, <em>attr_dict=None</em>, <em>**kwattr</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.add_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.add_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_adjacency">
+<tt class="descname">cell_adjacency</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_adjacency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_adjacency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_center">
+<tt class="descname">cell_center</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_centroid">
+<tt class="descname">cell_centroid</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_centroid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_centroid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_edges">
+<tt class="descname">cell_edges</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_halffaces">
+<tt class="descname">cell_halffaces</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_halffaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_halffaces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_mesh">
+<tt class="descname">cell_mesh</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_mesh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_neighbours">
+<tt class="descname">cell_neighbours</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_tree">
+<tt class="descname">cell_tree</tt><big>(</big><em>root</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_vertex_neighbours">
+<tt class="descname">cell_vertex_neighbours</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_vertex_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_vertex_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_vertices">
+<tt class="descname">cell_vertices</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cell_vertices_and_halffaces">
+<tt class="descname">cell_vertices_and_halffaces</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cell_vertices_and_halffaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cell_vertices_and_halffaces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cells">
+<tt class="descname">cells</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cells_enum">
+<tt class="descname">cells_enum</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cells_enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cells_enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.cells_iter">
+<tt class="descname">cells_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.cells_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.cells_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.dual">
+<tt class="descname">dual</tt><big>(</big><em>cls</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.dual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.dual" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.edge_coordinates">
+<tt class="descname">edge_coordinates</tt><big>(</big><em>u</em>, <em>v</em>, <em>axes='xyz'</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.edge_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.edge_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.edges">
+<tt class="descname">edges</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.edges_enum">
+<tt class="descname">edges_enum</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.edges_enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.edges_enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.edges_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.face_coordinates">
+<tt class="descname">face_coordinates</tt><big>(</big><em>fkey</em>, <em>axes='xyz'</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.face_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.face_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.faces">
+<tt class="descname">faces</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.faces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.faces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.get_edge_attributes">
+<tt class="descname">get_edge_attributes</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.get_edge_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.get_edge_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.get_vertex_attributes">
+<tt class="descname">get_vertex_attributes</tt><big>(</big><em>vkey</em>, <em>attr_dict=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.get_vertex_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.get_vertex_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.halfface_adjacency">
+<tt class="descname">halfface_adjacency</tt><big>(</big><em>ckey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.halfface_adjacency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.halfface_adjacency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.halfface_cell">
+<tt class="descname">halfface_cell</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.halfface_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.halfface_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.halfface_edges">
+<tt class="descname">halfface_edges</tt><big>(</big><em>fkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.halfface_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.halfface_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.halfface_vertices">
+<tt class="descname">halfface_vertices</tt><big>(</big><em>fkey</em>, <em>ordered=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.halfface_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.halfface_vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.planes">
+<tt class="descname">planes</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.planes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.planes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.planes_iter">
+<tt class="descname">planes_iter</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.planes_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.planes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.scale">
+<tt class="descname">scale</tt><big>(</big><em>factor=1.0</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.set_edge_attributes">
+<tt class="descname">set_edge_attributes</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.set_edge_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.set_edge_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.set_vertex_attributes">
+<tt class="descname">set_vertex_attributes</tt><big>(</big><em>vkey</em>, <em>attr_dict=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.set_vertex_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.set_vertex_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.to_data">
+<tt class="descname">to_data</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.to_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.to_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.to_json">
+<tt class="descname">to_json</tt><big>(</big><em>filepath</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.to_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.to_obj">
+<tt class="descname">to_obj</tt><big>(</big><em>filepath</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.to_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.to_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.vertex_coordinates">
+<tt class="descname">vertex_coordinates</tt><big>(</big><em>vkey</em>, <em>axes='xyz'</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.vertex_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.vertex_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.vertex_neighbours">
+<tt class="descname">vertex_neighbours</tt><big>(</big><em>vkey</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.vertex_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.vertex_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.vertices">
+<tt class="descname">vertices</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.vertices_enum">
+<tt class="descname">vertices_enum</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.vertices_enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.vertices_enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="brg.datastructures.volmesh.volmesh.VolMesh.vertices_iter">
+<tt class="descname">vertices_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/volmesh/volmesh.html#VolMesh.vertices_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.volmesh.volmesh.VolMesh.vertices_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="brg-files.html" class="btn btn-neutral float-right" title="brg.files"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="brg-datastructures-volmesh-operations.html" class="btn btn-neutral" title="brg.datastructures.volmesh.operations"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
