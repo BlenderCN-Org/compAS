@@ -5,7 +5,7 @@ API Reference
 ********************************************************************************
 
 The Block Research Group (BRG) framework is a set of Python packages for
-computational architectural grometry, structural design, and fabrication.
+computational architectural geometry, structural design, and fabrication.
 There is a main package (``brg``) that defines the base functionality of the
 framework, and several wrapper packages (``brg_rhino``, ``brg_maya``, ...) that
 provide wrappers for different CAD environments.

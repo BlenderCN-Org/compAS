@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>is_point_on_line &mdash; brg_framework 0.1 documentation</title>
@@ -14,7 +15,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   
   
@@ -30,13 +30,15 @@
   
     <link rel="stylesheet" href="../../_static/css/theme_customize.css" type="text/css" />
   
+
+  
     <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="brg.geometry" href="brg-geometry.html"/>
         <link rel="next" title="is_point_on_segment" href="brg-geometry-queries-is_point_on_segment.html"/>
         <link rel="prev" title="is_point_on_plane" href="brg-geometry-queries-is_point_on_plane.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="../../_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -46,60 +48,79 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../../index.html" class="fa fa-home"> brg_framework</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> brg_framework
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#download">Download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#setup">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
-</ul>
-</li>
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="brg-com.html">brg.com</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brg-datastructures.html">brg.datastructures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brg-files.html">brg.files</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="brg-geometry.html">brg.geometry</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="brg-geometry.html#brg-geometry-arithmetic">brg.geometry.arithmetic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brg-geometry.html#brg-geometry-functions">brg.geometry.functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brg-geometry.html#brg-geometry-intersections">brg.geometry.intersections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brg-geometry.html#brg-geometry-planar">brg.geometry.planar</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="brg-geometry.html#brg-geometry-queries">brg.geometry.queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brg-geometry.html#brg-geometry-spatial">brg.geometry.spatial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brg-geometry.html#brg-geometry-transformations">brg.geometry.transformations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brg-geometry.html#brg-geometry-utilities">brg.geometry.utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="brg-numerical.html">brg.numerical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brg-physics.html">brg.physics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brg-utilities.html">brg.utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brg-viewers.html">brg.viewers</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../developers.html#how-to-contribute">How to contribute</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developers.html#coding-standards">Coding standards</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developers.html#naming-conventions">Naming conventions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developers.html#templates-and-snippets">Templates and Snippets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developers.html#documentation">Documentation</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../biblio.html#references">References</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../biblio.html#further-reading">Further reading</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -114,7 +135,13 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../../index.html">Docs</a> &raquo;</li>
       
@@ -125,54 +152,58 @@
     <li>is_point_on_line</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
   </ul>
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="is-point-on-line">
 <h1>is_point_on_line<a class="headerlink" href="#is-point-on-line" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="brg.geometry.queries.is_point_on_line">
-<tt class="descclassname">brg.geometry.queries.</tt><tt class="descname">is_point_on_line</tt><big>(</big><em>p1</em>, <em>v1</em>, <em>tp</em>, <em>tol=0</em><big>)</big><a class="reference internal" href="../../_modules/brg/geometry/queries.html#is_point_on_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.queries.is_point_on_line" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">brg.geometry.queries.</code><code class="descname">is_point_on_line</code><span class="sig-paren">(</span><em>p1</em>, <em>v1</em>, <em>tp</em>, <em>tol=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/brg/geometry/queries.html#is_point_on_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.geometry.queries.is_point_on_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if a point (tp) is on line (p1, v1) within a tolerance (tol).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v1</strong> (<em>p1,</em>) &#8211; 3d point and 3d vector of line</li>
 <li><strong>tp</strong> (<em>3-tuple</em>) &#8211; 3d make_blocks point</li>
-<li><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; tolerance distance</li>
+<li><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; tolerance distance</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool): True if the point is in on the line, False otherwise.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(bool)</em> &#8211; True if the point is in on the line, False otherwise.</p>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="docutils">
-<dt>Todo:</dt>
-<dd><ul class="first last simple">
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
 <li>can be done much simpler by using the algorithm used in is_point_on_line_segment</li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 
 </div>
 
 
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="brg-geometry-queries-is_point_on_segment.html" class="btn btn-neutral float-right" title="is_point_on_segment"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="brg-geometry-queries-is_point_on_segment.html" class="btn btn-neutral float-right" title="is_point_on_segment" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="brg-geometry-queries-is_point_on_plane.html" class="btn btn-neutral" title="is_point_on_plane"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="brg-geometry-queries-is_point_on_plane.html" class="btn btn-neutral" title="is_point_on_plane" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -182,11 +213,13 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, Block Research Group - ETH Zurich.
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -210,7 +243,7 @@
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
