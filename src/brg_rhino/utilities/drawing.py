@@ -255,7 +255,6 @@ def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
         name    = f.get('name', '')
         color   = f.get('color')
         layer   = f.get('layer')
-        fix     = System.Array.CreateInstance(bool, len(points))
         corners = [Point3d(*point) for point in points]
         pcurve  = PolylineCurve(corners)
         geo     = List[GeometryBase](1)
@@ -307,17 +306,17 @@ def xdraw_cylinders(cylinders, cap=True):
         name   = c.get('name', '')
         color  = c.get('color')
         layer  = c.get('layer')
-        if radius < TOL:
-            continue
+        # if radius < TOL:
+        #     continue
         base     = Point3d(*start)
         normal   = Point3d(*end) - base
         height   = sum((end[i] - start[i]) ** 2 for i in range(3)) ** 0.5
-        if height < TOL:
-            continue
+        # if height < TOL:
+        #     continue
         plane    = Plane(base, normal)
         circle   = Circle(plane, radius)
         cylinder = Cylinder(circle, height)
-        brep = cylinder.ToBrep(cap, cap)
+        brep     = cylinder.ToBrep(cap, cap)
         if not brep:
             continue
         guid = add_brep(brep)

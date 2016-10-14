@@ -1343,23 +1343,30 @@ class Mesh(object):
         return set(enbrs + vnbrs)
 
     def face_adjacency(self):
+        # this function does not actually use any of the topological information
+        # provided by the halfedges
+        # it is used for unifying face cycles
+        # so the premise is that halfedge data is not valid/reliable
         adjacency = {}
         for fkey in self.face:
             neighbours = []
             for u, v in self.face[fkey].iteritems():
                 for test in self.face:
                     if test == fkey:
+                        # skip self
                         continue
-                    if u in self.face[test]:
-                        if v == self.face[test][u]:
+                    if v in self.face[test] and u == self.face[test][v]:
                             neighbours.append(test)
                             break
-                    if v in self.face[test]:
-                        if u == self.face[test][v]:
+                    if u in self.face[test] and v == self.face[test][u]:
                             neighbours.append(test)
                             break
             adjacency[fkey] = neighbours
         return adjacency
+
+    # def face_adjacency(self):
+    #     uv_halfedge = dict(((u, v), self.halfedge[u][v]) for u, v in self.halfedge.iteritems())
+    #     vu_halfedge = dict(((v, u), self.halfedge[u][v]) for u, v in self.halfedge.iteritems())
 
     def faces_on_boundary(self):
         faces = {}
