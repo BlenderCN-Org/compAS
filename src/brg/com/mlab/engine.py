@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2016-08-29 22:00:58
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
+
 """Matlab communication through the Matlab Engine.
 
 This module defines a class for starting and interacting with the Matlab Engine.

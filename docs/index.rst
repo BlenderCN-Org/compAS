@@ -14,8 +14,10 @@ Contents
 .. toctree::
    :maxdepth: 1
 
+   pages/overview
    pages/gettingstarted
    pages/examples
+   pages/cookbook
    API reference <pages/api>
    Developers Guide <pages/developers>
    pages/license

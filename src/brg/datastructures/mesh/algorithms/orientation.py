@@ -1,6 +1,5 @@
 from brg.datastructures.traversal import bfs
 
-
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -10,7 +9,7 @@ __status__     = 'Development'
 __date__       = '2015-12-03 13:43:05'
 
 
-def mesh_unify_cycle_directions(mesh, root=None, direction=None):
+def mesh_unify_cycle_directions(mesh, root=None):
     """Unify the cycle directions of all faces.
 
     Unified cycle directions is a necessary condition for the data structure to
@@ -18,8 +17,6 @@ def mesh_unify_cycle_directions(mesh, root=None, direction=None):
 
     Parameters:
         root (str): The key of the root face. Defaults to None.
-        direction (str): The direction of the cycles. The value of this
-            parameter should be one of `None`, `ccw`, `cw`.
 
     Returns:
         None
@@ -35,8 +32,6 @@ def mesh_unify_cycle_directions(mesh, root=None, direction=None):
                     return
     if root is None:
         root = mesh.face.iterkeys().next()
-    if direction not in (None, 'ccw', 'cw'):
-        raise ValueError('Not a valid cycle direction.')
     bfs(mesh.face_adjacency(), root, unify)
     mesh.halfedge = dict((key, {}) for key in mesh.vertices_iter())
     for fkey, face in mesh.face.iteritems():
@@ -62,3 +57,33 @@ def mesh_flip_cycle_directions(mesh):
             mesh.halfedge[v][u] = fkey
             if v not in mesh.halfedge[u]:
                 mesh.halfedge[u][v] = None
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    import cStringIO
+    import cProfile
+    import pstats
+
+    import brg
+    from brg.datastructures.mesh.mesh import Mesh
+
+    profile = cProfile.Profile()
+    profile.enable()
+
+    mesh = Mesh.from_obj(brg.get_data('faces_big.obj'))
+    mesh_unify_cycle_directions(mesh)
+
+    profile.disable()
+
+    stream = cStringIO.StringIO()
+    stats  = pstats.Stats(profile, stream=stream)
+    stats.strip_dirs()
+    stats.sort_stats(1)
+    stats.print_stats(20)
+
+    print stream.getvalue()
