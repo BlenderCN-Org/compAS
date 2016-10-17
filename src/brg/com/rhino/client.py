@@ -19,12 +19,6 @@ __version__    = '0.1'
 __date__       = '2016-08-29 13:31:36'
 
 
-docs = [
-    'RhinoClientError',
-    'RhinoClient',
-]
-
-
 class RhinoClientError(Exception):
     pass
 

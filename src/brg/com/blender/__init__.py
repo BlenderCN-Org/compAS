@@ -1,3 +1,3 @@
 """Blender communication through ..."""
 
-__all__ = []
+docs = []

@@ -22,12 +22,6 @@ __version__    = '0.1'
 __date__       = '2016-08-29 22:00:58'
 
 
-docs = [
-    'MatlabSessionError',
-    'MatlabSession',
-]
-
-
 class MatlabSessionError(Exception):
     def __init__(self, message=None):
         if not message:

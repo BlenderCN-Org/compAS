@@ -7,5 +7,5 @@
 # ]
 
 docs = [
-    'sock',
+    {'sock' : ['MayaSockError', 'MayaSock']},
 ]

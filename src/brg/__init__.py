@@ -26,33 +26,13 @@ def get_all_datafile_paths():
     return os.listdir(DATA)
 
 
-# from brg import com
-# from brg import datastructures
-# from brg import files
-# from brg import geometry
-# from brg import numerical
-# from brg import physics
-# from brg import utilities
-# from brg import viewers
-
-# __all__ = [
-#     'com',
-#     'datastructures',
-#     'files',
-#     'geometry',
-#     'numerical',
-#     'physics',
-#     'utilities',
-#     'viewers',
-# ]
-
 docs = [
-    'com',
-    'datastructures',
-    'files',
-    'geometry',
-    'numerical',
-    'physics',
-    'utilities',
-    'viewers',
+    {'com': []},
+    # {'datastructures': []},
+    # {'files': []},
+    # {'geometry': []},
+    # {'numerical': []},
+    # {'physics': []},
+    # {'utilities': []},
+    # {'viewers': []},
 ]

@@ -10,12 +10,6 @@ __version__    = '0.1'
 __date__       = '2016-08-29 13:31:36'
 
 
-docs = [
-    'MayaSockError',
-    'MayaSock',
-]
-
-
 class MayaSockError(Exception):
     pass
 

@@ -5,7 +5,6 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>brg.com.mlab &mdash; brg_framework 0.1 documentation</title>
@@ -15,6 +14,7 @@
   
 
   
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   
   
@@ -30,15 +30,13 @@
   
     <link rel="stylesheet" href="../../_static/css/theme_customize.css" type="text/css" />
   
-
-  
     <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="brg.com" href="brg-com.html"/>
         <link rel="next" title="MatlabProcessError" href="brg-com-mlab-process-MatlabProcessError.html"/>
         <link rel="prev" title="brg.com" href="brg-com.html"/> 
 
   
-  <script src="../../_static/js/modernizr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
 
 </head>
 
@@ -48,79 +46,60 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
-
-          
-            <a href="../../index.html" class="icon icon-home"> brg_framework
-          
-
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                0.1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+      </div>
 
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-                <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="brg-com.html">brg.com</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">brg.com.mlab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="brg-com-rhino.html">brg.com.rhino</a></li>
-<li class="toctree-l4"><a class="reference internal" href="brg-com-maya.html">brg.com.maya</a></li>
-<li class="toctree-l4"><a class="reference internal" href="brg-com-blender.html">brg.com.blender</a></li>
-<li class="toctree-l4"><a class="reference internal" href="brg-com-ansys.html">brg.com.ansys</a></li>
-<li class="toctree-l4"><a class="reference internal" href="brg-com-abaqus.html">brg.com.abaqus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="brg-com-sofystik.html">brg.com.sofystik</a></li>
-<li class="toctree-l4"><a class="reference internal" href="brg-com-threedec.html">brg.com.threedec</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="brg-datastructures.html">brg.datastructures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="brg-files.html">brg.files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="brg-geometry.html">brg.geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="brg-numerical.html">brg.numerical</a></li>
-<li class="toctree-l3"><a class="reference internal" href="brg-physics.html">brg.physics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="brg-utilities.html">brg.utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="brg-viewers.html">brg.viewers</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
 </ul>
 
-            
-          
-        </div>
+        
       </div>
+      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -135,13 +114,7 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
- 
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
+          <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../../index.html">Docs</a> &raquo;</li>
       
@@ -152,14 +125,11 @@
     <li>brg.com.mlab</li>
       <li class="wy-breadcrumbs-aside">
         
-          
-        
       </li>
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+          <div role="main">
             
   <div class="section" id="brg-com-mlab">
 <h1>brg.com.mlab<a class="headerlink" href="#brg-com-mlab" title="Permalink to this headline">¶</a></h1>
@@ -168,7 +138,7 @@
 <h2>brg.com.mlab.process<a class="headerlink" href="#brg-com-mlab-process" title="Permalink to this headline">¶</a></h2>
 <p>Matlab (sub)process.</p>
 <p>Examples:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabProcess</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabProcess</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">&#39;res = isprime(a);&#39;</span><span class="p">)</span>
@@ -197,7 +167,7 @@
 <h2>brg.com.mlab.engine<a class="headerlink" href="#brg-com-mlab-engine" title="Permalink to this headline">¶</a></h2>
 <p>Matlab communication through the Matlab Engine.</p>
 <p>This module defines a class for starting and interacting with the Matlab Engine.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabEngine</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabEngine</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
@@ -213,7 +183,7 @@
 <h2>brg.com.mlab.session<a class="headerlink" href="#brg-com-mlab-session" title="Permalink to this headline">¶</a></h2>
 <p>Matlab communication through the Matlab Engine.</p>
 <p>This module defines a class for interacting with an existing (shared) Matlab Session.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
@@ -228,16 +198,15 @@
 </div>
 
 
-           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="brg-com-mlab-process-MatlabProcessError.html" class="btn btn-neutral float-right" title="MatlabProcessError" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="brg-com-mlab-process-MatlabProcessError.html" class="btn btn-neutral float-right" title="MatlabProcessError"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="brg-com.html" class="btn btn-neutral" title="brg.com" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="brg-com.html" class="btn btn-neutral" title="brg.com"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -247,13 +216,11 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, Block Research Group - ETH Zurich.
-
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
-
         </div>
       </div>
 
@@ -277,7 +244,7 @@
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

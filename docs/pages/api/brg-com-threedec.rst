@@ -3,7 +3,7 @@
 brg.com.threedec
 ********************************************************************************
 
-<docstring missing>
+<...docstring missing...>
 
 
 

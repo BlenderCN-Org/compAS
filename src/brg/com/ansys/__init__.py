@@ -1,3 +1,3 @@
 """AnSys communication through Python subprocesses."""
 
-__all__ = []
+docs = []

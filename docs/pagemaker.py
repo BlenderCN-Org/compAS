@@ -1,5 +1,6 @@
 import inspect
 import importlib
+import os
 
 PACAKGE_PAGE = """
 ********************************************************************************
@@ -67,13 +68,11 @@ def ssorted(seq, **kwargs):
 def module_doc(p):
     filepath = 'pages/api/' + p.__name__.replace('.', '-') + '.rst'
     names    = getattr(p, 'docs', [])
-    # attrs    = [getattr(p, n) for n in names]
     attrs    = [importlib.import_module(p.__name__ + '.' + n) for n in names]
     modules  = [a for a in attrs if inspect.ismodule(a)]
     packages = [m for m in modules if m.__file__[-12:] == '__init__.pyc' or m.__file__[-11:] == '__init__.py']
     with open(filepath, 'w+') as fp:
-        docs = p.__doc__ or '<docstring missing>'
-        line = PACAKGE_PAGE.format(p.__name__, docs)
+        line = PACAKGE_PAGE.format(p.__name__, (p.__doc__ or '<docstring missing>'))
         fp.write(line)
     if packages:
         with open(filepath, 'a') as fp:
@@ -84,10 +83,10 @@ def module_doc(p):
     for m in modules:
         if m in packages:
             continue
+        clsss = None
         funcs = None
         with open(filepath, 'a') as fp:
-            docs = m.__doc__ or '<docstring missing>'
-            fp.write(SUBMODULE_SECTION.format(m.__name__, docs))
+            fp.write(SUBMODULE_SECTION.format(m.__name__, (m.__doc__ or '<docstring missing>')))
             names = getattr(m, 'docs', [])
             attrs = [getattr(m, n) for n in names]
             funcs = [a for a in attrs if inspect.isfunction(a)]
@@ -109,6 +108,47 @@ def module_doc(p):
                 function_doc(f)
     for m in packages:
         module_doc(m)
+
+
+def package_doc(package):
+    filepath = 'pages/api/' + package.__name__.replace('.', '-') + '.rst'
+    docs     = getattr(package, 'docs', [])
+    names    = [n for doc in docs for n in doc]
+    docs     = dict((n, doc[n]) for doc in docs for n in doc)
+    objects  = dict((n, importlib.import_module(package.__name__ + '.' + n)) for n in names)
+    modules  = [n for n in names if inspect.ismodule(objects[n])]
+    packages = [n for n in modules if os.path.basename(objects[n].__file__) in ('__init__.pyc', '__init__.py')]
+    with open(filepath, 'w+') as fp:
+        fp.write(PACAKGE_PAGE.format(package.__name__, (package.__doc__ or '<...docstring missing...>')))
+    if packages:
+        with open(filepath, 'a') as fp:
+            fp.write(SUBPACKAGES_SECTION)
+            for n in packages:
+                fp.write('   ' + objects[n].__name__.replace('.', '-') + '\n')
+    for n in modules:
+        if n in packages:
+            continue
+        items = docs[n]
+        attrs = [getattr(objects[n], item) for item in items]
+        clsss = [o for o in attrs if inspect.isclass(o)]
+        funcs = [o for o in attrs if inspect.isfunction(o)]
+        with open(filepath, 'a') as fp:
+            fp.write(SUBMODULE_SECTION.format(objects[n].__name__, (objects[n].__doc__ or '<docstring missing>')))
+            for o in clsss:
+                n = o.__module__ + '.' + o.__name__
+                fp.write('   ' + n.replace('.', '-') + '\n')
+            for o in funcs:
+                n = o.__module__ + '.' + o.__name__
+                fp.write('   ' + n.replace('.', '-') + '\n')
+            fp.write('\n')
+        for o in clsss:
+            class_doc(o)
+        for f in funcs:
+            function_doc(f)
+    for name in packages:
+        package_doc(objects[name])
+
+
 
 
 def class_doc(c):
@@ -222,10 +262,12 @@ if __name__ == "__main__":
     # reload(brg)
     # reload(brg_rhino)
 
-    for name in brg.docs:
-        p = importlib.import_module(brg.__name__ + '.' + name)
-        module_doc(p)
+    for doc in brg.docs:
+        for name in doc:
+            p = importlib.import_module(brg.__name__ + '.' + name)
+            package_doc(p)
+        # module_doc(p)
 
-    for name in brg_rhino.docs:
-        p = importlib.import_module(brg_rhino.__name__ + '.' + name)
-        module_doc(p)
+    # for name in brg_rhino.docs:
+    #     p = importlib.import_module(brg_rhino.__name__ + '.' + name)
+    #     module_doc(p)
