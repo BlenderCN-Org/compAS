@@ -25,7 +25,7 @@ class EditAttributes(Mixin):
 
     def edit_vertex_attributes(self, keys, names=None):
         if not names:
-            names = sorted(self.default_vertex_attributes.keys())
+            names = sorted(self.dva.keys())
         values = [self.vertex[keys[0]][name] for name in names]
         if len(keys) > 1:
             for i, name in enumerate(names):
@@ -48,7 +48,7 @@ class EditAttributes(Mixin):
 
     def edit_edge_attributes(self, keys, names=None):
         if not names:
-            names = sorted(self.defaut_edge_attributes.keys())
+            names = sorted(self.dea.keys())
         u, v = keys[0]
         values = [self.edge[u][v][name] for name in names]
         if len(keys) > 1:
@@ -74,7 +74,7 @@ class EditAttributes(Mixin):
         if not self.dual:
             return
         if not names:
-            names = sorted(self.defaut_face_attributes.keys())
+            names = sorted(self.dfa.keys())
         values = [self.dual.vertex[fkeys[0]][name] for name in names]
         if len(fkeys) > 1:
             for i, name in enumerate(names):

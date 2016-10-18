@@ -26,19 +26,26 @@ __date__       = 'Sep 26, 2014'
 
 
 __all__ = [
+    'set_color',
+    'is_line',
+    'is_polyline',
+    'is_polygon',
     'delete_objects',
     'get_objects',
     'get_object_names',
     'get_object_attributes',
     'get_points',
     'get_point_coordinates',
-    'get_curve',
-    'get_curves',
+    'select_curve',
+    'select_curves',
+    'select_lines',
+    'select_polylines',
+    'select_polygons',
     'get_lines',
-    'get_line_coordinates',
     'get_polylines',
-    'get_polyline_coordinates',
     'get_polygons',
+    'get_line_coordinates',
+    'get_polyline_coordinates',
     'get_polygon_coordinates',
     'get_surfaces',
     'get_meshes',
@@ -50,12 +57,6 @@ __all__ = [
     'get_mesh_vertex_index',
     'get_mesh_face_index',
     'get_mesh_edge_index',
-    # 'get_mesh_vertex_indices',
-    # 'get_mesh_face_indices',
-    # 'get_mesh_edge_indices',
-    # 'get_mesh_vertex_face_indices',
-    # 'get_mesh_face_vertex_indices',
-    # 'get_mesh_edge_vertex_indices',
 ]
 
 
@@ -72,22 +73,14 @@ def get_object(name=None, color=None, layer=None):
 
 
 def get_objects(name=None, color=None, layer=None):
-    guids = None
+    guids = rs.AllObjects()
     if name:
-        guids = set(rs.ObjectsByName(name))
+        guids = list(set(guids) & set(rs.ObjectsByName(name)))
     if color:
-        temp = set(rs.ObjectsByColor(color))
-        if guids is not None:
-            guids = temp & guids
-        else:
-            guids = temp
+        guids = list(set(guids) & set(rs.ObjectsByColor(color)))
     if layer:
-        temp = set(rs.ObjectsByLayer(layer))
-        if guids is not None:
-            guids = temp & guids
-        else:
-            guids = temp
-    return list(guids)
+        guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+    return guids
 
 
 def delete_object(guid):
@@ -109,6 +102,11 @@ def get_object_names(guids):
 
 def get_object_attributes():
     raise NotImplementedError
+
+
+def set_color(guids, color):
+    for guid in guids:
+        rs.ObjectColor(guid, color)
 
 
 # use ast for this
@@ -160,13 +158,23 @@ def get_point_coordinates(guids):
 # ==============================================================================
 
 
-# change this name to select_...
-def get_curve(message='Select curve.'):
+def is_line(guid):
+    return rs.IsCurve(guid) and rs.IsLine(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) == 2
+
+
+def is_polyline(guid):
+    return rs.IsCurve(guid) and rs.IsPolyline(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2
+
+
+def is_polygon(guid):
+    return rs.IsCurve(guid) and rs.IsCurveClosed(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2
+
+
+def select_curve(message='Select curve.'):
     return rs.GetObject(message, filter=rs.filter.curve)
 
 
-# change this name to select_...
-def get_curves(message='Select curves.'):
+def select_curves(message='Select curves.'):
     guids = []
     temp = rs.GetObjects(message, filter=rs.filter.curve)
     if temp:
@@ -174,14 +182,57 @@ def get_curves(message='Select curves.'):
     return guids
 
 
-# change this name to select_...
-def get_lines(message='Select lines.'):
+def select_lines(message='Select lines.'):
     guids = []
     temp = rs.GetObjects(message, filter=rs.filter.curve)
     if temp:
         for guid in temp:
-            if rs.IsLine(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) == 2:
+            if is_line(guid):
                     guids.append(guid)
+    return guids
+
+
+def select_polylines(message='Select polylines (curves with degree = 1, and multiple segments).'):
+    guids = []
+    temp = rs.GetObjects(message, filter=rs.filter.curve)
+    if temp:
+        for guid in temp:
+            if is_polyline(guid):
+                    guids.append(guid)
+    return guids
+
+
+def select_polygons(message='Select polygons (closed curves with degree = 1)'):
+    guids = []
+    temp = rs.GetObjects(message, filter=rs.filter.curve)
+    if temp:
+        for guid in temp:
+            if is_polygon(guid):
+                guids.append(guid)
+    return guids
+
+
+def get_lines(layer=None):
+    guids = rs.ObjectsByType(rs.filter.curve)
+    guids = [guid for guid in guids if is_line(guid)]
+    if layer:
+        guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+    return guids
+
+
+def get_polylines(layer=None):
+    guids = rs.ObjectsByType(rs.filter.curve)
+    guids = [guid for guid in guids if is_polyline(guid)]
+    if layer:
+        guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+    return guids
+
+
+def get_polygons(layer=None):
+    guids = rs.ObjectsByType(rs.filter.curve)
+    guids = [guid for guid in guids if is_polygon(guid)]
+    if layer:
+        guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
     return guids
 
 
@@ -196,16 +247,6 @@ def get_line_coordinates(guids):
         ep = map(float, rs.CurveEndPoint(guid))
         lines.append((sp, ep))
     return lines
-
-
-def get_polylines(message='Select polylines.'):
-    guids = []
-    temp = rs.GetObjects(message, filter=rs.filter.curve)
-    if temp:
-        for guid in temp:
-            if rs.IsPolyline(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2:
-                    guids.append(guid)
-    return guids
 
 
 def get_polyline_coordinates(guids):
@@ -223,16 +264,6 @@ def get_polyline_coordinates(guids):
             coords = [map(float, point) for point in points]
         polylines.append(coords)
     return polylines
-
-
-def get_polygons(message='Select polygons (closed curves with degree = 1)'):
-    guids = []
-    temp = rs.GetObjects(message, filter=rs.filter.curve)
-    if temp:
-        for guid in temp:
-            if rs.IsCurveClosed(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2:
-                guids.append(guid)
-    return guids
 
 
 def get_polygon_coordinates(guids):

@@ -198,8 +198,9 @@ def get_macros(controller, instance_name):
         script      = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
         tooltip     = annotations.get('tooltip')
         help_text   = annotations.get('help_text') or tooltip
-        button_text = annotations.get('button_text') or name
-        menu_text   = annotations.get('menu_text') or ' '.join(name.split('_'))
+        text        = annotations.get('text') or name
+        button_text = annotations.get('button_text') or text
+        menu_text   = annotations.get('menu_text') or ' '.join(text.split('_'))
         macros.append({
             'name'        : name,
             'script'      : script,

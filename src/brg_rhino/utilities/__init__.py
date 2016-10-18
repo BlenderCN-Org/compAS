@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-import document
-import drawing
-import layers
-import objects
-import misc
 
 from document import get_document_name
 from document import get_document_filename
@@ -24,29 +19,32 @@ from layers import create_layers
 from layers import clear_layers
 from layers import delete_layers
 
+from objects import set_color
+
 from objects import delete_object
 from objects import delete_objects
-
 from objects import get_object
 from objects import get_objects
 from objects import get_object_names
 from objects import get_object_attributes
 from objects import get_object_attributes_from_name
 
-# get_point
 from objects import get_points
 from objects import get_point_coordinates
 
-from objects import get_curve
-from objects import get_curves
-# get_line
+from objects import is_line
+from objects import is_polyline
+from objects import is_polygon
+from objects import select_curve
+from objects import select_curves
+from objects import select_lines
+from objects import select_polylines
+from objects import select_polygons
 from objects import get_lines
-from objects import get_line_coordinates
-# get_polyline
 from objects import get_polylines
-from objects import get_polyline_coordinates
-# get_polygon
 from objects import get_polygons
+from objects import get_line_coordinates
+from objects import get_polyline_coordinates
 from objects import get_polygon_coordinates
 
 from objects import get_surface
@@ -66,12 +64,10 @@ from objects import get_mesh_face_vertex_indices
 from objects import get_mesh_vertex_face_indices
 from objects import get_mesh_face_vertices
 from objects import get_mesh_vertices_and_faces
-
 from objects import get_mesh_vertex_colors
 from objects import set_mesh_vertex_colors
 
 from misc import add_gui_helpers
-
 from misc import browse_for_folder
 from misc import browse_for_file
 from misc import display_message
@@ -87,4 +83,4 @@ from misc import update_attributes
 from misc import wait
 
 
-__all__ = document.__all__ + drawing.__all__ + layers.__all__ + objects.__all__ + misc.__all__
+__all__ = []

@@ -3,8 +3,6 @@
 # @Author  : Tom Van Mele (vanmelet@ethz.ch)
 # @Version : $Id$
 
-
-# import os
 import json
 
 from brg.files.obj import OBJ

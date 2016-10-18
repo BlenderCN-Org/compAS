@@ -15,6 +15,7 @@ try:
     from System.Windows.Forms import DockStyle
     from System.Windows.Forms import FlowDirection
     from System.Windows.Forms import DataGridView
+    from System.Windows.Forms import DataGridViewAutoSizeColumnMode
     from System.Windows.Forms import DataGridViewAutoSizeColumnsMode
     from System.Windows.Forms import DataGridViewAutoSizeRowsMode
     from System.Windows.Forms import DataGridViewCellBorderStyle
@@ -46,10 +47,15 @@ __date__       = 'Jun 19, 2015'
 class AttributesForm(Form):
     """"""
 
-    def __init__(self, attributes, names):
+    def __init__(self, attributes, names, types=None):
         self.attributes = attributes
         self.names = names
+        self.types = types
         self.table = None
+        self.formatters = {
+            '1f' : lambda value: '{0:.1f}'.format(value),
+            '2f' : '',
+        }
         super(AttributesForm, self).__init__()
 
     def init(self):
@@ -64,11 +70,18 @@ class AttributesForm(Form):
         table.Columns[0].DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 238, 238)
         table.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(238, 238, 238)
         for i in range(len(self.names)):
-            table.Columns[i + 1].Name = self.names[i]
-            table.Columns[i + 1].SortMode = DataGridViewColumnSortMode.NotSortable
+            column = table.Columns[i + 1]
+            column.Name = self.names[i]
+            column.SortMode = DataGridViewColumnSortMode.NotSortable
+            if self.types:
+                if self.types[i] == 'f':
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                else:
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         keys = sorted(self.attributes.keys(), key=int)
         for key in keys:
-            objects = [key] + [self.attributes[key][name] for name in self.names]
+            values = [self.attributes[key][name] for name in self.names]
+            objects = [key] + values
             table.Rows.Add(*objects)
         self.table = table
         # buttons
@@ -98,9 +111,9 @@ class AttributesForm(Form):
                     name  = self.names[i]
                     value = row.Cells[i + 1].Value
                     try:
-                        self.settings[key][name] = eval(value)
+                        self.attributes[key][name] = eval(value)
                     except:
-                        self.settings[key][name] = value
+                        self.attributes[key][name] = value
 
 
 # class SectionedAttributesForm(Form):
