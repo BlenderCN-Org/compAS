@@ -1529,6 +1529,19 @@ if __name__ == '__main__':
     data = brg.get_data('faces.obj')
     mesh = Mesh.from_obj(data)
 
+    def unweld(mesh, fkey):
+        face = []
+        for key in mesh.face_vertices(fkey, ordered=True):
+            x, y, z = mesh.vertex_coordinates(key)
+            u = mesh.add_vertex(x=x, y=y, z=z)
+            face.append(u)
+        mesh.add_face(face)
+        for u, v in mesh.face[fkey].iteritems():
+            mesh.halfedge[u][v] = None
+        del mesh.face[fkey]
+
+    unweld(mesh, '12')
+
     print mesh
 
     mesh.draw(
