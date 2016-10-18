@@ -1529,18 +1529,35 @@ if __name__ == '__main__':
     data = brg.get_data('faces.obj')
     mesh = Mesh.from_obj(data)
 
-    def unweld(mesh, fkey):
+    def unweld(mesh, fkey, where=None):
         face = []
-        for key in mesh.face_vertices(fkey, ordered=True):
-            x, y, z = mesh.vertex_coordinates(key)
-            u = mesh.add_vertex(x=x, y=y, z=z)
-            face.append(u)
+        vertices = mesh.face_vertices(fkey, ordered=True)
+        if not where:
+            where = vertices
+        for key in vertices:
+            if key in where:
+                x, y, z = mesh.vertex_coordinates(key)
+                key = mesh.add_vertex(x=x, y=y, z=z)
+            face.append(key)
         mesh.add_face(face)
-        for u, v in mesh.face[fkey].iteritems():
-            mesh.halfedge[u][v] = None
+        fface = mesh.face[fkey]
+        rface = dict((v, u) for u, v in fface.iteritems())
+        for key in where:
+            d = fface[key]
+            a = rface[key]
+            mesh.halfedge[a][key] = None
+            mesh.halfedge[key][d] = None
         del mesh.face[fkey]
 
-    unweld(mesh, '12')
+    fkey    = '12'
+    where   = mesh.face_vertices(fkey)[0:1]
+    x, y, z = mesh.face_centroid(fkey)
+
+    unweld(mesh, fkey, where)
+
+    mesh.vertex['36']['x'] = x
+    mesh.vertex['36']['y'] = y
+    mesh.vertex['36']['z'] = z
 
     print mesh
 
