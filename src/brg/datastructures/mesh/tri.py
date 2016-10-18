@@ -1,4 +1,3 @@
-
 from brg.datastructures.mesh.mesh import Mesh
 
 

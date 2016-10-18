@@ -1,12 +1,3 @@
-"""A viewer specifically geared towards meshes.
-
-.. TODO: center the scene around the bbox of the object
-.. TODO: assign functionality to arrow keys
-.. TODO: create modes
-.. TODO: use spacebar to start/stop
-
-"""
-
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *

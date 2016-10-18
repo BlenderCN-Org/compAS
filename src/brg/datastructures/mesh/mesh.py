@@ -1525,29 +1525,10 @@ class Mesh(object):
 if __name__ == '__main__':
 
     import brg
+    from brg.datastructures.mesh.operations.welding import unweld
 
     data = brg.get_data('faces.obj')
     mesh = Mesh.from_obj(data)
-
-    def unweld(mesh, fkey, where=None):
-        face = []
-        vertices = mesh.face_vertices(fkey, ordered=True)
-        if not where:
-            where = vertices
-        for key in vertices:
-            if key in where:
-                x, y, z = mesh.vertex_coordinates(key)
-                key = mesh.add_vertex(x=x, y=y, z=z)
-            face.append(key)
-        mesh.add_face(face)
-        fface = mesh.face[fkey]
-        rface = dict((v, u) for u, v in fface.iteritems())
-        for key in where:
-            d = fface[key]
-            a = rface[key]
-            mesh.halfedge[a][key] = None
-            mesh.halfedge[key][d] = None
-        del mesh.face[fkey]
 
     fkey    = '12'
     where   = mesh.face_vertices(fkey)[0:1]
