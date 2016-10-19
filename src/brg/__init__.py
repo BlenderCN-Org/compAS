@@ -28,7 +28,7 @@ def get_all_datafile_paths():
 
 docs = [
     {'com': []},
-    # {'datastructures': []},
+    {'datastructures': []},
     # {'files': []},
     # {'geometry': []},
     # {'numerical': []},

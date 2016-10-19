@@ -14,11 +14,6 @@ __version__    = '0.1'
 __date__       = '2015-12-04 08:57:27'
 
 
-docs = [
-    'draw_mesh',
-]
-
-
 DTC = '#000000'
 DVC = '#ffffff'
 DEC = '#333333'

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>brg.datastructures.mesh.algorithms &mdash; brg_framework 0.1 documentation</title>
+  <title>TriMesh &mdash; brg_framework 0.1 documentation</title>
   
 
   
@@ -32,8 +32,8 @@
   
     <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="brg.datastructures.mesh" href="brg-datastructures-mesh.html"/>
-        <link rel="next" title="brg.datastructures.mesh.operations" href="brg-datastructures-mesh-operations.html"/>
-        <link rel="prev" title="brg.datastructures.mesh" href="brg-datastructures-mesh.html"/> 
+        <link rel="next" title="Developers Guide" href="../developers.html"/>
+        <link rel="prev" title="QuadMesh" href="brg-datastructures-mesh-quad-QuadMesh.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -124,7 +124,7 @@
       
           <li><a href="brg-datastructures-mesh.html">brg.datastructures.mesh</a> &raquo;</li>
       
-    <li>brg.datastructures.mesh.algorithms</li>
+    <li>TriMesh</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -133,9 +133,42 @@
 </div>
           <div role="main">
             
-  <div class="section" id="brg-datastructures-mesh-algorithms">
-<h1>brg.datastructures.mesh.algorithms<a class="headerlink" href="#brg-datastructures-mesh-algorithms" title="Permalink to this headline">¶</a></h1>
-<p>&lt;...docstring missing...&gt;</p>
+  <div class="section" id="trimesh">
+<h1>TriMesh<a class="headerlink" href="#trimesh" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="brg.datastructures.mesh.tri.TriMesh">
+<em class="property">class </em><tt class="descclassname">brg.datastructures.mesh.tri.</tt><tt class="descname">TriMesh</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/tri.html#TriMesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.tri.TriMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="brg-datastructures-mesh-mesh-Mesh.html#brg.datastructures.mesh.mesh.Mesh" title="brg.datastructures.mesh.mesh.Mesh"><tt class="xref py py-class docutils literal"><span class="pre">brg.datastructures.mesh.mesh.Mesh</span></tt></a></p>
+<p>Data structure for mesh with triangular faces.</p>
+<p class="class-section rubric"><strong>Class attributes</strong></p>
+<p class="class-section rubric"><strong>Class methods</strong></p>
+<p class="class-section rubric"><strong>Descriptors</strong></p>
+<p class="class-section rubric"><strong>Magic methods</strong></p>
+<p class="class-section rubric"><strong>Methods</strong></p>
+<dl class="method">
+<dt id="brg.datastructures.mesh.tri.TriMesh.add_face">
+<tt class="descname">add_face</tt><big>(</big><em>vertices</em>, <em>fkey=None</em><big>)</big><a class="reference internal" href="../../_modules/brg/datastructures/mesh/tri.html#TriMesh.add_face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brg.datastructures.mesh.tri.TriMesh.add_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a face to the mesh.</p>
+<p>The number of vertices of the face should be exactly three. In this
+count the last vertex is ignored if it is the same as the first.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vertices</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; The vertices of the face.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>str</em> &#8211;
+The key of the added face.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">MeshError</span></tt> &#8211; 
+If the number of vertices is not exactly three.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -144,10 +177,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="brg-datastructures-mesh-operations.html" class="btn btn-neutral float-right" title="brg.datastructures.mesh.operations"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../developers.html" class="btn btn-neutral float-right" title="Developers Guide"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="brg-datastructures-mesh.html" class="btn btn-neutral" title="brg.datastructures.mesh"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="brg-datastructures-mesh-quad-QuadMesh.html" class="btn btn-neutral" title="QuadMesh"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -6,9 +6,6 @@ __version__    = '0.1'
 __date__       = 'Oct 25, 2014'
 
 
-__all__ = []
-
-
 def identify_edge_chain(graph, points, tol):
     tol2 = tol**2
     keys = []

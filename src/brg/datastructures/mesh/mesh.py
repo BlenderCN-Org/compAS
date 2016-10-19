@@ -1,3 +1,8 @@
+# @Author    : Tom Van Mele (van.mele@arch.ethz.ch)
+# @Copyright : Copyright 2014, Block Research Group - ETH Zurich
+# @License   : MIT License
+# @Date      : 2014-10-10
+
 """The (poly) mesh class."""
 
 import os
@@ -19,18 +24,6 @@ from brg.geometry.elements.line import Line
 
 from brg.datastructures.traversal import bfs
 from brg.datastructures.traversal import bfs2
-
-
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 10, 2014'
-
-
-docs = [
-    'Mesh',
-]
 
 
 TOSTRING = """
@@ -1392,6 +1385,7 @@ class Mesh(object):
             adjacency[fkey] = neighbours
         return adjacency
 
+    # working on a btter implementation
     # def face_adjacency(self):
     #     uv_halfedge = dict(((u, v), self.halfedge[u][v]) for u, v in self.halfedge.iteritems())
     #     vu_halfedge = dict(((v, u), self.halfedge[u][v]) for u, v in self.halfedge.iteritems())

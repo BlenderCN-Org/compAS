@@ -1,7 +1,7 @@
 docs = [
-    'duality',
-    'geometry',
-    'orientation',
-    'smoothing',
-    'subdivision',
+    # 'duality',
+    # 'geometry',
+    # 'orientation',
+    # 'smoothing',
+    # 'subdivision',
 ]
