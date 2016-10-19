@@ -570,39 +570,39 @@ name: {0}
 
     # --------------------------------------------------------------------------
 
-    # def set_vertices_attribute(self, name, value):
-    #     if not isinstance(value, (list, tuple)):
-    #         for i, key, attr in self.vertices_enum(True):
-    #             attr[name] = value
-    #     else:
-    #         for i, key, attr in self.vertices_enum(True):
-    #             attr[name] = value[i]
+    def set_vertices_attribute(self, name, value):
+        if not isinstance(value, (list, tuple)):
+            for i, key, attr in self.vertices_enum(True):
+                attr[name] = value
+        else:
+            for i, key, attr in self.vertices_enum(True):
+                attr[name] = value[i]
 
-    # def get_vertices_attribute(self, name, default=None):
-    #     return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+    def get_vertices_attribute(self, name, default=None):
+        return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
 
-    # def get_vertices_attributes(self, names, default=None):
-    #     return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
+    def get_vertices_attributes(self, names, default=None):
+        return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
 
-    # def set_edges_attribute(self, name, values):
-    #     for i, u, v, attr in self.edges_enum(True):
-    #         attr[name] = values[i]
+    def set_edges_attribute(self, name, values):
+        for i, u, v, attr in self.edges_enum(True):
+            attr[name] = values[i]
 
-    # def get_edges_attribute(self, name, default=None):
-    #     return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
+    def get_edges_attribute(self, name, default=None):
+        return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
 
-    # def get_edges_attributes(self, names, default=None):
-    #     return [[attr.get(name, default) for name in names] for u, v, attr in self.edges_iter(True)]
+    def get_edges_attributes(self, names, default=None):
+        return [[attr.get(name, default) for name in names] for u, v, attr in self.edges_iter(True)]
 
-    # def set_faces_attribute(self, name, values):
-    #     for i, fkey, attr in self.edges_enum(True):
-    #         attr[name] = values[i]
+    def set_faces_attribute(self, name, values):
+        for i, fkey, attr in self.edges_enum(True):
+            attr[name] = values[i]
 
-    # def get_faces_attribute(self, name, default=None):
-    #     return [self.get_face_attribute(fkey, name, default) for fkey in self.face]
+    def get_faces_attribute(self, name, default=None):
+        return [self.get_face_attribute(fkey, name, default) for fkey in self.face]
 
-    # def get_faces_attributes(self, names, default=None):
-    #     return [[self.get_face_attribute(fkey, name, default) for name in names] for fkey in self.face]
+    def get_faces_attributes(self, names, default=None):
+        return [[self.get_face_attribute(fkey, name, default) for name in names] for fkey in self.face]
 
     # --------------------------------------------------------------------------
     # vertex geometry
