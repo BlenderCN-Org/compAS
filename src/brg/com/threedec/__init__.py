@@ -1,0 +1,5 @@
+""""""
+
+docs = [
+    {'sock': ['ThreeDECSockError', 'ThreeDECSock']},
+]
