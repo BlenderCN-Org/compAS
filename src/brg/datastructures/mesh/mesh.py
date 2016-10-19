@@ -781,7 +781,7 @@ class Mesh(object):
     def add_faces(self):
         raise NotImplementedError
 
-    def remove_face(self, fkey):
+    def delete_face(self, fkey):
         for u, v in self.face[fkey].items():
             self.halfedge[u][v] = None
             if self.halfedge[v][u] is None:
