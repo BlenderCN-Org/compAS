@@ -273,6 +273,9 @@ class Mesh(object):
     def name(self, value):
         self.attributes['name'] = value
 
+    # remove?
+    # replace by actual function?
+    # current implementation/usage is not very transparent...
     @property
     def color(self):
         """:obj:`dict` : The color specification of the mesh.
@@ -296,6 +299,31 @@ class Mesh(object):
         except Exception:
             return
         self.attributes['color.{0}'.format(value[0])] = value[1]
+
+    @property
+    def xyz(self):
+        """:obj:`list` : The `xyz` coordinates of the vertices of the mesh."""
+        return [(a['x'], a['y'], a['z']) for k, a in self.vertices_iter(True)]
+
+    @property
+    def xy(self):
+        """:obj:`list` : The `xy` coordinates of the vertices of the mesh."""
+        return [(a['x'], a['y']) for k, a in self.vertices_iter(True)]
+
+    @property
+    def x(self):
+        """:obj:`list` : The `x` coordinates of the vertices of the mesh."""
+        return [a['x'] for k, a in self.vertices_iter(True)]
+
+    @property
+    def y(self):
+        """:obj:`list` : The `y` coordinates of the vertices of the mesh."""
+        return [a['y'] for k, a in self.vertices_iter(True)]
+
+    @property
+    def z(self):
+        """:obj:`list` : The `z` coordinates of the vertices of the mesh."""
+        return [a['z'] for k, a in self.vertices_iter(True)]
 
     # **************************************************************************
     # **************************************************************************
