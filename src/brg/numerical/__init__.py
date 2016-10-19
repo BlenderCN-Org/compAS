@@ -1,26 +1,25 @@
 """brg.numerical : A package for numerical computation."""
 
-# import gpu
-# import methods
-
-# import linalg
-# import matrices
-# import operators
-# import utilities
-# import xforms
-
-# __all__ = [
-#     'linalg',
-#     'matrices',
-#     'operators',
-#     'utilities',
-#     'xforms',
-# ]
-
 docs = [
-    'linalg',
-    'matrices',
-    'operators',
-    'utilities',
-    'xforms',
+	{'gpu': []},
+	{'methods': []},
+	{'solvers': []},
+    {'linalg': ['rank', 
+                'dof', 
+                'normrow', 
+                'normalizerow', 
+                'rot90', 
+                '_chofactor', 					
+                '_lufactorized', 
+                'solve_with_known', 
+                'spsolve_with_known', 
+                'nullspace',
+                'rref',
+                'pivots',
+                'nonpivots']},
+    {'matrices': []},
+    {'operators': []},
+	{'spatial': []},
+	{'utilities': []},
+	{'xforms': []}
 ]
