@@ -557,9 +557,8 @@ name: {0}
 
     def set_face_attribute(self, fkey, name, value):
         if not self.dualdata:
-            # self.dualdata = DualData()
             self.dualdata = Network()
-        if not fkey in self.dualdata.vertex:
+        if fkey not in self.dualdata.vertex:
             self.dualdata.vertex[fkey] = {}
         self.dualdata.vertex[fkey][name] = value
 
