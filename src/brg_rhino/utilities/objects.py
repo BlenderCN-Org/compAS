@@ -134,8 +134,7 @@ def get_object_attributes_from_name(name, separator=';', assignment=':'):
 # ==============================================================================
 
 
-# change this name to select_...
-def get_points(message='Select points.'):
+def select_points(message='Select points.'):
     guids = []
     temp = rs.GetObjects(message, filter=rs.filter.point)
     if temp:
@@ -143,7 +142,19 @@ def get_points(message='Select points.'):
     return guids
 
 
-# does what it says
+def get_points(layer=None):
+    if layer:
+        rs.EnableRedraw(False)
+        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        guids = rs.ObjectsByType(rs.filter.point)
+        guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.EnableRedraw(True)
+    else:
+        guids = rs.ObjectsByType(rs.filter.point)
+    return guids
+
+
 def get_point_coordinates(guids):
     points = []
     for guid in guids:
@@ -213,26 +224,47 @@ def select_polygons(message='Select polygons (closed curves with degree = 1)'):
 
 
 def get_lines(layer=None):
-    guids = rs.ObjectsByType(rs.filter.curve)
-    guids = [guid for guid in guids if is_line(guid)]
     if layer:
+        rs.EnableRedraw(False)
+        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        guids = rs.ObjectsByType(rs.filter.curve)
+        guids = [guid for guid in guids if is_line(guid)]
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.EnableRedraw(True)
+    else:
+        guids = rs.ObjectsByType(rs.filter.curve)
+        guids = [guid for guid in guids if is_line(guid)]
     return guids
 
 
 def get_polylines(layer=None):
-    guids = rs.ObjectsByType(rs.filter.curve)
-    guids = [guid for guid in guids if is_polyline(guid)]
     if layer:
+        rs.EnableRedraw(False)
+        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        guids = rs.ObjectsByType(rs.filter.curve)
+        guids = [guid for guid in guids if is_polyline(guid)]
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.EnableRedraw(True)
+    else:
+        guids = rs.ObjectsByType(rs.filter.curve)
+        guids = [guid for guid in guids if is_polyline(guid)]
     return guids
 
 
 def get_polygons(layer=None):
-    guids = rs.ObjectsByType(rs.filter.curve)
-    guids = [guid for guid in guids if is_polygon(guid)]
     if layer:
+        rs.EnableRedraw(False)
+        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        guids = rs.ObjectsByType(rs.filter.curve)
+        guids = [guid for guid in guids if is_polygon(guid)]
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.EnableRedraw(True)
+    else:
+        guids = rs.ObjectsByType(rs.filter.curve)
+        guids = [guid for guid in guids if is_polygon(guid)]
     return guids
 
 
@@ -312,18 +344,37 @@ def get_surfaces(message='Select surfaces.'):
 # ==============================================================================
 
 
-def get_mesh(message='Select a mesh.'):
+def select_mesh(message='Select a mesh.'):
     return rs.GetObject(
         message,
         filter=rs.filter.mesh
     )
 
 
-def get_meshes(message='Select meshes.'):
+def select_meshes(message='Select meshes.'):
     guids = []
     temp = rs.GetObjects(message, filter=rs.filter.mesh)
     if temp:
         guids = temp
+    return guids
+
+
+def get_mesh(layer=None):
+    guids = get_meshes(layer=layer)
+    if guids:
+        return guids[0]
+
+
+def get_meshes(layer=None):
+    if layer:
+        rs.EnableRedraw(False)
+        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        guids = rs.ObjectsByType(rs.filter.mesh)
+        guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.EnableRedraw(True)
+    else:
+        guids = rs.ObjectsByType(rs.filter.mesh)
     return guids
 
 

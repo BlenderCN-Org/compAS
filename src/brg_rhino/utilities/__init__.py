@@ -29,6 +29,7 @@ from objects import get_object_names
 from objects import get_object_attributes
 from objects import get_object_attributes_from_name
 
+from objects import select_points
 from objects import get_points
 from objects import get_point_coordinates
 
@@ -50,6 +51,8 @@ from objects import get_polygon_coordinates
 from objects import get_surface
 from objects import get_surfaces
 
+from objects import select_mesh
+from objects import select_meshes
 from objects import get_mesh
 from objects import get_meshes
 from objects import get_mesh_edge_index

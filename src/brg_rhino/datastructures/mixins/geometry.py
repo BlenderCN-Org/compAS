@@ -40,6 +40,7 @@ class EditGeometry(Mixin):
         start  = rhino.pick_point('Point to move from?')
         if not start:
             return
+
         def OnDynamicDraw(sender, e):
             current = list(e.CurrentPoint)
             vec = [current[i] - start[i] for i in range(3)]
@@ -51,6 +52,7 @@ class EditGeometry(Mixin):
                 sp = Point3d(*sp)
                 ep = Point3d(*ep)
                 e.Display.DrawDottedLine(sp, ep, color)
+
         rhino.delete_objects(rhino.get_objects(name='{0}.*'.format(self.name)))
         gp = Rhino.Input.Custom.GetPoint()
         gp.SetCommandPrompt('Point to move to?')
@@ -69,10 +71,12 @@ class EditGeometry(Mixin):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
         nbrs  = [self.vertex_coordinates(nbr) for nbr in self.halfedge[key]]
         nbrs  = [Rhino.Geometry.Point3d(*xyz) for xyz in nbrs]
+
         def OnDynamicDraw(sender, e):
             for ep in nbrs:
                 sp = e.CurrentPoint
                 e.Display.DrawDottedLine(sp, ep, color)
+
         gp = Rhino.Input.Custom.GetPoint()
         gp.SetCommandPrompt('Point to move to?')
         gp.DynamicDraw += OnDynamicDraw

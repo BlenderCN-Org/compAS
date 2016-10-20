@@ -162,8 +162,24 @@ class Mesh(object):
         return iter(self.vertex)
 
     def __getitem__(self, key):
-        """Defines the behaviour of the mesh when it is accessed """
+        """Defines the behaviour of the mesh when it is treated as a container and
+        one of its items is accessed directly. Because of this implementation,
+        the mesh will respond by returning the vertex attributes corresponding to
+        the requested vertex key.
+
+        >>> mesh = Mesh()
+        >>> mesh.add_vertex(x=0, y=0, z=0)
+        '0'
+        >>> mesh.vertex['0']
+        {'x': 0, 'y': 0, 'z': 0}
+        >>> mesh['0']
+        {'x': 0, 'y': 0, 'z': 0}
+        """
         return self.vertex[key]
+
+    def __delitem__(self, key):
+        """Defines the behaviour of the mesh when ..."""
+        self.delete_vertex(key)
 
     def __str__(self):
         """Defines the bahaviour of the mesh when it is converted to a string,
@@ -692,6 +708,7 @@ class Mesh(object):
     def add_vertices(self):
         raise NotImplementedError
 
+    # this should be delete_vertex
     def remove_vertex(self, key):
         nbrs = self.vertex_neighbours(key)
         for nbr in nbrs:
@@ -710,6 +727,9 @@ class Mesh(object):
                     del self.halfedge[n][nbr]
         del self.halfedge[key]
         del self.vertex[key]
+
+    def delete_vertex(self, key):
+        raise NotImplementedError
 
     def insert_vertex(self, fkey, xyz=None):
         """Insert a vertex in the specified face.
