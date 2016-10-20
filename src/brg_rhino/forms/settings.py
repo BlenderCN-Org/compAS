@@ -156,7 +156,7 @@ class SectionedSettingsForm(Form):
             for name in self.tables:
                 table = self.tables[name]
                 for row in table.Rows:
-                    key = row.Cells[0].Value
+                    key   = row.Cells[0].Value
                     value = row.Cells[1].Value
                     try:
                         self.settings[name][key] = eval(value)

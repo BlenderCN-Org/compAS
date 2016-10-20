@@ -297,7 +297,7 @@ def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
 
 
 @wrap_xdrawfunc
-def xdraw_cylinders(cylinders, cap=True):
+def xdraw_cylinders(cylinders, cap=False):
     guids = []
     for c in iter(cylinders):
         start  = c['start']
@@ -306,13 +306,13 @@ def xdraw_cylinders(cylinders, cap=True):
         name   = c.get('name', '')
         color  = c.get('color')
         layer  = c.get('layer')
-        # if radius < TOL:
-        #     continue
+        if radius < TOL:
+            continue
         base     = Point3d(*start)
         normal   = Point3d(*end) - base
-        height   = sum((end[i] - start[i]) ** 2 for i in range(3)) ** 0.5
-        # if height < TOL:
-        #     continue
+        height   = normal.Length
+        if height < TOL:
+            continue
         plane    = Plane(base, normal)
         circle   = Circle(plane, radius)
         cylinder = Cylinder(circle, height)
@@ -378,6 +378,50 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
             obj.CommitChanges()
             guids.append(guid)
     return guids
+
+
+# @wrap_xdrawfunc
+# def xdraw_forces(forces, color):
+#     guids = []
+#     for c in iter(cylinders):
+#         start  = c['start']
+#         end    = c['end']
+#         radius = c['radius']
+#         name   = c.get('name', '')
+#         color  = c.get('color')
+#         layer  = c.get('layer')
+#         if radius < TOL:
+#             continue
+#         base     = Point3d(*start)
+#         normal   = Point3d(*end) - base
+#         height   = normal.Length
+#         if height < TOL:
+#             continue
+#         plane    = Plane(base, normal)
+#         circle   = Circle(plane, radius)
+#         cylinder = Cylinder(circle, height)
+#         brep     = cylinder.ToBrep(cap, cap)
+#         if not brep:
+#             continue
+#         guid = add_brep(brep)
+#         if not guid:
+#             continue
+#         obj = find_object(guid)
+#         if not obj:
+#             continue
+#         attr = obj.Attributes
+#         if color:
+#             attr.ObjectColor = FromArgb(*color)
+#             attr.ColorSource = ColorFromObject
+#         if layer:
+#             index = find_layer_by_fullpath(layer, True)
+#             if index >= 0:
+#                 attr.LayerIndex = index
+#         attr.Name = name
+#         attr.WireDensity = -1
+#         obj.CommitChanges()
+#         guids.append(guid)
+#     return guids
 
 
 @wrap_xdrawfunc
