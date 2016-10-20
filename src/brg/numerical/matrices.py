@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# @Date    : 2016-03-21 09:50:20
-# @Author  : Tom Van Mele (vanmelet@ethz.ch)
-# @Version : $Id$
-
 from numpy import array
 from numpy import asarray
 from numpy import float32
@@ -13,32 +8,47 @@ from scipy.sparse import diags
 from scipy.sparse import vstack as svstack
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
+                  'Andrew Liew <liew@arch.ethz.ch>']
+__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__date__       = 'Oct 14, 2014'
-
-
-docs = [
-    'adjacency_matrix',
-    'degree_matrix',
-    'connectivity_matrix',
-    'laplacian_matrix',
-    'equilibrium_matrix',
-]
+__date__       = 'Oct 20, 2016'
 
 
 def adjacency_matrix():
-    pass
+    raise NotImplementedError
 
 
 def degree_matrix():
-    pass
+    raise NotImplementedError
 
 
 def connectivity_matrix(edges, rtype='array'):
-    """"""
+    """Creates a connectivity matrix from a list of edge topologies.
+
+    Note:
+        A connectivity matrix is generally sparse and will perform superior
+        in numerical calculations as a sparse matrix than a dense (array)
+        matrix.
+
+    Parameters:
+        edges (list): List of lists [[node_i, node_j], [node_k, node_l]].
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
+
+    Returns:
+        (sparse, array): Connectivity matrix.
+
+    The connectivity matrix displays how edges in a network are connected
+    together. Each row represents an edge and has 1 and -1 inserted into the
+    columns for the start and end nodes (which is the start does not matter).
+
+    Examples:
+        >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
+        [[-1  1  0  0]
+         [-1  0  1  0]
+         [-1  0  0  1]]
+    """
     m    = len(edges)
     data = array([-1] * m + [1] * m)
     rows = array(range(m) + range(m))
@@ -57,6 +67,29 @@ def connectivity_matrix(edges, rtype='array'):
 
 
 def laplacian_matrix(edges, rtype='array'):
+    """Creates a laplacian matrix from a list of edge topologies.
+
+    Parameters:
+        edges (list): List of lists [[node_i, node_j], [node_k, node_l]].
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
+
+    Returns:
+        (sparse, array): Laplacian matrix.
+
+    The laplacian matrix is defined as
+
+    .. math::
+       :nowrap:
+
+        \mathbf{L}=\mathbf{C}^\mathrm{T}\mathbf{C}
+
+    Examples:
+        >>> laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
+        [[ 3 -1 -1 -1]
+         [-1  1  0  0]
+         [-1  0  1  0]
+         [-1  0  0  1]]
+    """
     C = connectivity_matrix(edges, rtype='csr')
     L = C.transpose().dot(C)
     if rtype == 'array':
@@ -74,22 +107,43 @@ def laplacian_matrix(edges, rtype='array'):
 def equilibrium_matrix(C, xyz, free, rtype='array'):
     """Construct the equilibrium matrix of a structural system.
 
-    Analysis of the equilibrium matrix reveals some of the properties of the
-    structural system, as described in ...
-
     Note:
-        The matrix of vertex coordinates is vectorized to speed up the
+        The matrix of vertex coordinates is vectorised to speed up the
         calculations.
 
     Parameters:
-        C (sparse matrix): [m x n] SciPy sparse connectivity matrix of the
-            structural system.
-        xyz (array): [n x 3] NumPy array of vertex coordinates.
-        free (list): The list of indices of the free vertices.
+        C (array, sparse): Connectivity matrix (m x n).
+        xyz (array, list): Array of vertex coordinates (n x 3).
+        free (list): The index values of the free vertices.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
 
     Returns:
-        Sparse SciPy matrix, if ``f`` one of ``None, 'csc', 'csr', 'coo'``.
-        NumPy array, if ``f`` is ``'array'``.
+        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
+        array: if ''rtype'' is ``'array'``.
+
+    Analysis of the equilibrium matrix reveals some of the properties of the
+    structural system, its size is (2ni x m) where ni is the number of free or
+    internal nodes. It is calculated by
+
+    .. math::
+       :nowrap:
+
+        \mathbf{E}
+        =
+        \left[
+            \begin{array}{c}
+                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{U} \\[0.3em]
+                \hline\\[-0.7em]
+                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{V}
+            \end{array}
+        \right].
+
+    Examples:
+        >>> C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])
+        >>> xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]
+        >>> equilibrium_matrix(C, xyz, [0], rtype='array')
+            [[ 0.  1. -1.]
+             [-1.  1.  1.]]
     """
     xyz = asarray(xyz, dtype=float32)
     C   = csr_matrix(C)
