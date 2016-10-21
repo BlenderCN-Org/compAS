@@ -21,7 +21,8 @@ docs = [
 				  'equilibrium_matrix',
 				  'laplacian_matrix']},
     {'operators': ['grad']},
-	{'spatial': []},
+	{'spatial': ['closest_points_points',
+                 'project_points_heightfield']},
 	{'utilities': []},
 	{'xforms': []}
 ]
