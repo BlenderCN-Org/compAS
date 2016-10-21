@@ -1,15 +1,9 @@
-# -*- coding: utf-8 -*-
-# @Date    : 2016-03-21 09:50:20
-# @Author  : Tom Van Mele (vanmelet@ethz.ch)
-# @Version : $Id$
-
 from numpy import tile
 from numpy import divide
 from numpy import hstack
 from numpy import arange
 
 from scipy import cross
-
 from scipy.sparse import coo_matrix
 
 from linalg import normrow
@@ -21,64 +15,44 @@ __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__date__       = 'Oct 14, 2014'
-
-
-docs = [
-    'div',
-    'grad',
-    'curl',
-]
+__date__       = 'Oct 20, 2016'
 
 
 def grad(V, F, rtype='array'):
-    """Construct the gradient operator of a triangle mesh.
+    """Construct the gradient operator of a trianglular mesh.
+
+    Parameters:
+        V (array): Vertex coordinates of the mesh.
+        F (array): Face vertex indices of the mesh.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
+
+    Returns:
+        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
+        array: If ''rtype'' is ``'array'``.
 
     The gradient operator is fully determined by the connectivity of the mesh
     and the coordinate difference vectors associated with the edges
-
-    Parameters:
-        V (array): The vertex coordinates of the mesh.
-        F (array): The face vertex indices.
-        rtype (str): Return format. Defaults to `array`.
-
-    Returns:
-        Sparse SciPy matrix, if ``rtype`` is one of ``None, 'csc', 'csr', 'coo'``
-        NumPy array, if ``rtype`` is ``'array'``.
     """
     v = V.shape[0]
     f = F.shape[0]
-    # index of first vertex of each face
-    f0 = F[:, 0]
-    # index of second vertex of each face
-    f1 = F[:, 1]
-    # index of last vertex of each face
-    f2 = F[:, 2]
-    # vector from vertex 0 to vertex 1, for each face
-    v01 = V[f1, :] - V[f0, :]
-    # vector from vertex 1 to vertex 2, for each face
-    v12 = V[f2, :] - V[f1, :]
-    # vector from vertex 2 to vertex 0, for each face
-    v20 = V[f0, :] - V[f2, :]
-    # the normal vector to each face
-    n = cross(v12, v20)
-    # the length of the normal vector is equal to twice the area of the face
-    A2 = normrow(n)
+    f0 = F[:, 0]  # Index of first vertex of each face
+    f1 = F[:, 1]  # Index of second vertex of each face
+    f2 = F[:, 2]  # Index of last vertex of each face
+    v01 = V[f1, :] - V[f0, :]  # Vector from vertex 0 to 1 for each face
+    v12 = V[f2, :] - V[f1, :]  # Vector from vertex 1 to 2 for each face
+    v20 = V[f0, :] - V[f2, :]  # Vector from vertex 2 to 0 for each face
+    n = cross(v12, v20)  # Normal vector to each face
+    A2 = normrow(n)  # Length of normal vector is twice the area of the face
     A2 = tile(A2, (1, 3))
-    # unit normals for each face
-    u = normalizerow(n)
-    # vector perpendicular to v01, normalized by A2
-    v01_ = divide(rot90(v01, u), A2)
-    # vector perpendicular to v20, normalized by A2
-    v20_ = divide(rot90(v20, u), A2)
-    # nonzero rows
-    i = hstack((
+    u = normalizerow(n)  # Unit normals for each face
+    v01_ = divide(rot90(v01, u), A2)  # Vector perpendicular to v01, normalized by A2
+    v20_ = divide(rot90(v20, u), A2)  # Vector perpendicular to v20, normalized by A2
+    i = hstack((  # Nonzero rows
         0 * f + tile(arange(f), (1, 4)),
         1 * f + tile(arange(f), (1, 4)),
         2 * f + tile(arange(f), (1, 4))
     )).flatten()
-    # nonzero columns
-    j = tile(hstack((f1, f0, f2, f0)), (1, 3)).flatten()
+    j = tile(hstack((f1, f0, f2, f0)), (1, 3)).flatten()  # Nonzero columns
     data = hstack((
         hstack((v20_[:, 0], - v20_[:, 0], v01_[:, 0], - v01_[:, 0])),
         hstack((v20_[:, 1], - v20_[:, 1], v01_[:, 1], - v01_[:, 1])),
@@ -98,8 +72,8 @@ def grad(V, F, rtype='array'):
 
 
 def div():
-    pass
+    raise NotImplementedError
 
 
 def curl():
-    pass
+    raise NotImplementedError

@@ -1,6 +1,8 @@
+from numpy import abs
 from numpy import array
 from numpy import asarray
 from numpy import float32
+from numpy import tile
 
 from scipy.sparse import coo_matrix
 from scipy.sparse import csr_matrix
@@ -37,7 +39,8 @@ def connectivity_matrix(edges, rtype='array'):
         rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
 
     Returns:
-        (sparse, array): Connectivity matrix.
+        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
+        array: If ''rtype'' is ``'array'``.
 
     The connectivity matrix displays how edges in a network are connected
     together. Each row represents an edge and has 1 and -1 inserted into the
@@ -74,7 +77,8 @@ def laplacian_matrix(edges, rtype='array'):
         rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
 
     Returns:
-        (sparse, array): Laplacian matrix.
+        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
+        array: If ''rtype'' is ``'array'``.
 
     The laplacian matrix is defined as
 
@@ -104,6 +108,39 @@ def laplacian_matrix(edges, rtype='array'):
         return L
 
 
+def mass_matrix(Ct, E, A, l, f=0, c=1, tiled=True):
+    """Creates a network's nodal mass matrix.
+
+    Parameters:
+        Ct (sparse): Sparse transpose of the connectivity matrix (n x m).
+        E (array): Vector of member Young's moduli (m x 1).
+        A (array): Vector of member section areas (m x 1).
+        l (array): Vector of member lengths (m x 1).
+        f (array): Vector of member forces (m x 1).
+        c (float): Convergence factor.
+        tiled (boolean): Whether to tile horizontally by 3 for x, y, z.
+
+    Returns:
+        (array): mass matrix, either (m x 1) or (m x 3).
+
+    The mass matrix is defined as the sum of the member axial stiffnesses
+    (inline) of the elements connected to each node, plus the force density.
+    The force density ensures a non-zero value in form-finding/pre-stress
+    modelling where E=0.
+
+    .. math::
+       :nowrap:
+
+        \mathbf{m}=|\mathbf{C}^\mathrm{T}|(\mathbf{E}\circ\mathbf{A}\oslash\mathbf{l}+\mathbf{f}\oslash\mathbf{l})
+    """
+    ks = E*A/l
+    m = c*(abs(Ct).dot(ks + f/l))
+    if  tiled:
+        return tile(m, (1, 3))
+    else:
+        return m
+
+
 def equilibrium_matrix(C, xyz, free, rtype='array'):
     """Construct the equilibrium matrix of a structural system.
 
@@ -119,7 +156,7 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
 
     Returns:
         sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
-        array: if ''rtype'' is ``'array'``.
+        array: If ''rtype'' is ``'array'``.
 
     Analysis of the equilibrium matrix reveals some of the properties of the
     structural system, its size is (2ni x m) where ni is the number of free or

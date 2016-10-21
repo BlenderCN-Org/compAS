@@ -20,8 +20,9 @@ docs = [
     {'matrices': ['connectivity_matrix',
 				  'equilibrium_matrix',
 				  'laplacian_matrix']},
-    {'operators': []},
-	{'spatial': []},
+    {'operators': ['grad']},
+	{'spatial': ['closest_points_points',
+                 'project_points_heightfield']},
 	{'utilities': []},
 	{'xforms': []}
 ]
