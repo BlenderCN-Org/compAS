@@ -39,7 +39,8 @@ def connectivity_matrix(edges, rtype='array'):
         rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
 
     Returns:
-        (sparse, array): Connectivity matrix.
+        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
+        array: If ''rtype'' is ``'array'``.
 
     The connectivity matrix displays how edges in a network are connected
     together. Each row represents an edge and has 1 and -1 inserted into the
@@ -76,7 +77,8 @@ def laplacian_matrix(edges, rtype='array'):
         rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
 
     Returns:
-        (sparse, array): Laplacian matrix.
+        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
+        array: If ''rtype'' is ``'array'``.
 
     The laplacian matrix is defined as
 
@@ -154,7 +156,7 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
 
     Returns:
         sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
-        array: if ''rtype'' is ``'array'``.
+        array: If ''rtype'' is ``'array'``.
 
     Analysis of the equilibrium matrix reveals some of the properties of the
     structural system, its size is (2ni x m) where ni is the number of free or
