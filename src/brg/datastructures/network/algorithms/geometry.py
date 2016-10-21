@@ -5,11 +5,13 @@
 # @Date      : 2015-12-04
 
 
+def centroid(points):
+    p = len(points)
+    return [coord / p for coord in map(sum, zip(*points))]
+
+
 def smooth_network(network, fixed=None, k=1, d=0.5, callback=None):
     """"""
-    def centroid(points):
-        p = len(points)
-        return [coord / p for coord in map(sum, zip(*points))]
     if not fixed:
         fixed = network.leaves()
     for _ in range(k):
@@ -27,6 +29,36 @@ def smooth_network(network, fixed=None, k=1, d=0.5, callback=None):
             network.vertex[key]['z'] += tz
         if callback:
             callback(network)
+
+
+def smooth_network_area(network, fixed=None, k=1, d=0.5, callback=None):
+    """"""
+    if not fixed:
+        fixed = network.leaves()
+    for _ in range(k):
+        fkey_centroid = dict((fkey, network.face_centroid(fkey)) for fkey in network.face)
+        fkey_area     = dict((fkey, network.face_area(fkey)) for fkey in network.face)
+        for key in network:
+            if key in fixed:
+                continue
+            area    = 0
+            x, y, z = 0, 0, 0
+            for fkey in network.vertex_faces(key):
+                a  = fkey_area[fkey]
+                c  = fkey_centroid[fkey]
+                x += a * c[0]
+                y += a * c[1]
+                z += a * c[2]
+                area += a
+            network.vertex[key]['x'] = x / area
+            network.vertex[key]['y'] = y / area
+            network.vertex[key]['z'] = z / area
+        if callback:
+            callback(network)
+
+
+def relax_network(network):
+    raise NotImplementedError
 
 
 # ==============================================================================

@@ -11,6 +11,7 @@ from brg.geometry.functions import centroid
 from brg.geometry.functions import center_of_mass
 from brg.geometry.functions import cross
 from brg.geometry.functions import length
+from brg.geometry.functions import area
 
 from brg.datastructures.utilities import geometric_key
 
@@ -666,6 +667,12 @@ name: {0}
         if vertices[-1] == vertices[0]:
             vertices = vertices[0:-1]
         return center_of_mass([self.vertex_coordinates(key) for key in vertices])
+
+    def face_area(self, fkey):
+        vertices = self.face_vertices(fkey)
+        if vertices[0] == vertices[-1]:
+            vertices = vertices[0:-1]
+        return area([self.vertex_coordinates(key) for key in vertices])
 
     # --------------------------------------------------------------------------
     # boundary
