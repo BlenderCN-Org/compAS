@@ -21,7 +21,9 @@ def create_matplotlib_axes(size=(10, 7),
                            grid=True,
                            limits=None,
                            ticklength=20,
-                           tickfontsize=15):
+                           tickfontsize=15,
+                           xscale='linear',
+                           yscale='linear'):
     """Initialises plot axes object for matplotlib plotting.
 
     Note:
@@ -38,6 +40,8 @@ def create_matplotlib_axes(size=(10, 7),
         limits (dic): Axis limits and tick spacing.
         ticklength (float): length of the ticks.
         tickfontsize (int): Fontsize of the ticks.
+        xscale (str): normal 'linear' or logarithmic 'log' x axis.
+        yscale (str): normal 'linear' or logarithmic 'log' y axis.
 
     Returns:
         object: Matplotlib axes.
@@ -56,6 +60,8 @@ def create_matplotlib_axes(size=(10, 7),
     plt.tick_params(which='major', length=ticklength, labelsize=tickfontsize)
     plt.tick_params(which='minor', length=ticklength*0.33)
     axes = plt.gca()
+    axes.set_xscale(xscale)
+    axes.set_yscale(yscale)
     return axes
 
 
@@ -125,6 +131,7 @@ def draw_lines():
 def draw_lines_in_matplotlib(lines,
                              axes=None,
                              linewidth=1.0,
+                             linestyle='-',
                              color='#000000'):
     if not axes:
         ax = plt.gca()
@@ -140,7 +147,7 @@ def draw_lines_in_matplotlib(lines,
         line = lines[i]
         lines.append(line)
     collection = LineCollection(lines, linewidths=linewidth, colors=color,
-                                zorder=100)
+                                zorder=100, linestyle=linestyle)
     ax.add_collection(collection)
     if not axes:
         ax.set_xticks([])

@@ -23,6 +23,8 @@ docs = [
     {'operators': ['grad']},
 	{'spatial': ['closest_points_points',
                  'project_points_heightfield']},
-	{'utilities': []},
+	{'utilities': ['float_formatter',
+				   'set_array_print_precision',
+				   'unset_array_print_precision']},
 	{'xforms': []}
 ]
