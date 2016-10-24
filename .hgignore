@@ -1,0 +1,11 @@
+syntax: regexp
+^__temp$
+^data$
+^\.project$
+^\.pydevproject$
+\.in$
+\.out$
+\.rhl$
+\.3dmbak$
+\.rui_bak$
+\.pyc$
