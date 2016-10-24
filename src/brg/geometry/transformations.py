@@ -8,23 +8,12 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'translate',
-    'rotate',
-    'normalize',
-    'scale',
-    'mirror',
-    'project',
-    'skew',
-]
-
-
 def translate():
-    pass
+    raise NotImplementedError
 
 
 def rotate():
-    pass
+    raise NotImplementedError
 
 
 def normalize(vector):
