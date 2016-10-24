@@ -45,8 +45,11 @@ class RhinoMesh(Mesh):
         super(RhinoMesh, self).__init__(**kwargs)
         self.attributes.update({
             'layer'               : None,
-            'color.normal:vertex' : (0, 255, 0),
-            'color.normal:face'   : (0, 255, 0),
+            'color.vertex'        : None,
+            'color.edge'          : None,
+            'color.face'          : None,
+            'color.normal:vertex' : None,
+            'color.normal:face'   : None,
         })
 
     # --------------------------------------------------------------------------

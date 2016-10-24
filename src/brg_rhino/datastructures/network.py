@@ -39,8 +39,8 @@ class RhinoNetwork(Network):
         super(RhinoNetwork, self).__init__(**kwargs)
         self.attributes.update({
             'layer'        : None,
-            'color.vertex' : (0, 0, 0),
-            'color.edge'   : (53, 53, 53),
+            'color.vertex' : None,  # => ByLayer
+            'color.edge'   : None,  # ByLayer
         })
         self.attributes.update(kwargs)
 

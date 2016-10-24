@@ -339,8 +339,10 @@ class Rui(object):
         self.toolbars[toolbar['name']] = e_tb
         for item in toolbar['items']:
             if item['type'] == 'normal':
-                e_left     = self.macros[item['left_macro']]
-                left_guid  = e_left.attrib['guid']
+                left_guid = None
+                if item['left_macro']:
+                    e_left = self.macros[item['left_macro']]
+                    left_guid  = e_left.attrib['guid']
                 right_guid = None
                 if item['right_macro']:
                     e_right    = self.macros[item['right_macro']]

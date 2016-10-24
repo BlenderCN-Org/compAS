@@ -424,9 +424,9 @@ name: {0}
 
     # change to ordered?
     # clarify CCW vs CW in blog post
-    def neighbours(self, key, ordering=None):
+    def neighbours(self, key, ordered=None):
         nbrs = list(self.halfedge[key])
-        if ordering is None:
+        if not ordered:
             return nbrs
         if len(nbrs) == 1:
             return nbrs
@@ -471,7 +471,7 @@ name: {0}
     def vertex_faces(self, key, ordered=False):
         if not ordered:
             return self.halfedge[key].values()
-        nbrs = self.neighbours(key, ordering='ccw')
+        nbrs = self.neighbours(key, ordered=True)
         return [self.halfedge[key][n] for n in nbrs]
 
     # --------------------------------------------------------------------------
@@ -480,6 +480,18 @@ name: {0}
 
     def face_vertices(self, fkey):
         return self.face[fkey]
+
+    def face_descendant(self, fkey, key):
+        vertices = self.face_vertices(fkey)
+        for i in range(0, len(vertices) - 1):
+            u = vertices[i]
+            v = vertices[i + 1]
+            if u == key:
+                return v
+        return None
+
+    def face_ancestor(self, fkey, key):
+        raise NotImplementedError
 
     def face_edges(self, fkey):
         vertices = self.face_vertices(fkey)

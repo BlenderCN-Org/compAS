@@ -31,9 +31,6 @@ class Mesh(object):
     def __init__(self, guid):
         self.guid = guid
 
-    # def get_vertices(self):
-    #     return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]
-
     def get_coordinates(self):
         return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]
 
