@@ -624,7 +624,7 @@ name: {0}
         return [self.vertex[key][axis] for axis in xyz]
 
     def vertex_area(self, key):
-        key_xyz = self.vertex_coordinates()
+        key_xyz = dict((key, self.vertex_coordinates(key)) for key in self)
         fkey_centroid = {}
         for fkey, vertices in self.face.items():
             if vertices[0] != vertices[-1] and len(vertices) > 4:
