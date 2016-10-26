@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d, Axes3D
 
 from matplotlib.patches import Circle
 from matplotlib.collections import PatchCollection, LineCollection
@@ -23,7 +24,9 @@ def create_matplotlib_axes(size=(10, 7),
                            ticklength=20,
                            tickfontsize=15,
                            xscale='linear',
-                           yscale='linear'):
+                           yscale='linear',
+                           three_dim=False,
+                           angle=(30, 45)):
     """Initialises plot axes object for matplotlib plotting.
 
     Note:
@@ -42,6 +45,8 @@ def create_matplotlib_axes(size=(10, 7),
         tickfontsize (int): Fontsize of the ticks.
         xscale (str): normal 'linear' or logarithmic 'log' x axis.
         yscale (str): normal 'linear' or logarithmic 'log' y axis.
+        three_dim (boolean): 3D plot if True.
+        angle (tuple): elev and azim angles for 3D plots.
 
     Returns:
         object: Matplotlib axes.
@@ -50,18 +55,35 @@ def create_matplotlib_axes(size=(10, 7),
         limits = {'xmin': 0, 'dx': 0.1, 'xmax': 1,
                   'ymin': 0, 'dy': 0.1, 'ymax': 1,
                   'zmin': 0, 'dz': 0.1, 'zmax': 1}
-    plt.figure(facecolor='white', figsize=size)
-    plt.xlabel(xlabel, fontname=fontname, fontsize=fontsize)
-    plt.ylabel(ylabel, fontname=fontname, fontsize=fontsize)
-    if  grid:
-        plt.grid()
-    plt.minorticks_on()
-    plt.axis([limits['xmin'], limits['xmax'], limits['ymin'], limits['ymax']])
-    plt.tick_params(which='major', length=ticklength, labelsize=tickfontsize)
-    plt.tick_params(which='minor', length=ticklength*0.33)
-    axes = plt.gca()
-    axes.set_xscale(xscale)
-    axes.set_yscale(yscale)
+    fig = plt.figure(facecolor='white', figsize=size)
+    if  three_dim:
+        ax = Axes3D(fig)
+        ax.w_xaxis.set_pane_color((1, 1, 1, 1))
+        ax.w_yaxis.set_pane_color((1, 1, 1, 1))
+        ax.w_zaxis.set_pane_color((1, 1, 1, 1))
+        ax.set_xlabel(xlabel, fontname=fontname, fontsize=fontsize)
+        ax.set_ylabel(ylabel, fontname=fontname, fontsize=fontsize)
+        ax.set_zlabel(zlabel, fontname=fontname, fontsize=fontsize)
+        ax.view_init(elev=angle[0], azim=angle[1])
+        ax.set_xlim(limits['xmin'], limits['xmax'])
+        ax.set_ylim(limits['ymin'], limits['ymax'])
+        ax.set_zlim(limits['zmin'], limits['zmax'])
+        ax.axis('equal')
+        axes = plt.gca()
+    else:
+        plt.xlabel(xlabel, fontname=fontname, fontsize=fontsize)
+        plt.ylabel(ylabel, fontname=fontname, fontsize=fontsize)
+        if  grid:
+            plt.grid()
+        plt.minorticks_on()
+        plt.axis([limits['xmin'], limits['xmax'],
+                  limits['ymin'], limits['ymax']])
+        plt.tick_params(which='major', length=ticklength,
+                        labelsize=tickfontsize)
+        plt.tick_params(which='minor', length=ticklength*0.33)
+        axes = plt.gca()
+        axes.set_xscale(xscale)
+        axes.set_yscale(yscale)
     return axes
 
 
@@ -155,7 +177,7 @@ def draw_lines_in_matplotlib(lines,
         ax.set_xmargin(0.05)
         ax.set_ymargin(0.05)
         ax.autoscale()
-        plt.show()
+    plt.show()
 
 
 # ==============================================================================

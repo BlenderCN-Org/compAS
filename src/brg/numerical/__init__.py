@@ -26,5 +26,7 @@ docs = [
 	{'utilities': ['float_formatter',
 				   'set_array_print_precision',
 				   'unset_array_print_precision']},
-	{'xforms': []}
+	{'xforms': ['translation_matrix',
+                'scale_matrix',
+                'rotation_matrix']}
 ]
