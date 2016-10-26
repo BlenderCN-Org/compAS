@@ -1,5 +1,6 @@
 import os
 import json
+from json import encoder
 
 from subprocess import Popen
 from subprocess import PIPE
@@ -108,8 +109,11 @@ class ScriptServer(object):
         if not idict:
             idict = {}
         idict.update(kwargs)
+        e_frepr = encoder.FLOAT_REPR
+        encoder.FLOAT_REPR = lambda o: format(o, '.16g')
         with open(self.ipath, 'wb+') as fh:
             json.dump(idict, fh)
+        encoder.FLOAT_REPR = e_frepr
         with open(self.opath, 'wb+') as fh:
             fh.write('')
         args = [self.python, '-u', self.script, self.ipath, self.opath]
@@ -181,6 +185,10 @@ class ScriptServer(object):
         self.print_data()
         self.print_iterations()
         self.print_profile()
+
+
+def ScriptWrapper(object):
+    pass
 
 
 # ==============================================================================
