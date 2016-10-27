@@ -3,7 +3,8 @@
 docs = [
 	{'gpu': []},
 	{'methods': []},
-	{'solvers': []},
+    {'solvers': []},
+	{'functions': ['lengths']},
     {'linalg': ['rank',
                 'dof',
                 'normrow',
