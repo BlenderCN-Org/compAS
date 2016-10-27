@@ -1,30 +1,5 @@
-import pycuda
-import pycuda.autoinit
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#import numpy as np
-
-#import pycuda.gpuarray
+#
 #import skcuda
 #import skcuda.linalg
 #skcuda.linalg.init()
@@ -358,42 +333,7 @@ import pycuda.autoinit
 #    """
 #    b = pycuda.cumath.floor(a)
 #    return b
-#
-#
-#def get(a):
-#    """ Get float or array from GPU memory.
-#
-#    Notes:
-#        None
-#
-#    Parameters:
-#        a (gpu) : Data on the GPU memory to retrieve.
-#
-#    Returns:
-#        Value/array to RAM.
-#
-#    """
-#    b = a.get()
-#    return b
-#
-#
-#def give(a):
-#    """ Give float or array to GPU memory.
-#
-#    Notes:
-#        - Data are converted to np.array type and of float32 precision.
-#
-#    Parameters:
-#        a (array) : Data to send to GPU memory.
-#
-#    Returns:
-#        GPUArray of a.
-#
-#    """
-#    b = pycuda.gpuarray.to_gpu(np.array(a).astype(np.float32))
-#    return b
-#
-#
+
 #def hermitian(a):
 #    """ Hermitian conjugate transpose matrix.
 #
@@ -724,18 +664,4 @@ import pycuda.autoinit
 #    return A
 #
 #
-#def zeros(shape):
-#    """ Create GPUArray of zeros.
-#
-#    Notes:
-#        None
-#
-#    Parameters:
-#        shape (tup) : Dimensions of the GPUArray.
-#
-#    Returns:
-#        GPUArray of zeros.
-#
-#    """
-#    a = pycuda.gpuarray.zeros(shape, dtype='float32')
-#    return a
+
