@@ -261,10 +261,13 @@ name: {0}
         raise NotImplementedError
 
     def to_lines(self):
-        raise NotImplementedError
+        return [(self.vertex_coordinates(u), self.vertex_coordinates(v)) for u, v in self.edges_iter()]
 
     def to_vertices_and_edges(self):
-        raise NotImplementedError
+        key_index = dict((key, index) for index, key in self.vertices_enum())
+        vertices  = [self.vertex_coordinates(key) for key in self]
+        edges     = [(key_index[u], key_index[v]) for u, v in self.edges_iter()]
+        return vertices, edges
 
     # --------------------------------------------------------------------------
     # modify
@@ -650,14 +653,18 @@ name: {0}
                 area += 0.25 * length(cross(v01, v03))
         return area
 
-    def edge_length(self, u, v):
-        sp = self.vertex_coordinates(u)
-        ep = self.vertex_coordinates(v)
-        return (sum([(ep[i] - sp[i])**2 for i in range(len(ep))]))**0.5
-
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
+
+    def edge_vector(self, u, v):
+        sp = self.vertex_coordinates(u)
+        ep = self.vertex_coordinates(v)
+        return [ep[i] - sp[i] for i in range(3)]
+
+    def edge_length(self, u, v):
+        vec = self.edge_vector(u, v)
+        return sum(vec[i] ** 2 for i in range(3)) ** 0.5
 
     def edge_coordinates(self, u, v, xyz='xyz'):
         return (self.vertex_coordinates(u, xyz=xyz),
