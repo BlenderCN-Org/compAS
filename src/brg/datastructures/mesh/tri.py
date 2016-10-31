@@ -33,6 +33,9 @@ class TriMesh(Mesh):
             raise Exception('The face has too many vertices: {0}'.format(vertices))
         return super(TriMesh, self).add_face(vertices, fkey=fkey)
 
+    def is_extraordinary(self, key):
+        return len(self.vertex_neighbours(key)) != 6
+
 
 # ==============================================================================
 # Debugging

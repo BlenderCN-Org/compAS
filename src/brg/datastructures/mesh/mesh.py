@@ -1551,9 +1551,19 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
 
+    def plot(self, **kwargs):
+        from brg.datastructures.mesh.drawing import draw_mesh
+        draw_mesh(self, **kwargs)
+
     def draw(self, **kwargs):
         from brg.datastructures.mesh.drawing import draw_mesh
         draw_mesh(self, **kwargs)
+
+    def view(self):
+        from brg.datastructures.mesh.viewer import MeshViewer
+        viewer = MeshViewer(self)
+        viewer.setup()
+        viewer.show()
 
 
 # ==============================================================================

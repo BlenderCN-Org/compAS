@@ -31,7 +31,10 @@ class QuadMesh(Mesh):
             del vertices[-1]
         if len(vertices) > 4:
             raise Exception('The face has too many vertices: {0}'.format(vertices))
-        super(QuadMesh, self).add_face(vertices, fkey=fkey)
+        return super(QuadMesh, self).add_face(vertices, fkey=fkey)
+
+    def is_extraordinary(self, key):
+        return len(self.vertex_neighbours(key)) != 4
 
 
 # ==============================================================================
@@ -40,11 +43,11 @@ class QuadMesh(Mesh):
 
 if __name__ == '__main__':
 
-    from brg.viewers.mesh import MeshViewer
+    from brg.datastructures.mesh.viewer import MeshViewer
     from brg.geometry.polyhedron import Polyhedron
 
     polyhedron = Polyhedron.generate(6)
-    mesh = QuadMesh(polyhedron.vertices, polyhedron.faces)
+    mesh = QuadMesh.from_vertices_and_faces(polyhedron.vertices, polyhedron.faces)
 
     viewer = MeshViewer(mesh, 800, 800)
     viewer.camera.zoom = 3.
