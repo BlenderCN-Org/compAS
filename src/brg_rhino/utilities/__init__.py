@@ -85,5 +85,3 @@ from misc import update_settings
 from misc import update_attributes
 from misc import wait
 
-
-__all__ = []

@@ -20,12 +20,12 @@ __status__     = 'Development'
 __date__       = 'Sep 26, 2014'
 
 
-__all__ = [
-    'get_document_name',
-    'get_document_filename',
-    'get_document_path',
-    'get_document_dirname'
-]
+# __all__ = [
+#     'get_document_name',
+#     'get_document_filename',
+#     'get_document_path',
+#     'get_document_dirname'
+# ]
 
 
 def get_document_name():

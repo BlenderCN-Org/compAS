@@ -1,11 +1,12 @@
+"""This module defines the quadmesh class."""
+
 from brg.datastructures.mesh.mesh import Mesh
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 10, 2014'
+__license__    = 'MIT'
+__email__      = 'vanmelet@ethz.ch'
 
 
 class QuadMesh(Mesh):
@@ -30,7 +31,10 @@ class QuadMesh(Mesh):
             del vertices[-1]
         if len(vertices) > 4:
             raise Exception('The face has too many vertices: {0}'.format(vertices))
-        super(QuadMesh, self).add_face(vertices, fkey=fkey)
+        return super(QuadMesh, self).add_face(vertices, fkey=fkey)
+
+    def is_extraordinary(self, key):
+        return len(self.vertex_neighbours(key)) != 4
 
 
 # ==============================================================================
@@ -39,11 +43,11 @@ class QuadMesh(Mesh):
 
 if __name__ == '__main__':
 
-    from brg.viewers.mesh import MeshViewer
+    from brg.datastructures.mesh.viewer import MeshViewer
     from brg.geometry.polyhedron import Polyhedron
 
     polyhedron = Polyhedron.generate(6)
-    mesh = QuadMesh(polyhedron.vertices, polyhedron.faces)
+    mesh = QuadMesh.from_vertices_and_faces(polyhedron.vertices, polyhedron.faces)
 
     viewer = MeshViewer(mesh, 800, 800)
     viewer.camera.zoom = 3.

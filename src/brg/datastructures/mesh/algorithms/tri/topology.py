@@ -4,13 +4,10 @@ from brg.datastructures.mesh.operations.tri.split import split_edge
 from brg.datastructures.mesh.operations.tri.collapse import collapse_edge
 from brg.datastructures.mesh.operations.tri.swap import swap_edge
 
-__author__     = ['Tom Van Mele', ]
+__author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.1'
+__license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = '2015-12-04 16:10:59'
 
 
 def remesh(mesh, target,

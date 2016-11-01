@@ -5,6 +5,6 @@ docs = [
     {'quad'      : ['QuadMesh', ]},
     {'tri'       : ['TriMesh', ]},
     {'algorithms': []},
+    {'numerical' : []},
     {'operations': []},
-    {'viewers'   : []},
 ]

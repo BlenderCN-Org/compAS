@@ -1,17 +1,60 @@
+from math import cos
+from math import pi
+
 from brg.datastructures.mesh.operations.split import split_edge
 from brg.datastructures.mesh.exceptions import MeshError
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = '2015-12-03 13:43:05'
 
 
-__all__ = ['subdivide', ]
+# butterfly
+
+
+def subdivide(mesh, scheme='t', **options):
+    """Subdivide the input mesh.
+
+    Parameters:
+        mesh (Mesh) : A mesh object.
+        scheme (str) : Optional. The scheme according to which the mesh should be
+            subdivided. Defult is 't'. Supported values are:
+
+                - t/tri : subdivide every face into triangles by connecting its
+                  vertices to the face centre
+                - c/corner : split the edges and replace each face by a face connecting
+                  the midpoints and a face per corner connecting adjacent midpoints.
+                - q/quad : form new faces by connecting edge midpoints to the
+                  face centres.
+                - ck/catmull-clark : catmull-clark subdivision.
+        options (kwargs) : Optional additional keyword arguments.
+
+    Returns:
+        None
+
+    Raises:
+        NotImplementedError
+        MeshError
+    """
+    options = options or {}
+    if scheme == 'tri':
+        return tri_subdivision(mesh)
+    if scheme == 'corner':
+        return corner_subdivision(mesh)
+    if scheme == 'quad':
+        return quad_subdivision(mesh)
+    if scheme == 'catmull-clark':
+        return catmullclark_subdivision(mesh, **options)
+    if scheme == 'doo-sabin':
+        return doosabin_subdivision(mesh, **options)
+    raise NotImplementedError
+
+
+def subdivided(mesh):
+    """Return a subdivided mesh."""
+    pass
 
 
 def tri_subdivision(mesh):
@@ -20,7 +63,8 @@ def tri_subdivision(mesh):
         mesh.insert_vertex(fkey)
 
 
-def tri_subdivision2(mesh):
+# this is actually loop-subd
+def corner_subdivision(mesh):
     """"""
     # split every edge
     edgepoints = []
@@ -138,26 +182,7 @@ def catmullclark_subdivision(mesh, k=1, fixed=None):
             edgepoints.append(w)
         for fkey in mesh.faces():
             x, y, z = fkey_centroid[fkey]
-            # ------------------------------------------------------------------
-            # temp
-            # ------------------------------------------------------------------
-            attr = {}
-            # count = 0
-            # for key in mesh.face_vertices(fkey):
-            #     for name in mesh.vertex[key]:
-            #         if name not in attr:
-            #             attr[name] = 0
-            #         try:
-            #             attr[name] += mesh.vertex[key][name]
-            #         except:
-            #             attr[name] = None
-            #     count += 1
-            # for name in attr:
-            #     if attr[name] is not None:
-            #         attr[name] = attr[name] / count
-            # ------------------------------------------------------------------
-            c = mesh.add_vertex(attr_dict=attr, x=x, y=y, z=z)
-            # ------------------------------------------------------------------
+            c = mesh.add_vertex(x=x, y=y, z=z)
             for key in fkey_vertices[fkey]:
                 rface = dict((j, i) for i, j in mesh.face[fkey].items())
                 a = rface[key]
@@ -210,32 +235,65 @@ def catmullclark_subdivision(mesh, k=1, fixed=None):
             mesh.vertex[key]['z'] = z
 
 
-# schemes:
-# i: insert
-# s: subdivide
-# q: quad
-# c: catmull-clark
-def subdivide(mesh, scheme='i', **options):
-    """Subdivide the input mesh."""
-    options = options or {}
-    if scheme == 'i' or scheme == 'insert':
-        tri_subdivision(mesh)
-        return
-    if scheme == 's' or scheme == 'subdivision':
-        tri_subdivision2(mesh)
-        return
-    if scheme == 'q' or scheme == 'quad':
-        quad_subdivision(mesh)
-        return
-    if scheme == 'c' or scheme == 'catmull-clark':
-        catmullclark_subdivision(mesh, **options)
-        return
-    raise NotImplementedError
-
-
-def subdivided(mesh):
-    """Return a subdivided mesh."""
-    pass
+def doosabin_subdivision(mesh, k=1, fixed=None):
+    if not fixed:
+        fixed = []
+    fixed = set(fixed)
+    cls = type(mesh)
+    for _ in range(k):
+        old_xyz  = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
+        fkey_old_new = dict((fkey, {}) for fkey in mesh.face)
+        subd = cls()
+        for fkey in mesh.face:
+            vertices = mesh.face_vertices(fkey, ordered=True)
+            n = len(vertices)
+            _4n = 1. / (4 * n)
+            for i in range(n):
+                old = vertices[i]
+                c = [0, 0, 0]
+                for j in range(n):
+                    xyz = old_xyz[vertices[j]]
+                    if i == j:
+                        alpha = _4n * (n + 5)
+                    else:
+                        alpha = _4n * (3 + 2 * cos(2 * pi * (i - j) / n))
+                    c[0] += alpha * xyz[0]
+                    c[1] += alpha * xyz[1]
+                    c[2] += alpha * xyz[2]
+                new = subd.add_vertex(x=c[0], y=c[1], z=c[2])
+                fkey_old_new[fkey][old] = new
+        for fkey in mesh.face:
+            vertices = mesh.face_vertices(fkey, ordered=True)
+            old_new = fkey_old_new[fkey]
+            subd.add_face([old_new[old] for old in vertices])
+        for key in mesh.vertex:
+            if mesh.is_vertex_on_boundary(key):
+                continue
+            face = []
+            for nbr in mesh.vertex_neighbours(key, ordered=True):
+                fkey = mesh.halfedge[key][nbr]
+                if fkey is not None:
+                    face.append(fkey_old_new[fkey][key])
+            subd.add_face(face[::-1])
+        edges = set()
+        for u in mesh.halfedge:
+            for v in mesh.halfedge[u]:
+                if (u, v) in edges:
+                    continue
+                edges.add((u, v))
+                edges.add((v, u))
+                uv_fkey = mesh.halfedge[u][v]
+                vu_fkey = mesh.halfedge[v][u]
+                if uv_fkey is None or vu_fkey is None:
+                    continue
+                face = []
+                face.append(fkey_old_new[uv_fkey][u])
+                face.append(fkey_old_new[vu_fkey][u])
+                face.append(fkey_old_new[vu_fkey][v])
+                face.append(fkey_old_new[uv_fkey][v])
+                subd.add_face(face)
+        mesh = subd
+    return mesh
 
 
 # ==============================================================================
@@ -245,14 +303,14 @@ def subdivided(mesh):
 if __name__ == "__main__":
 
     import brg
+
     from brg.datastructures.mesh.mesh import Mesh
-    from brg.datastructures.mesh.drawing import draw_mesh
+    from brg.geometry.polyhedron import Polyhedron
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    # mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
-    subdivide(mesh)
+    cube = Polyhedron.generate(6)
+    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+    subd = subdivide(mesh, scheme='doo-sabin', k=3)
 
-    print mesh
-
-    draw_mesh(mesh)
-
+    subd.view()

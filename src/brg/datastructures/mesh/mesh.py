@@ -3,7 +3,7 @@
 # @License   : MIT License
 # @Date      : 2014-10-10
 
-"""The (poly) mesh class."""
+"""This module defines the (poly) mesh class."""
 
 import os
 import json
@@ -24,30 +24,6 @@ from brg.geometry.elements.line import Line
 
 from brg.datastructures.traversal import bfs
 from brg.datastructures.traversal import bfs2
-
-
-TOSTRING = """
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-mesh summary
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-- number of vertices: {0}
-- number of faces: {1}
-- number of edges: {2}
-
-- vertex degree min: {3}
-- vertex degree max: {4}
-- face size min: {5}
-- face size max: {6}
-
-- is_valid: {7}
-- is_connected: {8}
-- is_manifold: {9}
-- is_trimesh: {10}
-- is_quadmesh: {11}
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-\n"""
 
 
 class Mesh(object):
@@ -189,19 +165,39 @@ class Mesh(object):
         >>> print mesh
         >>> "{}".format(mesh)
         """
-        return TOSTRING.format(
-            len(self.vertex),
-            len(self.face),
-            len(self.edges()),
-            (0 if not self.vertex else min(self.vertex_degree(key) for key in self.vertex)),
-            (0 if not self.vertex else max(self.vertex_degree(key) for key in self.vertex)),
-            (0 if not self.face else min(len(self.face_vertices(fkey)) for fkey in self.face)),
-            (0 if not self.face else max(len(self.face_vertices(fkey)) for fkey in self.face)),
-            ('True' if self.is_valid() else 'False'),
-            ('True' if self.is_connected() else 'False'),
-            ('True' if self.is_manifold() else 'False'),
-            ('True' if self.is_trimesh() else 'False'),
-            ('True' if self.is_quadmesh() else 'False'))
+        return """
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+mesh summary
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- number of vertices: {0}
+- number of faces: {1}
+- number of edges: {2}
+
+- vertex degree min: {3}
+- vertex degree max: {4}
+- face size min: {5}
+- face size max: {6}
+
+- is_valid: {7}
+- is_connected: {8}
+- is_manifold: {9}
+- is_trimesh: {10}
+- is_quadmesh: {11}
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\n""".format(len(self.vertex),
+             len(self.face),
+             len(self.edges()),
+             (0 if not self.vertex else min(self.vertex_degree(key) for key in self.vertex)),
+             (0 if not self.vertex else max(self.vertex_degree(key) for key in self.vertex)),
+             (0 if not self.face else min(len(self.face_vertices(fkey)) for fkey in self.face)),
+             (0 if not self.face else max(len(self.face_vertices(fkey)) for fkey in self.face)),
+             ('True' if self.is_valid() else 'False'),
+             ('True' if self.is_connected() else 'False'),
+             ('True' if self.is_manifold() else 'False'),
+             ('True' if self.is_trimesh() else 'False'),
+             ('True' if self.is_quadmesh() else 'False'))
 
     # **************************************************************************
     # **************************************************************************
@@ -1555,9 +1551,19 @@ class Mesh(object):
     # **************************************************************************
     # **************************************************************************
 
+    def plot(self, **kwargs):
+        from brg.datastructures.mesh.drawing import draw_mesh
+        draw_mesh(self, **kwargs)
+
     def draw(self, **kwargs):
         from brg.datastructures.mesh.drawing import draw_mesh
         draw_mesh(self, **kwargs)
+
+    def view(self):
+        from brg.datastructures.mesh.viewer import MeshViewer
+        viewer = MeshViewer(self)
+        viewer.setup()
+        viewer.show()
 
 
 # ==============================================================================
