@@ -1,13 +1,14 @@
+.project
+.pydevproject
+
 syntax: regexp
 ^__temp$
 ^data$
-^\.project$
-^\.pydevproject$
-\.in$
-\.out$
-\.rhl$
-\.3dmbak$
-\.rui_bak$
-\.pyc$
+
 syntax: glob
 *.orig
+*.3dmbak
+*.rui_bak
+*.pyc
+*.in
+*.out
