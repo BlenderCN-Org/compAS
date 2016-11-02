@@ -47,15 +47,10 @@ def construct_dual_network(network, cls=None, find_faces=True):
         cls = type(network)
     if find_faces:
         find_network_faces(network)
-    fkey_center = dict((fkey, network.face_center(fkey)) for fkey in network.face)
-    inner = list(set(network) - set(network.leaves()))
     dual = cls()
-    for key in inner:
-        fkeys = network.vertex_faces(key, ordered=True)
-        for fkey in fkeys:
-            if fkey not in dual:
-                x, y, z = fkey_center[fkey]
-                dual.add_vertex(fkey, x=x, y=y, z=z)
+    for fkey in network.face:
+        x, y, z = network.face_center(fkey)
+        dual.add_vertex(fkey, x=x, y=y, z=z)
     for u, v in network.edges_iter():
         f1 = network.halfedge[u][v]
         f2 = network.halfedge[v][u]
@@ -184,18 +179,16 @@ if __name__ == '__main__':
 
     import time
 
-    import brg
-
     from brg.datastructures.network.network import Network
-    from brg.datastructures.network.drawing import draw_network
+
+    network = Network.from_obj('/Users/vanmelet/bitbucket/brg_packages/brg_formwork/_data/lines.obj')
 
     t0 = time.time()
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
-    dual    = construct_network_dual(network, Network)
+    dual = construct_dual_network(network, Network)
 
     t1 = time.time()
 
     print t1 - t0
 
-    draw_network(dual, vsize=0.1)
+    dual.draw()

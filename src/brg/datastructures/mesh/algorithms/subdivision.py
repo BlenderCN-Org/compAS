@@ -265,7 +265,7 @@ def doosabin_subdivision(mesh, k=1, fixed=None):
         for fkey in mesh.face:
             vertices = mesh.face_vertices(fkey, ordered=True)
             old_new = fkey_old_new[fkey]
-            subd.add_face([old_new[old] for old in vertices])
+            subd.add_face([old_new[key] for key in vertices])
         for key in mesh.vertex:
             if mesh.is_vertex_on_boundary(key):
                 continue
@@ -309,7 +309,7 @@ if __name__ == "__main__":
 
     # mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
-    cube = Polyhedron.generate(6)
+    cube = Polyhedron.generate(12)
     mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
     subd = subdivide(mesh, scheme='doo-sabin', k=3)
 
