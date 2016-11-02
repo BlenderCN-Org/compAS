@@ -25,7 +25,16 @@ __version__    = '0.1'
 __date__       = 'Oct 7, 2014'
 
 
-class Network(object):
+# is this a good idea?!
+# perhaps even add it as a separate module...
+class Graph(object):
+    """"""
+    pass
+
+
+# move the purely topological functionality to the graph
+# make a separate class for the dualdata
+class Network(Graph):
     """"""
 
     def __init__(self, **kwargs):
@@ -788,10 +797,9 @@ name: {0}
 if __name__ == '__main__':
 
     import brg
-    from brg.datastructures.network.drawing import draw_network
 
     network = Network.from_obj(brg.get_data('lines.obj'))
 
     vcolor = dict((key, '#ff0000') for key in network.vertex if network.degree(key) == 1)
 
-    draw_network(network, vcolor=vcolor)
+    network.draw(vcolor=vcolor)

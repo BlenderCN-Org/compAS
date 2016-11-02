@@ -134,13 +134,13 @@ def mass_matrix(Ct, E, A, l, f=0, c=1, tiled=True):
        :nowrap:
 
         \mathbf{m}=|\mathbf{C}^\mathrm{T}|(\mathbf{E}\circ\mathbf{A}\oslash\mathbf{l}+\mathbf{f}\oslash\mathbf{l})
+
     """
-    ks = E*A/l
-    m = c*(abs(Ct).dot(ks + f/l))
-    if  tiled:
+    ks = E * A / l
+    m = c * (abs(Ct).dot(ks + f / l))
+    if tiled:
         return tile(m, (1, 3))
-    else:
-        return m
+    return m
 
 
 def equilibrium_matrix(C, xyz, free, rtype='array'):
@@ -211,21 +211,75 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
 
 if __name__ == "__main__":
 
+    from operator import itemgetter
+
     import brg
     from brg.datastructures.network.network import Network
+
+    from scipy.sparse.linalg import spsolve
+
+    class Network(Network):
+        def __init__(self, **kwargs):
+            super(Network, self).__init__(**kwargs)
+            self.dea.update({'q': 1.0})
 
     network = Network.from_obj(brg.get_data('lines.obj'))
 
     k_i = dict((key, index) for index, key in network.vertices_enum())
+    i_k = dict(network.vertices_enum())
     xyz = [network.vertex_coordinates(key) for key in network]
     edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
+    n = len(xyz)
+    m = len(edges)
+    fixed = [k_i[key] for key in network.leaves()]
+    free = list(set(range(n)) - set(fixed))
+    q = [float(1.0) for i in range(m)]
+
+    ij_q = dict(((k_i[u], k_i[v]), attr['q']) for u, v, attr in network.edges_iter(True))
+    ij_q.update(((k_i[v], k_i[u]), attr['q']) for u, v, attr in network.edges_iter(True))
+
+    xyz = array(xyz)
+
     C = connectivity_matrix(edges, 'csr')
-    Q = diags([[2.0 for i in range(len(edges))]], [0])
+    Q = diags([q], [0])
+    Ci = C[:, free]
+    Cf = C[:, fixed]
 
-    print C.shape
-    print Q.shape
+    Cit = Ci.transpose()
 
-    res = Q.dot(C)
+    CitQCi = Cit.dot(Q).dot(Ci)
+    CitQCf = Cit.dot(Q).dot(Cf)
 
-    print res
+    print CitQCf.dot(xyz[fixed])
 
+    CtQC = [[0.0 for j in range(n)] for i in range(n)]
+
+    for i in range(n):
+        key = i_k[i]
+        Q = 0
+        for nbr in network.neighbours(key):
+            j = k_i[nbr]
+            q = ij_q[(i, j)]
+            Q += q
+            CtQC[i][j] = - q
+        CtQC[i][i] = Q
+
+    CitQCi = [[CtQC[i][j] for j in free] for i in free]
+    CitQCf = [[CtQC[i][j] for j in fixed] for i in free]
+
+    CtQC = array(CtQC)
+
+    CitQCi = csr_matrix(array(CitQCi))
+    CitQCf = csr_matrix(array(CitQCf))
+
+    xyz[free] = spsolve(CitQCi, - CitQCf.dot(xyz[fixed]))
+
+    for key, attr in network.vertices_iter(True):
+        index = k_i[key]
+        attr['x'] = xyz[index, 0]
+        attr['y'] = xyz[index, 1]
+
+    vlabel = dict((key, str(index)) for index, key in network.vertices_enum())
+    elabel = dict(((u, v), str(index)) for index, u, v in network.edges_enum())
+
+    network.draw(vlabel=vlabel, elabel=None)
