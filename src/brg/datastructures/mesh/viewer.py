@@ -68,6 +68,43 @@ class MeshViewer(Viewer):
         pass
 
 
+class SubdMeshViewer(Viewer):
+    """"""
+
+    def __init__(self, mesh, k=1, width=1440, height=900):
+        super(SubdMeshViewer, self).__init__(width=width, height=height)
+        self.mesh = mesh
+        self.subd = None
+        self.k = k
+        self.fcount = len(self.mesh.faces())
+
+    def display(self):
+        key_index = dict((key, index) for index, key in self.mesh.vertices_enum())
+        xyz   = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertex]
+        faces = [self.mesh.face_vertices(fkey, True) for fkey in self.mesh.face]
+        faces = [[xyz[key_index[key]] for key in vertices] for vertices in faces]
+        polygons = []
+        for points in faces:
+            color_front = (0.7, 0.7, 0.7, 1.0)
+            color_back  = (0.2, 0.2, 0.2, 1.0)
+            polygons.append({'points': points,
+                             'color.front': color_front,
+                             'color.back' : color_back})
+        lines = []
+        for u, v in self.mesh.edges():
+            lines.append({'start': self.mesh.vertex_coordinates(u),
+                          'end'  : self.mesh.vertex_coordinates(v),
+                          'color': (0.1, 0.1, 0.1),
+                          'width': 1.})
+        xdraw_polygons(polygons)
+        xdraw_lines(lines)
+        
+
+    def keypress(self, key, x, y):
+        if key == '1':
+            return
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================

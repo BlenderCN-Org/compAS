@@ -10,6 +10,9 @@ __license__ = 'MIT'
 __email__ = 'vanmelet@ethz.ch'
 
 
+# this was used as a basis for the implementation of doo-sabin
+# and the update of catmull-clark
+# don't use this for anything other then an example...
 def quad_subdivision(mesh, k=1):
     c1 = 3. / 16.
     c2 = 9. / 16.
