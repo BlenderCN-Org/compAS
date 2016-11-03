@@ -86,6 +86,10 @@ def iterative_closest_point(a, b):
 ICP = iterative_closest_point
 
 
+def bounding_box(alignment=None):
+    raise NotImplementedError
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
