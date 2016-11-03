@@ -1,7 +1,3 @@
-from OpenGL.GLUT import *
-from OpenGL.GLU import *
-from OpenGL.GL import *
-
 from brg.viewers.viewer import Viewer
 from brg.viewers.drawing import xdraw_polygons
 from brg.viewers.drawing import xdraw_lines
@@ -138,7 +134,7 @@ if __name__ == '__main__':
     from brg.datastructures.mesh.algorithms.subdivision import doosabin_subdivision
     from brg.geometry.elements.polyhedron import Polyhedron
 
-    poly = Polyhedron.generate(6)
+    poly = Polyhedron.generate(12)
 
     mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
 
