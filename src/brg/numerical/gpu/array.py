@@ -108,6 +108,12 @@ def give(a, bit=64, type='real'):
                [ 4.,  5.,  6.]])
         >>> type(a)
         pycuda.gpuarray.GPUArray
+        >>> a.shape
+        (2, 3)
+        >>> a.dtype
+        dtype('float64')
+        >>> a.reshape((1, 6))
+        array([[ 1.,  2.,  3.,  4.,  5.,  6.]])
     """
     if  type == 'real':
         if  bit == 32:

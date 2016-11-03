@@ -113,6 +113,24 @@ def dot(a, b):
     return skcuda.linalg.dot(a, b)
 
 
+def eig(a):
+    """ Matrix Eigenvectors and Eigenvalues of GPUArray.
+
+    Note:
+        Input GPUArray is a square matrix, either real or complex.
+
+    Parameters:
+        a (gpu): GPUArray of a square matrix (m x m).
+
+    Returns:
+        gpu: Normalised Eigenvectors (right)
+        gpu: Eigenvalues.
+
+    """
+    vr, w = skcuda.linalg.eig(a)
+    return vr, w
+
+
 def hermitian(a):
     """ Hermitian conjugate transpose of GPUArray.
 
@@ -190,6 +208,21 @@ def pinv(a):
         pycuda.gpuarray.GPUArray
     """
     return skcuda.linalg.pinv(a)
+
+
+def svd(a, jobu='S', jobvt='S'):
+    """ GPUArray Singular Value Decomposition.
+
+    Parameters:
+        a (gpu): GPUArray (m x n) to decompose.
+
+    Returns:
+        gpu: Unitary matrix (m x k).
+        gpu: Singular values.
+        gpu: vh matrix (k x n).
+
+    """
+    return skcuda.linalg.svd(a)
 
 
 def trace(a):
