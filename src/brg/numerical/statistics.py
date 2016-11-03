@@ -7,6 +7,7 @@ __license__ = 'MIT'
 __email__ = 'vanmelet@ethz.ch'
 
 
+# see: __snippets/algos/bbox
 def principal_component_analysis():
     raise NotImplementedError
 
