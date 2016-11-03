@@ -30,7 +30,47 @@ def abs(a):
     """
     return pycuda.cumath.fabs(a)
 
+    
+def argmax(a, axis):
+    """ Location of maximum GPUArray elements.
 
+    Parameters:
+        a (gpu): GPUArray with the elements to find maximum values.
+        axis (int): The dimension to evaluate across.
+
+    Returns:
+        gpu: Location of maximum values.
+
+    Examples:
+        >>> a = argmax(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        array([[2],
+               [0]], dtype=uint32)
+        >>> type(a)
+        pycuda.gpuarray.GPUArray
+    """
+    return skcuda.misc.argmax(a, axis, keepdims=True)
+    
+    
+def argmin(a, axis):
+    """ Location of minimum GPUArray elements.
+
+    Parameters:
+        a (gpu): GPUArray with the elements to find minimum values.
+        axis (int): The dimension to evaluate across.
+
+    Returns:
+        gpu: Location of minimum values.
+
+    Examples:
+        >>> a = argmin(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        array([[0],
+               [2]], dtype=uint32)
+        >>> type(a)
+        pycuda.gpuarray.GPUArray
+    """
+    return skcuda.misc.argmin(a, axis, keepdims=True)
+    
+    
 def acos(a):
     """ Trigonometric arccosine of GPUArray elements.
 
@@ -211,6 +251,46 @@ def log10(a):
     return pycuda.cumath.log10(a)
 
 
+def max(a, axis):
+    """ Values of maximum GPUArray elements.
+
+    Parameters:
+        a (gpu): GPUArray with the elements to find maximum values.
+        axis (int): The dimension to evaluate across.
+
+    Returns:
+        gpu: Maximum values.
+
+    Examples:
+        >>> a = max(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        array([[3],
+               [6]], dtype=uint32)
+        >>> type(a)
+        pycuda.gpuarray.GPUArray
+    """
+    return skcuda.misc.max(a, axis, keepdims=True)
+    
+    
+def min(a, axis):
+    """ Values of minimum GPUArray elements.
+
+    Parameters:
+        a (gpu): GPUArray with the elements to find minimum values.
+        axis (int): The dimension to evaluate across.
+
+    Returns:
+        gpu: Minimum values.
+
+    Examples:
+        >>> a = min(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        array([[1],
+               [4]], dtype=uint32)
+        >>> type(a)
+        pycuda.gpuarray.GPUArray
+    """
+    return skcuda.misc.min(a, axis, keepdims=True)
+    
+    
 def mean(a, axis):
     """ Mean of GPUArray elements in a given axis direction.
 
