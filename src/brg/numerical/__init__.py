@@ -1,0 +1,33 @@
+"""brg.numerical : A package for numerical computation."""
+
+docs = [
+	{'gpu': []},
+	{'methods': []},
+    {'solvers': []},
+	{'functions': ['lengths']},
+    {'linalg': ['rank',
+                'dof',
+                'normrow',
+                'normalizerow',
+                'rot90',
+                '_chofactor',
+                '_lufactorized',
+                'solve_with_known',
+                'spsolve_with_known',
+                'nullspace',
+                'rref',
+                'pivots',
+                'nonpivots']},
+    {'matrices': ['connectivity_matrix',
+				  'equilibrium_matrix',
+				  'laplacian_matrix']},
+    {'operators': ['grad']},
+	{'spatial': ['closest_points_points',
+                 'project_points_heightfield']},
+	{'utilities': ['float_formatter',
+				   'set_array_print_precision',
+				   'unset_array_print_precision']},
+	{'xforms': ['translation_matrix',
+                'scale_matrix',
+                'rotation_matrix']}
+]
