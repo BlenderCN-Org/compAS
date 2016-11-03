@@ -33,6 +33,6 @@ docs = [
     # {'geometry': []},
     # {'numerical': []},
     # {'physics': []},
-    # {'utilities': []},
+     {'utilities': []},
     # {'viewers': []},
 ]
