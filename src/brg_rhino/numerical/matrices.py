@@ -12,7 +12,7 @@ def connectivity_matrix(edges, n, rtype=None):
         rtype (str) : Optional. The return type. Default is `None`.
 
     >>> import brg
-    >>> network = Network.from_lines(brg.get_data('lines.obj'))
+    >>> network = Network.from_obj(brg.get_data('lines.obj'))
     >>> key_index = dict((key, index) for index, key in network.vertices_enum())
     >>> edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
     >>> n = len(network)
@@ -38,7 +38,7 @@ def laplacian_matrix(neighbours, rtype=None):
         rtype (str) : Optional. The return type. Default is `None`.
 
     >>> import brg
-    >>> network = Network.from_lines(brg.get_data('lines.obj'))
+    >>> network = Network.from_obj(brg.get_data('lines.obj'))
     >>> k_i = dict((key, index) for index, key in network.vertices_enum())
     >>> neighbours = [[k_i[nbr] for nbr in network.neighbours(key)] for key in network]
     >>> L = laplacian_matrix(neighbours)
@@ -56,16 +56,22 @@ def laplacian_matrix(neighbours, rtype=None):
     return L
 
 
-def CtQC(neighbours, rtype=None):
+def edgeweighted_laplacian_matrix(neighbours, rtype=None):
     """Construct an *edge-weighted* Laplacian matrix.
 
     Parameters:
         neighbours (list) : An adjacency list where every adjacent vertex is a
-            tuple of the vertex index and the force density (or other edge weight)
-            of the edge connecting the vertices.
+            tuple of the vertex index and the weight of the corresponding edge.
+            An example of edge weights is force density.
         rtype (str) : Optional. The return type. Default is `None`.
 
-    >>>
+    >>> import brg
+    >>> network = Network.from_obj(brg.get_data('lines.obj'))
+    >>> k_i = dict((key, index) for index, key in network.vertices_enum())
+    >>> uv_q = dict(((u, v), attr['q']) for u, v, attr in network.edges_iter(True))
+    >>> uv_q.update(((v, u), attr['q']) for u, v, attr in network.edges_iter(True))
+    >>> neighbours = [[(k_i[nbr], uv_q[(key, nbr)]) for nbr in network.neighbours(key)] for key in network]
+    >>> CtQC = edgeweighted_laplacian_matrix(neighbours)
 
     """
     n = len(neighbours)
