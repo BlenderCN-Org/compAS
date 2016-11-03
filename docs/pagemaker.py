@@ -256,6 +256,9 @@ def function_doc(f):
 
 if __name__ == "__main__":
 
+    #import sys
+    #sys.path.append("C:/Users/rippmanm/workspace/brg_framework/src") 
+
     import brg
     import brg_rhino
 
