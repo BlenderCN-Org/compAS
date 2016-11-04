@@ -1,0 +1,993 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>brg.datastructures.network.network &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme_customize.css" type="text/css" />
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>brg.datastructures.network.network</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for brg.datastructures.network.network</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">brg.files.obj</span> <span class="kn">import</span> <span class="n">OBJ</span>
+
+<span class="kn">from</span> <span class="nn">brg.geometry.functions</span> <span class="kn">import</span> <span class="n">centroid</span>
+<span class="kn">from</span> <span class="nn">brg.geometry.functions</span> <span class="kn">import</span> <span class="n">center_of_mass</span>
+<span class="kn">from</span> <span class="nn">brg.geometry.functions</span> <span class="kn">import</span> <span class="n">cross</span>
+<span class="kn">from</span> <span class="nn">brg.geometry.functions</span> <span class="kn">import</span> <span class="n">length</span>
+<span class="kn">from</span> <span class="nn">brg.geometry.functions</span> <span class="kn">import</span> <span class="n">area</span>
+
+<span class="kn">from</span> <span class="nn">brg.datastructures.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
+
+<span class="kn">from</span> <span class="nn">brg.datastructures.traversal</span> <span class="kn">import</span> <span class="n">bfs</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Tom Van Mele&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;&lt;vanmelet@ethz.ch&gt;&#39;</span>
+
+
+<span class="c1"># is this a good idea?!</span>
+<span class="c1"># perhaps even add it as a separate module...</span>
+<span class="k">class</span> <span class="nc">Graph</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># move the purely topological functionality to the graph</span>
+<span class="c1"># make a separate class for the dualdata</span>
+<div class="viewcode-block" id="Network"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network">[docs]</a><span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="n">Graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span>       <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge</span>         <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span>     <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">face</span>         <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span>     <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">face_count</span>   <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>   <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span>         <span class="p">:</span> <span class="s1">&#39;Network&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color.vertex&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.edge&#39;</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dva</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dea</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Network.__contains__"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.__contains__">[docs]</a>    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="c1"># if key in network: ...</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span>
+</div>
+<div class="viewcode-block" id="Network.__len__"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># len(network)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network.__iter__"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.__iter__">[docs]</a>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># for key in network: ...</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network.__getitem__"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.__getitem__">[docs]</a>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="c1"># network[key]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+</div>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="s2">network summary (under construction)</span>
+<span class="s2">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+
+<span class="s2">name: {0}</span>
+
+<span class="s2">- number of vertices: {1}</span>
+<span class="s2">- number of edges: {2}</span>
+
+<span class="s2">- vertex degree min: {3}</span>
+<span class="s2">- vertex degree max: {4}</span>
+
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+           <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">),</span>
+           <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()),</span>
+           <span class="p">(</span><span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">)),</span>
+           <span class="p">(</span><span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">)),)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># descriptors</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
+    <span class="nd">@name.setter</span>
+<div class="viewcode-block" id="Network.name"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">6</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;color.&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@color.setter</span>
+<div class="viewcode-block" id="Network.color"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.color">[docs]</a>    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;color.{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># include dualdata for data of faces</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;attributes&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+                <span class="s1">&#39;dva&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="p">,</span>
+                <span class="s1">&#39;dea&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dea</span><span class="p">,</span>
+                <span class="s1">&#39;dfa&#39;</span>        <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span><span class="p">,</span>
+                <span class="s1">&#39;vertex&#39;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">,</span>
+                <span class="s1">&#39;edge&#39;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">,</span>
+                <span class="s1">&#39;halfedge&#39;</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">,</span>
+                <span class="s1">&#39;face&#39;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
+                <span class="s1">&#39;vcount&#39;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_count</span><span class="p">,</span>
+                <span class="s1">&#39;fcount&#39;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_count</span><span class="p">}</span>
+
+    <span class="nd">@data.setter</span>
+<div class="viewcode-block" id="Network.data"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">dva</span>        <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dva&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">dea</span>        <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dea&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">dfa</span>        <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dfa&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">vertex</span>     <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vertex&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">edge</span>       <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;edge&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">halfedge</span>   <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;halfedge&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">face</span>       <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;face&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">vcount</span>     <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vcount&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="n">fcount</span>     <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fcount&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">vertex</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">edge</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">halfedge</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dva</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dea</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dea</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dfa</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span>   <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge</span>     <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">face</span>     <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">vertex</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">attr</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">edge</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">nbrs</span> <span class="o">=</span> <span class="n">nbrs</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dea</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">attr</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">halfedge</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">nbrs</span><span class="p">:</span>
+                <span class="n">nbrs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">nbr</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkey</span>
+        <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex_count</span> <span class="o">=</span> <span class="n">vcount</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">face_count</span> <span class="o">=</span> <span class="n">fcount</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># constructors</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Network.from_data"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.from_data">[docs]</a>    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">network</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">network</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Network.from_json"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.from_json">[docs]</a>    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">network</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">network</span>
+
+    <span class="c1"># should the processing of anchors be implicit?</span>
+    <span class="c1"># no, but there should be (a) function(s) to identify features based on</span>
+    <span class="c1"># data info from an obj</span></div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Network.from_obj"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.from_obj">[docs]</a>    <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;3f&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">network</span>  <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">obj</span>      <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">edges</span>    <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">lines</span>
+        <span class="n">points</span>   <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">points</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+                <span class="n">network</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">is_anchor</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">network</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">is_anchor</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">network</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Network.from_lines"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.from_lines">[docs]</a>    <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;3f&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">edges</span>   <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vertex</span>  <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ep</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">a</span>  <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+            <span class="n">b</span>  <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+            <span class="n">vertex</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span>
+            <span class="n">vertex</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
+            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">key_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">vertex</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">vertex</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">network</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Network.from_vertices_and_edges"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.from_vertices_and_edges">[docs]</a>    <span class="k">def</span> <span class="nf">from_vertices_and_edges</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">network</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># converters</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.to_data"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+</div>
+<div class="viewcode-block" id="Network.to_json"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network.to_obj"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.to_obj">[docs]</a>    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="Network.to_lines"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.to_lines">[docs]</a>    <span class="k">def</span> <span class="nf">to_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">()]</span>
+</div>
+<div class="viewcode-block" id="Network.to_vertices_and_edges"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.to_vertices_and_edges">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">key_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
+        <span class="n">vertices</span>  <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+        <span class="n">edges</span>     <span class="o">=</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># modify</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.add_vertex"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">attr_dict</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">attr_dict</span> <span class="o">=</span> <span class="n">kwattr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_count</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertex_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">key</span>
+</div>
+<div class="viewcode-block" id="Network.add_edge"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dea</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">attr_dict</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">attr_dict</span> <span class="o">=</span> <span class="n">kwattr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+</div>
+<div class="viewcode-block" id="Network.add_face"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.add_face">[docs]</a>    <span class="k">def</span> <span class="nf">add_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">del</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_count</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">face_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">face_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">fkey</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkey</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># use this function to make sure dualdata exists</span>
+        <span class="c1"># there should be a better way to do this</span>
+        <span class="c1"># dualdata is really about face data</span>
+        <span class="c1"># dualdata =&gt; facedata</span>
+        <span class="c1"># dual function / attributes ?</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_face_attribute</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fkey</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># face construction</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># remove this</span>
+    <span class="c1"># add it to the face finding algorithm</span></div>
+<div class="viewcode-block" id="Network.breakpoints"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.breakpoints">[docs]</a>    <span class="k">def</span> <span class="nf">breakpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_index</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">leaves</span><span class="p">(</span><span class="n">key_index</span><span class="o">=</span><span class="n">key_index</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># lists and iterators</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.vertices"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertices">[docs]</a>    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Network.vertices_iter"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertices_iter">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Network.vertices_enum"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertices_enum">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_iter</span><span class="p">(</span><span class="bp">True</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span>
+</div>
+<div class="viewcode-block" id="Network.edges"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edges">[docs]</a>    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Network.edges_iter"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edges_iter">[docs]</a>    <span class="k">def</span> <span class="nf">edges_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+</div>
+<div class="viewcode-block" id="Network.edges_enum"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edges_enum">[docs]</a>    <span class="k">def</span> <span class="nf">edges_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">index</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">index</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># face lists and iterators</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># add if data</span></div>
+<div class="viewcode-block" id="Network.faces"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.faces">[docs]</a>    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces_iter</span><span class="p">())</span>
+
+    <span class="c1"># add if data</span></div>
+<div class="viewcode-block" id="Network.faces_iter"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.faces_iter">[docs]</a>    <span class="k">def</span> <span class="nf">faces_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">()</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># topology</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.has_vertex"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.has_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">has_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span>
+</div>
+<div class="viewcode-block" id="Network.has_edge"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.has_edge">[docs]</a>    <span class="k">def</span> <span class="nf">has_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+
+    <span class="c1"># change to ordered?</span>
+    <span class="c1"># clarify CCW vs CW in blog post</span></div>
+<div class="viewcode-block" id="Network.neighbours"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.neighbours">[docs]</a>    <span class="k">def</span> <span class="nf">neighbours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ordered</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nbrs</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nbrs</span>
+        <span class="n">nbr</span> <span class="o">=</span> <span class="n">nbrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">nbr</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">nbr</span><span class="p">]</span>  <span class="c1"># the fkey should not be None</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">nbr</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">nbr</span> <span class="o">==</span> <span class="n">start</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nbrs</span>
+</div>
+<div class="viewcode-block" id="Network.neighbours_out"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.neighbours_out">[docs]</a>    <span class="k">def</span> <span class="nf">neighbours_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="Network.neighbours_in"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.neighbours_in">[docs]</a>    <span class="k">def</span> <span class="nf">neighbours_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+</div>
+<div class="viewcode-block" id="Network.degree"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.degree">[docs]</a>    <span class="k">def</span> <span class="nf">degree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Network.degree_out"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.degree_out">[docs]</a>    <span class="k">def</span> <span class="nf">degree_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbours_out</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Network.degree_in"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.degree_in">[docs]</a>    <span class="k">def</span> <span class="nf">degree_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbours_in</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Network.leaves"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.leaves">[docs]</a>    <span class="k">def</span> <span class="nf">leaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_index</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key_index</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">keys</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># vertex topology</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.vertex_faces"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertex_faces">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ordered</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Network.is_vertex_leaf"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.is_vertex_leaf">[docs]</a>    <span class="k">def</span> <span class="nf">is_vertex_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># face topology</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.face_vertices"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Network.face_descendant"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_descendant">[docs]</a>    <span class="k">def</span> <span class="nf">face_descendant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Network.face_ancestor"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">face_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="Network.face_edges"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_edges">[docs]</a>    <span class="k">def</span> <span class="nf">face_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+                <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="n">u</span>
+            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">edges</span>
+</div>
+<div class="viewcode-block" id="Network.face_adjacency"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">adj</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">adj</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">nkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+                <span class="n">adj</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nkey</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">adj</span>
+</div>
+<div class="viewcode-block" id="Network.face_tree"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_tree">[docs]</a>    <span class="k">def</span> <span class="nf">face_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">bfs</span><span class="p">):</span>
+        <span class="n">adj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_adjacency</span><span class="p">()</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">algo</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">adj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tree</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># attributes</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.set_dva"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_dva">[docs]</a>    <span class="k">def</span> <span class="nf">set_dva</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
+            <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dva</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
+</div>
+<div class="viewcode-block" id="Network.set_dea"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_dea">[docs]</a>    <span class="k">def</span> <span class="nf">set_dea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
+            <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dea</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">():</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
+</div>
+<div class="viewcode-block" id="Network.set_dfa"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_dfa">[docs]</a>    <span class="k">def</span> <span class="nf">set_dfa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
+            <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dfa</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span> <span class="o">=</span> <span class="n">Network</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">:</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">fkey</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
+</div>
+<div class="viewcode-block" id="Network.set_vertex_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_vertex_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">set_vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</div>
+<div class="viewcode-block" id="Network.get_vertex_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_vertex_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network.set_edge_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">set_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</div>
+<div class="viewcode-block" id="Network.get_edge_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">get_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network.set_face_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_face_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">set_face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span> <span class="o">=</span> <span class="n">Network</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</div>
+<div class="viewcode-block" id="Network.get_face_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_face_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">get_face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dualdata</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.set_vertices_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_vertices_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">set_vertices_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+                <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+                <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Network.get_vertices_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_vertices_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertices_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_iter</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+</div>
+<div class="viewcode-block" id="Network.get_vertices_attributes"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_vertices_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertices_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_iter</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+</div>
+<div class="viewcode-block" id="Network.set_edges_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_edges_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">set_edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_enum</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Network.get_edges_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_edges_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">get_edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+</div>
+<div class="viewcode-block" id="Network.get_edges_attributes"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_edges_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">get_edges_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+</div>
+<div class="viewcode-block" id="Network.set_faces_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.set_faces_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">set_faces_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_enum</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Network.get_faces_attribute"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_faces_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">get_faces_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_face_attribute</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Network.get_faces_attributes"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.get_faces_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">get_faces_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_face_attribute</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">]</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># vertex geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.vertex_coordinates"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Network.vertex_area"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertex_area">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">key_xyz</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">fkey_centroid</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">fkey_centroid</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">centroid</span><span class="p">([</span><span class="n">key_xyz</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">vertices</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_area</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key_xyz</span><span class="p">,</span> <span class="n">fkey_centroid</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network._vertex_area"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network._vertex_area">[docs]</a>    <span class="k">def</span> <span class="nf">_vertex_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">key_xyz</span><span class="p">,</span> <span class="n">fkey_centroid</span><span class="p">):</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span>
+            <span class="n">v01</span> <span class="o">=</span> <span class="p">[</span><span class="n">p1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+            <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">nbr</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkey_centroid</span><span class="p">:</span>
+                <span class="n">p2</span> <span class="o">=</span> <span class="n">fkey_centroid</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+                <span class="n">v02</span> <span class="o">=</span> <span class="p">[</span><span class="n">p2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+                <span class="n">area</span> <span class="o">+=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v02</span><span class="p">))</span>
+            <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">nbr</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkey_centroid</span><span class="p">:</span>
+                <span class="n">p3</span> <span class="o">=</span> <span class="n">fkey_centroid</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+                <span class="n">v03</span> <span class="o">=</span> <span class="p">[</span><span class="n">p3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+                <span class="n">area</span> <span class="o">+=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v03</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">area</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># edge geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.edge_vector"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edge_vector">[docs]</a>    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">ep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">sp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+</div>
+<div class="viewcode-block" id="Network.edge_length"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edge_length">[docs]</a>    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
+</div>
+<div class="viewcode-block" id="Network.edge_coordinates"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Network.edge_midpoint"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edge_midpoint">[docs]</a>    <span class="k">def</span> <span class="nf">edge_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+        <span class="n">sp</span><span class="p">,</span> <span class="n">ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">ep</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">))]</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># face geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.face_centroid"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">centroid</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">])])</span>
+</div>
+<div class="viewcode-block" id="Network.face_center"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_center">[docs]</a>    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">center_of_mass</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="Network.face_area"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_area">[docs]</a>    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">area</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># boundary</span>
+    <span class="c1"># remove?</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.boundary_faces"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.boundary_faces">[docs]</a>    <span class="k">def</span> <span class="nf">boundary_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">faces</span>
+</div>
+<div class="viewcode-block" id="Network.boundary_vertices"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.boundary_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">boundary_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_faces</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vertices</span>
+</div>
+<div class="viewcode-block" id="Network.boundary_edges"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.boundary_edges">[docs]</a>    <span class="k">def</span> <span class="nf">boundary_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_faces</span><span class="p">():</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+                    <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">edges</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># names</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.vertex_name"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertex_name">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;{0}.vertex.{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network.edge_name"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.edge_name">[docs]</a>    <span class="k">def</span> <span class="nf">edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;{0}.edge.{1}-{2}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Network.face_name"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.face_name">[docs]</a>    <span class="k">def</span> <span class="nf">face_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;{0}.face.{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fkey</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># helpers</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.key_index"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.key_index">[docs]</a>    <span class="k">def</span> <span class="nf">key_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Network.index_key"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.index_key">[docs]</a>    <span class="k">def</span> <span class="nf">index_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_enum</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Network.uv_index"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.uv_index">[docs]</a>    <span class="k">def</span> <span class="nf">uv_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_enum</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Network.index_uv"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.index_uv">[docs]</a>    <span class="k">def</span> <span class="nf">index_uv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_enum</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Network.vertex_color"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.vertex_color">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">qualifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">qualifier</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">qualifier</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.vertex:{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">qualifier</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.vertex&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.vertex&#39;</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># drawing</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="Network.draw"><a class="viewcode-back" href="../../../../pages/api/brg-datastructures-network-network-Network.html#brg.datastructures.network.network.Network.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vcolor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">vlabel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">vsize</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">elabel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ewidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">brg.datastructures.network.drawing</span> <span class="kn">import</span> <span class="n">draw_network</span>
+        <span class="n">draw_network</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">vcolor</span><span class="o">=</span><span class="n">vcolor</span><span class="p">,</span>
+                     <span class="n">vlabel</span><span class="o">=</span><span class="n">vlabel</span><span class="p">,</span>
+                     <span class="n">vsize</span><span class="o">=</span><span class="n">vsize</span><span class="p">,</span>
+                     <span class="n">ecolor</span><span class="o">=</span><span class="n">ecolor</span><span class="p">,</span>
+                     <span class="n">ewidth</span><span class="o">=</span><span class="n">ewidth</span><span class="p">,</span>
+                     <span class="n">elabel</span><span class="o">=</span><span class="n">elabel</span><span class="p">,</span>
+                     <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">brg</span>
+
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">brg</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
+
+    <span class="n">vcolor</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;#ff0000&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span> <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">network</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">vcolor</span><span class="o">=</span><span class="n">vcolor</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

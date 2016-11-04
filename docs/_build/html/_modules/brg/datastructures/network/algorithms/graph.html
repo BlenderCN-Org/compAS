@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>brg.datastructures.network.algorithms.graph &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme_customize.css" type="text/css" />
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pages/biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>brg.datastructures.network.algorithms.graph</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for brg.datastructures.network.algorithms.graph</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span>
+
+<span class="kn">from</span> <span class="nn">brg.geometry.planar</span> <span class="kn">import</span> <span class="n">is_intersecting</span>
+<span class="kn">from</span> <span class="nn">brg.geometry.functions</span> <span class="kn">import</span> <span class="n">angle_smallest</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">planarity</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&quot;&quot;&quot;Planarity is not installed.</span>
+<span class="s2">Some functionality of this module will not be available.</span>
+<span class="s2">Get Planarity at https://github.com/hagberg/planarity.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Tom Van Mele&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;&lt;vanmelet@ethz.ch&gt;&#39;</span>
+
+
+<span class="c1"># TODO: &quot;inner leaves&quot; check!</span>
+
+
+<div class="viewcode-block" id="is_network_crossed"><a class="viewcode-back" href="../../../../../pages/api/brg-datastructures-network-algorithms-graph-is_network_crossed.html#brg.datastructures.network.algorithms.graph.is_network_crossed">[docs]</a><span class="k">def</span> <span class="nf">is_network_crossed</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">is_intersecting</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="are_edges_crossed"><a class="viewcode-back" href="../../../../../pages/api/brg-datastructures-network-algorithms-graph-are_edges_crossed.html#brg.datastructures.network.algorithms.graph.are_edges_crossed">[docs]</a><span class="k">def</span> <span class="nf">are_edges_crossed</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">u1</span><span class="p">]</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">u2</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v2</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">is_intersecting</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="count_network_crossings"><a class="viewcode-back" href="../../../../../pages/api/brg-datastructures-network-algorithms-graph-count_network_crossings.html#brg.datastructures.network.algorithms.graph.count_network_crossings">[docs]</a><span class="k">def</span> <span class="nf">count_network_crossings</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">is_intersecting</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">count</span>
+
+</div>
+<div class="viewcode-block" id="is_network_2d"><a class="viewcode-back" href="../../../../../pages/api/brg-datastructures-network-algorithms-graph-is_network_2d.html#brg.datastructures.network.algorithms.graph.is_network_2d">[docs]</a><span class="k">def</span> <span class="nf">is_network_2d</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">network</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">z</span> <span class="o">!=</span> <span class="n">network</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="c1"># if the graph of a network is planar</span>
+<span class="c1"># - an embedding of the network in the plane exists</span>
+<span class="c1"># - a planar straight-line embedding of the network in the plane exists</span></div>
+<div class="viewcode-block" id="is_network_planar"><a class="viewcode-back" href="../../../../../pages/api/brg-datastructures-network-algorithms-graph-is_network_planar.html#brg.datastructures.network.algorithms.graph.is_network_planar">[docs]</a><span class="k">def</span> <span class="nf">is_network_planar</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">planarity</span><span class="o">.</span><span class="n">is_planar</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
+
+
+<span class="c1"># is it embedded in the plane without crossing (curved) edges</span></div>
+<div class="viewcode-block" id="is_network_planar_embedding"><a class="viewcode-back" href="../../../../../pages/api/brg-datastructures-network-algorithms-graph-is_network_planar_embedding.html#brg.datastructures.network.algorithms.graph.is_network_planar_embedding">[docs]</a><span class="k">def</span> <span class="nf">is_network_planar_embedding</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">is_network_planar</span><span class="p">(</span><span class="n">network</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="n">is_network_2d</span><span class="p">(</span><span class="n">network</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span>
+            <span class="n">is_network_crossed</span><span class="p">(</span><span class="n">network</span><span class="p">))</span>
+
+
+<span class="c1"># # is it embedded in the plane with straight lines only</span>
+<span class="c1"># def is_network_straightline_embedding(network):</span>
+<span class="c1">#     raise NotImplementedError</span>
+
+
+<span class="c1"># # is it embedded in the plane with only straight lines between the nodes</span>
+<span class="c1"># # and without crossings</span>
+<span class="c1"># def is_network_planar_straightline_embedding(network):</span>
+<span class="c1">#     return (is_network_planar_embedding(network) and</span>
+<span class="c1">#             is_network_straightline_embedding(network))</span>
+
+</div>
+<div class="viewcode-block" id="embed_network_in_plane"><a class="viewcode-back" href="../../../../../pages/api/brg-datastructures-network-algorithms-graph-embed_network_in_plane.html#brg.datastructures.network.algorithms.graph.embed_network_in_plane">[docs]</a><span class="k">def</span> <span class="nf">embed_network_in_plane</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">fix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">straightline</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">is_embedded</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">count</span><span class="p">:</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">are_edges_crossed</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+            <span class="n">is_embedded</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">break</span>
+        <span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_embedded</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">fix</span><span class="p">:</span>
+        <span class="n">vec0</span> <span class="o">=</span> <span class="p">[</span><span class="n">network</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">network</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="s1">&#39;xy&#39;</span><span class="p">]</span>
+        <span class="n">vec1</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># rotate</span>
+        <span class="n">a</span>    <span class="o">=</span> <span class="o">-</span><span class="n">angle</span><span class="p">(</span><span class="n">vec0</span><span class="p">,</span> <span class="n">vec1</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">cosa</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">sina</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cosa</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">sina</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sina</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">cosa</span> <span class="o">*</span> <span class="n">y</span>
+        <span class="c1"># scale</span>
+        <span class="n">l0</span> <span class="o">=</span> <span class="p">(</span><span class="n">vec0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vec0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="n">l1</span> <span class="o">=</span> <span class="p">(</span><span class="n">vec1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vec1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">l0</span> <span class="o">/</span> <span class="n">l1</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">scale</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">scale</span>
+        <span class="c1"># translate</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">network</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">network</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># update network vertex coordinates</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
+        <span class="n">network</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">network</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">time</span>
+
+    <span class="kn">import</span> <span class="nn">brg</span>
+
+    <span class="kn">from</span> <span class="nn">brg.datastructures.network.network</span> <span class="kn">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">brg.datastructures.network.drawing</span> <span class="kn">import</span> <span class="n">draw_network</span>
+
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">brg</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
+
+    <span class="c1"># print is_network_crossed(network)</span>
+    <span class="c1"># print count_network_crossings(network)</span>
+    <span class="k">print</span> <span class="n">is_network_planar</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">print</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span>
+
+    <span class="n">draw_network</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">vsize</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

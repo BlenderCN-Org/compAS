@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>brg.numerical.gpu.linalg &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme_customize.css" type="text/css" />
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pages/biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>brg.numerical.gpu.linalg</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for brg.numerical.gpu.linalg</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">float64</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ceil</span>
+
+<span class="kn">from</span> <span class="nn">brg.numerical.gpu.math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">brg.numerical.gpu.math</span> <span class="kn">import</span> <span class="nb">sum</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pycuda</span>
+    <span class="kn">import</span> <span class="nn">pycuda.autoinit</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">skcuda</span>
+    <span class="kn">import</span> <span class="nn">skcuda.linalg</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2016, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__version__</span>    <span class="o">=</span> <span class="s1">&#39;0.1&#39;</span>
+<span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;Oct 17, 2016&#39;</span>
+
+
+<div class="viewcode-block" id="conj"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-conj.html#brg.numerical.gpu.linalg.conj">[docs]</a><span class="k">def</span> <span class="nf">conj</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Complex conjugate of GPUArray elements.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): Complex GPUArray.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: The complex conjugate of the GPUArray.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        a = conj(give([1 + 2j, 3 - 4j], type=&#39;complex&#39;))</span>
+<span class="sd">        array([ 1.-2.j,  3.+4.j], dtype=complex64)</span>
+<span class="sd">        &gt;&gt;&gt; type(a)</span>
+<span class="sd">        pycuda.gpuarray.GPUArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+</div>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">kernel_code_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    __global__ void cross_product(float *a, float *b, float *c)</span>
+<span class="s2">    {</span>
+<span class="s2">        int i = threadIdx.x + blockDim.x * blockIdx.x;</span>
+<span class="s2">        int n = 3;</span>
+<span class="s2">        float A1 = a[i * n + 0];</span>
+<span class="s2">        float A2 = a[i * n + 1];</span>
+<span class="s2">        float A3 = a[i * n + 2];</span>
+<span class="s2">        float B1 = b[i * n + 0];</span>
+<span class="s2">        float B2 = b[i * n + 1];</span>
+<span class="s2">        float B3 = b[i * n + 2];</span>
+<span class="s2">        c[i * n + 0] = A2 * B3 - A3 * B2;</span>
+<span class="s2">        c[i * n + 1] = A3 * B1 - A1 * B3;</span>
+<span class="s2">        c[i * n + 2] = A1 * B2 - A2 * B1;</span>
+<span class="s2">    }</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">kernel_code</span> <span class="o">=</span> <span class="n">kernel_code_template</span> <span class="o">%</span> <span class="p">{</span><span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">SourceModule</span><span class="p">(</span><span class="n">kernel_code</span><span class="p">)</span>
+    <span class="n">cross_product</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">get_function</span><span class="p">(</span><span class="s2">&quot;cross_product&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">NameError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="cross"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-cross.html#brg.numerical.gpu.linalg.cross">[docs]</a><span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">bsize</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Cross-product of two GPUArrays (row by row).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): GPUArray 1 of vectors (m x 3).</span>
+<span class="sd">        b (gpu): GPUArray 2 of vectors (m x 3).</span>
+<span class="sd">        bsize (int): &lt; Blocksize divided by 3.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: Returns the m vectors from a x b</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">gpuarray</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">float64</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">bsize</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">cross_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span>
+
+</div>
+<div class="viewcode-block" id="det"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-det.html#brg.numerical.gpu.linalg.det">[docs]</a><span class="k">def</span> <span class="nf">det</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray square matrix determinant.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): GPUArray matrix of size (n x n).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Determinant of the square matrix.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; det(give([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))</span>
+<span class="sd">        103</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="dot"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-dot.html#brg.numerical.gpu.linalg.dot">[docs]</a><span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Matrix multiplication of two GPUArrays.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): GPUArray matrix 1 (m x n).</span>
+<span class="sd">        b (gpu): GPUArray matrix 2 (n x o).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: [c] = [a][b] of size (m x o)</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; a = give([[0, 1], [2, 3]])</span>
+<span class="sd">        &gt;&gt;&gt; b = give([[0, 1], [1, 0]])</span>
+<span class="sd">        &gt;&gt;&gt; c = dot(a, b)</span>
+<span class="sd">        array([[ 1.,  0.],</span>
+<span class="sd">               [ 3.,  2.]])</span>
+<span class="sd">        &gt;&gt;&gt; type(c)</span>
+<span class="sd">        pycuda.gpuarray.GPUArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="eig"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-eig.html#brg.numerical.gpu.linalg.eig">[docs]</a><span class="k">def</span> <span class="nf">eig</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Matrix Eigenvectors and Eigenvalues of GPUArray.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Input GPUArray is a square matrix, either real or complex.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): GPUArray of a square matrix (m x m).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: Normalised Eigenvectors (right)</span>
+<span class="sd">        gpu: Eigenvalues.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vr</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vr</span><span class="p">,</span> <span class="n">w</span>
+
+</div>
+<div class="viewcode-block" id="hermitian"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-hermitian.html#brg.numerical.gpu.linalg.hermitian">[docs]</a><span class="k">def</span> <span class="nf">hermitian</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Hermitian conjugate transpose of GPUArray.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): Complex GPUArray.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: The complex conjugate transpose of the GPUArray.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; a = hermitian(give([[1 + 2j, 3 - 4j],[0 - 5j, 6 - 1j]], type=&#39;complex&#39;))</span>
+<span class="sd">        array([[ 1.-2.j,  0.+5.j],</span>
+<span class="sd">               [ 3.+4.j,  6.+1.j]], dtype=complex64)</span>
+<span class="sd">        &gt;&gt;&gt; type(a)</span>
+<span class="sd">        pycuda.gpuarray.GPUArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">hermitian</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="inv"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-inv.html#brg.numerical.gpu.linalg.inv">[docs]</a><span class="k">def</span> <span class="nf">inv</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Inverse of GPUArray matrix.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): Input square GPUArray.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: Matrix inverse as GPUArray.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; a = inv(give([[4, 7], [2, 6]]))</span>
+<span class="sd">        array([[ 0.6, -0.7],</span>
+<span class="sd">               [-0.2,  0.4]])</span>
+<span class="sd">        &gt;&gt;&gt; type(a)</span>
+<span class="sd">        pycuda.gpuarray.GPUArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="normrow"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-normrow.html#brg.numerical.gpu.linalg.normrow">[docs]</a><span class="k">def</span> <span class="nf">normrow</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray of vectors norm.2 (row by row).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): GPUArray of vectors (m x n).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: Vector lengths (m,).</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; a = normrow(give([[1, 2], [3, 4]]))</span>
+<span class="sd">        array([ 2.23606798,  5.])</span>
+<span class="sd">        &gt;&gt;&gt; type(a)</span>
+<span class="sd">        pycuda.gpuarray.GPUArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="pinv"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-pinv.html#brg.numerical.gpu.linalg.pinv">[docs]</a><span class="k">def</span> <span class="nf">pinv</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Moore-Penrose pseudo inverse of GPUArray matrix.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        Singular values smaller than 10^-15 are set to zero.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): Input matrix (m x n).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: Matrix pseudoinverse inverse.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; a = pinv(give([[1, 3, -1], [2, 0, 3]]))</span>
+<span class="sd">        array([[ 0.1056338 ,  0.16197183],</span>
+<span class="sd">               [ 0.27464789,  0.02112676],</span>
+<span class="sd">               [-0.07042254,  0.22535211]])</span>
+<span class="sd">        &gt;&gt;&gt; type(a)</span>
+<span class="sd">        pycuda.gpuarray.GPUArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="svd"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-svd.html#brg.numerical.gpu.linalg.svd">[docs]</a><span class="k">def</span> <span class="nf">svd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">jobu</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="n">jobvt</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray Singular Value Decomposition.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): GPUArray (m x n) to decompose.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: Unitary matrix (m x k).</span>
+<span class="sd">        gpu: Singular values.</span>
+<span class="sd">        gpu: vh matrix (k x n).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="trace"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-trace.html#brg.numerical.gpu.linalg.trace">[docs]</a><span class="k">def</span> <span class="nf">trace</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray trace, sum along main diagonal.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): Input GPUArray.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: tr(GPUArray).</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; a = trace(give([[0, 1], [2, 3]]))</span>
+<span class="sd">        3.0</span>
+<span class="sd">        &gt;&gt;&gt; type(a)</span>
+<span class="sd">        numpy.float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="transpose"><a class="viewcode-back" href="../../../../pages/api/brg-numerical-gpu-linalg-transpose.html#brg.numerical.gpu.linalg.transpose">[docs]</a><span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Transpose of GPUArray matrix.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        a (gpu): GPUArray of size (m x n).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gpu: GPUArray transpose (n x m).</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; a = transpose(give([[0, 1], [2, 3]]))</span>
+<span class="sd">        array([[ 0.,  2.],</span>
+<span class="sd">               [ 1.,  3.]])</span>
+<span class="sd">        &gt;&gt;&gt; type(a)</span>
+<span class="sd">        pycuda.gpuarray.GPUArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
