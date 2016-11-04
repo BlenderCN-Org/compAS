@@ -1,4 +1,4 @@
-""""""
+"""brg.numerical.methods.fd : The force density method."""
 
 from numpy import array
 
