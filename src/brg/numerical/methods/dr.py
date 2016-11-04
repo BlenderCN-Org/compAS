@@ -1,3 +1,5 @@
+"""brg.numerical.methods.dr : The dynamic relaxation method."""
+
 import time
 
 from numpy import array
@@ -119,8 +121,8 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius, ufunc=
     tol1  = kwargs.get('tol1', 1e-3)
     tol2  = kwargs.get('tol2', 1e-6)
     coeff = Coeff(kwargs.get('c', 0.1))
-    ca    = coeff.a 
-    cb    = coeff.b 
+    ca    = coeff.a
+    cb    = coeff.b
     # --------------------------------------------------------------------------
     # attribute lists
     # --------------------------------------------------------------------------

@@ -1,3 +1,22 @@
+"""brg.numerical.methods : Specific applied numerical methods."""
+
 docs = [
-    {'result': ['Result']}
+    {'result':
+        [
+        'Result'
+        ]
+    },
+    {'jiggle':
+        [
+        ]
+    },
+    {'fd':
+        [
+        'fd'
+        ]
+    },
+    {'dr':
+        [
+        ]
+    }
 ]
