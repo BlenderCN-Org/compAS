@@ -1,13 +1,24 @@
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = ['Tom Van Mele vanmelet@ethz.ch']
+__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
 __date__       = 'Jul 8, 2015'
 
 
 class Result():
+    """Creates a Results class to store numerical methods output.
+
+    Parameters:
+        xyz (array): Spatial co-ordinates of the nodes (n x 3).
+        q (array): Force densities of the edges (m x 1) or (m, ).
+        f (array): Forces in the edges (m x 1) or (m, ).
+        l (array): Edge lengths (m x 1) or (m, ).
+        r (array): Residual forces at the nodes (n x 3).
+
+    Returns:
+        obj: Results class with data as lists.
+
+    """
     def __init__(self, xyz, q, f, l, r=None):
         self.xyz = xyz.tolist()
         self.q   = q.flatten().tolist()

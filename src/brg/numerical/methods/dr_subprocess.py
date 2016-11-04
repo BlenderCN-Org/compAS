@@ -1,5 +1,5 @@
-import sys
-sys.path.append('D:/bb/brg_framework/src/')
+#import sys
+#sys.path.append('D:/bb/brg_framework/src/')
 
 from brg.datastructures.network.network import Network
 

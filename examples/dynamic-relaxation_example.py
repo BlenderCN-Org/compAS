@@ -39,7 +39,7 @@ edges = [[mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)]
          for u, v in mesh.edges()]
 network = Network.from_lines(edges)
 network.set_dva(attr_dict={'bcx': 1, 'bcy': 1, 'bcz': 1,
-                           'px': 0, 'py': 0, 'pz': -1})
+                           'px': 0, 'py': 0, 'pz': -5})
 network.set_dea(attr_dict={'s0': 0.0*10**6, 'E': 1*10**9,
                            'A': 0.25*3.142*0.002**2})
 vkeys, ekeys = gkeys_from_network(network)
@@ -68,17 +68,18 @@ for index in indices:
 mps = [rs.CurveMidPoint(line) for line in rs.ObjectsByLayer('lines')]
 uv = [ekeys[geometric_key(i, '3f')] for i in mps]
 for u, v in uv:
-    network.set_edge_attribute(u, v, 's0', 0*10**6)
+    network.set_edge_attribute(u, v, 's0', 500.0*10**6)
+#    network.set_edge_attribute(u, v, 'E', 210*10**9)
 
 # Settings
-settings = {'tol': 1,
+settings = {'tol': 0.1,
             'steps': 50000,
             'rtype': 'magnitude_1',
             'factor': 1,
             'ct': 't'}
 
 # Subprocess
-sub = 'D:/py/dr_subprocess.py'
+sub = 'D:/bb/brg_framework/src/brg/numerical/methods/dr_subprocess.py'
 ipath = 'D:/idata.json'
 opath = 'D:/odata.json'
 spath = 'D:/sdata.json'
