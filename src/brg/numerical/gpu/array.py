@@ -1,3 +1,5 @@
+"""brg.numerical.gpu.array : Forming, sending and retrieving GPUArrays."""
+
 from numpy import array
 from numpy import float32
 from numpy import float64
@@ -23,14 +25,14 @@ def diag(a):
     """ Construct or extract GPUArray diagonal.
 
     Note:
-        If a is 1D, a GPUArray is constructed, if 2D, the diagonal is extracted.
+        If a is 1D, GPUArray is constructed, if 2D, the diagonal is extracted.
 
     Parameters:
         a (gpu): GPUArray (1D or 2D).
 
     Returns:
         gpu: GPUArray with inserted diagonal, or vector of diagonal.
-    
+
     Examples:
         >>> a = diag(give([1, 2, 3]))
         array([[ 1.,  0.,  0.],
@@ -53,7 +55,7 @@ def eye(n, bit=64):
 
     Returns:
         gpu: Identity matrix (n x n) as GPUArray.
-    
+
     Examples:
         >>> a = eye(3)
         array([[ 1.,  0.,  0.],
@@ -77,7 +79,7 @@ def get(a):
 
     Returns:
         array: The GPUArray returned to RAM.
-    
+
     Examples:
         >>> a = give([1, 2, 3], bit=64)
         >>> b = a.get()
@@ -98,10 +100,10 @@ def give(a, bit=64, type='real'):
 
     Returns:
         gpu: GPUArray of input array.
-        
-    Creates and sends an array of float32 or float64 dtype from RAM to GPU 
+
+    Creates and sends an array of float32 or float64 dtype from RAM to GPU
     memory.
-    
+
     Examples:
         >>> a = give([[1, 2, 3], [4, 5, 6]], bit=64)
         array([[ 1.,  2.,  3.],
@@ -127,7 +129,7 @@ def give(a, bit=64, type='real'):
         elif  bit == 64:
             b = pycuda.gpuarray.to_gpu(array(a).astype(complex64))
     return b
-    
+
 
 def ones(shape, bit=64):
     """ Create GPUArray of ones directly on GPU memory.
@@ -138,7 +140,7 @@ def ones(shape, bit=64):
 
     Returns:
         gpu: GPUArray of ones.
-        
+
     Examples:
         >>> a = ones((3, 2), bit=64)
         array([[ 1.,  1.],
@@ -152,7 +154,7 @@ def ones(shape, bit=64):
     if  bit == 64:
         a = skcuda.misc.ones(shape, float64)
     return a
-    
+
 
 def random(shape, bit=64):
     """ Create random values in the range [0, 1] as GPUArray.
@@ -162,7 +164,7 @@ def random(shape, bit=64):
 
     Returns:
         gpu: Random floats from 0 to 1 in GPUArray.
-        
+
     Examples:
         >>> a = random((2, 2), bit=64)
         array([[ 0.80916596,  0.82687163],
@@ -190,13 +192,13 @@ def tile(a, shape):
 
     Returns:
         gpu: Tiled GPUArray.
-        
+
     Examples:
         >>> a = tile([[1, 2], [3, 4]], (2, 2))
         array([[ 1.,  2.,  1.,  2.],
                [ 3.,  4.,  3.,  4.],
                [ 1.,  2.,  1.,  2.],
-               [ 3.,  4.,  3.,  4.]]) 
+               [ 3.,  4.,  3.,  4.]])
         >>> type(a)
         pycuda.gpuarray.GPUArray
 
@@ -221,7 +223,7 @@ def zeros(shape, bit=64):
 
     Returns:
         gpu: GPUArray of zeros.
-        
+
     Examples:
         >>> a = zeros((3, 2), bit=64)
         array([[ 0.,  0.],
@@ -232,4 +234,3 @@ def zeros(shape, bit=64):
     """
     a = pycuda.gpuarray.zeros(shape, dtype='float' + str(bit))
     return a
-    

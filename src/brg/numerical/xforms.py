@@ -1,3 +1,5 @@
+"""brg.numerical.xforms : Matrices for vector and matrix transformations."""
+
 from math import cos
 from math import sin
 

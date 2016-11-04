@@ -1,6 +1,4 @@
-import sys
-
-from subprocess import Popen
+"""brg.numerical.linalg : Array-based linear algebra functions."""
 
 from numpy import argmax
 from numpy import array
@@ -28,6 +26,9 @@ from scipy.io import savemat
 from scipy.sparse.linalg import factorized
 from scipy.sparse.linalg import spsolve
 
+from subprocess import Popen
+
+import sys
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
                   'Andrew Liew <liew@arch.ethz.ch>']

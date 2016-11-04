@@ -1,3 +1,5 @@
+"""brg.numerical.gpu.utilities : Miscellaneous GPu functions."""
+
 import pycuda
 import pycuda.autoinit
 

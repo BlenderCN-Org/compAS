@@ -1,3 +1,5 @@
+"""brg.numerical.solvers.vec_diff_evo : Vectorised differential evolution."""
+
 from numpy import array
 from numpy import argmin
 from numpy import min
@@ -5,6 +7,7 @@ from numpy import newaxis
 from numpy import tile
 from numpy import zeros
 from numpy.random import rand
+
 from random import sample
 
 
@@ -16,21 +19,40 @@ __date__       = '10.10.2016'
 
 
 def solver(fn, bounds, population, iterations, *args):
-    """ Call the differential evolution solver.
+    """ Call the vectorised differential evolution solver.
 
-        Notes:
+        Note:
             - fn must return vectorised output for input (k, population).
 
         Parameters:
-            fn         (obj)  : The function to evaluate and minimise.
-            bounds     (list) : List of tuples defining bounds for each DoF.
-            population (int)  : Number of agents in the population.
-            iterations (int)  : Number of cross-over cycles to perform.
-            arg        (seq)  : Sequence of optional arguments to pass to fn.
+            fn (obj): The function to evaluate and minimise.
+            bounds (list): List of tuples defining bounds for each DoF.
+            population (int): Number of agents in the population.
+            iterations (int): Number of cross-over cycles or steps to perform.
+            arg (seq): Sequence of optional arguments to pass to fn.
 
         Returns:
-            None
+            float: Optimal value of objective function.
+            array: Values that give optimum (minimised) function.
 
+        Examples:
+            >>> def fn(u, *args):
+            >>>     # Booth's function, fopt=0, xopt=(1, 3)
+            >>>     x = u[0, :]
+            >>>     y = u[1, :]
+            >>>     z = (x + 2*y - 7)**2 + (2*x + y - 5)**2
+            >>>     return z
+            >>> bounds = [(-10, 10) for i in range(2)]
+            >>> fopt, xopt = solver(fn, bounds, population=100, iterations=150)
+            Iteration: 0 fopt: 9.29475634582
+            Iteration: 1 fopt: 0.714845258545
+            Iteration: 2 fopt: 0.714845258545
+            ...
+            Iteration: 148 fopt: 4.22441611201e-22
+            Iteration: 149 fopt: 4.22441611201e-22
+            Iteration: 150 fopt: 5.18467217924e-23
+            >>> print(xopt)
+            array([ 1.,  3.])
     """
     F = 0.8
     CR = 0.9
@@ -78,25 +100,4 @@ def solver(fn, bounds, population, iterations, *args):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    def fn1(u, *args):
-        # Booth's function, fopt=0, xopt=(1, 3)
-        x = u[0, :]
-        y = u[1, :]
-        z = (x + 2*y - 7)**2 + (2*x + y - 5)**2
-        return z
-
-    def fn2(u, *args):
-        # Beale's function, fopt=0, xopt=(3, 0.5)
-        x = u[0, :]
-        y = u[1, :]
-        z = ((1.5 - x + x*y)**2 + (2.25 - x + x*y**2)**2 +
-             (2.625 - x + x*y**3)**2)
-        return z
-
-    dof = 2
-    population = 100
-    iterations = 150
-    bounds = [(-10, 10) for i in range(dof)]
-    fopt, xopt = solver(fn1, bounds, population, iterations)
-    print(xopt)
+    pass

@@ -1,3 +1,5 @@
+"""brg.numerical.operators : Vector/mathematical numerical operators."""
+
 from numpy import tile
 from numpy import divide
 from numpy import hstack

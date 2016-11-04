@@ -1,3 +1,5 @@
+"""brg.numerical.geometry : Geometry-based numerical functions."""
+
 from brg.numerical.linalg import normrow
 
 

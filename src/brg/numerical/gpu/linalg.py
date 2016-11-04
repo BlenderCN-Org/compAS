@@ -1,3 +1,5 @@
+"""brg.numerical.gpu.linalg : Linear algebra equivalents for GPUArrays."""
+
 from numpy import float64
 from numpy import ceil
 
@@ -260,4 +262,3 @@ def transpose(a):
         pycuda.gpuarray.GPUArray
     """
     return skcuda.linalg.transpose(a)
-

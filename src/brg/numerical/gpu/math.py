@@ -1,3 +1,5 @@
+"""brg.numerical.gpu.math : Basic mathematical functions on GPUArrays."""
+
 import pycuda
 import pycuda.autoinit
 import pycuda.cumath
@@ -30,7 +32,7 @@ def abs(a):
     """
     return pycuda.cumath.fabs(a)
 
-    
+
 def argmax(a, axis):
     """ Location of maximum GPUArray elements.
 
@@ -49,8 +51,8 @@ def argmax(a, axis):
         pycuda.gpuarray.GPUArray
     """
     return skcuda.misc.argmax(a, axis, keepdims=True)
-    
-    
+
+
 def argmin(a, axis):
     """ Location of minimum GPUArray elements.
 
@@ -69,8 +71,8 @@ def argmin(a, axis):
         pycuda.gpuarray.GPUArray
     """
     return skcuda.misc.argmin(a, axis, keepdims=True)
-    
-    
+
+
 def acos(a):
     """ Trigonometric arccosine of GPUArray elements.
 
@@ -269,8 +271,8 @@ def max(a, axis):
         pycuda.gpuarray.GPUArray
     """
     return skcuda.misc.max(a, axis, keepdims=True)
-    
-    
+
+
 def min(a, axis):
     """ Values of minimum GPUArray elements.
 
@@ -289,8 +291,8 @@ def min(a, axis):
         pycuda.gpuarray.GPUArray
     """
     return skcuda.misc.min(a, axis, keepdims=True)
-    
-    
+
+
 def mean(a, axis):
     """ Mean of GPUArray elements in a given axis direction.
 
