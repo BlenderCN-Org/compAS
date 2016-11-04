@@ -1,3 +1,5 @@
+"""brg.numerical.utilities : Various numerical/array utilities."""
+
 from numpy import set_printoptions
 
 

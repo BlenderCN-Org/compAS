@@ -1,3 +1,5 @@
+"""brg.numerical.gpu.utilities : Miscellaneous GPU functions."""
+
 try:
     import pycuda
     import pycuda.autoinit

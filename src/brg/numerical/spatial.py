@@ -1,3 +1,5 @@
+"""brg.numerical.spatial : Numerical methods based on spatial co-ordinates."""
+
 from numpy import asarray
 from numpy import argmin
 

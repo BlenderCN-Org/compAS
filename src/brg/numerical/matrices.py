@@ -1,3 +1,5 @@
+"""brg.numerical.matrices : Useful matrices for numerical analysis."""
+
 from numpy import abs
 from numpy import array
 from numpy import asarray
