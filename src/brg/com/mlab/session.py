@@ -11,10 +11,6 @@ True
 
 """
 
-
-import matlab
-
-
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -41,6 +37,7 @@ class MatlabSession(object):
     """
 
     def __init__(self):
+        self.matlab = None
         self.engine = None
         self.session = None
         self.connect()
@@ -53,13 +50,15 @@ class MatlabSession(object):
             return wrapper
 
     def find(self):
-        session = matlab.engine.find_matlab()
+        session = self.matlab.engine.find_matlab()
         if not session or not len(session):
             raise MatlabSessionError()
         self.session = session[0]
         print self.session
 
     def connect(self):
+        import matlab
+        self.matlab = matlab
         self.find()
         self.engine = matlab.engine.connect_matlab(self.session)
 

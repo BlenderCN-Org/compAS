@@ -44,7 +44,7 @@ def closest_points_points(points, cloud, threshold=10**7, distances=True):
     cloud = asarray(cloud).reshape((-1, 3))
     d_matrix = distance_matrix(points, cloud, threshold=threshold)
     indices = argmin(d_matrix, axis=1).tolist()
-    if  distances:
+    if distances:
         return indices, d_matrix
     return indices
 
@@ -77,3 +77,23 @@ def project_points_heightfield(points, target, interp='linear', rtype='list'):
     if rtype == 'list':
         return points.tolist()
     return points
+
+
+def iterative_closest_point(a, b):
+    raise NotImplementedError
+
+
+ICP = iterative_closest_point
+
+
+# see: __snippets/algos/bbox2
+def bounding_box(alignment=None):
+    raise NotImplementedError
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+    pass

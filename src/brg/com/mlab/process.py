@@ -37,12 +37,6 @@ __version__    = '0.1'
 __date__       = '2016-08-29 23:34:28'
 
 
-docs  = [
-    'MatlabProcessError',
-    'MatlabProcess',
-]
-
-
 class MatlabProcessError(Exception):
     def __init__(self, message=None):
         if not message:

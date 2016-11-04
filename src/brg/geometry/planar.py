@@ -8,17 +8,6 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'is_ccw',
-    'is_convex',
-    'is_intersecting',
-    'is_selfintersecting',
-    'is_point_in_polygon',
-    'is_point_in_triangle',
-    'closest_part_of_triangle',
-]
-
-
 def is_ccw(a, b, c, colinear=False):
     """Verify if `c` is on the left of `ab` when looking from `a` to `b`.
 

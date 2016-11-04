@@ -13,9 +13,6 @@ True
 """
 
 
-import matlab
-
-
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -26,11 +23,11 @@ __date__       = '2016-08-29 22:00:58'
 class MatlabEngineError(Exception):
     def __init__(self, message=None):
         if not message:
-            message = '''Could not start the Matlab engine.
+            message = """Could not start the Matlab engine.
 Note that the Matlab engine for Python is only available since R2014b.
 For older versions of Matlab, use *MatlabProcess* instead.
 On Windows, *MatlabClient* is also available.
-'''
+"""
         super(MatlabEngineError, self).__init__(message)
 
 
@@ -52,6 +49,7 @@ class MatlabEngine(object):
             raise MatlabEngineError()
 
     def start(self):
+        import matlab
         print 'starting engine. this may take a few seconds...'
         self.engine = matlab.engine.start_matlab()
         print 'engine started!'

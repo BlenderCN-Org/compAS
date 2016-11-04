@@ -7,6 +7,6 @@ docs = [
     {'blender': []},
     {'ansys': []},
     {'abaqus': []},
-    {'sofystik': []},
+    {'sofistik': []},
     {'threedec': []},
 ]

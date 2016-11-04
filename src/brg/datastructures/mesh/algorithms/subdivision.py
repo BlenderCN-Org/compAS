@@ -11,24 +11,30 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-# butterfly
-
-
-def subdivide(mesh, scheme='t', **options):
+# distinguish between subd of meshes with and without boundary
+# closed vs. open
+# pay attention to extraordinary points
+# and to special rules on boundaries
+# interpolation vs. approxmation?!
+# add numerical versions to brg.datastructures.mesh.(algorithms.)numerical
+# investigate meaning and definition of limit surface
+#
+def subdivide(mesh, scheme='tri', **options):
     """Subdivide the input mesh.
 
     Parameters:
         mesh (Mesh) : A mesh object.
         scheme (str) : Optional. The scheme according to which the mesh should be
-            subdivided. Defult is 't'. Supported values are:
+            subdivided. Defult is 'tri'. Supported values are:
 
-                - t/tri : subdivide every face into triangles by connecting its
+                - tri : subdivide every face into triangles by connecting its
                   vertices to the face centre
-                - c/corner : split the edges and replace each face by a face connecting
+                - corner : split the edges and replace each face by a face connecting
                   the midpoints and a face per corner connecting adjacent midpoints.
-                - q/quad : form new faces by connecting edge midpoints to the
+                - quad : form new faces by connecting edge midpoints to the
                   face centres.
-                - ck/catmull-clark : catmull-clark subdivision.
+                - catmull-clark : catmull-clark subdivision.
+                - doo-sabin : doo-sabin subdivision.
         options (kwargs) : Optional additional keyword arguments.
 
     Returns:
@@ -64,6 +70,9 @@ def tri_subdivision(mesh):
 
 
 # this is actually loop-subd
+# however, corner cutting is a valid technique and should be added
+# 'real' loop subd only works on tri meshes
+# it should be added explicitely there
 def corner_subdivision(mesh):
     """"""
     # split every edge
@@ -97,6 +106,8 @@ def corner_subdivision(mesh):
         del mesh.face[fkey]
 
 
+# give this a different name
+# see also: brg.datastructures.mesh.algorithms.quad.subdivision.quad_subdivision
 def quad_subdivision(mesh):
     """"""
     # keep a copy of the faces before splitting the edges
@@ -203,12 +214,8 @@ def catmullclark_subdivision(mesh, k=1, fixed=None):
         # move each vertex to the weighted average of itself, the neighbouring
         # centroids and the neighbouring mipoints
         for key in keys:
-            # ------------------------------------------------------------------
             if key in fixed:
                 continue
-            # if mesh.vertex[key]['is_fixed']:
-            #     continue
-            # ------------------------------------------------------------------
             if key in bkeys:
                 nbrs = bkey_edgepoints[key]
                 nbrs = set(nbrs)
@@ -302,14 +309,11 @@ def doosabin_subdivision(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
-    import brg
-
     from brg.datastructures.mesh.mesh import Mesh
     from brg.geometry.polyhedron import Polyhedron
 
-    # mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-
     cube = Polyhedron.generate(12)
+
     mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
     subd = subdivide(mesh, scheme='doo-sabin', k=3)
 

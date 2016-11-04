@@ -10,6 +10,8 @@ def connectivity_matrix(mesh):
     raise NotImplementedError
 
 
+# see __snippets/algos/heat for cotangent weights
+# ony for tri meshes though
 def laplacian_matrix(mesh):
     raise NotImplementedError
 

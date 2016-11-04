@@ -32,25 +32,6 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'dot',
-    'cross',
-    'length',
-    'length_sqrd',
-    'distance',
-    'distance_sqrd',
-    'angles',
-    'angle_smallest',
-    'midpoint',
-    'centroid',
-    'center_of_mass',
-    'normal',
-    'vector_component',
-    'area',
-    'volume',
-]
-
-
 SQRT_05 = sqrt(0.5)
 
 

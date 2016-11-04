@@ -20,21 +20,6 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'is_colinear',
-    'is_coplanar',
-    'is_coplanar4',
-    'is_convex',
-    'is_closed',
-    'is_point_on_plane',
-    'is_point_on_line',
-    'is_point_on_segment',
-    'is_point_on_polyline',
-    'is_point_in_triangle',
-    'is_ray_intersecting_triangle',
-]
-
-
 def is_colinear(a, b, c):
     """Verify if three points are colinear.
 

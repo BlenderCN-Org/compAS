@@ -30,5 +30,4 @@ def lengths(C, X):
                [ 1.73205081]])
     """
     uvw = C.dot(X)
-    l = normrow(uvw)
-    return uvw, l
+    return uvw, normrow(uvw)
