@@ -1,6 +1,10 @@
 .project
 .pydevproject
 
+docs/_build
+docs/_static
+docs/_templates
+
 syntax: regexp
 ^__temp$
 ^data$
