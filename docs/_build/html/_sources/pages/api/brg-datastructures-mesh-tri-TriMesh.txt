@@ -22,3 +22,4 @@ TriMesh
    .. rubric:: **Methods**
 
    .. automethod:: brg.datastructures.mesh.tri.TriMesh.add_face
+   .. automethod:: brg.datastructures.mesh.tri.TriMesh.is_extraordinary

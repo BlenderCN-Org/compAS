@@ -60,14 +60,14 @@ from queries import is_point_on_polyline
 # from intersections import line_line_intersection_2d
 # from intersections import circle_circle_intersections_2d
 
-
+#     'arithmetic',
+#     'functions',
+#     'intersections',
+#     'planar',
+#     'queries',
+#     'spatial',
+#     'transformations',
+#     'utilities'
 docs = [
-    'arithmetic',
-    'functions',
-    'intersections',
-    'planar',
-    'queries',
-    'spatial',
-    'transformations',
-    'utilities'
+    {'intersections'       : ['line_line_intersection', ]},
 ]

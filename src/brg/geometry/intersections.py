@@ -9,11 +9,11 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'line_line_intersection',
-    'lines_intersection',
-    'circle_circle_intersections',
-]
+# docs = [
+#     'line_line_intersection',
+#     'lines_intersection',
+#     'circle_circle_intersections',
+# ]
 
 
 def line_line_intersection():

@@ -47,12 +47,12 @@ from colors import color_to_colordict
 # from xfunc import XFunc
 # from xfuncio import XFuncIO
 
-docs = [
-    'colors',
-    'drawing',
-    'maps',
-    'mixing',
-    'names',
-    'scripts',
-    'units',
-]
+# docs = [
+#     'colors',
+#     'drawing',
+#     'maps',
+#     'mixing',
+#     'names',
+#     'scripts',
+#     'units',
+# ]

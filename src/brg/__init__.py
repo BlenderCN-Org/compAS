@@ -30,7 +30,7 @@ docs = [
     {'com': []},
     {'datastructures': []},
     # {'files': []},
-    # {'geometry': []},
+     {'geometry': []},
     # {'numerical': []},
     # {'physics': []},
      {'utilities': []},

@@ -134,8 +134,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for brg.geometry.intersections</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">functions</span> <span class="k">import</span> <span class="n">distance</span>
-<span class="kn">from</span> <span class="nn">arithmetic</span> <span class="k">import</span> <span class="n">add_vectors</span>
+<span></span><span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">distance</span>
+<span class="kn">from</span> <span class="nn">arithmetic</span> <span class="kn">import</span> <span class="n">add_vectors</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele &lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span> <span class="p">]</span>
@@ -145,18 +145,18 @@
 <span class="n">__date__</span>       <span class="o">=</span> <span class="s1">&#39;Oct 3, 2014&#39;</span>
 
 
-<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;line_line_intersection&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;lines_intersection&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;circle_circle_intersections&#39;</span><span class="p">,</span>
-<span class="p">]</span>
+<span class="c1"># docs = [</span>
+<span class="c1">#     &#39;line_line_intersection&#39;,</span>
+<span class="c1">#     &#39;lines_intersection&#39;,</span>
+<span class="c1">#     &#39;circle_circle_intersections&#39;,</span>
+<span class="c1"># ]</span>
 
 
 <div class="viewcode-block" id="line_line_intersection"><a class="viewcode-back" href="../../../pages/api/brg-geometry-intersections-line_line_intersection.html#brg.geometry.intersections.line_line_intersection">[docs]</a><span class="k">def</span> <span class="nf">line_line_intersection</span><span class="p">():</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
-<span class="k">def</span> <span class="nf">line_line_intersection_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">line_line_intersection_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculates the intersection point of line A and line B in 2d on the xy plane.</span>
 
 <span class="sd">    Parameters:</span>
@@ -175,22 +175,22 @@
         <span class="n">p2b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
     <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">None</span>
     <span class="n">n_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">p2b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">ua</span> <span class="o">=</span> <span class="n">n_a</span> <span class="o">/</span> <span class="n">d</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">ua</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">ua</span> <span class="o">*</span> <span class="p">(</span><span class="n">p1b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="mi">0</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="lines_intersection"><a class="viewcode-back" href="../../../pages/api/brg-geometry-intersections-lines_intersection.html#brg.geometry.intersections.lines_intersection">[docs]</a><span class="k">def</span> <span class="nf">lines_intersection</span><span class="p">():</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="k">def</span> <span class="nf">lines_intersection</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 
 <span class="k">def</span> <span class="nf">lines_intersection_2d</span><span class="p">():</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 
-<div class="viewcode-block" id="circle_circle_intersections"><a class="viewcode-back" href="../../../pages/api/brg-geometry-intersections-circle_circle_intersections.html#brg.geometry.intersections.circle_circle_intersections">[docs]</a><span class="k">def</span> <span class="nf">circle_circle_intersections</span><span class="p">():</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="k">def</span> <span class="nf">circle_circle_intersections</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 
 <span class="k">def</span> <span class="nf">circle_circle_intersections_2d</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">r2</span><span class="p">):</span>
@@ -211,14 +211,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span><span class="p">):</span>
-        <span class="nb">print</span> <span class="s1">&#39;No solutions, the circles are too far apart&#39;</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">print</span> <span class="s1">&#39;No solutions, the circles are too far apart&#39;</span>
+        <span class="k">return</span> <span class="bp">None</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span><span class="p">)):</span>
-        <span class="nb">print</span> <span class="s1">&#39;No solutions, one circle contains the other&#39;</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">print</span> <span class="s1">&#39;No solutions, one circle contains the other&#39;</span>
+        <span class="k">return</span> <span class="bp">None</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r1</span> <span class="o">==</span> <span class="n">r2</span><span class="p">)):</span>
-        <span class="nb">print</span> <span class="s1">&#39;No solutions, the circles coincide&#39;</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">print</span> <span class="s1">&#39;No solutions, the circles coincide&#39;</span>
+        <span class="k">return</span> <span class="bp">None</span>
     <span class="n">a</span>   <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
     <span class="n">h</span>   <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
     <span class="n">cx2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span>

@@ -16,14 +16,14 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'sort_points',
-    'closest_point',
-    'closest_point_on_line',
-    'closest_point_on_segment',
-    'closest_point_on_polyline',
-    'closest_point_on_plane',
-]
+# docs = [
+#     'sort_points',
+#     'closest_point',
+#     'closest_point_on_line',
+#     'closest_point_on_segment',
+#     'closest_point_on_polyline',
+#     'closest_point_on_plane',
+# ]
 
 
 def sort_points(point, cloud):

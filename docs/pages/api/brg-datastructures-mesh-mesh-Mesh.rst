@@ -35,6 +35,7 @@ Mesh
    .. rubric:: **Magic methods**
 
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.__contains__
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.__delitem__
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.__getitem__
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.__iter__
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.__len__
@@ -48,6 +49,8 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.copy
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.cull_unused_edges
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.cull_unused_vertices
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.delete_face
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.delete_vertex
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.draw
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.edge_length
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.edge_midpoint
@@ -95,8 +98,8 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_vertex_on_boundary
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_vertex_orphan
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.key_index
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.plot
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.point_on_edge
-   .. automethod:: brg.datastructures.mesh.mesh.Mesh.remove_face
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.remove_vertex
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.set_dea
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.set_dfa
@@ -125,3 +128,4 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertices_enum
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertices_iter
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertices_on_boundary
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.view

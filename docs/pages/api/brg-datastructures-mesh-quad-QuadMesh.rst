@@ -22,3 +22,4 @@ QuadMesh
    .. rubric:: **Methods**
 
    .. automethod:: brg.datastructures.mesh.quad.QuadMesh.add_face
+   .. automethod:: brg.datastructures.mesh.quad.QuadMesh.is_extraordinary

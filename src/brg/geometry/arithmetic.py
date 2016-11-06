@@ -5,11 +5,11 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'add_vectorlist',
-    'add_vectors',
-    'subtract_vectors',
-]
+# docs = [
+#     'add_vectorlist',
+#     'add_vectors',
+#     'subtract_vectors',
+# ]
 
 
 def add_vectorlist(vectors):

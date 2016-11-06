@@ -32,23 +32,23 @@ __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
 
 
-docs = [
-    'dot',
-    'cross',
-    'length',
-    'length_sqrd',
-    'distance',
-    'distance_sqrd',
-    'angles',
-    'angle_smallest',
-    'midpoint',
-    'centroid',
-    'center_of_mass',
-    'normal',
-    'vector_component',
-    'area',
-    'volume',
-]
+# docs = [
+#     'dot',
+#     'cross',
+#     'length',
+#     'length_sqrd',
+#     'distance',
+#     'distance_sqrd',
+#     'angles',
+#     'angle_smallest',
+#     'midpoint',
+#     'centroid',
+#     'center_of_mass',
+#     'normal',
+#     'vector_component',
+#     'area',
+#     'volume',
+# ]
 
 
 SQRT_05 = sqrt(0.5)
@@ -297,7 +297,8 @@ def centroid(points):
         list: XYZ coordinates of the centroid.
 
     Examples:
-        >>> centroid()
+        pts = [(0,0,0),(1,0,0),(1,1,0),(0,1,0)]
+        print centroid(pts)
     """
     p = len(points)
     return [axis / p for axis in map(sum, zip(*points))]

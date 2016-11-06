@@ -19,5 +19,5 @@ brg.com: A package for communication with other software.
    brg-com-blender
    brg-com-ansys
    brg-com-abaqus
-   brg-com-sofystik
+   brg-com-sofistik
    brg-com-threedec

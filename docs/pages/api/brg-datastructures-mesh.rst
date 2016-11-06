@@ -14,14 +14,14 @@ The mesh datastructure.
    :maxdepth: 1
 
    brg-datastructures-mesh-algorithms
+   brg-datastructures-mesh-numerical
    brg-datastructures-mesh-operations
-   brg-datastructures-mesh-viewers
 
 
 brg.datastructures.mesh.mesh
 ================================================================================
 
-The (poly) mesh class.
+This module defines the (poly) mesh class.
 
 .. toctree::
    :glob:
@@ -33,7 +33,7 @@ The (poly) mesh class.
 brg.datastructures.mesh.quad
 ================================================================================
 
-<docstring missing>
+This module defines the quadmesh class.
 
 .. toctree::
    :glob:
@@ -45,7 +45,7 @@ brg.datastructures.mesh.quad
 brg.datastructures.mesh.tri
 ================================================================================
 
-<docstring missing>
+This module defines the trimesh class.
 
 .. toctree::
    :glob:
