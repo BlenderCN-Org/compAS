@@ -396,6 +396,9 @@ mesh summary
         mesh = cls.from_data(data)
         return mesh
 
+    def clear(self):
+        raise NotImplementedError
+
     def get_any_vertex(self):
         return next(self.vertices_iter())
 

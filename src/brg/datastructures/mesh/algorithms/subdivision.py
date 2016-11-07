@@ -18,7 +18,7 @@ __email__      = 'vanmelet@ethz.ch'
 # interpolation vs. approxmation?!
 # add numerical versions to brg.datastructures.mesh.(algorithms.)numerical
 # investigate meaning and definition of limit surface
-#
+# any subd algorithm should return a new subd mesh, leaving the control mesh intact
 def subdivide(mesh, scheme='tri', **options):
     """Subdivide the input mesh.
 
@@ -113,28 +113,23 @@ def quad_subdivision(mesh):
     # keep a copy of the faces before splitting the edges
     fkey_vertices = dict((fkey, mesh.face_vertices(fkey, ordered=True)) for fkey in mesh.face)
     # split every edge
+    ekeys = []
     for u, v in mesh.edges():
-        split_edge(mesh, u, v, allow_boundary=True)
+        w = split_edge(mesh, u, v, allow_boundary=True)
+        ekeys.append(w)
     # insert a vertex at the centroid of every face
     # create a new face for every vertex of the old faces
     # [a (from split), key, d (from split), centroid]
     for fkey in mesh.faces():
         x, y, z = mesh.face_centroid(fkey)
-        # ----------------------------------------------------------------------
-        # temp
-        # ----------------------------------------------------------------------
-        attr = {}
-        for key in mesh.face_vertices(fkey):
-            for name in mesh.vertex[key]:
-                attr[name] = None
-        # ----------------------------------------------------------------------
-        c = mesh.add_vertex(attr_dict=attr, x=x, y=y, z=z)
+        c = mesh.add_vertex(x=x, y=y, z=z)
         for key in fkey_vertices[fkey]:
             rface = dict((j, i) for i, j in mesh.face[fkey].items())
             a = rface[key]
             d = mesh.face[fkey][key]
             mesh.add_face([a, key, d, c])
         del mesh.face[fkey]
+    return ekeys
 
 
 def catmullclark_subdivision(mesh, k=1, fixed=None):
@@ -235,6 +230,51 @@ def catmullclark_subdivision(mesh, k=1, fixed=None):
             mesh.vertex[key]['z'] = z
 
 
+def _catmullclark_subdivision(mesh, k=1, fixed=None):
+    """"""
+
+    if not fixed:
+        fixed = []
+
+    fixed = set(fixed)
+    subd = mesh.copy()
+
+    for level in range(k):
+
+        ekeys = quad_subdivision(subd)
+
+        key_xyz = dict((key, subd.vertex_coordinates(key)) for key in subd)
+
+        for ekey in ekeys:
+            nbrs = [key_xyz[nbr] for nbr in subd.halfedge[ekey]]
+            xyz  = [axis / 4. for axis in map(sum, zip(*nbrs))]
+            subd.vertex[ekey]['x'] = xyz[0]
+            subd.vertex[ekey]['y'] = xyz[1]
+            subd.vertex[ekey]['z'] = xyz[2]
+
+        for key in subd.vertices_iter():
+            epoints = []
+            fpoints = []
+            for enbr in subd.halfedge[key]:
+                fkey = subd.halfedge[key][enbr]
+                fnbr = subd.face[fkey][enbr]
+                epoints.append(key_xyz[enbr])
+                fpoints.append(key_xyz[fnbr])
+            n = float(len(epoints))
+            E = [axis / n for axis in map(sum, zip(*epoints))]
+            F = [axis / n for axis in map(sum, zip(*fpoints))]
+            V = key_xyz[key]
+            e = 2. / n
+            f = 1. / n
+            v = (n - 3.) / n
+            xyz = [e * E[i] + f * F[i] + v * V[i] for i in range(3)]
+            subd.vertex[key]['x'] = xyz[0]
+            subd.vertex[key]['y'] = xyz[1]
+            subd.vertex[key]['z'] = xyz[2]
+
+    return subd
+
+
 def doosabin_subdivision(mesh, k=1, fixed=None):
     if not fixed:
         fixed = []
@@ -304,10 +344,18 @@ if __name__ == "__main__":
 
     from brg.datastructures.mesh.mesh import Mesh
     from brg.geometry.polyhedron import Polyhedron
+    from brg.datastructures.mesh.viewer import SubdMeshViewer
 
     cube = Polyhedron.generate(12)
 
     mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
-    subd = subdivide(mesh, scheme='doo-sabin', k=3)
+    subd = _catmullclark_subdivision(mesh, k=1)
 
-    subd.view()
+    viewer = SubdMeshViewer(mesh, subdfunc=_catmullclark_subdivision)
+
+    viewer.axes.x_color = (0.1, 0.1, 0.1)
+    viewer.axes.y_color = (0.1, 0.1, 0.1)
+    viewer.axes.z_color = (0.1, 0.1, 0.1)
+
+    viewer.setup()
+    viewer.show()
