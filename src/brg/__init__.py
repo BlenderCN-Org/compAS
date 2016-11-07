@@ -33,10 +33,10 @@ def check_dependencies():
 docs = [
     {'com': []},
     {'datastructures': []},
-    # {'files': []},
-    # {'geometry': []},
+    {'files': []},
+    {'geometry': []},
     {'numerical': []},
-    # {'physics': []},
-     {'utilities': []},
-    # {'viewers': []},
+    {'physics': []},
+    {'utilities': []},
+    {'viewers': []},
 ]
