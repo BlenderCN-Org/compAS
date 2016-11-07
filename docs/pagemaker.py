@@ -114,6 +114,7 @@ def package_doc(package):
     filepath = 'pages/api/' + package.__name__.replace('.', '-') + '.rst'
     docs     = getattr(package, 'docs', [])
     names    = [n for doc in docs for n in doc]
+    print names
     docs     = dict((n, doc[n]) for doc in docs for n in doc)
     objects  = dict((n, importlib.import_module(package.__name__ + '.' + n)) for n in names)
     modules  = [n for n in names if inspect.ismodule(objects[n])]
@@ -256,8 +257,8 @@ def function_doc(f):
 
 if __name__ == "__main__":
 
-    #import sys
-    #sys.path.append("C:/Users/rippmanm/workspace/brg_framework/src") 
+    import sys
+    sys.path.append("C:/Users/rippmanm/workspace/brg_framework/src") 
 
     import brg
     import brg_rhino
@@ -267,6 +268,7 @@ if __name__ == "__main__":
 
     for doc in brg.docs:
         for name in doc:
+            print "doc name: " + name
             p = importlib.import_module(brg.__name__ + '.' + name)
             package_doc(p)
         # module_doc(p)

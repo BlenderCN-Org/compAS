@@ -1,3 +1,4 @@
+<<<<<<< mine
 
 ********************************************************************************
 mesh_smooth
@@ -5,3 +6,12 @@ mesh_smooth
 
 .. autofunction:: brg.datastructures.mesh.algorithms.smoothing.mesh_smooth
 
+=======
+
+********************************************************************************
+mesh_smooth
+********************************************************************************
+
+.. autofunction:: brg.datastructures.mesh.algorithms.smoothing.mesh_smooth
+
+>>>>>>> theirs

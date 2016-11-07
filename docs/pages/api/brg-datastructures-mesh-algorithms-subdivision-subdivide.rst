@@ -1,3 +1,4 @@
+<<<<<<< mine
 
 ********************************************************************************
 subdivide
@@ -5,3 +6,12 @@ subdivide
 
 .. autofunction:: brg.datastructures.mesh.algorithms.subdivision.subdivide
 
+=======
+
+********************************************************************************
+subdivide
+********************************************************************************
+
+.. autofunction:: brg.datastructures.mesh.algorithms.subdivision.subdivide
+
+>>>>>>> theirs
