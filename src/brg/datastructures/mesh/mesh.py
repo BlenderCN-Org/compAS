@@ -1399,6 +1399,10 @@ mesh summary
         vnbrs = self.face_vertex_neighbours(fkey)
         return set(enbrs + vnbrs)
 
+    # perhaps this can be improved by using nearest-neighbour filtering of the
+    # faces to test for
+    # kdtree, rtree, ...?
+    # only search the k nearest neighbours of the current face
     def face_adjacency(self):
         # this function does not actually use any of the topological information
         # provided by the halfedges

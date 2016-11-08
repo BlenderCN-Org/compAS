@@ -122,6 +122,8 @@ class SubdMeshViewer(Viewer):
             self.subd = self.subdfunc(self.mesh, k=3)
         if key == '4':
             self.subd = self.subdfunc(self.mesh, k=4)
+        if key == '5':
+            self.subd = self.subdfunc(self.mesh, k=5)
 
 
 # ==============================================================================

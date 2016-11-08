@@ -346,10 +346,9 @@ if __name__ == "__main__":
     from brg.geometry.polyhedron import Polyhedron
     from brg.datastructures.mesh.viewer import SubdMeshViewer
 
-    cube = Polyhedron.generate(12)
+    cube = Polyhedron.generate(6)
 
     mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
-    subd = _catmullclark_subdivision(mesh, k=1)
 
     viewer = SubdMeshViewer(mesh, subdfunc=_catmullclark_subdivision)
 
