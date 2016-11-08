@@ -33,3 +33,7 @@ def lengths(C, X):
     """
     uvw = C.dot(X)
     return uvw, normrow(uvw)
+
+
+def rotate(points):
+    raise NotImplementedError

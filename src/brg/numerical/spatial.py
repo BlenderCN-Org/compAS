@@ -1,10 +1,18 @@
 """brg.numerical.spatial : Numerical methods based on spatial co-ordinates."""
 
+from numpy import array
 from numpy import asarray
+from numpy import argmax
 from numpy import argmin
+from numpy import dot
+from numpy import sum
+
+from scipy.spatial import ConvexHull
 
 from scipy.spatial import distance_matrix
 from scipy.interpolate import griddata
+
+import matplotlib.pyplot as plt
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
@@ -88,9 +96,95 @@ def iterative_closest_point(a, b):
 ICP = iterative_closest_point
 
 
-# see: __snippets/algos/bbox2
-def bounding_box(alignment=None):
-    raise NotImplementedError
+def bounding_box_2d(points, alignment=None, plot_hull=False):
+    """Compute the aligned bounding box of set of points.
+
+    Parameters:
+        points (list) : A list of 2D points.
+        alignment (str) :
+            Optional. The alignment of the bounding box.
+            Default is `None`.
+            Possible values are `'AABB'` and `'OABB'`.
+
+    Note:
+        The *object-aligned bounding box* (OABB) is computed using the following
+        procedure:
+
+            1. Compute the convex hull of the points.
+            2. For each of the edges on the hull:
+                1. Compute the s-axis as the unit vector in the direction of the edge
+                2. Compute the othorgonal t-axis.
+                3. Use the start point of the edge as origin.
+                4. Compute the spread of the points along the s-axis.
+                   (dot product of the point vecor in local coordinates and the s-axis)
+                5. Compute the spread along the t-axis.
+                6. Determine the side of s on which the points are.
+                7. Compute and store the corners of the bbox and its area.
+            3. Select the box with the smallest area.
+
+    >>> from numpy import random
+    >>> points = random.rand(100, 2)
+    >>> points[:, 0] *= 10.0
+    >>> points[:, 1] *= 4.0
+    >>> corners, area = BBOX2(points)
+
+    """
+    points = asarray(points)
+    n, dim = points.shape
+
+    assert 2 == dim, "The number of dimensions of the point set is not 2: %i" % dim
+
+    hull = ConvexHull(points)
+    xy_hull = points[hull.vertices].reshape((-1, 2))
+
+    if plot_hull:
+        plt.plot(xy_hull[:, 0], xy_hull[:, 1], 'b-')
+        plt.plot(xy_hull[[-1, 0], 0], xy_hull[[-1, 0], 1], 'b-')
+
+    boxes = []
+    m = sum(xy_hull, axis=0) / n
+
+    for simplex in hull.simplices:
+        p0 = points[simplex[0]]
+        p1 = points[simplex[1]]
+        # s direction
+        s  = p1 - p0
+        sl = sum(s ** 2) ** 0.5
+        su = s / sl
+        vn = xy_hull - p0
+        sc = (sum(vn * s, axis=1) / sl).reshape((-1, 1))
+        scmax = argmax(sc)
+        scmin = argmin(sc)
+        # box corners
+        b0 = p0 + sc[scmin] * su
+        b1 = p0 + sc[scmax] * su
+        # t direction
+        t  = array([-s[1], s[0]])
+        tl = sum(t ** 2) ** 0.5
+        tu = t / tl
+        vn = xy_hull - p0
+        tc = (sum(vn * t, axis=1) / tl).reshape((-1, 1))
+        tcmax = argmax(tc)
+        tcmin = argmin(tc)
+        # area
+        w = sc[scmax] - sc[scmin]
+        h = tc[tcmax] - tc[tcmin]
+        a = w * h
+        # box corners
+        if dot(t, m - p0) < 0:
+            b3 = b0 - h * tu
+            b2 = b1 - h * tu
+        else:
+            b3 = b0 + h * tu
+            b2 = b1 + h * tu
+        # box
+        boxes.append([[b0, b1, b2, b3], a[0]])
+
+    # return the box with the smallest area
+    return min(boxes, key=lambda b: b[1])
+
+
+BBOX2 = bounding_box_2d
 
 
 # ==============================================================================
@@ -98,4 +192,32 @@ def bounding_box(alignment=None):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    from numpy.random import rand
+    from numpy.random import randint
+
+    from brg.numerical.xforms import rotation_matrix
+
+    points = rand(100, 2)
+    points[:, 0] *= 10.0
+    points[:, 1] *= 4.0
+
+    a = randint(1, high=8) * 10 * 3.14159 / 180
+    R = rotation_matrix(a, [0, 0, 1], rtype='array')
+
+    points[:] = points.dot(R[0:2, 0:2])
+
+    corners, area = BBOX2(points, plot_hull=True)
+
+    x, y = zip(*corners)
+
+    plt.plot(points[:, 0], points[:, 1], 'wo')
+    plt.plot(x, y, 'r-')
+    plt.plot([x[-1], x[0]], [y[-1], y[0]], 'r-')
+
+    ax = plt.gca()
+    ax.set_aspect('equal')
+    ax.set_xlim([min(x) - 1, max(x) + 1])
+    ax.set_ylim([min(y) - 1, max(y) + 1])
+
+    plt.show()

@@ -9,7 +9,7 @@ __copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __date__       = 'Oct 20, 2016'
- 
+
 
 def principal_component_analysis(data):
     """PCA of a dtat set finds the directions along which the variance of the data
