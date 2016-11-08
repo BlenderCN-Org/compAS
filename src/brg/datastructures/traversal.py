@@ -1,4 +1,6 @@
 # traversal is a network algorithm (sepcifically relating to trees)
+# move to network?
+# return a tree?
 
 from collections import deque
 
