@@ -1,0 +1,39 @@
+
+__author__     = ['Tom Van Mele', ]
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__version__    = '0.1'
+__email__      = 'vanmelet@ethz.ch'
+__status__     = 'Development'
+__date__       = '2015-12-04 15:22:17'
+
+
+def construct_dual_mesh(mesh, cls=None):
+    if not cls:
+        cls = type(mesh)
+    fkey_center = dict((fkey, mesh.face_center(fkey)) for fkey in mesh.face)
+    boundary = mesh.vertices_on_boundary()
+    inner = list(set(mesh.vertex) - set(boundary))
+    vertices = {}
+    faces = {}
+    for key in inner:
+        fkeys = mesh.vertex_faces(key, ordered=True)
+        for fkey in fkeys:
+            if fkey not in vertices:
+                vertices[fkey] = fkey_center[fkey]
+        faces[key] = fkeys
+    dual = cls()
+    for key, (x, y, z) in vertices.items():
+        dual.add_vertex(key, x=x, y=y, z=z)
+    for fkey, vertices in faces.items():
+        dual.add_face(vertices, fkey)
+    return dual
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == '__main__':
+
+    pass
