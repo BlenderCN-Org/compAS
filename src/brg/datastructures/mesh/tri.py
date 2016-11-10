@@ -1,5 +1,9 @@
 """This module defines the trimesh class."""
 
+from brg.geometry import dot
+from brg.geometry import length
+from brg.geometry import cross
+
 from brg.datastructures.mesh.mesh import Mesh
 
 
@@ -35,6 +39,21 @@ class TriMesh(Mesh):
 
     def is_extraordinary(self, key):
         return len(self.vertex_neighbours(key)) != 6
+
+    def edge_cotangent(self, u, v):
+        fkey = self.halfedge[u][v]
+        cotangent = 0.0
+        if fkey is not None:
+            w = self.face[fkey][v]  # self.vertex_descendent(v, fkey)
+            wu = self.edge_vector(w, u)
+            wv = self.edge_vector(w, v)
+            cotangent = dot(wu, wv) / length(cross(wu, wv))
+        return cotangent
+
+    def edge_cotangents(self, u, v):
+        a = self.edge_cotangent(u, v)
+        b = self.edge_cotangent(v, u)
+        return a, b
 
 
 class PowerDiagram():

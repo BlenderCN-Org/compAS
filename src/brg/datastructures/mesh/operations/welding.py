@@ -31,4 +31,28 @@ def unweld(mesh, fkey, where=None):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import brg
+    from brg.datastructures.mesh.mesh import Mesh
+
+    data = brg.get_data('faces.obj')
+    mesh = Mesh.from_obj(data)
+
+    fkey  = '12'
+    where = mesh.face_vertices(fkey)[0:1]
+    xyz   = mesh.face_centroid(fkey)
+
+    unweld(mesh, fkey, where)
+
+    # move the unwelded vertex to the original centroid of the face it (partially)
+    # disconnects
+    mesh.vertex['36']['x'] = xyz[0]
+    mesh.vertex['36']['y'] = xyz[1]
+    mesh.vertex['36']['z'] = xyz[2]
+
+    print mesh
+
+    mesh.draw(
+        show_vertices=True,
+        face_label=dict((fkey, fkey) for fkey in mesh.face)
+    )

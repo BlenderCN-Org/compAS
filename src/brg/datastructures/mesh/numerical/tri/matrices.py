@@ -1,9 +1,5 @@
 """This module defines mesh matrices that are specific for triangle meshes."""
 
-from brg.geometry import dot
-from brg.geometry import length
-from brg.geometry import cross
-
 from numpy import ones
 
 from scipy.sparse import coo_matrix
@@ -14,15 +10,6 @@ __author__    = 'Tom Van Mele'
 __copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__   = 'MIT license'
 __email__     = 'vanmelet@ethz.ch'
-
-
-def cotangent(u, v, w, key_xyz):
-    u = key_xyz[u]
-    v = key_xyz[v]
-    w = key_xyz[w]
-    wu = [u[i] - w[i] for i in range(3)]
-    wv = [v[i] - w[i] for i in range(3)]
-    return dot(wu, wv) / length(cross(wu, wv))
 
 
 def cotangent_laplacian_matrix(mesh):
@@ -40,7 +27,16 @@ def cotangent_laplacian_matrix(mesh):
     Note:
         The matrix is constructed such that the diagonal contains the sum of the
         weights of the adjacent vertices, multiplied by `-1`.
-        The other entries are ...
+        The entries of the matrix are thus
+
+        .. math::
+
+            \mathbf{L}_{ij} =
+                \begin{cases}
+                    - \sum_{(i, k) \in \mathbf{E}_{i}} w_{ik} & if i = j \\
+                    w_{ij} & if (i, j) \in \mathbf{E} \\
+                    0 & otherwise
+                \end{cases}
 
     >>> ...
 
@@ -48,26 +44,26 @@ def cotangent_laplacian_matrix(mesh):
     # minus sum of the adjacent weights on the diagonal
     # cotangent weights on the neighbours
     key_index = dict((key, index) for index, key in mesh.vertices_enum())
-    key_xyz = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
     n = len(mesh)
     data = []
     rows = []
     cols = []
+    # compute the weight of each halfedge
+    # as the cotangent of the angle at the opposite vertex
     for u, v in mesh.edges_iter():
-        uv = mesh.face[mesh.halfedge[u][v]][v]
-        vu = mesh.face[mesh.halfedge[v][u]][u]
-        a = cotangent(u, v, uv, key_xyz)
-        b = cotangent(v, u, vu, key_xyz)
+        a, b = mesh.edge_cotangents(u, v)
         i = key_index[u]
         j = key_index[v]
-        data.append(0.5 * a)
+        data.append(0.5 * a)  # not sure why multiplication with 0.5 is necessary
         rows.append(i)
         cols.append(j)
-        data.append(0.5 * b)
+        data.append(0.5 * b)  # not sure why multiplication with 0.5 is necessary
         rows.append(j)
         cols.append(i)
     L = coo_matrix((data, (rows, cols)), shape=(n, n))
     L = L.tocsr()
+    # subtract from the diagonal the sum of the weights of the neighbours of the
+    # vertices corresponding to the diagonal entries.
     L = L - spdiags(L * ones(n), 0, n, n)
     L = L.tocsr()
     return L
@@ -79,4 +75,16 @@ def cotangent_laplacian_matrix(mesh):
 
 if __name__ == "__main__":
 
-    pass
+    import brg
+    from brg.datastructures.mesh.mesh import Mesh
+    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_mesh
+
+    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+    delaunay = delaunay_from_mesh(mesh)
+
+    L = cotangent_laplacian_matrix(delaunay)
+
+    print L
+
+    delaunay.draw(show_vertices=True)

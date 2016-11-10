@@ -635,6 +635,13 @@ mesh summary
             mesh.add_face(vertices, fkey=fkey)
         return mesh
 
+    def to_lines(self, axes='xyz'):
+        return [(self.vertex_coordinates(u, axes), self.vertex_coordinates(v, axes))
+                for u, v in self.edges_iter()]
+
+    def to_points(self, axes='xyz'):
+        return [self.vertex_coordinates(key, axes) for key in self]
+
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
