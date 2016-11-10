@@ -383,7 +383,7 @@ def center_of_mass(polygon):
         tuple of floats: The XYZ coordinates of the center of mass.
 
     Examples:
-        pts = [(0,0,0),(1,0,0),(0,10,0)]
+        pts = [(0.,0.,0.),(1.,0.,0.),(0.,10.,0.)]
         
         print ("Center of mass: {0}".format(center_of_mass(pts)))
         print ("Centroid: {0}".format(centroid(pts)))
@@ -507,11 +507,6 @@ def volume(polyhedron):
 
 if __name__ == '__main__':
 
-
-    pts = [(0.,0.,0.),(1,0,0),(0,10,0)]
-    
-    print ("Center of mass: {0}".format(center_of_mass(pts)))
-    print ("Centroid: {0}".format(centroid(pts)))
 
     from brg.datastructures.mesh.mesh import Mesh
 
