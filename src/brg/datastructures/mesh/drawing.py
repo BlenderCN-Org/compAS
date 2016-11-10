@@ -31,7 +31,22 @@ def draw_mesh(mesh,
               vertex_size=None):
     """Draw the mesh using ``matplotlib``.
     """
-    vertex_size = vertex_size or 0.1  # default to min(length(diagonal) / v, length(canvas diagonal) / 20)
+    # always draw to a particular scale/resolution
+    # make (b)box object(s)
+    # ub = BBOX2(mesh.xy).diagonal_length / float(len(mesh))
+    # lb = BBOX2(mesh.xy).diagonal_length / 50.
+    x = mesh.x
+    y = mesh.y
+    xmin, xmax = min(x), max(x)
+    ymin, ymax = min(y), max(y)
+    dx = xmax - xmin
+    dy = ymax - ymin
+    d = (dx ** 2 + dy ** 2) ** 0.5
+    # use: min(ub, lb)
+    if vertex_size:
+        vertex_size *= min(d / 100., d / len(mesh))
+    else:
+        vertex_size = min(d / 100., d / len(mesh))
     vertex_color = vertex_color or DVC
     face_color = face_color or DFC
     # default color values
