@@ -37,6 +37,18 @@ class TriMesh(Mesh):
         return len(self.vertex_neighbours(key)) != 6
 
 
+class PowerDiagram():
+    pass
+
+
+class DelaunayTriangulation():
+    pass
+
+
+class VoronoiDiagram():
+    pass
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================

@@ -1,6 +1,14 @@
+"""This module defines matrix representations of the data structures that
+are compatible with Rhino (i.e. with DotNet/IronPython)."""
+
 from xalglib import sparsecreate
 from xalglib import sparseset
 from xalglib import sparseconvertotcrs
+
+__author__    = 'Tom Van Mele'
+__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
+__license__   = 'MIT license'
+__email__     = 'vanmelet@ethz.ch'
 
 
 def connectivity_matrix(edges, n, rtype=None):
@@ -92,4 +100,12 @@ def CitQCi():
 
 
 def CitQCf():
+    pass
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
     pass
