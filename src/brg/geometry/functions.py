@@ -264,6 +264,32 @@ def vector_component_2d(u, v):
     return x * v[0], x * v[1]
 
 
+def bounding_box(points):
+    
+    """Computes the bounding box of a list of points.
+
+    Warning:
+  
+
+    Parameters:
+
+
+    Returns:
+       
+
+    Examples:
+       
+    """
+    xcoords,ycoords,zcoords = zip(*[(coord[0],coord[1],coord[2]) for coord in points])
+    min_x = min(xcoords)
+    max_x = max(xcoords)
+    min_y = min(ycoords)
+    max_y = max(ycoords)
+    min_z = min(zcoords)
+    max_z = max(zcoords)
+    return [(min_x,min_y,min_z),(max_x,min_y,min_z),(max_x,max_y,min_z),(min_x,max_y,min_z),(min_x,min_y,max_z),(max_x,min_y,max_z),(max_x,max_y,max_z),(min_x,max_y,max_z)]
+
+
 def centroid(points):
     """Compute the centroid of the sequence of points.
 
