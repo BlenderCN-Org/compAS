@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RhinoUI major_ver="2" minor_ver="0" guid="3ac2fc2b-3a40-4d86-8609-89dc39c100d1" localize="False" default_language_id="1033">
+<RhinoUI major_ver="2" minor_ver="0" guid="bb6166b2-929b-497c-b317-f19143d54f9b" localize="False" default_language_id="1033">
   <extend_rhino_menus>
-    <menu guid="8844083f-88b8-4ba6-968a-1311a4b5c9c5">
+    <menu guid="2af72c88-ed64-427e-8560-f65c34848c2d">
       <text>
         <locale_1033>Extend Rhino Menus</locale_1033>
       </text>
@@ -9,56 +9,92 @@
   </extend_rhino_menus>
   <menus />
   <tool_bar_groups>
-    <tool_bar_group guid="31649ecc-4f7b-4f32-af99-e04a0b6a8c4b" dock_bar_guid32="0f39edec-0e81-42e6-9aa1-6b7d1015d552" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="f74eba78-7ef3-47ea-a127-7d71b3002650" single_file="False" hide_single_tab="False" point_floating="32,81">
+    <tool_bar_group guid="5d89deb7-72ff-45a1-8641-a8339af897f0" dock_bar_guid32="48e2dac5-558e-4896-ae4d-97caf5a05df4" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="2458ba94-e1e0-4bb4-ba99-fceaf020b27f" single_file="False" hide_single_tab="False" point_floating="18,88">
       <text>
         <locale_1033>MeshTools</locale_1033>
       </text>
-      <tool_bar_group_item guid="f74eba78-7ef3-47ea-a127-7d71b3002650" major_version="1" minor_version="1">
+      <tool_bar_group_item guid="2458ba94-e1e0-4bb4-ba99-fceaf020b27f" major_version="1" minor_version="1">
         <text>
           <locale_1033>MeshTools</locale_1033>
         </text>
-        <tool_bar_id>cda25007-f67e-4de4-9848-c152c27c5ac2</tool_bar_id>
+        <tool_bar_id>38ef53c7-4deb-4c17-b7c2-dc9d210cadf8</tool_bar_id>
       </tool_bar_group_item>
-      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="True" floating="False" mru_float_style="8192" bar_id="59459" mru_width="32767" point_pos="0,64" float_point="32,81" rect_mru_dock_pos="0,64,1445,102" dock_location_u="59419" dock_location="top" float_size="56,56" />
+      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="True" floating="False" mru_float_style="8192" bar_id="59460" mru_width="32767" point_pos="0,64" float_point="18,88" rect_mru_dock_pos="24,62,111,100" dock_location_u="59419" dock_location="top" float_size="56,56" />
     </tool_bar_group>
   </tool_bar_groups>
   <tool_bars>
-    <tool_bar guid="cda25007-f67e-4de4-9848-c152c27c5ac2" item_display_style="text_only">
+    <tool_bar guid="38ef53c7-4deb-4c17-b7c2-dc9d210cadf8" item_display_style="text_only">
       <text>
         <locale_1033>MeshTools</locale_1033>
       </text>
-      <tool_bar_item guid="1e66c2f2-d21a-458c-8852-663ffef254d2" button_display_mode="control_only" button_style="normal">
+      <tool_bar_item guid="141606f8-ab47-4da5-bcc0-5962f4d451a2" button_display_mode="control_only" button_style="normal">
         <text />
-        <left_macro_id>b0a7458e-5c0a-4226-9c20-569d27b8612f</left_macro_id>
+        <left_macro_id>5d094f36-954b-48a4-bb29-5af9d788d5a2</left_macro_id>
       </tool_bar_item>
-      <tool_bar_item guid="635f0efb-8d25-42fc-91d6-656971e68a26" button_display_mode="control_only" button_style="normal">
+      <tool_bar_item guid="5be847e2-4bd1-4713-abed-33737149e0f2" button_display_mode="control_only" button_style="normal">
         <text />
-        <left_macro_id>94b94890-f3e4-4900-ad50-28c60c302f8a</left_macro_id>
+        <left_macro_id>a4d04344-3cd6-4d6a-842f-225e30f19c2a</left_macro_id>
       </tool_bar_item>
-      <tool_bar_item guid="dfd728a1-5b88-49e4-b54c-3f9f4b3ae5c4" button_display_mode="control_only" button_style="normal">
+      <tool_bar_item guid="97245b5c-e31e-4566-812f-2e6b9959d4e7" button_display_mode="control_only" button_style="normal">
         <text />
-        <left_macro_id>99925171-7b41-43d5-bf07-c8920e84f295</left_macro_id>
+        <left_macro_id>3a45b99a-1a86-4884-8220-33abe3d3539d</left_macro_id>
       </tool_bar_item>
-      <tool_bar_item guid="5e667a32-2456-426d-8fde-83429509652a" button_display_mode="control_only" button_style="normal">
+      <tool_bar_item guid="2e21b929-aef7-40dd-babf-8ea2bab70888" button_display_mode="control_only" button_style="spacer">
         <text />
-        <left_macro_id>34a0ad42-06e1-4c68-8829-73684c6d047d</left_macro_id>
       </tool_bar_item>
-      <tool_bar_item guid="778c74cb-f46f-48ce-83b4-59c75461745f" button_display_mode="control_only" button_style="normal">
+      <tool_bar_item guid="79602c08-c270-421c-ad88-ebce789c2a01" button_display_mode="control_only" button_style="normal">
         <text />
-        <left_macro_id>3be5b93b-05b9-444e-a9af-cec789a2563a</left_macro_id>
+        <left_macro_id>0b53600c-8990-4da5-8d7a-a7e64c1859f1</left_macro_id>
       </tool_bar_item>
-      <tool_bar_item guid="7eb9f57e-ae3b-47b7-9d2d-6b861e5d9ab8" button_display_mode="control_only" button_style="normal">
+      <tool_bar_item guid="c403825b-7215-4037-82a3-e86344d9c2c6" button_display_mode="control_only" button_style="normal">
         <text />
-        <left_macro_id>0e92f455-0261-4ece-8616-237c77c112c1</left_macro_id>
+        <left_macro_id>761a3362-1075-4a1a-86a9-f2c8abebe22f</left_macro_id>
       </tool_bar_item>
-      <tool_bar_item guid="6d1b7d4d-122c-47af-9614-6a063489df70" button_display_mode="control_only" button_style="normal">
+      <tool_bar_item guid="ae98fc91-22c5-4f90-a83d-16e220d09598" button_display_mode="control_only" button_style="normal">
         <text />
-        <left_macro_id>68053aa6-2c08-4b32-9346-5de8f9c1d289</left_macro_id>
+        <left_macro_id>13225343-b2b7-471a-9379-686a4fa15799</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="e9ee9d46-47c9-49bb-b8d4-c6a1500794ec" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>ba8736e9-2691-4b5a-9866-6777c1cbcb2b</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="ff269a04-b447-4434-ab17-a51265507ef9" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>c141c8c1-fcb5-4f61-a02b-8902f0b4830e</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="2db6cc59-29af-422e-b07d-559ff99df594" button_display_mode="control_only" button_style="spacer">
+        <text />
+      </tool_bar_item>
+      <tool_bar_item guid="7d0ab655-01e5-4bad-8cde-dca9f79a3520" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>5e9b87bf-6b7d-4165-94a5-a8d6d16a53f3</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="e7219a62-0900-487f-bdc2-7177e78dd09e" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>3f66d407-64ac-45ac-8f35-9035d4788623</left_macro_id>
       </tool_bar_item>
     </tool_bar>
   </tool_bars>
   <macros>
-    <macro_item guid="94b94890-f3e4-4900-ad50-28c60c302f8a">
+    <macro_item guid="0b53600c-8990-4da5-8d7a-a7e64c1859f1">
+      <text>
+        <locale_1033>edit</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>edit</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>edit</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.edit())</script>
+    </macro_item>
+    <macro_item guid="a4d04344-3cd6-4d6a-842f-225e30f19c2a">
       <text>
         <locale_1033>from_xxx</locale_1033>
       </text>
@@ -76,7 +112,7 @@
       </menu_text>
       <script>-_RunPythonScript (mtools.from_xxx())</script>
     </macro_item>
-    <macro_item guid="b0a7458e-5c0a-4226-9c20-569d27b8612f">
+    <macro_item guid="5d094f36-954b-48a4-bb29-5af9d788d5a2">
       <text>
         <locale_1033>init</locale_1033>
       </text>
@@ -94,7 +130,7 @@
       </menu_text>
       <script>-_RunPythonScript ResetEngine (from brg_rhino.datastructures.toolbars.meshtools import MeshTools;mtools = MeshTools();mtools.init())</script>
     </macro_item>
-    <macro_item guid="34a0ad42-06e1-4c68-8829-73684c6d047d">
+    <macro_item guid="761a3362-1075-4a1a-86a9-f2c8abebe22f">
       <text>
         <locale_1033>modify</locale_1033>
       </text>
@@ -112,7 +148,25 @@
       </menu_text>
       <script>-_RunPythonScript (mtools.modify())</script>
     </macro_item>
-    <macro_item guid="68053aa6-2c08-4b32-9346-5de8f9c1d289">
+    <macro_item guid="5e9b87bf-6b7d-4165-94a5-a8d6d16a53f3">
+      <text>
+        <locale_1033>modify_tri</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>modify_tri</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>modify tri</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.modify_tri())</script>
+    </macro_item>
+    <macro_item guid="c141c8c1-fcb5-4f61-a02b-8902f0b4830e">
       <text>
         <locale_1033>relax</locale_1033>
       </text>
@@ -130,7 +184,7 @@
       </menu_text>
       <script>-_RunPythonScript (mtools.relax())</script>
     </macro_item>
-    <macro_item guid="0e92f455-0261-4ece-8616-237c77c112c1">
+    <macro_item guid="ba8736e9-2691-4b5a-9866-6777c1cbcb2b">
       <text>
         <locale_1033>smooth</locale_1033>
       </text>
@@ -148,9 +202,9 @@
       </menu_text>
       <script>-_RunPythonScript (mtools.smooth())</script>
     </macro_item>
-    <macro_item guid="3be5b93b-05b9-444e-a9af-cec789a2563a">
+    <macro_item guid="7ea46b3f-0d32-4a59-9c39-1c1c19ffa16e">
       <text>
-        <locale_1033>subdivide</locale_1033>
+        <locale_1033>smooth_tri</locale_1033>
       </text>
       <tooltip>
         <locale_1033>None</locale_1033>
@@ -159,14 +213,50 @@
         <locale_1033>None</locale_1033>
       </help_text>
       <button_text>
-        <locale_1033>subdivide</locale_1033>
+        <locale_1033>smooth_tri</locale_1033>
       </button_text>
       <menu_text>
-        <locale_1033>subdivide</locale_1033>
+        <locale_1033>smooth tri</locale_1033>
       </menu_text>
-      <script>-_RunPythonScript (mtools.subdivide())</script>
+      <script>-_RunPythonScript (mtools.smooth_tri())</script>
     </macro_item>
-    <macro_item guid="99925171-7b41-43d5-bf07-c8920e84f295">
+    <macro_item guid="13225343-b2b7-471a-9379-686a4fa15799">
+      <text>
+        <locale_1033>subd</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>subd</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>subd</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.subd())</script>
+    </macro_item>
+    <macro_item guid="3f66d407-64ac-45ac-8f35-9035d4788623">
+      <text>
+        <locale_1033>subd_tri</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>subd_tri</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>subd tri</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.subd_tri())</script>
+    </macro_item>
+    <macro_item guid="3a45b99a-1a86-4884-8220-33abe3d3539d">
       <text>
         <locale_1033>to_xxx</locale_1033>
       </text>

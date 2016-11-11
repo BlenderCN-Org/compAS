@@ -25,14 +25,26 @@ __license__   = 'MIT license'
 __email__     = 'vanmelet@ethz.ch'
 
 
+class ControlMesh(RhinoMesh):
+    """"""
+
+    def __init__(self, **kwargs):
+        super(ControlMesh, self).__init__(**kwargs)
+        self.dva.update({
+            'is_fixed' : False,
+        })
+        self.dea.update({
+            'weight' : 1.0,
+            'q' : 1.0,
+        })
+
+
 class MeshTools(object):
     """"""
 
     def __init__(self):
         self.mesh = None
-        # read settings from settings file
-        self.settings = {}
-        # get layer structure from ui file
+        # get layer structure from ui file?
         self.layers = {'MeshTools' : {'layers': {
             'Mesh': {'layers': {}},
             'Subd': {'layers': {
@@ -43,7 +55,6 @@ class MeshTools(object):
             }},
         }}}
 
-    # script => -_RunPythonScript ResetEngine (from brg_rhino.datastructures.toolbars.meshtools import MeshTools;mtools = MeshTools();mtools.init())
     def init(self):
         # reload settings from previous session on `init`
         rhino.create_layers(self.layers)
@@ -95,8 +106,22 @@ class MeshTools(object):
         if option == 'json':
             raise NotImplementedError
 
+    def edit(self):
+        """Edit mesh attributes."""
+        # select a mesh by clicking on it
+        # provide support for fixed vertices
+        # provide support for edge weights
+        # provide support for force densities
+        raise NotImplementedError
+        mesh = self.mesh
+        options = []
+        option = rs.GetString('', options[0], options)
+        if option not in options:
+            return
+
     def modify(self):
         """Modfy geometry and/or topology of a mesh."""
+        # select a mesh by clicking on it
         mesh = self.mesh
         options = ['Move', 'MoveVertex', 'MoveFace', 'MoveEdge', 'SplitEdge', 'SwapEdge', 'CollapseEdge']
         option = rs.GetString('Mesh Operation ...', options[0], options)
@@ -157,6 +182,8 @@ class MeshTools(object):
         if option == 'Quad':
             # Quad subdivision.
             # Interpolation
+            # This should be removed
+            raise NotImplementedError  # properly :)
             subd = quad_subdivision(self.mesh, k=k)
             subd.name = 'QuadMesh'
             subd.layer = 'MeshTools::Subd::QuadMesh'
@@ -236,13 +263,18 @@ if __name__ == "__main__":
     from brg.files.rui import get_macros
 
     toolbars = [{'name' : 'MeshTools', 'items' : [
-        {'type': 'normal', 'left_macro' : 'init', 'right_macro' : None},
-        {'type': 'normal', 'left_macro' : 'from_xxx', 'right_macro' : None},
-        {'type': 'normal', 'left_macro' : 'to_xxx', 'right_macro' : None},
-        {'type': 'normal', 'left_macro' : 'modify', 'right_macro' : None},
-        {'type': 'normal', 'left_macro' : 'subdivide', 'right_macro' : None},
-        {'type': 'normal', 'left_macro' : 'smooth', 'right_macro' : None},
-        {'type': 'normal', 'left_macro' : 'relax', 'right_macro' : None},
+        {'type': 'normal', 'left_macro' : 'init', },
+        {'type': 'normal', 'left_macro' : 'from_xxx', },
+        {'type': 'normal', 'left_macro' : 'to_xxx', },
+        {'type': 'separator', },
+        {'type': 'normal', 'left_macro' : 'edit', },
+        {'type': 'normal', 'left_macro' : 'modify', },
+        {'type': 'normal', 'left_macro' : 'subd', },
+        {'type': 'normal', 'left_macro' : 'smooth', },
+        {'type': 'normal', 'left_macro' : 'relax', },
+        {'type': 'separator', },
+        {'type': 'normal', 'left_macro' : 'modify_tri', },
+        {'type': 'normal', 'left_macro' : 'subd_tri', },
     ]}]
     toolbargroups = [{'name' : 'MeshTools', 'toolbars' : ['MeshTools', ]}]
 
@@ -252,8 +284,30 @@ if __name__ == "__main__":
 
     macros = get_macros(MeshTools, 'mtools')
 
+    def find_macro(name, macros):
+        for i, macro in enumerate(macros):
+            if macro['name'] == name:
+                return i, macro
+        return None, None
+
+    init_script = [
+        '-_RunPythonScript ResetEngine (',
+        'from brg_rhino.datastructures.toolbars.meshtools import MeshTools;',
+        'mtools = MeshTools();',
+        'mtools.init()',
+        ')',
+    ]
+    i, macro = find_macro('init', macros)
+
+    if macro:
+        macro['script'] = ''.join(init_script)
+
+    macros[i] = macro
+
     rui.add_macros(macros)
     rui.add_toolbars(toolbars)
     rui.add_toolbargroups(toolbargroups)
+
+    # rui.macros['init']['script'] = ''.join(init_script)
 
     rui.write()

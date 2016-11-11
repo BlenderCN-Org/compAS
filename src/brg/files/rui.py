@@ -340,12 +340,14 @@ class Rui(object):
         for item in toolbar['items']:
             if item['type'] == 'normal':
                 left_guid = None
-                if item['left_macro']:
-                    e_left = self.macros[item['left_macro']]
+                left_macro = item.get('left_macro')
+                if left_macro:
+                    e_left = self.macros[left_macro]
                     left_guid  = e_left.attrib['guid']
                 right_guid = None
-                if item['right_macro']:
-                    e_right    = self.macros[item['right_macro']]
+                right_macro = item.get('right_macro')
+                if right_macro:
+                    e_right    = self.macros[right_macro]
                     right_guid = e_right.attrib['guid']
                 self.add_toolbaritem(e_tb, left_guid, right_guid)
                 continue

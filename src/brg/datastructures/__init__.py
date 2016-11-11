@@ -9,8 +9,6 @@ The BRG framework currently provides three types of datastructures:
 """
 
 from mesh.mesh import Mesh
-from mesh.tri import TriMesh
-from mesh.quad import QuadMesh
 from network.network import Network
 from volmesh.volmesh import VolMesh
 
