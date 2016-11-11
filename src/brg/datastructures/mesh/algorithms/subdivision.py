@@ -51,9 +51,9 @@ def subdivide(mesh, scheme='tri', **options):
         return corner_subdivision(mesh)
     if scheme == 'quad':
         return quad_subdivision(mesh)
-    if scheme == 'catmull-clark':
-        return catmullclark_subdivision(mesh, **options)
-    if scheme == 'doo-sabin':
+    if scheme == 'catmullclark':
+        return _catmullclark_subdivision(mesh, **options)
+    if scheme == 'doosabin':
         return doosabin_subdivision(mesh, **options)
     raise NotImplementedError
 

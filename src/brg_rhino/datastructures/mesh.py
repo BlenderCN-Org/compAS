@@ -12,6 +12,8 @@ from brg_rhino.geometry.surface import Surface
 import brg_rhino.utilities as rhino
 
 try:
+    import Rhino
+    import scriptcontext as sc
     import rhinoscriptsyntax as rs
 
 except ImportError as e:
@@ -84,12 +86,12 @@ class RhinoMesh(Mesh):
         return mesh
 
     @classmethod
-    def from_surface(cls, guid, density=(10, 10), **kwargs):
-        surface = Surface(guid)
+    def from_heightfield(cls, guid, density=(10, 10), **kwargs):
         try:
             u, v = density
         except:
             u, v = density, density
+        surface = Surface(guid)
         mesh = cls()
         mesh.attributes.update(kwargs)
         vertices = surface.heightfield(density=(u, v), over_space=True)
@@ -109,59 +111,35 @@ class RhinoMesh(Mesh):
     # for example, measure distance between potentail split point
     # and the corresponding curved surface
     @classmethod
-    def from_polysurface(cls, guid, **kwargs):
-        vertices = {}
-        faces    = []
-        gkey_key = {}
-        count    = 0
-        surfaces = rs.ExplodePolysurfaces(guid, False)
-        for surface in surfaces:
-            curves = rs.DuplicateEdgeCurves(surface)
-            halfedges = []
-            for curve in curves:
-                sp = rs.CurveStartPoint(curve)
-                ep = rs.CurveEndPoint(curve)
-                sp_gkey = geometric_key(sp)
-                ep_gkey = geometric_key(ep)
-                if sp_gkey not in gkey_key:
-                    gkey_key[sp_gkey] = str(count)
-                    count += 1
-                if ep_gkey not in gkey_key:
-                    gkey_key[ep_gkey] = str(count)
-                    count += 1
-                u = gkey_key[sp_gkey]
-                v = gkey_key[ep_gkey]
-                vertices[u] = map(float, sp)
-                vertices[v] = map(float, ep)
-                halfedges.append([u, v])
-            rs.DeleteObjects(curves)
+    def from_surface(cls, guid, **kwargs):
+        gkey_xyz = {}
+        faces = []
+        obj = sc.doc.Objects.Find(guid)
+        if not obj.Geometry.HasBrepForm:
+            return
+        brep = Rhino.Geometry.Brep.TryConvertBrep(obj.Geometry)
+        for loop in brep.Loops:
+            curve = loop.To3dCurve()
+            segments = curve.Explode()
             face = []
-            start, end = halfedges[0]
-            face.append(start)
-            face.append(end)
-            found = set()
-            for i in range(1, len(halfedges)):
-                for j in range(1, len(halfedges)):
-                    if j in found:
-                        continue
-                    u, v = halfedges[j]
-                    if u == end:
-                        face.append(u)
-                        start, end = u, v
-                        found.add(j)
-                        break
-                    if v == end:
-                        face.append(v)
-                        halfedges[j] = v, u
-                        start, end = v, u
-                        found.add(j)
-                        break
+            sp = segments[0].PointAtStart
+            ep = segments[0].PointAtEnd
+            sp_gkey = geometric_key(sp)
+            ep_gkey = geometric_key(ep)
+            gkey_xyz[sp_gkey] = sp
+            gkey_xyz[ep_gkey] = ep
+            face.append(sp_gkey)
+            face.append(ep_gkey)
+            for segment in segments[1:-1]:
+                ep = segment.PointAtEnd
+                ep_gkey = geometric_key(ep)
+                face.append(ep_gkey)
+                gkey_xyz[ep_gkey] = ep
             faces.append(face)
-        rs.DeleteObjects(surfaces)
-        key_index = dict((key, index) for index, key in enumerate(vertices))
-        vertices  = [xyz for key, xyz in vertices.items()]
-        faces     = [[key_index[key] for key in face] for face in faces]
-        mesh      = cls.from_vertices_and_faces(vertices, faces)
+        gkey_index = dict((gkey, index) for index, gkey in enumerate(gkey_xyz))
+        vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
+        faces = [[gkey_index[gkey] for gkey in f] for f in faces]
+        mesh = cls.from_vertices_and_faces(vertices, faces)
         mesh.attributes.update(kwargs)
         return mesh
 

@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RhinoUI major_ver="2" minor_ver="0" guid="3ac2fc2b-3a40-4d86-8609-89dc39c100d1" localize="False" default_language_id="1033">
+  <extend_rhino_menus>
+    <menu guid="8844083f-88b8-4ba6-968a-1311a4b5c9c5">
+      <text>
+        <locale_1033>Extend Rhino Menus</locale_1033>
+      </text>
+    </menu>
+  </extend_rhino_menus>
+  <menus />
+  <tool_bar_groups>
+    <tool_bar_group guid="31649ecc-4f7b-4f32-af99-e04a0b6a8c4b" dock_bar_guid32="0f39edec-0e81-42e6-9aa1-6b7d1015d552" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="f74eba78-7ef3-47ea-a127-7d71b3002650" single_file="False" hide_single_tab="False" point_floating="32,81">
+      <text>
+        <locale_1033>MeshTools</locale_1033>
+      </text>
+      <tool_bar_group_item guid="f74eba78-7ef3-47ea-a127-7d71b3002650" major_version="1" minor_version="1">
+        <text>
+          <locale_1033>MeshTools</locale_1033>
+        </text>
+        <tool_bar_id>cda25007-f67e-4de4-9848-c152c27c5ac2</tool_bar_id>
+      </tool_bar_group_item>
+      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="True" floating="False" mru_float_style="8192" bar_id="59459" mru_width="32767" point_pos="0,64" float_point="32,81" rect_mru_dock_pos="0,64,1445,102" dock_location_u="59419" dock_location="top" float_size="56,56" />
+    </tool_bar_group>
+  </tool_bar_groups>
+  <tool_bars>
+    <tool_bar guid="cda25007-f67e-4de4-9848-c152c27c5ac2" item_display_style="text_only">
+      <text>
+        <locale_1033>MeshTools</locale_1033>
+      </text>
+      <tool_bar_item guid="1e66c2f2-d21a-458c-8852-663ffef254d2" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>b0a7458e-5c0a-4226-9c20-569d27b8612f</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="635f0efb-8d25-42fc-91d6-656971e68a26" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>94b94890-f3e4-4900-ad50-28c60c302f8a</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="dfd728a1-5b88-49e4-b54c-3f9f4b3ae5c4" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>99925171-7b41-43d5-bf07-c8920e84f295</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="5e667a32-2456-426d-8fde-83429509652a" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>34a0ad42-06e1-4c68-8829-73684c6d047d</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="778c74cb-f46f-48ce-83b4-59c75461745f" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>3be5b93b-05b9-444e-a9af-cec789a2563a</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="7eb9f57e-ae3b-47b7-9d2d-6b861e5d9ab8" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>0e92f455-0261-4ece-8616-237c77c112c1</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="6d1b7d4d-122c-47af-9614-6a063489df70" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>68053aa6-2c08-4b32-9346-5de8f9c1d289</left_macro_id>
+      </tool_bar_item>
+    </tool_bar>
+  </tool_bars>
+  <macros>
+    <macro_item guid="94b94890-f3e4-4900-ad50-28c60c302f8a">
+      <text>
+        <locale_1033>from_xxx</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>from_xxx</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>from xxx</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.from_xxx())</script>
+    </macro_item>
+    <macro_item guid="b0a7458e-5c0a-4226-9c20-569d27b8612f">
+      <text>
+        <locale_1033>init</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>init</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>init</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript ResetEngine (from brg_rhino.datastructures.toolbars.meshtools import MeshTools;mtools = MeshTools();mtools.init())</script>
+    </macro_item>
+    <macro_item guid="34a0ad42-06e1-4c68-8829-73684c6d047d">
+      <text>
+        <locale_1033>modify</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>modify</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>modify</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.modify())</script>
+    </macro_item>
+    <macro_item guid="68053aa6-2c08-4b32-9346-5de8f9c1d289">
+      <text>
+        <locale_1033>relax</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>relax</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>relax</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.relax())</script>
+    </macro_item>
+    <macro_item guid="0e92f455-0261-4ece-8616-237c77c112c1">
+      <text>
+        <locale_1033>smooth</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>smooth</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>smooth</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.smooth())</script>
+    </macro_item>
+    <macro_item guid="3be5b93b-05b9-444e-a9af-cec789a2563a">
+      <text>
+        <locale_1033>subdivide</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>subdivide</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>subdivide</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.subdivide())</script>
+    </macro_item>
+    <macro_item guid="99925171-7b41-43d5-bf07-c8920e84f295">
+      <text>
+        <locale_1033>to_xxx</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>to_xxx</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>to xxx</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.to_xxx())</script>
+    </macro_item>
+  </macros>
+  <bitmaps>
+    <small_bitmap item_width="16" item_height="16">
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxj
+AAAAAElFTkSuQmCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
+    </small_bitmap>
+    <normal_bitmap item_width="24" item_height="24">
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYSURBVEhL7cEBAQAAAIIg/6+uIUAAAFwNCRgA
+AdACW14AAAAASUVORK5CYIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
+    </normal_bitmap>
+    <large_bitmap item_width="32" item_height="32">
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQ
+IAABnXhJQwAAAABJRU5ErkJgggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
+    </large_bitmap>
+  </bitmaps>
+  <scripts />
+</RhinoUI>
