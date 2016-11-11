@@ -13,9 +13,69 @@ import math
 from delaunay import delaunay
 
 
+def convert_to_uv_space(srf,pts):
+    pts_uv = []
+    for pt in pts:
+        uv = rs.SurfaceClosestPoint(srf,pt)
+        pts_uv.append((uv[0],uv[1],0))
+    return pts_uv
+
+
+
+srf = rs.GetObject("Select Srf",8)
+
+crvs = rs.DuplicateEdgeCurves(srf) 
+
+print crvs
+if len(crvs)>1:
+    joint = rs.JoinCurves(crvs)
+    if joint:
+        print len(joint)
+        print joint
+        if len(joint) > 2:
+            print "hole" 
+else:
+    if rs.IsCurveClosed(crvs[0]):
+        print "closed"#e.g. if it is a disk
+    else:
+        print "Surface need to be split"#e.g. if it is a sphere
+     
+
+
+
+
+
+
+
+
+
 objs = rs.GetObjects("Select Points",1)
+polyline = rs.GetObject("Select boundary curve",4)
+
+
 pts = [rs.PointCoordinates(obj) for obj in objs]
 
-res = delaunay(pts)
-print res
+editpts = rs.CurveEditPoints(polyline)
+
+outbound_keys = []
+for editpt in editpts:
+    for i,pt in enumerate(pts):
+        if rs.PointCompare(pt,editpt):
+            outbound_keys.append(str(i))
+
+polylines = rs.GetObjects("Select hole curves",4)
+inbounds_keys = []
+for poly in polylines:
+    editpts = rs.CurveEditPoints(poly)
+    inbound_keys = []
+    for editpt in editpts:
+        for i,pt in enumerate(pts):
+            if rs.PointCompare(pt,editpt):
+                inbound_keys.append(str(i))
+    inbounds_keys.append(inbound_keys)         
+
+
+
+res = delaunay(pts,outbound_keys,inbounds_keys)
+
 print ("hello")
