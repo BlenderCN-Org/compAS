@@ -21,6 +21,7 @@ def convert_to_uv_space(srf,pts):
     return pts_uv
 
 
+trg_len = 1
 
 srf = rs.GetObject("Select Srf",8)
 
