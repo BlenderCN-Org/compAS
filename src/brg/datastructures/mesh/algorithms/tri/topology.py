@@ -1,6 +1,6 @@
 """"""
 
-from brg.datastructures.mesh.algorithms.optimisation import mesh_smooth
+from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth
 
 from brg.datastructures.mesh.operations.tri.split import split_edge
 from brg.datastructures.mesh.operations.tri.collapse import collapse_edge
@@ -45,7 +45,24 @@ def remesh(mesh, target,
         lmax = (1 + tol) * (4.0 / 3.0) * target
         boundary = set(mesh.vertices_on_boundary())
         count = 0
+       
+        #added by Matthias
+        adaptkmax = float(kmax*0.6)
+        
         for k in xrange(kmax):
+            
+            #added by Matthias
+            if k <= adaptkmax and 1==1:
+                dlmin = lmin*5*(1.0-k/adaptkmax) 
+                dlmax = lmax*5*(1.0-k/adaptkmax) 
+            else:
+                dlmin = 0
+                dlmax = 0
+            
+            
+            
+            
+            
             if verbose:
                 print
                 print k
@@ -59,8 +76,12 @@ def remesh(mesh, target,
                     if u in visited or v in visited:
                         continue
                     l = mesh.edge_length(u, v)
-                    if l <= lmax:
+#                     if l <= lmax:
+#                         continue
+                    #added by Matthias
+                    if l <= lmax+dlmax:
                         continue
+                    
                     if verbose:
                         print 'split edge: {0} - {1}'.format(u, v)
                     split_edge(mesh, u, v, allow_boundary=allow_boundary)
@@ -76,8 +97,12 @@ def remesh(mesh, target,
                     if u in visited or v in visited:
                         continue
                     l = mesh.edge_length(u, v)
-                    if l >= lmin:
+#                     if l >= lmin:
+#                         continue
+                    #added by Matthias
+                    if l >= lmin-dlmin:
                         continue
+                    
                     if verbose:
                         print 'collapse edge: {0} - {1}'.format(u, v)
                     collapse_edge(mesh, u, v)

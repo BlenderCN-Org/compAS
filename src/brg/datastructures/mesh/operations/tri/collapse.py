@@ -1,4 +1,4 @@
-from brg.geometry import Line
+from brg.geometry.elements.line import Line
 from brg.datastructures.mesh.exceptions import MeshError
 
 
