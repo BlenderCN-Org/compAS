@@ -86,19 +86,7 @@ def swap_edge(mesh, u, v):
 
 
 
-def draw_light(mesh,temp = True):
-    key_index = dict((key, index) for index, key in mesh.vertices_enum())
-    xyz = mesh.xyz
-    faces = []
-    for fkey in mesh.faces_iter():
-        face = mesh.face_vertices(fkey,True)
-        face.append(face[-1])
-        faces.append([key_index[k] for k in face])
-    guid = rs.AddMesh(xyz, faces) 
-    if temp:
-        rs.EnableRedraw(True)
-        rs.EnableRedraw(False)
-        rs.DeleteObject(guid)     
+   
 
 def super_triangle(coords):
     
@@ -117,6 +105,7 @@ def super_triangle(coords):
     return (pt1,pt2,pt3)
 
 def delaunay(points3d,outbound_keys=None,inbounds_keys=None):
+    
     
     mesh = DelaunayMesh()
     points =[(point[0],point[1],0.0) for point in points3d]
@@ -219,7 +208,6 @@ def delaunay(points3d,outbound_keys=None,inbounds_keys=None):
                 cent = mesh.face_centroid(fkey)
                 if is_point_in_polygon(poly,cent):
                     mesh.delete_face(fkey)               
-    
-    draw_light(mesh,temp = False)       
+          
     return [mesh.face_vertices(fkey,True) for fkey in mesh.faces()]
 
