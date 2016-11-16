@@ -1,3 +1,5 @@
+""""""
+
 from brg.datastructures import Mesh
 from brg.utilities.maps import geometric_key
 
@@ -25,13 +27,6 @@ except ImportError as e:
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Jun 19, 2015'
-
-
-docs = [
-    'RhinoMesh'
-]
 
 
 @rhino.add_gui_helpers((
@@ -86,31 +81,6 @@ class RhinoMesh(Mesh):
         return mesh
 
     @classmethod
-    def from_heightfield(cls, guid, density=(10, 10), **kwargs):
-        try:
-            u, v = density
-        except:
-            u, v = density, density
-        surface = Surface(guid)
-        mesh = cls()
-        mesh.attributes.update(kwargs)
-        vertices = surface.heightfield(density=(u, v), over_space=True)
-        for x, y, z in vertices:
-            mesh.add_vertex(x=x, y=y, z=z)
-        for i in range(v - 1):
-            for j in range(u - 1):
-                face = ((i + 0) * u + j,
-                        (i + 0) * u + j + 1,
-                        (i + 1) * u + j + 1,
-                        (i + 1) * u + j)
-                mesh.add_face(face)
-        return mesh
-
-    # add parameter for maximum deviation from original geometry
-    # split faces accordingly
-    # for example, measure distance between potentail split point
-    # and the corresponding curved surface
-    @classmethod
     def from_surface(cls, guid, **kwargs):
         gkey_xyz = {}
         faces = []
@@ -144,14 +114,39 @@ class RhinoMesh(Mesh):
         return mesh
 
     @classmethod
-    def from_rhino(cls):
+    def from_surface_uv(cls, guid, density=(10, 10), **kwargs):
+        raise NotImplementedError
+
+    @classmethod
+    def from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
+        try:
+            u, v = density
+        except:
+            u, v = density, density
+        surface = Surface(guid)
+        mesh = cls()
+        mesh.attributes.update(kwargs)
+        vertices = surface.heightfield(density=(u, v), over_space=True)
+        for x, y, z in vertices:
+            mesh.add_vertex(x=x, y=y, z=z)
+        for i in range(v - 1):
+            for j in range(u - 1):
+                face = ((i + 0) * u + j,
+                        (i + 0) * u + j + 1,
+                        (i + 1) * u + j + 1,
+                        (i + 1) * u + j)
+                mesh.add_face(face)
+        return mesh
+
+    @classmethod
+    def from_rhinogeometry(cls):
         raise NotImplementedError
 
     # --------------------------------------------------------------------------
     # convert
     # --------------------------------------------------------------------------
 
-    def to_rhino(self):
+    def to_rhinogeometry(self):
         raise NotImplementedError
 
     # --------------------------------------------------------------------------

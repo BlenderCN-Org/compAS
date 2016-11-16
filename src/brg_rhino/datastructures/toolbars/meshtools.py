@@ -44,24 +44,22 @@ class MeshTools(object):
 
     def __init__(self):
         self.mesh = None
-        # get layer structure from ui file?
         self.layers = {'MeshTools' : {'layers': {
             'Mesh': {'layers': {}},
             'Subd': {'layers': {
-                'QuadMesh' : {'layers' : {}},
                 'LoopMesh' : {'layers' : {}},
+                'QuadMesh' : {'layers' : {}},
                 'DooSabinMesh' : {'layers' : {}},
                 'CatmullClarkMesh' : {'layers' : {}},
             }},
         }}}
 
     def init(self):
-        # reload settings from previous session on `init`
         rhino.create_layers(self.layers)
         rhino.clear_layers(self.layers)
 
     def from_xxx(self):
-        options = ['mesh', 'surface', 'polyhedron', 'obj', 'json']
+        options = ['mesh', 'surface', 'surface_uv', 'polyhedron', 'obj', 'json']
         option = rs.GetString('From what ...', options[0], options)
         if option not in options:
             return
@@ -76,6 +74,13 @@ class MeshTools(object):
             guid = rhino.select_surface()
             if guid:
                 self.mesh = RhinoMesh.from_surface(guid)
+                self.mesh.name = 'Mesh'
+                self.mesh.layer = 'MeshTools::Mesh'
+                self.mesh.draw(show_faces=False)
+        if option == 'surface_uv':
+            guid = rhino.select_surface()
+            if guid:
+                self.mesh = RhinoMesh.from_surface_uv(guid)
                 self.mesh.name = 'Mesh'
                 self.mesh.layer = 'MeshTools::Mesh'
                 self.mesh.draw(show_faces=False)
@@ -114,10 +119,28 @@ class MeshTools(object):
         # provide support for force densities
         raise NotImplementedError
         mesh = self.mesh
-        options = []
-        option = rs.GetString('', options[0], options)
+        options = ['vertices', 'edges', 'faces']
+        option = rs.GetString('Edit attributes of ...', options[0], options)
         if option not in options:
             return
+        if option == 'vertices':
+            keys = mesh.select_vertices()
+            if not keys:
+                return
+            names = sorted(mesh.dva.keys())
+            mesh.edit_vertex_attributes(keys, names)
+        if option == 'edges':
+            keys = mesh.select_edges()
+            if not keys:
+                return
+            names = sorted(mesh.dea.keys())
+            mesh.edit_edge_attributes(keys, names)
+        if option == 'faces':
+            keys = mesh.select_faces()
+            if not keys:
+                return
+            names = sorted(mesh.dfa.keys())
+            mesh.edit_face_attributes(keys, names)
 
     def modify(self):
         """Modfy geometry and/or topology of a mesh."""

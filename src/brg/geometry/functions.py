@@ -1,4 +1,5 @@
 """This module defines basic geometry functions.
+
 All functions assume the provided input is three-dimensional. A corresponding
 two-dimensional function can be accessed by appending ``_2d`` to the function
 name.
@@ -25,11 +26,10 @@ from math import pi
 from math import sqrt
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 3, 2014'
+__email__      = '<vanmelet@ethz.ch>'
 
 
 SQRT_05 = sqrt(0.5)
@@ -280,14 +280,21 @@ def bounding_box(points):
     Examples:
        
     """
-    xcoords,ycoords,zcoords = zip(*[(coord[0],coord[1],coord[2]) for coord in points])
-    min_x = min(xcoords)
-    max_x = max(xcoords)
-    min_y = min(ycoords)
-    max_y = max(ycoords)
-    min_z = min(zcoords)
-    max_z = max(zcoords)
-    return [(min_x,min_y,min_z),(max_x,min_y,min_z),(max_x,max_y,min_z),(min_x,max_y,min_z),(min_x,min_y,max_z),(max_x,min_y,max_z),(max_x,max_y,max_z),(min_x,max_y,max_z)]
+    x, y, z = zip(*points)
+    min_x = min(x)
+    max_x = max(x)
+    min_y = min(y)
+    max_y = max(y)
+    min_z = min(z)
+    max_z = max(z)
+    return [(min_x, min_y, min_z),
+            (max_x, min_y, min_z),
+            (max_x, max_y, min_z),
+            (min_x, max_y, min_z),
+            (min_x, min_y, max_z),
+            (max_x, min_y, max_z),
+            (max_x, max_y, max_z),
+            (min_x, max_y, max_z)]
 
 
 def centroid(points):
@@ -532,7 +539,6 @@ def volume(polyhedron):
 # ==============================================================================
 
 if __name__ == '__main__':
-
 
     from brg.datastructures.mesh.mesh import Mesh
 
