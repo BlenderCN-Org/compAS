@@ -23,14 +23,6 @@ from brg.datastructures.mesh.algorithms.tri.topology import remesh
 from delaunay import delaunay
 
 
-def convert_to_uv_space(srf,pts):
-    pts_uv = []
-    for pt in pts:
-        uv = rs.SurfaceClosestPoint(srf,pt)
-        pts_uv.append((uv[0],uv[1],0))
-    return pts_uv
-
-
 def get_boundary_points(crvs_bound,trg_len):
     crvs = rs.ExplodeCurves(crvs_bound,True)
     if not crvs:  crvs = [crvs_bound]
@@ -68,12 +60,29 @@ def draw_light(mesh,temp = True):
         rs.DeleteObject(guid)
     return guid                  
 
-def convert_to_uv_space(srf,all_pts):
+def convert_to_uv_space(srf,pts):
     
+    tol = rs.UnitAbsoluteTolerance()
     uv_pts = []
-    for pt in all_pts:
-        u,v = rs.SurfaceClosestPoint(srf,pt) 
+    for pt in pts:
+        #need for issues in cases points lie on a seam
+        if not rs.IsPointOnSurface (srf, pt):
+            pts_dis = []
+            pts_dis.append((pt[0]+tol,pt[1],pt[2]))
+            pts_dis.append((pt[0]-tol,pt[1],pt[2]))
+            pts_dis.append((pt[0],pt[1]+tol,pt[2]))
+            pts_dis.append((pt[0],pt[1]-tol,pt[2]))
+            pts_dis.append((pt[0],pt[1],pt[2]+tol))
+            pts_dis.append((pt[0],pt[1],pt[2]-tol))    
+            for pt_dis in pts_dis:
+                data= rs.BrepClosestPoint(srf,pt_dis)
+                if rs.IsPointOnSurface(srf,data[0]):
+                    pt = data[0]
+                    break
+        u,v = rs.SurfaceClosestPoint(srf,pt)             
         uv_pts.append((u,v,0))
+        
+        #rs.AddTextDot(str(data[2] ) + " / " + str(rs.IsPointOnSurface (srf, pt)) + " / " + str(u) + " / " + str(v),pt)
     return uv_pts
 
 def wrapper(brep,tolerance,fixed):
@@ -129,12 +138,9 @@ def nurbs_to_mesh(srf,trg_len):
     
     crvs = rs.DuplicateEdgeCurves(srf) 
     
-    print crvs
     if len(crvs)>1:
         joint = rs.JoinCurves(crvs,True)
         if joint:
-            print len(joint)
-            print joint
             if len(joint) > 2:
                 print "hole" 
     else:
@@ -173,9 +179,13 @@ def nurbs_to_mesh(srf,trg_len):
 
     rs.DeleteObjects(crvs)        
 
-           
+#     for i,pt in enumerate(all_pts):
+#         rs.AddTextDot(i,pt)       
      
     all_pts_uv = convert_to_uv_space(srf,all_pts) 
+    
+    
+    
     tris = delaunay(all_pts_uv,outbound_keys,inbounds_keys)
     
     mesh = Mesh()
@@ -191,9 +201,8 @@ def nurbs_to_mesh(srf,trg_len):
     for u, v in mesh.edges():
         edge_lengths.append(mesh.edge_length(u, v))
     
-    print "Max"
     target_start = max(edge_lengths)/2
-    print target_start
+
     
     rs.EnableRedraw(False)
     
@@ -203,15 +212,14 @@ def nurbs_to_mesh(srf,trg_len):
     tolerance = rs.UnitAbsoluteTolerance()
     
     fixed = outbound_keys+[item for sublist in inbounds_keys for item in sublist]
-    print fixed
     user_func = wrapper(brep,tolerance,fixed)
     
-    if 1==1:
-        remesh(mesh,trg_len,
-           tol=0.1, divergence=0.01, kmax=300,
-           target_start=target_start, kmax_approach=150,
-           verbose=False, allow_boundary=False,
-           ufunc=user_func)
+
+    remesh(mesh,trg_len,
+       tol=0.1, divergence=0.01, kmax=300,
+       target_start=target_start, kmax_approach=150,
+       verbose=False, allow_boundary=False,
+       ufunc=user_func)
  
     for k in xrange(10):
         mesh_smooth(mesh,1)
@@ -221,28 +229,8 @@ def nurbs_to_mesh(srf,trg_len):
     
     
     
-if __name__ == '__main__':
     
-    poly_srf = rs.GetObjects("Select Object",8+16+32)
-    if poly_srf:
-        srfs_explo = rs.ExplodePolysurfaces(poly_srf) 
     
-    if srfs_explo:
-        srfs = srfs_explo
-    else:
-        srfs = poly_srf
-       
-        
-    trg_len = rs.GetReal("Target Edges Length")
-    rhino_meshes = []
-    for srf in srfs:
-        rs.EnableRedraw(False)
-        rs.HideObject(srf)
-        rhino_meshes.append(nurbs_to_mesh(srf,trg_len))
-        if srfs_explo:
-            rs.DeleteObject(srf)
-        else:
-            rs.ShowObject(srf)
-    rs.JoinMeshes(rhino_meshes, True)
+
 
     
