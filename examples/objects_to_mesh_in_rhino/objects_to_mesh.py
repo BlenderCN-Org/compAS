@@ -42,7 +42,7 @@ def get_boundary_points(crvs_bound,trg_len):
         div_pts += pts
         
     div_pts = rs.CullDuplicatePoints(div_pts)
-
+    if crvs: rs.DeleteObjects(crvs)
     return div_pts    
         
 def get_boundary_indecies(bound_pts,all_pts): 
@@ -65,7 +65,8 @@ def draw_light(mesh,temp = True):
     if temp:
         rs.EnableRedraw(True)
         rs.EnableRedraw(False)
-        rs.DeleteObject(guid)                  
+        rs.DeleteObject(guid)
+    return guid                  
 
 def convert_to_uv_space(srf,all_pts):
     
@@ -124,10 +125,7 @@ def wrapper(brep,tolerance,fixed):
         
     #count += 1
 
-def nurbs_to_mesh():
-    trg_len = 1.
-    
-    srf = rs.GetObject("Select Srf",8)
+def nurbs_to_mesh(srf,trg_len):
     
     crvs = rs.DuplicateEdgeCurves(srf) 
     
@@ -147,11 +145,12 @@ def nurbs_to_mesh():
             print "Surface need to be split"#e.g. if it is a sphere
             return None
          
+
     
     #sort curves (this is cheating: the longer curve is not necessarily the outer boundary!) 
     #todo: an inside outside comparison in uv space
     crvs_len = [rs.CurveLength(crv) for crv in joint] 
-    crvs = [x for (_,x) in sorted(zip(crvs_len,joint))]
+    crvs  = [x for (_,x) in sorted(zip(crvs_len,joint))]
     
     outer_crv =  crvs[-1]
     inner_crvs = crvs[:-1]
@@ -169,7 +168,12 @@ def nurbs_to_mesh():
     inbounds_keys = []
     if inner_crvs:
         for inner_bound_pts in inner_bounds_pts:
-            inbounds_keys.append(get_boundary_indecies(inner_bound_pts,all_pts))      
+            inbounds_keys.append(get_boundary_indecies(inner_bound_pts,all_pts))   
+     
+
+    rs.DeleteObjects(crvs)        
+
+           
      
     all_pts_uv = convert_to_uv_space(srf,all_pts) 
     tris = delaunay(all_pts_uv,outbound_keys,inbounds_keys)
@@ -204,8 +208,8 @@ def nurbs_to_mesh():
     
     if 1==1:
         remesh(mesh,trg_len,
-           tol=0.1, divergence=0.001, kmax=400,
-           target_start=target_start, kmax_approach=250,
+           tol=0.1, divergence=0.01, kmax=300,
+           target_start=target_start, kmax_approach=150,
            verbose=False, allow_boundary=False,
            ufunc=user_func)
  
@@ -213,16 +217,32 @@ def nurbs_to_mesh():
         mesh_smooth(mesh,1)
         user_func(mesh,k)
     
-    draw_light(mesh,temp = False) 
-    
-    
-    
-   
+    return draw_light(mesh,temp = False) 
     
     
     
 if __name__ == '__main__':
     
+    poly_srf = rs.GetObjects("Select Object",8+16+32)
+    if poly_srf:
+        srfs_explo = rs.ExplodePolysurfaces(poly_srf) 
     
-    nurbs_to_mesh()
+    if srfs_explo:
+        srfs = srfs_explo
+    else:
+        srfs = poly_srf
+       
+        
+    trg_len = rs.GetReal("Target Edges Length")
+    rhino_meshes = []
+    for srf in srfs:
+        rs.EnableRedraw(False)
+        rs.HideObject(srf)
+        rhino_meshes.append(nurbs_to_mesh(srf,trg_len))
+        if srfs_explo:
+            rs.DeleteObject(srf)
+        else:
+            rs.ShowObject(srf)
+    rs.JoinMeshes(rhino_meshes, True)
+
     
