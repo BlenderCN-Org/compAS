@@ -151,6 +151,7 @@ def remesh(mesh, target,
             num_vertices_2 = len(mesh.vertex)    
             #print "number of vertices: " + str(num_vertices_1) + " and " + str(num_vertices_2) + " means: " + str(abs(1-num_vertices_1/float(num_vertices_2)))
             if abs(1-num_vertices_1/float(num_vertices_2)) < divergence and k > kmax_approach:
+                #print "break"
                 break
 #             if not has_split and not has_collapsed and not has_swapped and dlmin == 0:
 #                 termin += 1

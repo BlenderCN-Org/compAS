@@ -85,12 +85,11 @@ def convert_to_uv_space(srf,pts):
         #rs.AddTextDot(str(data[2] ) + " / " + str(rs.IsPointOnSurface (srf, pt)) + " / " + str(u) + " / " + str(v),pt)
     return uv_pts
 
-def wrapper(brep,tolerance,fixed):
+def wrapper(brep,tolerance,fixed,vis):
     def user_func(mesh,i):
         
         
-        key_index = mesh.key_index()
-        
+   
         #dict((k, i) for i, k in self.vertices_enum())
         
         pts = []
@@ -119,11 +118,11 @@ def wrapper(brep,tolerance,fixed):
         
         
         
-        
-        if i%10==0:
-            rs.Prompt(str(i))
-            draw_light(mesh,temp = True) 
-            Rhino.RhinoApp.Wait()
+        if vis:
+            if i%vis==0:
+                rs.Prompt(str(i))
+                draw_light(mesh,temp = True) 
+                Rhino.RhinoApp.Wait()
             
 
         
@@ -132,9 +131,157 @@ def wrapper(brep,tolerance,fixed):
             
     return user_func
         
-    #count += 1
+def wrapper_2(crvs,mesh_rhino_obj,fixed,boundary,vis):
+    print "hello"
+    def user_func(mesh,i):
+        
+        
+        
+        
+        pts = []
+        key_index = {}
+        count = 0
+        for k, a in mesh.vertices_iter(True):
+            if k in boundary:
+                continue
+            pts.append((a['x'], a['y'], a['z'])) 
+            key_index[k] = count
+            count += 1
+        if pts:
+            points = rs.coerce3dpointlist(pts, True)      
+            points = mesh_rhino_obj.PullPointsToMesh(points)
+            if len(pts) == len(points):
+                #print "Yes"
+                for key in key_index:
+                    index = key_index[key]
+                    mesh.vertex[key]['x'] = points[index][0]
+                    mesh.vertex[key]['y'] = points[index][1]
+                    mesh.vertex[key]['z'] = points[index][2]
+            else:
+                print "No"
+                pass
+        
+        
+        
+        
+        
+        
+        
+        mesh_smooth_boundary(mesh,fixed,crvs, k=1, d=0.5)
+        
+        if vis:
+            if i%vis==0:
+                rs.Prompt(str(i))
+                draw_light(mesh,temp = True) 
+                Rhino.RhinoApp.Wait()
+    return user_func
 
-def nurbs_to_mesh(srf,trg_len):
+
+def mesh_smooth_boundary(mesh,fixed,crvs, k=1, d=0.5):
+    """Smoothen the input mesh by moving each vertex to the centroid of its
+    neighbours.
+
+    Note:
+        This is a node-per-node version of Laplacian smoothing with umbrella weights.
+
+    Parameters:
+        k (int): The number of smoothing iterations.
+            Defaults to `1`.
+        d (float): Scale factor for (i.e. damping of) the displacement vector.
+            Defaults to `0.5`.
+
+    Returns:
+        None
+    """
+    def centroid(points):
+        p = len(points)
+        return [coord / p for coord in map(sum, zip(*points))]
+    boundary = set(mesh.vertices_on_boundary())
+    for _ in range(k):
+        key_xyz = dict((key, (attr['x'], attr['y'], attr['z'])) for key, attr in mesh.vertices_iter(True))
+        for key in key_xyz:
+            if (key in boundary) and (key not in fixed):
+                nbrs       = mesh.vertex_neighbours(key)
+                points     = [key_xyz[nbr] for nbr in nbrs]
+                cx, cy, cz = centroid(points)
+                x, y, z    = key_xyz[key]
+                tx, ty, tz = d * (cx - x), d * (cy - y), d * (cz - z)
+                mesh.vertex[key]['x'] += tx
+                mesh.vertex[key]['y'] += ty
+                mesh.vertex[key]['z'] += tz
+                
+                pt = mesh.vertex[key]['x'],mesh.vertex[key]['y'],mesh.vertex[key]['z']
+                pt = rs.PointClosestObject(pt,crvs)[1]
+                mesh.vertex[key]['x'] = pt[0]
+                mesh.vertex[key]['y'] = pt[1]
+                mesh.vertex[key]['z'] = pt[2]
+                
+                
+
+def mesh_to_mesh(rhino_mesh,trg_len,vis):
+    
+    print rhino_mesh
+    crvs = rs.DuplicateMeshBorder(rhino_mesh)
+    
+    
+    
+    vertices = [map(float, vertex) for vertex in rs.MeshVertices(rhino_mesh)]
+    faces = map(list, rs.MeshFaceVertices(rhino_mesh))
+    
+    mesh  = Mesh.from_vertices_and_faces(vertices, faces)
+    
+    
+    pts_objs = rs.GetObjects("Fixed Points",1)
+    rs.EnableRedraw(False)
+    if pts_objs:
+        pts_fixed = [rs.PointCoordinates(obj) for obj in pts_objs]
+        
+        pts = []
+        index_key = {}
+        count = 0
+        for k, a in mesh.vertices_iter(True):
+            pts.append((a['x'], a['y'], a['z'])) 
+            index_key[count] = k
+            count += 1
+        
+        fixed = [] 
+        for pt_fix in pts_fixed:
+            index = rs.PointArrayClosestPoint(pts,pt_fix)
+            fixed.append(index_key[index])
+    
+    
+
+      
+    edge_lengths = []
+    for u, v in mesh.edges():
+        edge_lengths.append(mesh.edge_length(u, v))
+    target_start = max(edge_lengths)/2  
+     
+    id = rs.coerceguid(rhino_mesh, True)
+    mesh_rhino_obj = rs.coercemesh(id, False)
+    
+    boundary = set(mesh.vertices_on_boundary())
+    user_func = wrapper_2(crvs,mesh_rhino_obj,fixed,boundary,vis)
+        
+    rs.HideObject(rhino_mesh)
+        
+    remesh(mesh,trg_len,
+       tol=0.1, divergence=0.01, kmax=400,
+       target_start=target_start, kmax_approach=200,
+       verbose=False, allow_boundary=True,
+       ufunc=user_func)  
+        
+    rs.DeleteObject(rhino_mesh)
+    return draw_light(mesh,temp = False) 
+    
+    
+    
+    
+
+
+
+
+def nurbs_to_mesh(srf,trg_len,vis):
     
     crvs = rs.DuplicateEdgeCurves(srf) 
     
@@ -212,7 +359,7 @@ def nurbs_to_mesh(srf,trg_len):
     tolerance = rs.UnitAbsoluteTolerance()
     
     fixed = outbound_keys+[item for sublist in inbounds_keys for item in sublist]
-    user_func = wrapper(brep,tolerance,fixed)
+    user_func = wrapper(brep,tolerance,fixed,vis)
     
 
     remesh(mesh,trg_len,

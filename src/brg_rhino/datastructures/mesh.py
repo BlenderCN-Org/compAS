@@ -13,7 +13,7 @@ from brg_rhino.geometry.surface import Surface
 
 import brg_rhino.utilities as rhino
 
-try:
+try:get_mesh_vertices_and_faces
     import Rhino
     import scriptcontext as sc
     import rhinoscriptsyntax as rs
