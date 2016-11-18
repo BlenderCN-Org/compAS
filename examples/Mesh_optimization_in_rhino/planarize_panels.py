@@ -15,11 +15,100 @@ from brg.geometry.functions import centroid
 from brg.geometry.functions import distance
 from brg.geometry.functions import midpoint
 
+
+from brg.geometry.arithmetic import add_vectors
+from brg.geometry.arithmetic import subtract_vectors
+
+from brg.geometry.transformations import normalize
+from brg.geometry.transformations import scale
+from brg.utilities.colors import i2rgb
+from brg.geometry.spatial import closest_point_on_plane
+
 import brg_rhino.utilities as rhino
+from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth
+
 #import utility as rhutil
 import Rhino
 import scriptcontext
 
+
+def mesh_smooth_on_local_plane(mesh, k=1, d=0.5,boundary=None):
+    """Smoothen the input mesh by moving each vertex to the centroid of its
+    neighbours.
+
+    Note:
+        This is a node-per-node version of Laplacian smoothing with umbrella weights.
+
+    Parameters:
+        k (int): The number of smoothing iterations.
+            Defaults to `1`.
+        d (float): Scale factor for (i.e. damping of) the displacement vector.
+            Defaults to `0.5`.
+
+    Returns:
+        None
+    """
+    def centroid(points):
+        p = len(points)
+        return [coord / p for coord in map(sum, zip(*points))]
+    boundary = set(mesh.vertices_on_boundary())
+    for _ in range(k):
+        key_xyz = dict((key, (attr['x'], attr['y'], attr['z'])) for key, attr in mesh.vertices_iter(True))
+        for key in key_xyz:
+            if key in boundary:
+                continue
+            nbrs       = mesh.vertex_neighbours(key)
+            points     = [key_xyz[nbr] for nbr in nbrs]
+            cx, cy, cz = centroid(points)
+            x, y, z    = key_xyz[key]
+            tx, ty, tz = d * (cx - x), d * (cy - y), d * (cz - z)
+            
+            x += tx
+            y += ty
+            z += tz
+            
+            n = mesh.vertex_normal(key)
+            x,y,z = closest_point_on_plane(key_xyz[key], n,(x,y,z))
+            
+            mesh.vertex[key]['x'] = x
+            mesh.vertex[key]['y'] = y
+            mesh.vertex[key]['z'] = z
+            
+            
+            
+def mesh_pull_to_surface(mesh,brep,max_srf_dis,tolerance):            
+    pts = []
+    key_index = {}
+    count = 0
+    for k, a in mesh.vertices_iter(True):
+#         if k in fixed:
+#             continue
+        pts.append((a['x'], a['y'], a['z'])) 
+        key_index[k] = count
+        count += 1
+    if pts:
+        points = rs.coerce3dpointlist(pts, True)      
+        points = brep.Faces[0].PullPointsToFace(points, tolerance)
+        if len(pts) == len(points):
+            #print "Yes"
+            for key in key_index:
+                index = key_index[key]
+                
+                if distance(points[index],pts[index])> max_srf_dis:
+                    vec = subtract_vectors(pts[index],points[index])
+                    vec = normalize(vec)
+                    vec = scale(vec,max_srf_dis)
+                    x,y,z = add_vectors(points[index],vec)
+                    
+                    
+                    mesh.vertex[key]['x'] = x
+                    mesh.vertex[key]['y'] = y
+                    mesh.vertex[key]['z'] = z
+        else:
+            print "No" 
+            pass            
+            
+            
 
 def draw_light(mesh,temp = True):
     key_index = dict((key, index) for index, key in mesh.vertices_enum())
@@ -35,6 +124,61 @@ def draw_light(mesh,temp = True):
         rs.EnableRedraw(False)
         rs.DeleteObject(guid)
     return guid  
+
+
+def space_points(pt1,pt2,trg_dis):
+    mid_pt = midpoint(pt1,pt2)
+    vec = subtract_vectors(pt1,pt2)
+    vec = normalize(vec)
+    vec = scale(vec,trg_dis*0.5)
+    pt1 = add_vectors(mid_pt,vec)
+    pt2 = add_vectors(mid_pt,scale(vec,-1))
+    return pt1,pt2
+
+
+def mesh_max_deviation(mesh):
+    
+    max_distances = []
+    for fkey in mesh.faces_iter():
+                   
+        keys = mesh.face_vertices(fkey,ordered=True)
+        points = [mesh.vertex_coordinates(key) for key in keys]
+        plane = rs.PlaneFitFromPoints(points)
+        points_planar = [rs.PlaneClosestPoint(plane, pt) for pt in points] 
+        distances = [distance(pt1,pt2) for pt1,pt2 in zip(points,points_planar)]
+        max_distances.append(max(distances))
+    return max(max_distances)
+
+def color_mesh(mesh,dis_ub,dis_lb):
+    
+    max_distances = []
+    mesh_faces = []
+    for fkey in mesh.faces_iter():
+                   
+        keys = mesh.face_vertices(fkey,ordered=True)
+        points = [mesh.vertex_coordinates(key) for key in keys]
+        plane = rs.PlaneFitFromPoints(points)
+        points_planar = [rs.PlaneClosestPoint(plane, pt) for pt in points] 
+        distances = [distance(pt1,pt2) for pt1,pt2 in zip(points,points_planar)]
+        max_distances.append(max(distances))
+        mesh_faces.append(rs.AddMesh(points,[(0,1,2,3)]))
+        
+    values = normalize_values(max_distances,dis_ub,dis_lb,1,0)
+    
+    for i,face in enumerate(mesh_faces):
+        rs.ObjectColor(face,i2rgb(values[i]))
+    return mesh_faces
+
+    
+        
+          
+    
+def normalize_values(values,old_max,old_min,new_max,new_min):
+    old_range = (old_max - old_min)  
+    new_range = (new_max - new_min)  
+    return [(((old_value - old_min) * new_range) / old_range) + new_min for old_value in values]
+    
+
 
 def create_quad_mesh(srf,u_div,v_div):
     
@@ -70,154 +214,215 @@ def create_quad_mesh(srf,u_div,v_div):
 if __name__ == "__main__":
     
     srf = rs.GetObject("Select Surface",8)
+    
+#     srf_trg = rs.GetObject("Select Target Surface",8)
+#     srf_id = rs.coerceguid(srf_trg, True)
+#     brep = rs.coercebrep(srf_id, False)   
+#     tolerance = rs.UnitAbsoluteTolerance()
+    
     rs.EnableRedraw(False)
-    u_div = 40
-    v_div = 15
+    u_div = 20
+    v_div = 12
     
     mesh = create_quad_mesh(srf,u_div,v_div)
 
-    draw_light(mesh,temp = False)  
+    max_dev = mesh_max_deviation(mesh)
+    mesh_faces = color_mesh(mesh,max_dev,0)
+    rs.AddObjectsToGroup(mesh_faces,rs.AddGroup())
+    rs.HideObjects(mesh_faces)
     
-    
-    kmax = 1500
-    diagonal_fac = .1
-    edge_fac = .1
-    vis = 20
+    kmax = 1000
+    dev_threshold = 0.01
 
+    vis = 10
+
+
+    diagonal_prop = .15
+    edge_prop = 0.1
+    
+    edge_min = 1
+    edge_max = 5
+    max_srf_dis = 10
+    
+    
+
+    
     
     boundary = mesh.vertices_on_boundary()
     boundary = []
     
     
-    diagonal = {}
-    for fkey in mesh.faces_iter():
-        keys = mesh.face_vertices(fkey, ordered=True)
-        if len(keys) == 4:
-            dis1 = distance(mesh.vertex_coordinates(keys[0]),mesh.vertex_coordinates(keys[2]))
-            dis1_min, dis1_max = dis1*(1-diagonal_fac),dis1*(1+diagonal_fac)
-            dis2 = distance(mesh.vertex_coordinates(keys[1]),mesh.vertex_coordinates(keys[3]))
-            dis2_min, dis2_max = dis2*(1-diagonal_fac),dis2*(1+diagonal_fac)
-            diagonal[fkey] = dis1_min,dis1_max,dis2_min,dis2_max
-            
-    edges_dis = {}
-    for uv in mesh.edges():
-        dis = mesh.edge_length(uv[0], uv[1])
-        dis_min, dis_max = dis*(1-edge_fac),dis*(1+edge_fac)
-        edges_dis[uv] = dis_min, dis_max
+#     diagonal = {}
+#     for fkey in mesh.faces_iter():
+#         keys = mesh.face_vertices(fkey, ordered=True)
+#         if len(keys) == 4:
+#             dis1 = distance(mesh.vertex_coordinates(keys[0]),mesh.vertex_coordinates(keys[2]))
+#             dis1_min, dis1_max = dis1*(1-diagonal_fac),dis1*(1+diagonal_fac)
+#             dis2 = distance(mesh.vertex_coordinates(keys[1]),mesh.vertex_coordinates(keys[3]))
+#             dis2_min, dis2_max = dis2*(1-diagonal_fac),dis2*(1+diagonal_fac)
+#             diagonal[fkey] = dis1_min,dis1_max,dis2_min,dis2_max
+#             
+#     edges_dis = {}
+#     for uv in mesh.edges():
+#         dis = mesh.edge_length(uv[0], uv[1])
+#         dis_min, dis_max = dis*(1-edge_fac),dis*(1+edge_fac)
+#         edges_dis[uv] = dis_min, dis_max
     
     for k in range(kmax):
-        rs.Prompt("Iteration {0} of {1}".format(k+1,kmax+1))
-        nodes_dict = {key: [] for key in mesh.vertices()}
-        dots = []
-        for fkey in mesh.faces_iter():
-            
-            keys = mesh.face_vertices(fkey,ordered=True)
-            points = [mesh.vertex_coordinates(key) for key in keys]
-            plane = rs.PlaneFitFromPoints(points)
-            
-            if k%vis==0:
-                if not rs.PointsAreCoplanar(points,.01):
-                    dots.append(rs.AddTextDot("x",centroid(points)))
-            
-            points = [rs.PlaneClosestPoint(plane, pt) for pt in points]
-            
-            
-
-            
-            
-            dis1_min, dis1_max,dis2_min,dis2_max= diagonal[fkey] 
-            
-            dis1_step = distance(points[0],points[2])
-            dis2_step = distance(points[1],points[3])
-            
-            if dis1_step < dis1_min:
-                trg_dis = dis1_min
-            elif dis1_step > dis1_max:
-                trg_dis = dis1_max
-            else:
-                trg_dis = None
-            if trg_dis:
-                mid_pt = midpoint(points[0],points[2])
-                vec = rs.VectorCreate(points[0],mid_pt)
-                vec = rs.VectorUnitize(vec)
-                vec = rs.VectorScale(vec,trg_dis*0.5)
-                points[0] = rs.PointAdd(mid_pt,vec)
-                points[2] = rs.PointAdd(mid_pt,rs.VectorScale(vec,-1))
-                #rs.AddLine(points[0],points[2])
-                
-                
-            if dis2_step < dis2_min:
-                trg_dis = dis2_min
-            elif dis2_step > dis2_max:
-                trg_dis = dis2_max
-            else:
-                trg_dis = None
-            if trg_dis:
-                mid_pt = midpoint(points[1],points[3])
-                vec = rs.VectorCreate(points[1],mid_pt)
-                vec = rs.VectorUnitize(vec)
-                vec = rs.VectorScale(vec,trg_dis*0.5)
-                points[1] = rs.PointAdd(mid_pt,vec)
-                points[3] = rs.PointAdd(mid_pt,rs.VectorScale(vec,-1))
-                #rs.AddLine(points[1],points[3])            
-            
-            for i,key in enumerate(keys):
-                nodes_dict[key].append(points[i])
+        
+        if 1 == 1:
         
         
+            max_dev_step = mesh_max_deviation(mesh)
         
+            nodes_dict = {key: [] for key in mesh.vertices()}
+            dots = []
+            for fkey in mesh.faces_iter():
                 
-        for key in mesh.vertices():
-            if key in boundary:
-                continue
-            cent = centroid(nodes_dict[key])
-            mesh.vertex[key]['x'] = cent[0]
-            mesh.vertex[key]['y'] = cent[1]
-            mesh.vertex[key]['z'] = cent[2]   
+                keys = mesh.face_vertices(fkey,ordered=True)
+                points = [mesh.vertex_coordinates(key) for key in keys]
+                plane = rs.PlaneFitFromPoints(points)
+                
+#                 if k%vis==0:
+#                     if not rs.PointsAreCoplanar(points,.01):
+#                         dots.append(rs.AddTextDot("x",centroid(points)))
+                
+                points = [rs.PlaneClosestPoint(plane, pt) for pt in points]
+                
+                
+    
+                
+                
+    #             dis1_min, dis1_max,dis2_min,dis2_max= diagonal[fkey] 
+                
+                if 1==1:
+                    dis1_step = distance(points[0],points[2])
+                    dis2_step = distance(points[1],points[3])
+                    
+                    if dis1_step > dis2_step:
+                        if (dis1_step-dis2_step)/dis1_step > diagonal_prop:
+                            trg_dis = -dis2_step/(diagonal_prop-1)
+                            points[0],points[2] = space_points(points[0],points[2],trg_dis)
+                            #rs.AddLine(points[0],points[2])
+                    else:
+                        if (dis2_step-dis1_step)/dis2_step > diagonal_prop:
+                            trg_dis = -dis1_step/(diagonal_prop-1)
+                            points[1],points[3] = space_points(points[1],points[3],trg_dis)
+                            #rs.AddLine(points[1],points[3])    
+                
+                
+    #             if dis1_step < dis1_min:
+    #                 trg_dis = dis1_min
+    #             elif dis1_step > dis1_max:
+    #                 trg_dis = dis1_max
+    #             else:
+    #                 trg_dis = None
+    #             if trg_dis:
+    #                 space_points(points[0],points[2],trg_dis)
+    #                 rs.AddLine(points[0],points[2])
+    #                 
+    #                 
+    #             if dis2_step < dis2_min:
+    #                 trg_dis = dis2_min
+    #             elif dis2_step > dis2_max:
+    #                 trg_dis = dis2_max
+    #             else:
+    #                 trg_dis = None
+    #             if trg_dis:
+    #                 space_points(points[1],points[3],trg_dis)
+    #                 rs.AddLine(points[1],points[3])            
+                dis1_step = distance(points[0],points[1])
+                dis2_step = distance(points[2],points[3])
+                if dis1_step > dis2_step:
+                    if (dis1_step-dis2_step)/dis1_step > edge_prop:
+                        trg_dis = -dis2_step/(edge_prop-1)
+                        points[0],points[1] = space_points(points[0],points[1],trg_dis)
+                        #rs.AddLine(points[0],points[1])
+                else:
+                    if (dis2_step-dis1_step)/dis2_step > edge_prop:
+                        trg_dis = -dis1_step/(edge_prop-1)
+                        points[2],points[3] = space_points(points[2],points[3],trg_dis)
+                        #rs.AddLine(points[2],points[3])     
+                                
+                dis1_step = distance(points[1],points[2])
+                dis2_step = distance(points[3],points[0])            
+                if dis1_step > dis2_step:
+                    if (dis1_step-dis2_step)/dis1_step > edge_prop:
+                        trg_dis = -dis2_step/(edge_prop-1)
+                        points[1],points[2] = space_points(points[1],points[2],trg_dis)
+                        #rs.AddLine(points[1],points[2])
+                else:
+                    if (dis2_step-dis1_step)/dis2_step > edge_prop:
+                        trg_dis = -dis1_step/(edge_prop-1)
+                        points[3],points[0] = space_points(points[3],points[0],trg_dis)
+                        #rs.AddLine(points[3],points[0])             
+                
+                
+                
+                
+                for i,key in enumerate(keys):
+                    nodes_dict[key].append(points[i])
             
             
-        nodes_dict = {key: [] for key in mesh.vertices()}    
-        for uv in mesh.edges():
-            dis_step = mesh.edge_length(uv[0], uv[1])
-            dis_min, dis_max = edges_dis[uv] 
             
-            if dis_step < dis_min:
-                trg_dis = dis_min
-            elif dis_step > dis_max:
-                trg_dis = dis_max
-            else:
-                trg_dis = None
-            if trg_dis:
-                pt1 = mesh.vertex_coordinates(uv[0])
-                pt2 = mesh.vertex_coordinates(uv[1])
-                
-                mid_pt = midpoint(pt1,pt2)
-                vec = rs.VectorCreate(pt1,mid_pt)
-                vec = rs.VectorUnitize(vec)
-                vec = rs.VectorScale(vec,trg_dis*0.5)
-                pt1 = rs.PointAdd(mid_pt,vec)
-                pt2 = rs.PointAdd(mid_pt,rs.VectorScale(vec,-1))
-                
-                nodes_dict[uv[0]].append(pt1)
-                nodes_dict[uv[1]].append(pt2)
-                
-                #rs.AddLine(pt1,pt2) 
-        
-        for key in nodes_dict:
-            if key in boundary:
-                continue
-            cent = centroid(nodes_dict[key])
-            if cent:
+                    
+            for key in mesh.vertices():
+                if key in boundary:
+                    continue
+                cent = centroid(nodes_dict[key])
                 mesh.vertex[key]['x'] = cent[0]
                 mesh.vertex[key]['y'] = cent[1]
-                mesh.vertex[key]['z'] = cent[2] 
-        #rs.AddPoints(points)
-          
-          
-        if k%vis==0:    
-            draw_light(mesh,temp = True)  
-            if dots: rs.DeleteObjects(dots)
+                mesh.vertex[key]['z'] = cent[2]   
+                
+                
+            nodes_dict = {key: [] for key in mesh.vertices()}    
+            for uv in mesh.edges():
+                dis_step = mesh.edge_length(uv[0], uv[1])
+                        
+                if dis_step < edge_min:
+                    trg_dis = edge_min
+                elif dis_step > edge_max:
+                    trg_dis = edge_max
+                else:
+                    trg_dis = None
+                if trg_dis:
+                    pt1 = mesh.vertex_coordinates(uv[0])
+                    pt2 = mesh.vertex_coordinates(uv[1])
+                    pt1,pt2 = space_points(pt1,pt2,trg_dis)
+                    
+                    nodes_dict[uv[0]].append(pt1)
+                    nodes_dict[uv[1]].append(pt2)
+                    
+                    #rs.AddLine(pt1,pt2) 
+            
+            for key in nodes_dict:
+                if key in boundary:
+                    continue
+                cent = centroid(nodes_dict[key])
+                if cent:
+                    mesh.vertex[key]['x'] = cent[0]
+                    mesh.vertex[key]['y'] = cent[1]
+                    mesh.vertex[key]['z'] = cent[2] 
+            #rs.AddPoints(points)
+            
+            #rhino_mesh = draw_light(mesh,temp = False)   
+        
+        mesh_smooth_on_local_plane(mesh, k=1, d=0.01)
+        
+        #mesh_pull_to_surface(mesh,brep,max_srf_dis,tolerance)
+        
+        if k%vis==0:  
+            rs.Prompt("Iteration {0} of {1} with a maximum deviation of {2}".format(k,kmax,round(max_dev_step,4)))
+            #draw_light(mesh,temp = True)  
+            mesh_faces = color_mesh(mesh,max_dev,0)
+            rs.Redraw()
+            Rhino.RhinoApp.Wait()
+            rs.DeleteObjects(mesh_faces)
+        if max_dev_step < dev_threshold or k == kmax:
+            print"Iteration {0} of {1} with a maximum deviation of {2}".format(k,kmax,round(max_dev_step,4))
+            break
     
-    draw_light(mesh,temp = False)  
-
+    #draw_light(mesh,temp = False)  
+    mesh_faces = color_mesh(mesh,max_dev,0)
+    rs.AddObjectsToGroup(mesh_faces,rs.AddGroup())
 
