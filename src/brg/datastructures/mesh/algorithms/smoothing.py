@@ -14,7 +14,7 @@ __email__      = 'vanmelet@ethz.ch'
 # @matthias: remind me that while having post-dehydration nightmares
 #            i figure out how to do all of this in a linear algebra-style way...
 # also, i wrote these for the network class
-# if some things don't work out -f the box, come get me, because that just means
+# if some things don't work out of the box, come get me, because that just means
 # some functionality has not yet been duplicated on the mesh
 # or works slightly differently...
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -55,7 +55,7 @@ __email__      = 'vanmelet@ethz.ch'
 #             mesh.vertex[key]['z'] += tz
 
 
-def mesh_smooth_centroid(mesh, fixed=None, kmax=1, ufunc=None):
+def mesh_smooth_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -69,8 +69,6 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=1, ufunc=None):
             c = centroid([key_xyz[nbr] for nbr in nbrs])
             # update
             attr = mesh.vertex[key]
-            d = 0.0  # attr['inertia']
-            d = 1.0 - d
             attr['x'] += d * (c[0] - p[0])
             attr['y'] += d * (c[1] - p[1])
             attr['z'] += d * (c[2] - p[2])
@@ -81,7 +79,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=1, ufunc=None):
                 ufunc(mesh, k)
 
 
-def mesh_smooth_centerofmass(mesh, fixed=None, k=1, ufunc=None):
+def mesh_smooth_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -95,8 +93,6 @@ def mesh_smooth_centerofmass(mesh, fixed=None, k=1, ufunc=None):
             c = center_of_mass([key_xyz[nbr] for nbr in nbrs])
             # update
             attr = mesh.vertex[key]
-            d = 0.0  # attr['inertia']
-            d = 1.0 - d
             attr['x'] += d * (c[0] - p[0])
             attr['y'] += d * (c[1] - p[1])
             attr['z'] += d * (c[2] - p[2])
@@ -110,7 +106,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, k=1, ufunc=None):
 # my local implementation is based on per-edge-defined min/max values
 # this is not compatible with smoothing in combination with subdivision though
 # therefore, is made the min/max values global
-def mesh_smooth_length(mesh, lmin, lmax, fixed=None, k=1, ufunc=None):
+def mesh_smooth_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None):
     for k in range(kmax):
         key_xyz = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
         for key in mesh:
@@ -130,8 +126,6 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, k=1, ufunc=None):
             c = centroid(points)
             # update
             attr = mesh.vertex[key]
-            d = 0.0  # attr['inertia']
-            d = 1.0 - d
             attr['x'] += d * (c[0] - ep[0])
             attr['y'] += d * (c[1] - ep[1])
             attr['z'] += d * (c[2] - ep[2])
@@ -142,7 +136,7 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, k=1, ufunc=None):
                 ufunc(mesh, k)
 
 
-def mesh_smooth_area(mesh, fixed=None, k=1, ufunc=None):
+def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -167,9 +161,7 @@ def mesh_smooth_area(mesh, fixed=None, k=1, ufunc=None):
             y = y / A
             z = z / A
             # update
-            attr = mesh.vertex[key]  
-            d = 0.0  # attr['inertia']
-            d = 1.0 - d
+            attr = mesh.vertex[key]
             attr['x'] += d * (x - p[0])
             attr['y'] += d * (y - p[0])
             attr['z'] += d * (z - p[0])
@@ -180,7 +172,9 @@ def mesh_smooth_area(mesh, fixed=None, k=1, ufunc=None):
                 ufunc(mesh, k)
 
 
-def mesh_smooth_angle(mesh, fixed=None, k=1, ufunc=None):
+# d is used in the algorithm
+# so some renaming is required
+def mesh_smooth_angle(mesh, fixed=None, kmax=1, ufunc=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -219,7 +213,7 @@ def mesh_smooth_angle(mesh, fixed=None, k=1, ufunc=None):
                 ufunc(mesh, k)
 
 
-def mesh_smooth_forcedensity(mesh, fixed=None, k=1, ufunc=None):
+def mesh_smooth_forcedensity(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
     pass
 
 
