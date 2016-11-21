@@ -65,7 +65,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
                 continue
             p = key_xyz[key]
             # replace this by mesh function?
-            nbrs = mesh.neighbours(key)
+            nbrs = mesh.vertex_neighbours(key)
             c = centroid([key_xyz[nbr] for nbr in nbrs])
             # update
             attr = mesh.vertex[key]
@@ -89,7 +89,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
                 continue
             p = key_xyz[key]
             # replace this by mesh function?
-            nbrs = mesh.neighbours(key, ordered=True)
+            nbrs = mesh.vertex_neighbours(key, ordered=True)
             c = center_of_mass([key_xyz[nbr] for nbr in nbrs])
             # update
             attr = mesh.vertex[key]
@@ -115,7 +115,7 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None):
             ep = key_xyz[key]
             # replace this by mesh function?
             points = []
-            for nbr in mesh.neighbours(key):
+            for nbr in mesh.vertex_neighbours(key):
                 sp   = key_xyz[nbr]
                 vec  = [ep[i] - sp[i] for i in range(3)]
                 lvec = sum(vec[i] ** 2 for i in range(3)) ** 0.5
@@ -182,7 +182,7 @@ def mesh_smooth_angle(mesh, fixed=None, kmax=1, ufunc=None):
         for key in mesh:
             if key in fixed:
                 continue
-            nbrs = mesh.neighbours(key, ordered=True)
+            nbrs = mesh.vertex_neighbours(key, ordered=True)
             if len(nbrs) < 4:
                 continue
             if len(nbrs) > 4:
