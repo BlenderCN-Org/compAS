@@ -13,6 +13,8 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+# rename to mesh_xxx?
+
 # distinguish between subd of meshes with and without boundary
 # closed vs. open
 # pay attention to extraordinary points

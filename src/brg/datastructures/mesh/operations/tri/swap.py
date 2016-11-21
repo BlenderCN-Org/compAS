@@ -50,5 +50,6 @@ def swap_edge(mesh, u, v):
     del mesh.face[fkey_uv]
     del mesh.face[fkey_vu]
     # add the faces created by the swap
-    mesh.add_face([o_uv, o_vu, v])
-    mesh.add_face([o_vu, o_uv, u])
+    a = mesh.add_face([o_uv, o_vu, v])
+    b = mesh.add_face([o_vu, o_uv, u])
+    return a, b

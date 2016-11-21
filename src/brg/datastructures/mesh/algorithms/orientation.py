@@ -1,4 +1,8 @@
+"""brg.datastructures.mesh.algorithms.orientation: Algorithms related to mesh orientation and orientability."""
+
+
 from brg.datastructures.traversal import bfs
+
 
 __author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'

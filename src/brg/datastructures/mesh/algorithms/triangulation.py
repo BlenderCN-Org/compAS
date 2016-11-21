@@ -28,6 +28,10 @@ def delaunay_from_mesh(mesh):
     return Mesh.from_vertices_and_faces(mesh.xyz, d.simplices)
 
 
+def delaunay_from_points(points):
+    raise NotImplementedError
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================

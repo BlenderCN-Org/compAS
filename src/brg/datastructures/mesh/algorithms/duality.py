@@ -6,6 +6,7 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+# rename to mesh_dual?
 def construct_dual_mesh(mesh, cls=None):
     if not cls:
         cls = type(mesh)
