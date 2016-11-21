@@ -339,8 +339,6 @@ if __name__ == "__main__":
     bbox3 = BBOX3(corners)
     cube3 = CUBE3(points)
 
-    x, y, z = zip(*corners)
-
     fig = plt.figure()
     axs = fig.add_subplot(111, projection='3d', aspect='equal')
 
