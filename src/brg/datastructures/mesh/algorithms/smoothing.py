@@ -63,9 +63,10 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=1, ufunc=None):
         for key in mesh:
             if key in fixed:
                 continue
+            p = key_xyz[key]
+            # replace this by mesh function?
             nbrs = mesh.neighbours(key)
             c = centroid([key_xyz[nbr] for nbr in nbrs])
-            p = key_xyz[key]
             # update
             attr = mesh.vertex[key]
             d = 0.0  # attr['inertia']
@@ -88,9 +89,10 @@ def mesh_smooth_centerofmass(mesh, fixed=None, k=1, ufunc=None):
         for key in mesh:
             if key in fixed:
                 continue
+            p = key_xyz[key]
+            # replace this by mesh function?
             nbrs = mesh.neighbours(key, ordered=True)
             c = center_of_mass([key_xyz[nbr] for nbr in nbrs])
-            p = key_xyz[key]
             # update
             attr = mesh.vertex[key]
             d = 0.0  # attr['inertia']
@@ -115,6 +117,7 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, k=1, ufunc=None):
             if key in fixed:
                 continue
             ep = key_xyz[key]
+            # replace this by mesh function?
             points = []
             for nbr in mesh.neighbours(key):
                 sp   = key_xyz[nbr]
@@ -150,6 +153,7 @@ def mesh_smooth_area(mesh, fixed=None, k=1, ufunc=None):
             if key in fixed:
                 continue
             p = key_xyz[key]
+            # replace this by mesh function?
             A = 0
             x, y, z = 0, 0, 0
             for fkey in mesh.vertex_faces(key):
@@ -180,7 +184,7 @@ def mesh_smooth_angle(mesh, fixed=None, k=1, ufunc=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
-        key_xyz = mesh.key_xyz()
+        key_xyz = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
         for key in mesh:
             if key in fixed:
                 continue
@@ -191,6 +195,7 @@ def mesh_smooth_angle(mesh, fixed=None, k=1, ufunc=None):
                 # move to centroid instead?
                 continue
             o = key_xyz[key]
+            # replace this by mesh function?
             a = key_xyz[nbrs[0]]
             b = key_xyz[nbrs[1]]
             c = key_xyz[nbrs[2]]
