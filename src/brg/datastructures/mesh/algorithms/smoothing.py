@@ -1,6 +1,7 @@
 """"""
 
 from brg.geometry import centroid
+from brg.geometry import center_of_mass
 
 
 __author__     = 'Tom Van Mele'
