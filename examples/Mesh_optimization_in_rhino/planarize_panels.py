@@ -221,6 +221,9 @@ if __name__ == "__main__":
 #     tolerance = rs.UnitAbsoluteTolerance()
     
     rs.EnableRedraw(False)
+    
+    rs.HideObject(srf)
+    
     u_div = 20
     v_div = 12
     
@@ -234,15 +237,15 @@ if __name__ == "__main__":
     kmax = 1000
     dev_threshold = 0.01
 
-    vis = 10
+    vis = 2
 
 
-    diagonal_prop = .15
+    diagonal_prop = 0.15
     edge_prop = 0.1
     
     edge_min = 1
     edge_max = 5
-    max_srf_dis = 10
+    max_srf_dis = 1
     
     
 
