@@ -101,8 +101,7 @@ def draw(mesh,layer_1,layer_2):
     
     rs.EnableRedraw(False)
     
-    rs.LayerVisible(layer_1, True)
-    rs.LayerVisible(layer_2, True)
+
 
     objs = rs.ObjectsByLayer(layer_1)
     rs.DeleteObjects(objs)
@@ -141,64 +140,6 @@ def draw(mesh,layer_1,layer_2):
 
 
 
-def wrapper(vis):
-    
-
-
-    def user_function(mesh,i):
-    
-     #dict((k, i) for i, k in self.vertices_enum())
-     
-        for key, a in mesh.vertices_iter(True):
-        
-           pt = (a['x'], a['y'], a['z'])
-           
-           if a['type'] == 'fixed' or a['type'] == 'free':
-               continue
-           if a['type'] == 'guide':
-               point = rs.coerce3dpoint(pt)
-               rc, t = a['guide_crv'].ClosestPoint(point)
-               pt = a['guide_crv'].PointAt(t)
-           elif a['type'] == 'surface':
-               point = rs.coerce3dpoint(pt)
-               pt = a['guide_srf'].ClosestPoint(point)
-            
-           mesh.vertex[key]['x'] = pt[0]
-           mesh.vertex[key]['y'] = pt[1]
-           mesh.vertex[key]['z'] = pt[2]    
-        
-        
-        if vis:
-            if i%vis==0:
-                rs.Prompt(str(i))
-                draw_light(mesh,temp = True) 
-                Rhino.RhinoApp.Wait()
-
-     
-
-                
-#                 for key in mesh.vertices():
-#                     points[int(key)] = mesh.vertex_coordinates(key)
-#                 lines = [map(int, x) for x in mesh_old.edges()] 
-#                 try:
-#                     conduit = LinesConduit(points, lines)
-#                     conduit.Enabled = True
-#                     conduit.points = points
-#                     conduit.redraw()
-#                     time.sleep(0.1)
-#                 
-#                 except Exception as e:
-#                     print "no"
-#     
-# 
-#                     
-#                     
-#                 conduit.Enabled = False
-#                 del conduit
-  
-  
-    return user_function
-
 
 def relax_mesh_on_surface():
     
@@ -210,10 +151,9 @@ def relax_mesh_on_surface():
     pts_objs = rs.ObjectsByLayer("re_03_points")
     guides = rs.ObjectsByLayer("re_04_guides")
     
-    vis = 2
-    
-    rs.LayerVisible("re_02_polys", False)
-    rs.LayerVisible("re_03_points", False)
+    vis = 30
+    kmax = 300
+    dis = 0.3
     
     pts = get_points_coordinates(pts_objs)
     
@@ -248,22 +188,70 @@ def relax_mesh_on_surface():
     
     for tri in tris:
         mesh.add_face(tri)     
+
+
+    rs.EnableRedraw(False)
+
+    pts = []
+    for key, a in mesh.vertices_iter(True):
         
-    user_function = wrapper(vis)    
-    fixed = [key for key, a in mesh.vertices_iter(True) if a['type'] == 'fixed']
+        
+        pt1 = (a['x'], a['y'], a['z'])
+        pts.append(pt1)
+        vec = mesh.vertex_normal(key) 
+        vec = scale(normalize(vec),dis)
+        pt2 = subtract_vectors(pt1,vec)
+        
+        pt2 = subtract_vectors(pt1,vec)
+        a['x2'] = pt2[0]
+        a['y2'] = pt2[1]
+        a['z2'] = pt2[2]
+        
+        #rs.AddLine(pt1,pt2)
     
-    mesh_smooth_centerofmass(mesh, fixed=fixed, kmax=150, d=1.0, ufunc=user_function)
-    
-    #mesh_smooth_angle(mesh, fixed=fixed, kmax=150, ufunc=user_function)
-    
-    #mesh_smooth_centroid(mesh, fixed=fixed, kmax=150, d=1.0, ufunc=user_function)
-    
-    #mesh_smooth_area(mesh, fixed=fixed, kmax=150, d=1.0, ufunc=user_function)
     
     
-    #draw_light(mesh,temp = False)
+
     
-    draw(mesh,"re_03_points","re_02_polys")
+    for k in range(kmax):
+        nodes_top_dict = {key: [] for key in mesh.vertices()}
+        polys = []
+        max_distances = []
+        for u,v in mesh.edges():
+            pt1 = mesh.vertex_coordinates(u)
+            pt2 = mesh.vertex_coordinates(v)
+            pt3 = mesh.vertex[u]['x2'],mesh.vertex[u]['y2'],mesh.vertex[u]['z2']
+            pt4 = mesh.vertex[v]['x2'],mesh.vertex[v]['y2'],mesh.vertex[v]['z2']
+            points = [pt1,pt2,pt3,pt4]
+            plane = rs.PlaneFitFromPoints(points)
+            points_planar = [rs.PlaneClosestPoint(plane, pt) for pt in points]
+            
+            if k%vis == 0:
+                polys.append(rs.AddPolyline([pt1,pt2,pt4,pt3,pt1]))
+            
+            nodes_top_dict[u].append(points_planar[2])
+            nodes_top_dict[v].append(points_planar[3])
+               
+            distances = [distance(pt1,pt2) for pt1,pt2 in zip(points,points_planar)]
+            max_distances.append(max(distances))    
+                    
+        for key in mesh.vertices():
+            cent = centroid(nodes_top_dict[key])
+            mesh.vertex[key]['x2'] = cent[0]
+            mesh.vertex[key]['y2'] = cent[1]
+            mesh.vertex[key]['z2'] = cent[2] 
+    
+
+    
+        if k%vis == 0:    
+            rs.EnableRedraw(True)
+            rs.EnableRedraw(False)
+            print max(max_distances)
+            if not k == 0 and not k == kmax-1:
+                rs.DeleteObjects(polys)
+        
+    rs.EnableRedraw(True)
+    #draw(mesh,"re_03_points","re_02_polys")
     
 
 if __name__ == "__main__":

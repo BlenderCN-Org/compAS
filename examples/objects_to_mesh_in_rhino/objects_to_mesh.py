@@ -11,7 +11,7 @@ import math
 import copy
 import Rhino
 from brg.datastructures.mesh.mesh import Mesh
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth
+from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
 
 import brg_rhino.utilities as rhino
 #import utility as rhutil
@@ -369,12 +369,12 @@ def nurbs_to_mesh(srf,trg_len,vis):
        ufunc=user_func)
  
     for k in xrange(10):
-        mesh_smooth(mesh,1)
+        mesh_smooth_centroid(mesh,fixed=fixed,kmax=1) 
         user_func(mesh,k)
     
     return draw_light(mesh,temp = False) 
     
-    
+
     
     
     

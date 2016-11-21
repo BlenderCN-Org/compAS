@@ -1,6 +1,6 @@
 """"""
 
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth
+from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
 
 from brg.datastructures.mesh.operations.tri.split import split_edge
 from brg.datastructures.mesh.operations.tri.collapse import collapse_edge
@@ -162,7 +162,7 @@ def remesh(mesh, target,
 #                 termin = 0
             
         # smoothen
-        mesh_smooth(mesh, 1)  
+        mesh_smooth_centroid(mesh,fixed=boundary,kmax=1)  
         if ufunc:
             ufunc(mesh,k)
           
