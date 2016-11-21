@@ -75,8 +75,8 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             # in my implementation the ufunc is called before the coordinates
             # are updated
             # don't know which optio makes more sense...
-            if ufunc:
-                ufunc(mesh, k)
+        if ufunc:
+            ufunc(mesh, k)
 
 
 def mesh_smooth_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
@@ -99,8 +99,8 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             # in my implementation the ufunc is called before the coordinates
             # are updated
             # don't know which optio makes more sense...
-            if ufunc:
-                ufunc(mesh, k)
+        if ufunc:
+            ufunc(mesh, k)
 
 
 # my local implementation is based on per-edge-defined min/max values
@@ -132,8 +132,8 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None):
             # in my implementation the ufunc is called before the coordinates
             # are updated
             # don't know which optio makes more sense...
-            if ufunc:
-                ufunc(mesh, k)
+        if ufunc:
+            ufunc(mesh, k)
 
 
 def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
@@ -168,8 +168,8 @@ def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             # in my implementation the ufunc is called before the coordinates
             # are updated
             # don't know which optio makes more sense...
-            if ufunc:
-                ufunc(mesh, k)
+        if ufunc:
+            ufunc(mesh, k)
 
 
 # d is used in the algorithm
@@ -209,8 +209,8 @@ def mesh_smooth_angle(mesh, fixed=None, kmax=1, ufunc=None):
             # in my implementation the ufunc is called before the coordinates
             # are updated
             # don't know which optio makes more sense...
-            if ufunc:
-                ufunc(mesh, k)
+        if ufunc:
+            ufunc(mesh, k)
 
 
 def mesh_smooth_forcedensity(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):

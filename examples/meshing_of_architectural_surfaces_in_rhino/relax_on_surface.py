@@ -25,7 +25,7 @@ from brg.utilities.colors import i2rgb
 from brg.geometry.spatial import closest_point_on_plane
 
 import brg_rhino.utilities as rhino
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth
+from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centerofmass
 from brg.datastructures.mesh.algorithms.orientation import mesh_unify_cycle_directions
 
 
@@ -70,10 +70,20 @@ def draw_light(mesh,temp = True):
     key_index = dict((key, index) for index, key in mesh.vertices_enum())
     xyz = mesh.xyz
     faces = []
+    
     for fkey in mesh.faces_iter():
         face = mesh.face_vertices(fkey,True)
+        
+        
+        #poly_pts = [xyz[key_index[k]] for k in face+[face[0]]]
+        
         face.append(face[-1])
         faces.append([key_index[k] for k in face])
+        
+        
+    
+        #rs.AddPolyline(poly_pts)
+        
     guid = rs.AddMesh(xyz, faces) 
     if temp:
         rs.EnableRedraw(True)
@@ -83,12 +93,59 @@ def draw_light(mesh,temp = True):
 
 
 
+
+
+
+
+def wrapper(vis):
+    
+   
+    tolerance = rs.UnitAbsoluteTolerance()
+    
+    def user_function(mesh,i):
+    
+     #dict((k, i) for i, k in self.vertices_enum())
+     
+        for key, a in mesh.vertices_iter(True):
+        
+           pt = (a['x'], a['y'], a['z'])
+           
+           if a['type'] == 'fixed' or a['type'] == 'free':
+               continue
+           if a['type'] == 'guide':
+               point = rs.coerce3dpoint(pt)
+               rc, t = a['guide_crv'].ClosestPoint(point)
+               pt = a['guide_crv'].PointAt(t)
+           elif a['type'] == 'surface':
+               point = rs.coerce3dpoint(pt)
+               pt = a['guide_srf'].ClosestPoint(point)
+            
+           mesh.vertex[key]['x'] = pt[0]
+           mesh.vertex[key]['y'] = pt[1]
+           mesh.vertex[key]['z'] = pt[2]    
+        
+        
+        if vis:
+            if i%vis==0:
+                rs.Prompt(str(i))
+                draw_light(mesh,temp = True) 
+                Rhino.RhinoApp.Wait()
+  
+    return user_function
+
+
 def relax_mesh_on_surface():
     
     srf = rs.ObjectsByLayer("re_01_trg_srf")[0]
+    srf_id = rs.coerceguid(srf, True)
+    brep = rs.coercebrep(srf_id, False)
+    
     polylines = rs.ObjectsByLayer("re_02_polys")
     pts_objs = rs.ObjectsByLayer("re_03_points")
     guides = rs.ObjectsByLayer("re_04_guides")
+    
+    vis = 1
+    
     
     pts = get_points_coordinates(pts_objs)
     
@@ -107,12 +164,14 @@ def relax_mesh_on_surface():
             type = 'free'
         elif [rs.ColorRedValue(color),rs.ColorGreenValue(color),rs.ColorBlueValue(color)] == [0,0,0]:
             type = 'surface'
-            guide_srf = srf
+            guide_srf = brep
         else:
             type = 'guide'
             for guide in guides:
                 if rs.ObjectColor(guide) == color:
-                    guide_crv = guide
+                    crv_id = rs.coerceguid(guide, True)
+                    crv = rs.coercecurve(crv_id, False)
+                    guide_crv = crv
                     break       
             
         mesh.add_vertex(str(i),{'x' : pt[0], 'y' : pt[1], 'z' : pt[2], 'color' : color, 'type' : type,'guide_srf' : guide_srf,'guide_crv' : guide_crv})
@@ -123,12 +182,12 @@ def relax_mesh_on_surface():
     tris = get_faces_from_polylines(polys,pts)
     
     for tri in tris:
-        print tri
         mesh.add_face(tri)     
         
-    mesh_unify_cycle_directions(mesh)
+    user_function = wrapper(vis)    
+    mesh_smooth_centerofmass(mesh, fixed=None, kmax=10, d=1.0, ufunc=user_function)
     
-    draw_light(mesh,temp = False)
+    draw_light(mesh,temp = True)
     
 
 if __name__ == "__main__":
