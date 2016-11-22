@@ -9,7 +9,7 @@
   </extend_rhino_menus>
   <menus />
   <tool_bar_groups>
-    <tool_bar_group guid="c877b986-7a1c-478b-97e6-932c9cf96603" dock_bar_guid32="00000000-0000-0000-0000-000000000000" dock_bar_guid64="bf1ee579-0f0e-4622-b6a3-be16069d87ff" active_tool_bar_group="543161c5-5175-46cd-b912-455b47648e1e" single_file="False" hide_single_tab="False" point_floating="1008,204">
+    <tool_bar_group guid="c877b986-7a1c-478b-97e6-932c9cf96603" dock_bar_guid32="00000000-0000-0000-0000-000000000000" dock_bar_guid64="320c2e68-d335-4302-b440-3c4a606e17b0" active_tool_bar_group="543161c5-5175-46cd-b912-455b47648e1e" single_file="False" hide_single_tab="False" point_floating="1008,204">
       <text>
         <locale_1033>Toolbar group</locale_1033>
       </text>
@@ -19,7 +19,7 @@
         </text>
         <tool_bar_id>5171b632-bf9c-49a1-a78e-83975049cb11</tool_bar_id>
       </tool_bar_group_item>
-      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="True" floating="False" mru_float_style="8192" bar_id="59470" mru_width="32767" point_pos="0,229" float_point="1008,204" rect_mru_dock_pos="0,229,1020,267" dock_location_u="59419" dock_location="top" float_size="43,58" />
+      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="True" floating="False" mru_float_style="8192" bar_id="59470" mru_width="32767" point_pos="0,229" float_point="1008,204" rect_mru_dock_pos="0,-40,2560,-2" dock_location_u="59419" dock_location="top" float_size="43,58" />
     </tool_bar_group>
   </tool_bar_groups>
   <tool_bars>
@@ -44,6 +44,18 @@
           <locale_1033>Toolbar item</locale_1033>
         </text>
         <left_macro_id>e9fd0c00-f3a0-4d23-964f-af15b5b98708</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="0d2a9b84-150e-4eae-9380-430730993b25" button_display_mode="text_only" display_style_from_parent="False" button_style="normal">
+        <text>
+          <locale_1033>Toolbar item</locale_1033>
+        </text>
+        <left_macro_id>76eea51e-aed6-4632-b710-c42e608ef086</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="e969ccf8-f137-464d-b334-8949ce5f3c7d" button_display_mode="text_only" display_style_from_parent="False" button_style="normal">
+        <text>
+          <locale_1033>Toolbar item</locale_1033>
+        </text>
+        <left_macro_id>97b5efaa-5875-451d-8e6a-689f23dda07f</left_macro_id>
       </tool_bar_item>
     </tool_bar>
   </tool_bars>
@@ -84,15 +96,41 @@
       </button_text>
       <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\mesh_optimization_in_rhino\planarize_panels.py</script>
     </macro_item>
+    <macro_item guid="76eea51e-aed6-4632-b710-c42e608ef086" bitmap_id="84e34f42-cdcc-45c8-b768-327b4607ac28">
+      <text>
+        <locale_1033>Macro 02</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>relax on surface</locale_1033>
+      </tooltip>
+      <button_text>
+        <locale_1033>relax</locale_1033>
+      </button_text>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\meshing_of_architectural_surfaces_in_rhino\relax_on_surface.py</script>
+    </macro_item>
+    <macro_item guid="97b5efaa-5875-451d-8e6a-689f23dda07f" bitmap_id="7ae3a331-593c-4d3d-9949-dd692fb67d3c">
+      <text>
+        <locale_1033>Macro 03</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>planarize gridshell memebrs</locale_1033>
+      </tooltip>
+      <button_text>
+        <locale_1033>planarize members</locale_1033>
+      </button_text>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\meshing_of_architectural_surfaces_in_rhino\planarize_gridshell_members.py</script>
+    </macro_item>
   </macros>
   <bitmaps>
     <small_bitmap item_width="16" item_height="16">
       <bitmap_item guid="9caa213b-d889-48c0-9e52-22a8b0a8501b" index="0" />
       <bitmap_item guid="40ad0422-2999-47cd-ae94-a27493f7c00a" index="1" />
       <bitmap_item guid="0a4d96f9-fefe-4a35-962b-732096cd69fe" index="2" />
-      <bitmap>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAQCAYAAACm53kpAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
-jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAmRoQ
-EAABvr+p5QAAAABJRU5ErkJgggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      <bitmap_item guid="84e34f42-cdcc-45c8-b768-327b4607ac28" index="3" />
+      <bitmap_item guid="7ae3a331-593c-4d3d-9949-dd692fb67d3c" index="4" />
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAAIAAAAAQCAYAAADeWHeIAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAfSURBVGhD7cEBDQAAAMKg909tDwcEAAAAAAAA
+AJypASAQAAGmsh+HAAAAAElFTkSuQmCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
     </small_bitmap>
@@ -100,9 +138,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
       <bitmap_item guid="9caa213b-d889-48c0-9e52-22a8b0a8501b" index="0" />
       <bitmap_item guid="40ad0422-2999-47cd-ae94-a27493f7c00a" index="1" />
       <bitmap_item guid="0a4d96f9-fefe-4a35-962b-732096cd69fe" index="2" />
-      <bitmap>iVBORw0KGgoAAAANSUhEUgAAAGAAAAAYCAYAAAAF6fiUAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
-jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAgSURBVGhD7cEBDQAAAMKg909tDwcEAAAAAAAA
-AACcqQEkGAABKYJphAAAAABJRU5ErkJgggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      <bitmap_item guid="84e34f42-cdcc-45c8-b768-327b4607ac28" index="3" />
+      <bitmap_item guid="7ae3a331-593c-4d3d-9949-dd692fb67d3c" index="4" />
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAAMAAAAAYCAYAAACssfJFAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAApSURBVHhe7cExAQAAAMKg9U9tDQ8gAAAAAAAA
+AAAAAAAAAAAAAADgRA1IGAABIfSePwAAAABJRU5ErkJgggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
     </normal_bitmap>
@@ -110,9 +150,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
       <bitmap_item guid="9caa213b-d889-48c0-9e52-22a8b0a8501b" index="0" />
       <bitmap_item guid="40ad0422-2999-47cd-ae94-a27493f7c00a" index="1" />
       <bitmap_item guid="0a4d96f9-fefe-4a35-962b-732096cd69fe" index="2" />
-      <bitmap>iVBORw0KGgoAAAANSUhEUgAAAIAAAAAgCAYAAADaInAlAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
-jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAnSURBVHhe7cExAQAAAMKg9U9tDQ8gAAAAAAAA
-AAAAAAAAAAAA4FwNQCAAAZv2c1kAAAAASUVORK5CYIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      <bitmap_item guid="84e34f42-cdcc-45c8-b768-327b4607ac28" index="3" />
+      <bitmap_item guid="7ae3a331-593c-4d3d-9949-dd692fb67d3c" index="4" />
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAAQAAAAAgCAYAAAD9qabkAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA3SURBVHhe7cGBAAAAAMOg+VMf4QJVAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMBRA4AgAAHwyZB1AAAAAElFTkSuQmCCAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
     </large_bitmap>

@@ -6,21 +6,20 @@ __date__       = 'Nov 11, 2016'
 
 
 import time
-import rhinoscriptsyntax as rs  
 import math
 import copy
-import Rhino
+
 from brg.datastructures.mesh.mesh import Mesh
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth
+from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
+from brg.datastructures.mesh.algorithms.tri.topology import remesh
+from brg.datastructures.mesh.algorithms.tri.delaunay import delaunay
 
 import brg_rhino.utilities as rhino
-#import utility as rhutil
+
 import Rhino
 import scriptcontext
+import rhinoscriptsyntax as rs  
 
-from brg.datastructures.mesh.algorithms.tri.topology import remesh
-
-from delaunay import delaunay
 
 
 def get_boundary_points(crvs_bound,trg_len):
@@ -132,7 +131,7 @@ def wrapper(brep,tolerance,fixed,vis):
     return user_func
         
 def wrapper_2(crvs,mesh_rhino_obj,fixed,boundary,vis):
-    print "hello"
+  
     def user_func(mesh,i):
         
         
@@ -326,23 +325,15 @@ def nurbs_to_mesh(srf,trg_len,vis):
 
     rs.DeleteObjects(crvs)        
 
-#     for i,pt in enumerate(all_pts):
-#         rs.AddTextDot(i,pt)       
-     
     all_pts_uv = convert_to_uv_space(srf,all_pts) 
-    
-    
-    
     tris = delaunay(all_pts_uv,outbound_keys,inbounds_keys)
     
     mesh = Mesh()
     
     for i,pt in enumerate(all_pts):
         mesh.add_vertex(str(i),{'x' : pt[0], 'y' : pt[1], 'z' : pt[2]})
-    
     for tri in tris:
         mesh.add_face(tri)  
-    
     
     edge_lengths = []
     for u, v in mesh.edges():
@@ -350,9 +341,7 @@ def nurbs_to_mesh(srf,trg_len,vis):
     
     target_start = max(edge_lengths)/2
 
-    
     rs.EnableRedraw(False)
-    
     
     srf_id = rs.coerceguid(srf, True)
     brep = rs.coercebrep(srf_id, False)   
@@ -369,12 +358,12 @@ def nurbs_to_mesh(srf,trg_len,vis):
        ufunc=user_func)
  
     for k in xrange(10):
-        mesh_smooth(mesh,1)
+        mesh_smooth_centroid(mesh,fixed=fixed,kmax=1) 
         user_func(mesh,k)
     
     return draw_light(mesh,temp = False) 
     
-    
+
     
     
     

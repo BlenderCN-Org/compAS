@@ -18,7 +18,7 @@ if __name__ == '__main__':
     
     rs.MeshQuadsToTriangles(rhino_mesh)
     
-    rhino_mesh = mesh_to_mesh(rhino_mesh,trg_len,vis=10)
+    rhino_mesh = mesh_to_mesh(rhino_mesh,trg_len,vis=5)
     
     rs.SelectObject(rhino_mesh)
     for i in range(3):
