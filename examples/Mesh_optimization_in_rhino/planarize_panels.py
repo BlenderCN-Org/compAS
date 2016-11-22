@@ -25,7 +25,7 @@ from brg.utilities.colors import i2rgb
 from brg.geometry.spatial import closest_point_on_plane
 
 import brg_rhino.utilities as rhino
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth
+from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
 
 #import utility as rhutil
 import Rhino
@@ -143,8 +143,11 @@ def mesh_max_deviation(mesh):
                    
         keys = mesh.face_vertices(fkey,ordered=True)
         points = [mesh.vertex_coordinates(key) for key in keys]
-        plane = rs.PlaneFitFromPoints(points)
-        points_planar = [rs.PlaneClosestPoint(plane, pt) for pt in points] 
+        
+        points = rs.coerce3dpointlist(points, True)
+        rc, plane = Rhino.Geometry.Plane.FitPlaneToPoints(points)
+        points_planar = [plane.ClosestPoint(pt) for pt in points]
+        
         distances = [distance(pt1,pt2) for pt1,pt2 in zip(points,points_planar)]
         max_distances.append(max(distances))
     return max(max_distances)
@@ -224,8 +227,10 @@ if __name__ == "__main__":
     
     rs.HideObject(srf)
     
-    u_div = 20
-    v_div = 12
+    u_div = rs.GetInteger("Panel division in u direction",20)
+    v_div = rs.GetInteger("Panel division in v direction",12)
+    
+    dev_threshold = rs.GetReal("Threshold in m",0.01)
     
     mesh = create_quad_mesh(srf,u_div,v_div)
 
@@ -235,7 +240,7 @@ if __name__ == "__main__":
     rs.HideObjects(mesh_faces)
     
     kmax = 1000
-    dev_threshold = 0.01
+
 
     vis = 2
 
@@ -284,18 +289,11 @@ if __name__ == "__main__":
                 
                 keys = mesh.face_vertices(fkey,ordered=True)
                 points = [mesh.vertex_coordinates(key) for key in keys]
-                plane = rs.PlaneFitFromPoints(points)
                 
-#                 if k%vis==0:
-#                     if not rs.PointsAreCoplanar(points,.01):
-#                         dots.append(rs.AddTextDot("x",centroid(points)))
-                
-                points = [rs.PlaneClosestPoint(plane, pt) for pt in points]
-                
-                
+                points = rs.coerce3dpointlist(points, True)
+                rc, plane = Rhino.Geometry.Plane.FitPlaneToPoints(points)
+                points = [plane.ClosestPoint(pt) for pt in points]
     
-                
-                
     #             dis1_min, dis1_max,dis2_min,dis2_max= diagonal[fkey] 
                 
                 if 1==1:

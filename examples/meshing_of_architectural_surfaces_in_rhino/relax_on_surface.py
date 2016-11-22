@@ -143,11 +143,7 @@ def draw(mesh,layer_1,layer_2):
 
 def wrapper(vis):
     
-
-
     def user_function(mesh,i):
-    
-     #dict((k, i) for i, k in self.vertices_enum())
      
         for key, a in mesh.vertices_iter(True):
         
@@ -174,29 +170,6 @@ def wrapper(vis):
                 draw_light(mesh,temp = True) 
                 Rhino.RhinoApp.Wait()
 
-     
-
-                
-#                 for key in mesh.vertices():
-#                     points[int(key)] = mesh.vertex_coordinates(key)
-#                 lines = [map(int, x) for x in mesh_old.edges()] 
-#                 try:
-#                     conduit = LinesConduit(points, lines)
-#                     conduit.Enabled = True
-#                     conduit.points = points
-#                     conduit.redraw()
-#                     time.sleep(0.1)
-#                 
-#                 except Exception as e:
-#                     print "no"
-#     
-# 
-#                     
-#                     
-#                 conduit.Enabled = False
-#                 del conduit
-  
-  
     return user_function
 
 
@@ -210,7 +183,7 @@ def relax_mesh_on_surface():
     pts_objs = rs.ObjectsByLayer("re_03_points")
     guides = rs.ObjectsByLayer("re_04_guides")
     
-    vis = 2
+    vis = 1
     
     rs.LayerVisible("re_02_polys", False)
     rs.LayerVisible("re_03_points", False)
@@ -248,6 +221,8 @@ def relax_mesh_on_surface():
     
     for tri in tris:
         mesh.add_face(tri)     
+     
+     
         
     user_function = wrapper(vis)    
     fixed = [key for key, a in mesh.vertices_iter(True) if a['type'] == 'fixed']

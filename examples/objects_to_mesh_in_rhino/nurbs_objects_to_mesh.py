@@ -24,7 +24,7 @@ if __name__ == '__main__':
         print("Computing Surface {0} of {1}".format(i+1,len(srfs)+1))
         rs.EnableRedraw(False)
         rs.HideObject(srf)
-        rhino_meshes.append(nurbs_to_mesh(srf,trg_len,vis=1000))
+        rhino_meshes.append(nurbs_to_mesh(srf,trg_len,vis=5))
         if srfs_explo:
             rs.DeleteObject(srf)
 
