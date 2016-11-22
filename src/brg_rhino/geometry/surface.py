@@ -19,12 +19,59 @@ __status__     = 'Development'
 __date__       = '29.09.2014'
 
 
+def surface_heightfield(self, density=10, over_space=True):
+    """"""
+    try:
+        du, dv = density
+    except TypeError:
+        du = density
+        dv = density
+    du = int(du)
+    dv = int(dv)
+    xyz = []
+    rs.EnableRedraw(False)
+    if rs.IsPolysurface(self.guid):
+        faces = rs.ExplodePolysurfaces(self.guid)
+    elif rs.IsSurface(self.guid):
+        faces = [self.guid]
+    else:
+        raise SurfaceError('object is not a surface')
+    if over_space:
+        for guid in faces:
+            face = Surface(guid)
+            uv = face.space(density)
+            for u, v in uv:
+                xyz.append(list(rs.EvaluateSurface(face.guid, u, v)))
+    else:
+        for guid in faces:
+            bbox = rs.BoundingBox(guid)
+            xmin = bbox[0][0]
+            xmax = bbox[1][0]
+            ymin = bbox[0][1]
+            ymax = bbox[3][1]
+            xstep = 1.0 * (xmax - xmin) / (du - 1)
+            ystep = 1.0 * (ymax - ymin) / (dv - 1)
+            seeds = []
+            for i in xrange(du):
+                for j in xrange(dv):
+                    seed = xmin + i * xstep, ymin + j * ystep, 0
+                    seeds.append(seed)
+            points = map(list, rs.ProjectPointToSurface(seeds, guid, [0, 0, 1]))
+            xyz += points
+    if len(faces) > 1:
+        rs.DeleteObjects(faces)
+    rs.EnableRedraw(True)
+    return xyz
+
+
 class SurfaceError(Exception):
     pass
 
 
 class Surface(object):
     """"""
+
+    heightfield = surface_heightfield
 
     def __init__(self, guid=None):
         self.guid = guid
@@ -58,50 +105,6 @@ class Surface(object):
             rs.DeleteObjects(faces)
         rs.EnableRedraw(True)
         return uv
-
-    def heightfield(self, density=10, over_space=True):
-        """"""
-        try:
-            du, dv = density
-        except TypeError:
-            du = density
-            dv = density
-        du = int(du)
-        dv = int(dv)
-        xyz = []
-        rs.EnableRedraw(False)
-        if rs.IsPolysurface(self.guid):
-            faces = rs.ExplodePolysurfaces(self.guid)
-        elif rs.IsSurface(self.guid):
-            faces = [self.guid]
-        else:
-            raise SurfaceError('object is not a surface')
-        if over_space:
-            for guid in faces:
-                face = Surface(guid)
-                uv = face.space(density)
-                for u, v in uv:
-                    xyz.append(list(rs.EvaluateSurface(face.guid, u, v)))
-        else:
-            for guid in faces:
-                bbox = rs.BoundingBox(guid)
-                xmin = bbox[0][0]
-                xmax = bbox[1][0]
-                ymin = bbox[0][1]
-                ymax = bbox[3][1]
-                xstep = 1.0 * (xmax - xmin) / (du - 1)
-                ystep = 1.0 * (ymax - ymin) / (dv - 1)
-                seeds = []
-                for i in xrange(du):
-                    for j in xrange(dv):
-                        seed = xmin + i * xstep, ymin + j * ystep, 0
-                        seeds.append(seed)
-                points = map(list, rs.ProjectPointToSurface(seeds, guid, [0, 0, 1]))
-                xyz += points
-        if len(faces) > 1:
-            rs.DeleteObjects(faces)
-        rs.EnableRedraw(True)
-        return xyz
 
     def descent(self, points=None):
         """"""

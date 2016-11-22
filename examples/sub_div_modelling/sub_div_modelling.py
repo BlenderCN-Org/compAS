@@ -457,11 +457,14 @@ if 1 == 1:
     dis = 0.1
     
     sub_mesh_obj = mesh_obj.copy()
-    subdivision_uf.catmullclark_subdivision(sub_mesh_obj,k=4,fixed=fixed)
+    subdivision_uf.catmullclark_subdivision(sub_mesh_obj,k=1,fixed=fixed)
 
     lines = [(sub_mesh_obj.vertex_coordinates(u), sub_mesh_obj.vertex_coordinates(v)) for u, v in sub_mesh_obj.edges_iter()]
+
+    print sub_mesh_obj
+    print lines
     
-    conduit = LinesConduit(lines, thickness=10, color=(0, 0, 0))
+    conduit = LinesConduit(lines)
     conduit.Enabled = True
     
     count = 10

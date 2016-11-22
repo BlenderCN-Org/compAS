@@ -72,9 +72,9 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             attr['x'] += d * (c[0] - p[0])
             attr['y'] += d * (c[1] - p[1])
             attr['z'] += d * (c[2] - p[2])
-            # in my implementation the ufunc is called before the coordinates
-            # are updated
-            # don't know which optio makes more sense...
+        # in my implementation the ufunc is called before the coordinates
+        # are updated
+        # don't know which optio makes more sense...
         if ufunc:
             ufunc(mesh, k)
 
@@ -96,11 +96,19 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             attr['x'] += d * (c[0] - p[0])
             attr['y'] += d * (c[1] - p[1])
             attr['z'] += d * (c[2] - p[2])
-            # in my implementation the ufunc is called before the coordinates
-            # are updated
-            # don't know which optio makes more sense...
+        # in my implementation the ufunc is called before the coordinates
+        # are updated
+        # don't know which optio makes more sense...
         if ufunc:
             ufunc(mesh, k)
+
+
+def mesh_smooth_dual_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
+    raise NotImplementedError
+
+
+def mesh_smooth_dual_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
+    raise NotImplementedError
 
 
 # my local implementation is based on per-edge-defined min/max values
@@ -129,13 +137,14 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None):
             attr['x'] += d * (c[0] - ep[0])
             attr['y'] += d * (c[1] - ep[1])
             attr['z'] += d * (c[2] - ep[2])
-            # in my implementation the ufunc is called before the coordinates
-            # are updated
-            # don't know which optio makes more sense...
+        # in my implementation the ufunc is called before the coordinates
+        # are updated
+        # don't know which optio makes more sense...
         if ufunc:
             ufunc(mesh, k)
 
 
+# rename to something involving dual?
 def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
     fixed = fixed or []
     fixed = set(fixed)
@@ -151,23 +160,25 @@ def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             A = 0
             x, y, z = 0, 0, 0
             for fkey in mesh.vertex_faces(key):
-                a  = fkey_area[fkey]
-                c  = fkey_centroid[fkey]
-                x += a * c[0]
-                y += a * c[1]
-                z += a * c[2]
-                A += a
-            x = x / A
-            y = y / A
-            z = z / A
+                if fkey:
+                    a  = fkey_area[fkey]
+                    c  = fkey_centroid[fkey]
+                    x += a * c[0]
+                    y += a * c[1]
+                    z += a * c[2]
+                    A += a
+            if A:
+                x = x / A
+                y = y / A
+                z = z / A
             # update
             attr = mesh.vertex[key]
             attr['x'] += d * (x - p[0])
             attr['y'] += d * (y - p[0])
             attr['z'] += d * (z - p[0])
-            # in my implementation the ufunc is called before the coordinates
-            # are updated
-            # don't know which optio makes more sense...
+        # in my implementation the ufunc is called before the coordinates
+        # are updated
+        # don't know which optio makes more sense...
         if ufunc:
             ufunc(mesh, k)
 
@@ -206,9 +217,9 @@ def mesh_smooth_angle(mesh, fixed=None, kmax=1, ufunc=None):
             attr['x'] += 0.5 * do[0]
             attr['y'] += 0.5 * do[1]
             attr['z'] += 0.5 * do[2]
-            # in my implementation the ufunc is called before the coordinates
-            # are updated
-            # don't know which optio makes more sense...
+        # in my implementation the ufunc is called before the coordinates
+        # are updated
+        # don't know which optio makes more sense...
         if ufunc:
             ufunc(mesh, k)
 
