@@ -1,9 +1,15 @@
+print "hello"
+
+
 import time
 import rhinoscriptsyntax as rs  
 import math
 from brg_rhino.datastructures.mesh import RhinoMesh
 from brg_rhino.conduits.lines import LinesConduit
 import brg_rhino.utilities as rhino
+
+
+
 
 import subdivision_uf
 from brg.datastructures.mesh.operations.split import split_edge
@@ -386,19 +392,17 @@ def get_vertices(mesh,layer=None):
 
 def create_conduit(mesh):
     tic = time.time()
-    points = [None] * len(mesh.vertices())
-    for key in mesh.vertices():
-        points[int(key)] = mesh.vertex_coordinates(key)
-    lines = [map(int, x) for x in mesh.edges()] 
+    lines = [(mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)) for u, v in mesh.edges_iter()]
             
     try:
-        conduit = LinesConduit(points, lines,thickness=1, color=(255,255,255))
+        conduit = LinesConduit(lines)
         conduit.Enabled = True
         conduit.redraw()
     except Exception as e:
-        print e
         conduit.Enabled = False
         del conduit
+        raise e
+
     tac = time.time()
     print '{0} s for conduit'.format(round(tac-tic,4))
     return conduit
@@ -451,70 +455,86 @@ if 1 == 1:
     break_flag = False
     selection = ""
     dis = 0.1
-    while True:
-        mesh_obj.draw(name="control",
-                     layer="SD_mesh",
-                     clear=True,
-                     redraw=True,
-                     show_faces=True,  # rename to display_faces?
-                     show_vertices=True,  # rename to display_vertices?
-                     show_edges=True,  # rename to display_edges?
-                     vertex_color=None,
-                     edge_color=None,
-                     face_color=None)
-        tic = time.time()
-        
-        sub_mesh_obj =  mesh_obj.copy()
-        subdivision_uf.catmullclark_subdivision(sub_mesh_obj,k=4,fixed=fixed)
-        conduit = create_conduit(sub_mesh_obj)
+    
+    sub_mesh_obj = mesh_obj.copy()
+    subdivision_uf.catmullclark_subdivision(sub_mesh_obj,k=4,fixed=fixed)
 
-        selection = rs.GetString("Commands: ",selection,["offset","split","unweld","move"])
-        if not selection: break_flag = True
-        if selection == "offset":
-            fkey = get_face(mesh_obj,"SD_mesh")
-            if not fkey or not dis:break_flag = True
-            dis = rs.GetReal("Offset value",dis)
-            if dis:
-                offset_face(mesh_obj,fkey,dis)
-            
-        if selection == "split":
-            uv,t = get_edge_keys_and_param(layer="SD_mesh")
-            if uv: 
-                add_loop(mesh_obj,uv,t)
-                
-                
-        if selection == "unweld":
-            fkey = get_face(mesh_obj,"SD_mesh")
-            
-            keys = get_vertices(mesh_obj,"SD_mesh")
-            if fkey and keys: 
-                unweld(mesh_obj,fkey,keys)
-                
-#        mesh_obj.draw(name="control",
-#                     layer="SD_mesh",
-#                     clear=False,
-#                     redraw=True,
-#                     show_faces=False,  # rename to display_faces?
-#                     show_vertices=False,  # rename to display_vertices?
-#                     show_edges=False,  # rename to display_edges?
-#                     vertex_color=None,
-#                     edge_color=None,
-#                     face_color=None,
-#                     show_faces_mesh=True)
-#        print mesh_obj
-#        break
-        if break_flag:
-            try:
-                conduit.Enabled = False
-                conduit.redraw()
-                del conduit
-            except: pass
-            break
-        try:
-            conduit.Enabled = False
-            conduit.redraw()
-            del conduit
-        except: pass
+    lines = [(sub_mesh_obj.vertex_coordinates(u), sub_mesh_obj.vertex_coordinates(v)) for u, v in sub_mesh_obj.edges_iter()]
+    
+    conduit = LinesConduit(lines, thickness=10, color=(0, 0, 0))
+    conduit.Enabled = True
+    
+    count = 10
+    while count:
+        conduit.redraw()
+        time.sleep(0.5)
+        count -= 1
+        
+    conduit.Enabled = False
+    del conduit
+    
+    
+#     while True:
+#         mesh_obj.draw(name="control",
+#                      layer="SD_mesh",
+#                      clear=True,
+#                      redraw=True,
+#                      show_faces=True,  # rename to display_faces?
+#                      show_vertices=True,  # rename to display_vertices?
+#                      show_edges=True,  # rename to display_edges?
+#                      vertex_color=None,
+#                      edge_color=None,
+#                      face_color=None)
+#         tic = time.time()
+#         
+#         sub_mesh_obj =  mesh_obj.copy()
+#         subdivision_uf.catmullclark_subdivision(sub_mesh_obj,k=4,fixed=fixed)
+#         
+#         conduit.lines = [(sub_mesh_obj.vertex_coordinates(u), sub_mesh_obj.vertex_coordinates(v)) for u, v in sub_mesh_obj.edges_iter()]
+#         conduit.redraw()
+#         rhino.wait()
+# 
+#         selection = rs.GetString("Commands: ",selection,["offset","split","unweld","move"])
+#         if not selection: break_flag = True
+#         if selection == "offset":
+#             fkey = get_face(mesh_obj,"SD_mesh")
+#             if not fkey or not dis:break_flag = True
+#             dis = rs.GetReal("Offset value",dis)
+#             if dis:
+#                 offset_face(mesh_obj,fkey,dis)
+#             
+#         if selection == "split":
+#             uv,t = get_edge_keys_and_param(layer="SD_mesh")
+#             if uv: 
+#                 add_loop(mesh_obj,uv,t)
+#                 
+#                 
+#         if selection == "unweld":
+#             fkey = get_face(mesh_obj,"SD_mesh")
+#             
+#             keys = get_vertices(mesh_obj,"SD_mesh")
+#             if fkey and keys: 
+#                 unweld(mesh_obj,fkey,keys)
+#                 
+# #        mesh_obj.draw(name="control",
+# #                     layer="SD_mesh",
+# #                     clear=False,
+# #                     redraw=True,
+# #                     show_faces=False,  # rename to display_faces?
+# #                     show_vertices=False,  # rename to display_vertices?
+# #                     show_edges=False,  # rename to display_edges?
+# #                     vertex_color=None,
+# #                     edge_color=None,
+# #                     face_color=None,
+# #                     show_faces_mesh=True)
+# #        print mesh_obj
+# #        break
+#         if break_flag:
+#             try:
+#                 conduit.Enabled = False
+#                 del conduit
+#             except: pass
+#             break
 
 objs = rs.ObjectsByLayer("SD_mesh")
 if objs: rs.DeleteObjects(objs)
