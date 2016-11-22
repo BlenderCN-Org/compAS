@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-# @Date    : 2016-03-21 09:50:20
-# @Author  : Tom Van Mele (vanmelet@ethz.ch)
-# @Version : $Id$
 
+""""""
 
 from brg.geometry.functions import angle_smallest as angle
 from brg.geometry.planar import is_ccw
@@ -10,11 +8,10 @@ from brg.geometry.planar import is_ccw
 import warnings
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Dec 15, 2014'
+__email__      = '<vanmelet@ethz.ch>'
 
 
 def construct_network_dual(network, cls, find_faces=True):

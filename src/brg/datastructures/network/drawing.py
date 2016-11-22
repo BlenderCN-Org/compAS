@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Date    : 2016-03-21 09:50:20
-# @Author  : Tom Van Mele (vanmelet@ethz.ch)
-# @Version : $Id$
+"""Basic two-dimensional drawing functionality for networks based on Matplotlib."""
 
 
 import matplotlib.pyplot as plt
@@ -12,11 +10,10 @@ from brg.geometry import centroid
 from brg.utilities import color_to_colordict
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Dec 15, 2014'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, BRG - ETH Zurich'
+__license__    = 'MIT'
+__email__      = '<vanmelet@ethz.ch>'
 
 
 DEFAULT_TEXT_COLOR   = '#000000'

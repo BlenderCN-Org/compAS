@@ -14,7 +14,7 @@ from spatial import closest_point_on_segment
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __date__       = 'Oct 3, 2014'
@@ -220,6 +220,95 @@ def is_point_in_triangle(p, abc):
         return True
     return False
 
+def is_point_in_polygon(points,tp):
+    """Verify if a point is in the interior of a polygon.
+    
+    Note:
+        This test only makes sense in the x/y plane
+    
+    Parameters:
+        points (Polygon): list of ordered points.
+        tp (3-tuple): 3d test point 
+        
+        not implemented:
+            include_boundary (bool): Should the boundary be included in the test? 
+                Defaults to False.
+            A tolerance value would be nice too... float errors are problematic 
+            points which are located on the boundary are not always uniquely defines as inside/outside    
+    
+    Returns:
+        bool: True if the point is in the polygon, False otherwise.
+    """
+    x,y = tp[0],tp[1]
+    
+    points = [(pt[0],pt[1]) for pt in points]# make 2D
+    
+    n = len(points)
+    inside =False
+    p1x,p1y = points[0]
+    for i in range(n+1):
+        p2x,p2y = points[i % n]
+        if y > min(p1y,p2y):
+            if y <= max(p1y,p2y):
+                if x <= max(p1x,p2x):
+                    if p1y != p2y:
+                        xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+                    if p1x == p2x or x <= xinters:
+                        inside = not inside
+        p1x,p1y = p2x,p2y
+    return inside
+
+def is_point_in_circle(pt1,pt2,pt3, tp):
+    centPt, radius = circle_from_points_2d(pt1,pt2,pt3)
+    #    if not temp:
+    #        return False
+    #    centPt, radius = temp
+    #    rs.AddCircle((centPt[0],centPt[1],0),radius)
+
+    if(is_point_in_rectangle(centPt, radius, tp)):
+        dx = centPt[0] - tp[0]
+        dy = centPt[1] - tp[1]
+        dx *= dx
+        dy *= dy
+        distanceSquared = dx + dy
+        radiusSquared = radius * radius
+        return distanceSquared <= radiusSquared
+    return False
+
+#needed in is_point_in_circle
+def circle_from_points_2d(pt1,pt2,pt3):
+
+    ax =pt1[0] 
+    ay = pt1[1]  #first Point X and Y
+    bx =pt2[0]  
+    by = pt2[1]   #Second Point X and Y
+    cx =pt3[0]  
+    cy =pt3[1]   #Third Point X and Y
+    #****************Following are Basic Procedure**********************///
+    x1 = (bx + ax) / 2
+    y11 = (by + ay) / 2
+    dy1 = bx - ax
+    dx1 = -(by - ay)
+    #***********************
+    x2 = (cx + bx) / 2
+    y2 = (cy + by) / 2
+    dy2 = cx - bx
+    dx2 = -(cy - by)
+    #****************************
+    try:
+        ox = (y11 * dx1 * dx2 + x2 * dx1 * dy2 - x1 * dy1 * dx2 - y2 * dx1 * dx2)/ (dx1 * dy2 - dy1 * dx2)
+        oy = (ox - x1) * dy1 / dx1 + y11
+    except:
+        return None,None
+    #***********************************
+    dx = ox - ax
+    dy = oy - ay
+    radius = (dx * dx + dy * dy)**0.5
+    return (ox,oy,0),radius
+
+#needed in is_point_in_circle
+def is_point_in_rectangle(centPt, radius, testPt):
+    return testPt[0] >= centPt[0] - radius and testPt[0] <= centPt[0] + radius and testPt[1] >= centPt[1] - radius and testPt[1] <= centPt[1] + radius
 
 def is_ray_intersecting_triangle(p1, v1, a, b, c):
     """

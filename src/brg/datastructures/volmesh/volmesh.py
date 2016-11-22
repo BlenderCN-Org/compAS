@@ -1,42 +1,26 @@
+# -*- coding: utf-8 -*-
 """This module defines the base class for cellular meshes.
 
-The implementation of the base class is based on the notion of `x-maps` [xmaps]_
-and the concepts behind the `OpenVolumeMesh` library [ovm]_.
-
-In short, we add an additional entity compared to polygonal meshes, the `cell`,
-and relate cells not through `half-edges`, but `half-planes`.
-
-Half-edges only exist unambiguously in the context of faces...
-
-
-.. rubric:: References
-
-.. [xmaps] Cazier, D. and Kraemer, P. [2010] X-maps: an efficient model for non-manifold modeling, IEEE Interntional Conference on Shape Modeling and Applications 2010.
-.. [ovm] `OpenVolumeMesh <http://openvolumemesh.org>`_
+The implementation of the base class is based on the notion of *x-maps* [xmaps]_
+and the concepts behind the *OpenVolumeMesh* library [ovm]_. In short, we add an
+additional entity compared to polygonal meshes, the *cell*, and relate cells not
+through *half-edges*, but *half-planes*.
 
 """
 
 import json
 from math import sqrt
 
-from brg.datastructures.network.network import Network
 from brg.datastructures.mesh.mesh import Mesh
 from brg.datastructures.volmesh.exceptions import VolMeshError
 
 from brg.geometry import centroid
-# from brg.geometry import center_of_mass
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Dec 15, 2014'
-
-
-docs = [
-    'VolMesh',
-]
+__email__      = '<vanmelet@ethz.ch>'
 
 
 def center_of_mass(edges, sqrt=sqrt):

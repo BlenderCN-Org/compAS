@@ -12,3 +12,6 @@ syntax: glob
 *.pyc
 *.in
 *.out
+docs/_build
+docs/_static
+docs/_templates

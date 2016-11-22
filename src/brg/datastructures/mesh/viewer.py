@@ -5,7 +5,7 @@ from brg.viewers.drawing import xdraw_points
 
 
 __author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
@@ -122,6 +122,8 @@ class SubdMeshViewer(Viewer):
             self.subd = self.subdfunc(self.mesh, k=3)
         if key == '4':
             self.subd = self.subdfunc(self.mesh, k=4)
+        if key == '5':
+            self.subd = self.subdfunc(self.mesh, k=5)
 
 
 # ==============================================================================

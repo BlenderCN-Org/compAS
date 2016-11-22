@@ -7,7 +7,7 @@ from brg.datastructures.mesh.algorithms.optimisation import mesh_smooth
 
 
 __author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'GNU - General Public License'
 __version__    = '0.0.1'
 __email__      = 'vanmelet@ethz.ch'

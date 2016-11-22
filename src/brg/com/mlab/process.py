@@ -31,7 +31,7 @@ from scipy.io import loadmat
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __date__       = '2016-08-29 23:34:28'

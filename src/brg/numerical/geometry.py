@@ -4,7 +4,7 @@ from brg.numerical.linalg import normrow
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __date__       = 'Oct 20, 2016'
@@ -33,3 +33,7 @@ def lengths(C, X):
     """
     uvw = C.dot(X)
     return uvw, normrow(uvw)
+
+
+def rotate(points):
+    raise NotImplementedError

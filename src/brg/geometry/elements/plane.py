@@ -5,7 +5,7 @@ from vector import Vector
 
 
 __author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 __date__       = 'Oct 6, 2014'

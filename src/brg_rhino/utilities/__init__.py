@@ -48,11 +48,12 @@ from objects import get_line_coordinates
 from objects import get_polyline_coordinates
 from objects import get_polygon_coordinates
 
-from objects import get_surface
-from objects import get_surfaces
+from objects import select_surface
+from objects import select_surfaces
 
 from objects import select_mesh
 from objects import select_meshes
+
 from objects import get_mesh
 from objects import get_meshes
 from objects import get_mesh_edge_index

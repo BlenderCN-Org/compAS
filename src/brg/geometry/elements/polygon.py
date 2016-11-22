@@ -1,6 +1,6 @@
 """This module defines a ``Polygon`` object
 
-..  Copyright 2014 BLOCK Research Group
+..  Copyright 2014 Block Research Group
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ from brg.geometry.functions import cross
 
 
 __author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
@@ -37,7 +37,7 @@ __status__     = 'Development'
 __date__       = '29.09.2014'
 __contact__    = """ETH Zurich,
 Institute for Technology in Architecture,
-BLOCK Research Group,
+Block Research Group,
 Stefano-Franscini-Platz 5,
 HIL H 47,
 8093 Zurich, Switzerland

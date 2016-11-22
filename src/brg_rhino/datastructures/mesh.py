@@ -1,3 +1,5 @@
+""""""
+
 from brg.datastructures import Mesh
 from brg.utilities.maps import geometric_key
 
@@ -12,6 +14,8 @@ from brg_rhino.geometry.surface import Surface
 import brg_rhino.utilities as rhino
 
 try:
+    import Rhino
+    import scriptcontext as sc
     import rhinoscriptsyntax as rs
 
 except ImportError as e:
@@ -23,13 +27,6 @@ except ImportError as e:
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Jun 19, 2015'
-
-
-docs = [
-    'RhinoMesh'
-]
 
 
 @rhino.add_gui_helpers((
@@ -84,12 +81,49 @@ class RhinoMesh(Mesh):
         return mesh
 
     @classmethod
-    def from_surface(cls, guid, density=(10, 10), **kwargs):
-        surface = Surface(guid)
+    def from_surface(cls, guid, **kwargs):
+        gkey_xyz = {}
+        faces = []
+        obj = sc.doc.Objects.Find(guid)
+        if not obj.Geometry.HasBrepForm:
+            return
+        brep = Rhino.Geometry.Brep.TryConvertBrep(obj.Geometry)
+        for loop in brep.Loops:
+            curve = loop.To3dCurve()
+            segments = curve.Explode()
+            face = []
+            sp = segments[0].PointAtStart
+            ep = segments[0].PointAtEnd
+            sp_gkey = geometric_key(sp)
+            ep_gkey = geometric_key(ep)
+            gkey_xyz[sp_gkey] = sp
+            gkey_xyz[ep_gkey] = ep
+            face.append(sp_gkey)
+            face.append(ep_gkey)
+            for segment in segments[1:-1]:
+                ep = segment.PointAtEnd
+                ep_gkey = geometric_key(ep)
+                face.append(ep_gkey)
+                gkey_xyz[ep_gkey] = ep
+            faces.append(face)
+        gkey_index = dict((gkey, index) for index, gkey in enumerate(gkey_xyz))
+        vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
+        faces = [[gkey_index[gkey] for gkey in f] for f in faces]
+        mesh = cls.from_vertices_and_faces(vertices, faces)
+        mesh.attributes.update(kwargs)
+        return mesh
+
+    @classmethod
+    def from_surface_uv(cls, guid, density=(10, 10), **kwargs):
+        raise NotImplementedError
+
+    @classmethod
+    def from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
         try:
             u, v = density
         except:
             u, v = density, density
+        surface = Surface(guid)
         mesh = cls()
         mesh.attributes.update(kwargs)
         vertices = surface.heightfield(density=(u, v), over_space=True)
@@ -104,66 +138,16 @@ class RhinoMesh(Mesh):
                 mesh.add_face(face)
         return mesh
 
-    # add parameter for maximum deviation from original geometry
-    # split faces accordingly
-    # for example, measure distance between potentail split point
-    # and the corresponding curved surface
     @classmethod
-    def from_polysurface(cls, guid, **kwargs):
-        vertices = {}
-        faces    = []
-        gkey_key = {}
-        count    = 0
-        surfaces = rs.ExplodePolysurfaces(guid, False)
-        for surface in surfaces:
-            curves = rs.DuplicateEdgeCurves(surface)
-            halfedges = []
-            for curve in curves:
-                sp = rs.CurveStartPoint(curve)
-                ep = rs.CurveEndPoint(curve)
-                sp_gkey = geometric_key(sp)
-                ep_gkey = geometric_key(ep)
-                if sp_gkey not in gkey_key:
-                    gkey_key[sp_gkey] = str(count)
-                    count += 1
-                if ep_gkey not in gkey_key:
-                    gkey_key[ep_gkey] = str(count)
-                    count += 1
-                u = gkey_key[sp_gkey]
-                v = gkey_key[ep_gkey]
-                vertices[u] = map(float, sp)
-                vertices[v] = map(float, ep)
-                halfedges.append([u, v])
-            rs.DeleteObjects(curves)
-            face = []
-            start, end = halfedges[0]
-            face.append(start)
-            face.append(end)
-            found = set()
-            for i in range(1, len(halfedges)):
-                for j in range(1, len(halfedges)):
-                    if j in found:
-                        continue
-                    u, v = halfedges[j]
-                    if u == end:
-                        face.append(u)
-                        start, end = u, v
-                        found.add(j)
-                        break
-                    if v == end:
-                        face.append(v)
-                        halfedges[j] = v, u
-                        start, end = v, u
-                        found.add(j)
-                        break
-            faces.append(face)
-        rs.DeleteObjects(surfaces)
-        key_index = dict((key, index) for index, key in enumerate(vertices))
-        vertices  = [xyz for key, xyz in vertices.items()]
-        faces     = [[key_index[key] for key in face] for face in faces]
-        mesh      = cls.from_vertices_and_faces(vertices, faces)
-        mesh.attributes.update(kwargs)
-        return mesh
+    def from_rhinogeometry(cls):
+        raise NotImplementedError
+
+    # --------------------------------------------------------------------------
+    # convert
+    # --------------------------------------------------------------------------
+
+    def to_rhinogeometry(self):
+        raise NotImplementedError
 
     # --------------------------------------------------------------------------
     # drawing

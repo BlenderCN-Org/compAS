@@ -22,4 +22,6 @@ TriMesh
    .. rubric:: **Methods**
 
    .. automethod:: brg.datastructures.mesh.tri.TriMesh.add_face
+   .. automethod:: brg.datastructures.mesh.tri.TriMesh.edge_cotangent
+   .. automethod:: brg.datastructures.mesh.tri.TriMesh.edge_cotangents
    .. automethod:: brg.datastructures.mesh.tri.TriMesh.is_extraordinary

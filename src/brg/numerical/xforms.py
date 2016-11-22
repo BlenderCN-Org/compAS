@@ -8,7 +8,7 @@ from numpy import array
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
                   'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __date__       = 'Oct 20, 2016'
@@ -75,22 +75,21 @@ def rotation_matrix(angle, direction, point=None, rtype='list'):
          [ 1.]
          [ 1.]]
     """
-# To perform a rotation around an arbitrary line (i.e. an axis not through
-# the origin) an origin other than (0, 0, 0) may be provided for the
-# direction vector. Note that the returned 'rotation matrix' is then
-# composed of three translations and a rotation: Tp-1 Txy-1 Tz-1 R Tz Txy Tp
+    # To perform a rotation around an arbitrary line (i.e. an axis not through
+    # the origin) an origin other than (0, 0, 0) may be provided for the
+    # direction vector. Note that the returned 'rotation matrix' is then
+    # composed of three translations and a rotation: Tp-1 Txy-1 Tz-1 R Tz Txy Tp
     l = sum(direction[i] ** 2 for i in range(3)) ** 0.5
     u = [direction[i] / l for i in range(3)]
     cosa = cos(angle)
     sina = sin(angle)
     mca = 1 - cosa
-    R = [[cosa + u[0] ** 2  * mca, u[0] * u[1] * mca - u[2] * sina,  u[0] * u[2] * mca + u[1] * sina],
+    R = [[cosa + u[0] ** 2  * mca, u[0] * u[1] * mca - u[2] * sina, u[0] * u[2] * mca + u[1] * sina],
          [u[1] * u[0] * mca + u[2] * sina, cosa + u[1] ** 2 * mca, u[1] * u[2] * mca - u[0] * sina],
          [u[2] * u[0] * mca - u[1] * sina, u[2] * u[1] * mca + u[0] * sina, cosa + u[2] ** 2 * mca]]
-    if  rtype == 'list':
-        return R
-    elif rtype == 'array':
+    if rtype == 'array':
         return array(R)
+    return R
 
 
 def scale_matrix(factor, rtype='list'):
@@ -119,7 +118,7 @@ def scale_matrix(factor, rtype='list'):
     S = [[factor, 0, 0],
          [0, factor, 0],
          [0, 0, factor]]
-    if  rtype == 'list':
+    if rtype == 'list':
         return S
     elif rtype == 'array':
         return array(S)

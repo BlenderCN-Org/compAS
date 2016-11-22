@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Date    : 2016-03-21 09:50:20
-# @Author  : Tom Van Mele (vanmelet@ethz.ch)
-# @Version : $Id$
 
 import json
 
@@ -18,11 +15,10 @@ from brg.datastructures.utilities import geometric_key
 from brg.datastructures.traversal import bfs
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 7, 2014'
+__email__      = '<vanmelet@ethz.ch>'
 
 
 # is this a good idea?!

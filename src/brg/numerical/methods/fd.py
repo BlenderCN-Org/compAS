@@ -1,4 +1,4 @@
-"""brg.numerical.methods.fd : The force-density method."""
+"""brg.numerical.methods.fd : The force density method."""
 
 from numpy import array
 
@@ -11,26 +11,13 @@ from brg.numerical.linalg import normrow
 from result import Result
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 20, 2016'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
+__license__    = 'MIT'
+__email__      = 'vanmelet@ethz.ch'
 
 
 def fd(vertices, edges, fixed, q, loads):
-    """Force-density numerical method.
-
-    Parameters:
-        vertices (list): Vertices' x, y and z co-ordinates.
-        edges (list): Connectivity information of edges
-        fixed (list): Indices of vertices fixed from spatial translations.
-        q (list): Force densities of edges.
-        loads (list): Point loads (px, py, pz) applied to vertices.
-
-    Returns:
-        obj: Result class of output data.
-    """
     num_v     = len(vertices)
     free      = list(set(range(num_v)) - set(fixed))
     xyz       = array(vertices, dtype=float).reshape((-1, 3))

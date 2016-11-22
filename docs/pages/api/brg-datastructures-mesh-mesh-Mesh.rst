@@ -46,6 +46,7 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.add_faces
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.add_vertex
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.add_vertices
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.clear
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.copy
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.cull_unused_edges
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.cull_unused_vertices
@@ -78,8 +79,13 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_face_vertex
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_any_vertex
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_edge_attribute
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_edges_attribute
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_edges_attributes
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_face_attribute
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_vertex_attribute
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_vertex_attributes
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_vertices_attribute
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.get_vertices_attributes
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.has_edge
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.index_key
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.insert_vertex
@@ -109,7 +115,9 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.set_vertex_attribute
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_data
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_json
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_lines
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_obj
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_points
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_quadmesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.to_trimesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.vertex_adjacency

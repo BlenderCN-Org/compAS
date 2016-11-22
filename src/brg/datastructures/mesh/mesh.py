@@ -396,6 +396,9 @@ mesh summary
         mesh = cls.from_data(data)
         return mesh
 
+    def clear(self):
+        raise NotImplementedError
+
     def get_any_vertex(self):
         return next(self.vertices_iter())
 
@@ -632,6 +635,13 @@ mesh summary
             mesh.add_face(vertices, fkey=fkey)
         return mesh
 
+    def to_lines(self, axes='xyz'):
+        return [(self.vertex_coordinates(u, axes), self.vertex_coordinates(v, axes))
+                for u, v in self.edges_iter()]
+
+    def to_points(self, axes='xyz'):
+        return [self.vertex_coordinates(key, axes) for key in self]
+
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
@@ -737,7 +747,7 @@ mesh summary
             str: The keys of the newly created faces.
 
         Raises:
-            VelueError: If the face does not exist.
+            ValueError: If the face does not exist.
         """
         fkeys = []
         if not xyz:
@@ -1218,8 +1228,6 @@ mesh summary
             return self.halfedge
         raise NotImplementedError
 
-    # ordered vs ordering
-    # see equivalent function in network
     def vertex_neighbours(self, key, ordered=False):
         if not ordered:
             return self.halfedge[key].keys()
@@ -1232,8 +1240,6 @@ mesh summary
                 start = nbr
                 break
         fkey = self.halfedge[start][key]
-        # if fkey is None:
-        #     raise MeshError
         nbrs = []
         nbrs.append(start)
         count = 1000
@@ -1317,27 +1323,8 @@ mesh summary
                 return True
         return False
 
-    def vertices_on_boundary(self, ordered=False):
-        if not ordered:
-            vertices = set()
-            for key, nbrs in self.halfedge.iteritems():
-                for nbr, face in nbrs.iteritems():
-                    if face is None:
-                        vertices.add(key)
-                        vertices.add(nbr)
-            return vertices
-        key = sorted(self.vertices_iter(data=True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
-        vertices = [key]
-        start = key
-        while 1:
-            for nbr, fkey in self.halfedge[key].iteritems():
-                if fkey is None:
-                    vertices.append(nbr)
-                    key = nbr
-                    break
-            if key == start:
-                break
-        return vertices
+    def is_vertex_extraordinary(self, key, mtype=None):
+        raise NotImplementedError
 
     # **************************************************************************
     # **************************************************************************
@@ -1396,6 +1383,10 @@ mesh summary
         vnbrs = self.face_vertex_neighbours(fkey)
         return set(enbrs + vnbrs)
 
+    # perhaps this can be improved by using nearest-neighbour filtering of the
+    # faces to test for
+    # kdtree, rtree, ...?
+    # only search the k nearest neighbours of the current face
     def face_adjacency(self):
         # this function does not actually use any of the topological information
         # provided by the halfedges
@@ -1423,14 +1414,6 @@ mesh summary
     #     uv_halfedge = dict(((u, v), self.halfedge[u][v]) for u, v in self.halfedge.iteritems())
     #     vu_halfedge = dict(((v, u), self.halfedge[u][v]) for u, v in self.halfedge.iteritems())
 
-    def faces_on_boundary(self):
-        faces = {}
-        for key, nbrs in self.halfedge.iteritems():
-            for nbr, fkey in nbrs.iteritems():
-                if fkey is None:
-                    faces[self.halfedge[nbr][key]] = 1
-        return faces.keys()
-
     def face_tree(self, root, algo=bfs):
         return algo(self.face_adjacency(), root)
 
@@ -1451,9 +1434,6 @@ mesh summary
 
     def is_edge_naked(self, u, v):
         return (self.halfedge[u][v] is None or self.halfedge[v][u] is None)
-
-    def edges_on_boundary(self):
-        return [(u, v) for u, v in self.edges_iter() if self.is_edge_naked(u, v)]
 
     # **************************************************************************
     # **************************************************************************
@@ -1555,6 +1535,51 @@ mesh summary
             return vec
         vec_len = length(vec)
         return [axis / vec_len for axis in vec]
+
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # boundary
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+    # **************************************************************************
+
+    def vertices_on_boundary(self, ordered=False):
+        if not ordered:
+            vertices = set()
+            for key, nbrs in self.halfedge.iteritems():
+                for nbr, face in nbrs.iteritems():
+                    if face is None:
+                        vertices.add(key)
+                        vertices.add(nbr)
+            return vertices
+        key = sorted(self.vertices_iter(data=True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        vertices = [key]
+        start = key
+        while 1:
+            for nbr, fkey in self.halfedge[key].iteritems():
+                if fkey is None:
+                    vertices.append(nbr)
+                    key = nbr
+                    break
+            if key == start:
+                break
+        return vertices
+
+    def faces_on_boundary(self):
+        faces = {}
+        for key, nbrs in self.halfedge.iteritems():
+            for nbr, fkey in nbrs.iteritems():
+                if fkey is None:
+                    faces[self.halfedge[nbr][key]] = 1
+        return faces.keys()
+
+    def edges_on_boundary(self):
+        return [(u, v) for u, v in self.edges_iter() if self.is_edge_naked(u, v)]
 
     # **************************************************************************
     # **************************************************************************

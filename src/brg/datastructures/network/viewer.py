@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+"""An OpenGL viewer for visualising networks."""
 
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -8,15 +11,15 @@ from brg.viewers.drawing import xdraw_points
 from brg.viewers.drawing import xdraw_lines
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 2, 2014'
+__email__      = '<vanmelet@ethz.ch>'
 
 
 class NetworkViewer(Viewer):
     """"""
+
     def __init__(self, network, width=1280, height=800):
         super(NetworkViewer, self).__init__(width=width, height=height)
         self.network = network

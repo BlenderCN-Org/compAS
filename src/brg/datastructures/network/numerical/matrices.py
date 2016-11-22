@@ -1,19 +1,13 @@
-# -*- coding: utf-8 -*-
-# @Date    : 2016-03-21 09:50:20
-# @Author  : Tom Van Mele (vanmelet@ethz.ch)
-# @Version : $Id$
-
+""""""
 
 from numpy import array
-
 from scipy.sparse import coo_matrix
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Dec 15, 2014'
+__email__      = '<vanmelet@ethz.ch>'
 
 
 def adjacency_matrix(network, rtype='array'):
@@ -71,19 +65,41 @@ def connectivity_matrix(network, rtype='array'):
 
 
 def laplacian_matrix(network, rtype='array'):
-    """"""
+    """Construct the Laplacian matrix of a network.
+
+    Parameters:
+        network (brg.datastructures.network.network.Network) :
+            The network datastructure.
+        rtype (str) :
+            Optional.
+            The format in which the Laplacian should be returned.
+            Default is `'array'`.
+
+    Returns:
+        array-like :
+            The Laplacian matrix in the format specified by `rtype`.
+            Possible values are `'list'`, `'array'`, `'csr'`, '`csc`', `'coo'`
+
+    >>> network = Network.from_obj('lines.obj')
+    >>> L = laplacian_matrix(network)
+    >>> x = array(network.xyz)
+    >>> d = L.dot(x)
+    >>> c = x - d
+
+    """
     C = connectivity_matrix(network, rtype='csr')
     L = C.transpose().dot(C)
+    if rtype == 'list':
+        return L.toarray().tolist()
     if rtype == 'array':
         return L.toarray()
-    elif rtype == 'csr':
+    if rtype == 'csr':
         return L.tocsr()
-    elif rtype == 'csc':
+    if rtype == 'csc':
         return L.tocsc()
-    elif rtype == 'coo':
+    if rtype == 'coo':
         return L.tocoo()
-    else:
-        return L
+    return L
 
 
 # ==============================================================================
@@ -112,9 +128,17 @@ if __name__ == '__main__':
     xyz = [network.vertex_coordinates(key, 'xy') for key in network.vertices_iter()]
     xyz = array(xyz, dtype=float).reshape((-1, 2))
 
-    centroids1 = [centroid([network.vertex_coordinates(nbr, 'xy') for nbr in network.neighbours(key)]) for key in network.vertices_iter()]
+    centroids1 = [centroid([network.vertex_coordinates(nbr, 'xy')
+                  for nbr in network.neighbours(key)])
+                  for key in network.vertices_iter()]
+
     centroids1 = array(centroids1, dtype=float)
 
+    # d = L.dot(xyz) is currently a vector that points from the centroid to the vertex
+    # therefore c = xyz - d
+    # by changing the signs in the laplacian
+    # the dsiplacement vectors could be used in a more natural way
+    # c = xyz + d
     centroids2 = xyz - L.dot(xyz)
     centroids3 = A.dot(xyz) / D.diagonal().reshape((-1, 1))
 

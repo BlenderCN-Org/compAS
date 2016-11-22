@@ -21,7 +21,7 @@ except ImportError as e:
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __date__       = 'Oct 17, 2016'

@@ -9,7 +9,7 @@ from axes import Axes
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Shajay Bhooshan']
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __version__    = '0.1'
 __date__       = 'Oct 2, 2014'

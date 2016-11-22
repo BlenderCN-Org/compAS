@@ -1,4 +1,5 @@
 """This module defines basic geometry functions.
+
 All functions assume the provided input is three-dimensional. A corresponding
 two-dimensional function can be accessed by appending ``_2d`` to the function
 name.
@@ -25,11 +26,10 @@ from math import pi
 from math import sqrt
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__author__     = 'Tom Van Mele'
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 3, 2014'
+__email__      = '<vanmelet@ethz.ch>'
 
 
 SQRT_05 = sqrt(0.5)
@@ -264,6 +264,39 @@ def vector_component_2d(u, v):
     return x * v[0], x * v[1]
 
 
+def bounding_box(points):
+    
+    """Computes the bounding box of a list of points.
+
+    Warning:
+  
+
+    Parameters:
+
+
+    Returns:
+       
+
+    Examples:
+       
+    """
+    x, y, z = zip(*points)
+    min_x = min(x)
+    max_x = max(x)
+    min_y = min(y)
+    max_y = max(y)
+    min_z = min(z)
+    max_z = max(z)
+    return [(min_x, min_y, min_z),
+            (max_x, min_y, min_z),
+            (max_x, max_y, min_z),
+            (min_x, max_y, min_z),
+            (min_x, min_y, max_z),
+            (max_x, min_y, max_z),
+            (max_x, max_y, max_z),
+            (min_x, max_y, max_z)]
+
+
 def centroid(points):
     """Compute the centroid of the sequence of points.
 
@@ -383,8 +416,11 @@ def center_of_mass(polygon):
         tuple of floats: The XYZ coordinates of the center of mass.
 
     Examples:
-        >>> center_of_mass()
-
+        pts = [(0.,0.,0.),(1.,0.,0.),(0.,10.,0.)]
+        
+        print ("Center of mass: {0}".format(center_of_mass(pts)))
+        print ("Centroid: {0}".format(centroid(pts)))
+    
     """
     L  = 0
     cx = 0

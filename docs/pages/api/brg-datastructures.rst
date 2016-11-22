@@ -22,3 +22,5 @@ The BRG framework currently provides three types of datastructures:
    :maxdepth: 1
 
    brg-datastructures-mesh
+   brg-datastructures-network
+   brg-datastructures-volmesh

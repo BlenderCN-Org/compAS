@@ -27,27 +27,35 @@ __date__       = 'Sep 26, 2014'
 
 __all__ = [
     'set_color',
+
     'is_line',
     'is_polyline',
     'is_polygon',
+
     'delete_objects',
+
     'get_objects',
     'get_object_names',
     'get_object_attributes',
     'get_points',
     'get_point_coordinates',
+
     'select_curve',
     'select_curves',
     'select_lines',
     'select_polylines',
     'select_polygons',
+    'select_surface',
+    'select_surfaces',
+    'select_mesh',
+    'select_meshes',
+
     'get_lines',
     'get_polylines',
     'get_polygons',
     'get_line_coordinates',
     'get_polyline_coordinates',
     'get_polygon_coordinates',
-    'get_surfaces',
     'get_meshes',
     'get_mesh_face_vertices',
     'get_mesh_vertex_coordinates',
@@ -323,19 +331,16 @@ def get_polygon_coordinates(guids):
 # ==============================================================================
 
 
-def get_surface(message='Select a surface.'):
+def select_surface(message='Select a surface.'):
     return rs.GetObject(
         message,
         filter=rs.filter.surface | rs.filter.polysurface
     )
 
 
-def get_surfaces(message='Select surfaces.'):
+def select_surfaces(message='Select surfaces.'):
     guids = []
-    temp = rs.GetObjects(
-        message,
-        filter=rs.filter.surface | rs.filter.polysurface
-    )
+    temp = rs.GetObjects(message, filter=rs.filter.surface | rs.filter.polysurface)
     if temp:
         guids = temp
     return guids
