@@ -56,8 +56,8 @@ if __name__ == "__main__":
         conduit.Enabled = True
 
         for i in range(100):
-            points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-            conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
+#            points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+#            conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
 
             conduit.redraw()
 
