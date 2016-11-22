@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//docs/conf.py=utf-8
+encoding//src/brg/com/mlab/engine.py=utf-8
+encoding//src/brg/datastructures/mesh/algorithms/tri/smoothing.py=utf-8
+encoding//src/brg/datastructures/mesh/algorithms/tri/subdivision.py=utf-8
+encoding//src/brg/datastructures/mesh/drawing.py=utf-8
+encoding//src/brg/datastructures/mesh/operations/tri/split.py=utf-8
+encoding//src/brg/datastructures/mesh/operations/welding.py=utf-8
+encoding//src/brg/datastructures/network/network.py=utf-8
+encoding//src/brg_rhino/conduits/lines.py=utf-8
+encoding//src/brg_rhino/datastructures/mixins/keys.py=utf-8
+encoding//src/brg_rhino/geometry/surface.py=utf-8
+encoding//src/brg_rhino/utilities/drawing.py=utf-8
+encoding//src/brg_rhino/utilities/objects.py=utf-8
