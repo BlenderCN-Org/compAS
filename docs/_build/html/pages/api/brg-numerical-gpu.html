@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>brg.numerical.gpu &mdash; brg_framework 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/css/theme_customize.css" type="text/css" />
+  
+    <link rel="top" title="brg_framework 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="brg.numerical" href="brg-numerical.html"/>
+        <link rel="next" title="get" href="brg-numerical-gpu-array-get.html"/>
+        <link rel="prev" title="brg.numerical" href="brg-numerical.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> brg_framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gettingstarted.html#first-steps">First steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#architectural-geometry">Architectural Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#structural-design">Structural Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#robotic-fabrication">Robotic Fabrication</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#brg">brg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#brg-rhino">brg_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#coding-standards">Coding standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#naming-conventions">Naming conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#packages-and-subpackages">Packages and Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#templates-and-snippets">Templates and Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">Bibliography</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../biblio.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">brg_framework</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+      
+          <li><a href="brg-numerical.html">brg.numerical</a> &raquo;</li>
+      
+    <li>brg.numerical.gpu</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="brg-numerical-gpu">
+<h1>brg.numerical.gpu<a class="headerlink" href="#brg-numerical-gpu" title="Permalink to this headline">¶</a></h1>
+<p>&lt;...docstring missing...&gt;</p>
+<div class="section" id="brg-numerical-gpu-array">
+<h2>brg.numerical.gpu.array<a class="headerlink" href="#brg-numerical-gpu-array" title="Permalink to this headline">¶</a></h2>
+<p>&lt;docstring missing&gt;</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-array-get.html">get</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-array-give.html">give</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-array-ones.html">ones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-array-random.html">random</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-array-tile.html">tile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-array-zeros.html">zeros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-array-diag.html">diag</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="brg-numerical-gpu-math">
+<h2>brg.numerical.gpu.math<a class="headerlink" href="#brg-numerical-gpu-math" title="Permalink to this headline">¶</a></h2>
+<p>&lt;docstring missing&gt;</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-abs.html">abs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-asin.html">asin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-acos.html">acos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-atan.html">atan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-cos.html">cos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-cosh.html">cosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-sin.html">sin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-sinh.html">sinh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-tan.html">tan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-tanh.html">tanh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-sqrt.html">sqrt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-sum.html">sum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-mean.html">mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-log10.html">log10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-log.html">log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-exp.html">exp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-floor.html">floor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-ceil.html">ceil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-argmax.html">argmax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-argmin.html">argmin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-max.html">max</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-math-min.html">min</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="brg-numerical-gpu-linalg">
+<h2>brg.numerical.gpu.linalg<a class="headerlink" href="#brg-numerical-gpu-linalg" title="Permalink to this headline">¶</a></h2>
+<p>&lt;docstring missing&gt;</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-det.html">det</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-conj.html">conj</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-normrow.html">normrow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-transpose.html">transpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-trace.html">trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-dot.html">dot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-cross.html">cross</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-hermitian.html">hermitian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-inv.html">inv</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-pinv.html">pinv</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-eig.html">eig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-linalg-svd.html">svd</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="brg-numerical-gpu-utilities">
+<h2>brg.numerical.gpu.utilities<a class="headerlink" href="#brg-numerical-gpu-utilities" title="Permalink to this headline">¶</a></h2>
+<p>&lt;docstring missing&gt;</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="brg-numerical-gpu-utilities-device.html">device</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="brg-numerical-gpu-array-get.html" class="btn btn-neutral float-right" title="get"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="brg-numerical.html" class="btn btn-neutral" title="brg.numerical"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Block Research Group - ETH Zurich.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
