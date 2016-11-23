@@ -11,6 +11,24 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 def is_collapse_legal(mesh, u, v):
+    """Verify if the requested collapse is legal fro a triangle mesh.
+
+    Parameters:
+        mesh (brg.datastructures.mesh.Mesh) :
+            The mesh.
+        u (str) : The vertex to collapse towards.
+        v (str) : The vertex to collapse.
+
+    Returns:
+        bool : 
+            `True` if the collapse is legal. `False` otherwise.
+
+    Note:
+        ...
+
+    >>> ...
+
+    """
     # collapsing of boundary vertices is currently not supported
     # change this to `and` to support collapsing to or from the boundary
     if mesh.is_vertex_on_boundary(u) or mesh.is_vertex_on_boundary(v):
