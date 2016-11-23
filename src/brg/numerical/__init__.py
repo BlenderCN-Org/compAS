@@ -46,11 +46,14 @@ docs = [
 	{'spatial':
         [
         'closest_points_points',
-        'project_points_heightfield'
+        'project_points_heightfield',
+        'bounding_box_2d',
+        'bounding_box_3d'
         ]
     },
     {'statistics':
         [
+        'principal_component_analysis'
         ]
     },
 	{'utilities':

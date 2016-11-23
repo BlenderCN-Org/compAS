@@ -81,7 +81,7 @@ class VolMesh(object):
 
     def __str__(self):
         """"""
-        print self.name
+        print(self.name)
 
     @property
     def name(self):
@@ -630,7 +630,7 @@ if __name__ == '__main__':
 
     mesh = VolMesh.from_json(brg.get_data('boxes.json'))
 
-    print mesh.name
+    print(mesh.name)
 
     mesh.scale(0.1)
 

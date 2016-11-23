@@ -250,7 +250,7 @@ if __name__ == "__main__":
     CitQCi = Cit.dot(Q).dot(Ci)
     CitQCf = Cit.dot(Q).dot(Cf)
 
-    print CitQCf.dot(xyz[fixed])
+    print(CitQCf.dot(xyz[fixed]))
 
     CtQC = [[0.0 for j in range(n)] for i in range(n)]
 

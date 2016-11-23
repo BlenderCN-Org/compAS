@@ -1,16 +1,16 @@
-from functions import cross
-from functions import dot
-from functions import center_of_mass
-from functions import distance
-from functions import distance_sqrd
-from functions import angles
-from functions import length_sqrd
+from brg.geometry.functions import cross
+from brg.geometry.functions import dot
+from brg.geometry.functions import center_of_mass
+from brg.geometry.functions import distance
+from brg.geometry.functions import distance_sqrd
+from brg.geometry.functions import angles
+from brg.geometry.functions import length_sqrd
 
-from arithmetic import add_vectors
-from arithmetic import subtract_vectors
+from brg.geometry.arithmetic import add_vectors
+from brg.geometry.arithmetic import subtract_vectors
 
-from spatial import closest_point_on_line
-from spatial import closest_point_on_segment
+from brg.geometry.spatial import closest_point_on_line
+from brg.geometry.spatial import closest_point_on_segment
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
@@ -222,27 +222,27 @@ def is_point_in_triangle(p, abc):
 
 def is_point_in_polygon(points,tp):
     """Verify if a point is in the interior of a polygon.
-    
+
     Note:
         This test only makes sense in the x/y plane
-    
+
     Parameters:
         points (Polygon): list of ordered points.
-        tp (3-tuple): 3d test point 
-        
+        tp (3-tuple): 3d test point
+
         not implemented:
-            include_boundary (bool): Should the boundary be included in the test? 
+            include_boundary (bool): Should the boundary be included in the test?
                 Defaults to False.
-            A tolerance value would be nice too... float errors are problematic 
-            points which are located on the boundary are not always uniquely defines as inside/outside    
-    
+            A tolerance value would be nice too... float errors are problematic
+            points which are located on the boundary are not always uniquely defines as inside/outside
+
     Returns:
         bool: True if the point is in the polygon, False otherwise.
     """
     x,y = tp[0],tp[1]
-    
+
     points = [(pt[0],pt[1]) for pt in points]# make 2D
-    
+
     n = len(points)
     inside =False
     p1x,p1y = points[0]
@@ -278,11 +278,11 @@ def is_point_in_circle(pt1,pt2,pt3, tp):
 #needed in is_point_in_circle
 def circle_from_points_2d(pt1,pt2,pt3):
 
-    ax =pt1[0] 
+    ax =pt1[0]
     ay = pt1[1]  #first Point X and Y
-    bx =pt2[0]  
+    bx =pt2[0]
     by = pt2[1]   #Second Point X and Y
-    cx =pt3[0]  
+    cx =pt3[0]
     cy =pt3[1]   #Third Point X and Y
     #****************Following are Basic Procedure**********************///
     x1 = (bx + ax) / 2

@@ -1,6 +1,7 @@
 """brg.numerical.statistics : Numerical statistical methods."""
 
 from numpy import asarray
+
 from scipy.linalg import svd
 
 
@@ -10,31 +11,28 @@ __author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
 
 
 def principal_component_analysis(data):
-    """PCA of a dtat set finds the directions along which the variance of the data
+    """PCA of a dataset finds the directions along which the variance of the data
     is largest, i.e. the directions along which the data is most spread out.
 
     Parameters:
-        data (list) :
+        data (list):
             A list of `m` observations, measuring `n` variables.
             For example, if the data are points in 2D space, the data parameter
             should contain `m` nested lists of `2` variables, the `x` and `y`
             coordinates.
 
     Returns:
-        list :
+        list:
             A list of principle directions. The number of principle directions
             is equal to the dimensionality of the problem(?!).
             For example, if the data points are locations in 3D space, three
             principle components will be returned. If the data points are
             locations in 2D space, only two principle components will be returned.
 
-    Note:
-        ...
-
-    >>> vectors = PCA(data)
-    >>> for vector in vectors:
-    ...     print vector
-
+    Examples:
+        >>> vectors = PCA(data)
+        >>> for vector in vectors:
+        ...     print vector
     """
     data = asarray(data)
     nobs, nvar = data.shape

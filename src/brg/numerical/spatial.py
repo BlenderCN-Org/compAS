@@ -100,16 +100,7 @@ ICP = iterative_closest_point
 
 def bounding_box_2d(points, plot_hull=False):
     """Compute the aligned bounding box of set of points.
-
-    Parameters:
-        points (list) : A list of 2D points.
-
-    Returns:
-        list:
-            The coordinates of the corners of the bounding box.
-            This list can be used to construct a bounding box object to simplify,
-            for example, plotting.
-
+	
     Note:
         The *object-aligned bounding box* (OABB) is computed using the following
         procedure:
@@ -126,12 +117,19 @@ def bounding_box_2d(points, plot_hull=False):
                 7. Compute and store the corners of the bbox and its area.
             3. Select the box with the smallest area.
 
-    >>> from numpy import random
-    >>> points = random.rand(100, 2)
-    >>> points[:, 0] *= 10.0
-    >>> points[:, 1] *= 4.0
-    >>> corners, area = BBOX2(points)
+    Parameters:
+        points (list): A list of 2D points.
 
+    Returns:
+        list: The coordinates of the corners of the bounding box. This list can 
+			  be used to construct a bounding box object to simplify, e.g. plotting.
+
+    Examples:
+        >>> from numpy import random
+        >>> points = random.rand(100, 2)
+        >>> points[:, 0] *= 10.0
+        >>> points[:, 1] *= 4.0
+        >>> corners, area = BBOX2(points)
     """
     points = asarray(points)
     n, dim = points.shape
@@ -190,45 +188,18 @@ def bounding_box_2d(points, plot_hull=False):
     return min(boxes, key=lambda b: b[1])
 
 
-def _compute_local_axes(a, b, c):
-    u = b - a
-    v = c - a
-    w = cross(u, v)
-    v = cross(w, u)
-    return normalize(u), normalize(v), normalize(w)
-
-
-def _compute_local_coords(o, uvw, xyz):
-    uvw = asarray(uvw).T
-    xyz = xyz.T - o.reshape((-1, 1))
-    rst = solve(uvw, xyz)
-    return rst.T
-
-
-def _compute_global_coords(o, uvw, rst):
-    uvw = asarray(uvw).T
-    rst = asarray(rst).T
-    xyz = uvw.dot(rst) + o.reshape((-1, 1))
-    return xyz.T
-
-
 def bounding_box_3d(points):
     """Compute the aligned bounding box of a set of points in 3D space.
-
-    Parameters:
-        points (list) : A list of 3D points.
-
-    Returns:
-        list:
-            The coordinates of the corners of the bounding box.
-            The list can be used to construct a bounding box object for easier
-            plotting.
 
     Note:
         The implementation is based on the convex hull of the points.
 
-    >>> ...
+    Parameters:
+        points (list): A list of 3D points.
 
+    Returns:
+        list: The coordinates of the corners of the bounding box. The list 
+        can be used to construct a bounding box object for easier plotting.
     """
     points = asarray(points)
     n, dim = points.shape
@@ -267,6 +238,28 @@ def bounding_box_3d(points):
             volume = v
 
     return hull, bbox, volume
+
+
+def _compute_local_axes(a, b, c):
+    u = b - a
+    v = c - a
+    w = cross(u, v)
+    v = cross(w, u)
+    return normalize(u), normalize(v), normalize(w)
+
+
+def _compute_local_coords(o, uvw, xyz):
+    uvw = asarray(uvw).T
+    xyz = xyz.T - o.reshape((-1, 1))
+    rst = solve(uvw, xyz)
+    return rst.T
+
+
+def _compute_global_coords(o, uvw, rst):
+    uvw = asarray(uvw).T
+    rst = asarray(rst).T
+    xyz = uvw.dot(rst) + o.reshape((-1, 1))
+    return xyz.T
 
 
 # ==============================================================================

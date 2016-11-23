@@ -16,7 +16,7 @@
 #     'stl',
 # ]
 
-from obj import OBJ
+from brg.files.obj import OBJ
 
 docs = [
     {'amf' : []},

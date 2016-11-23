@@ -1630,7 +1630,7 @@ if __name__ == '__main__':
     mesh.vertex['36']['y'] = y
     mesh.vertex['36']['z'] = z
 
-    print mesh
+    print(mesh)
 
     mesh.draw(
         show_vertices=True,

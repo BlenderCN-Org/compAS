@@ -265,20 +265,20 @@ def vector_component_2d(u, v):
 
 
 def bounding_box(points):
-    
+
     """Computes the bounding box of a list of points.
 
     Warning:
-  
+
 
     Parameters:
 
 
     Returns:
-       
+
 
     Examples:
-       
+
     """
     x, y, z = zip(*points)
     min_x = min(x)
@@ -417,10 +417,10 @@ def center_of_mass(polygon):
 
     Examples:
         pts = [(0.,0.,0.),(1.,0.,0.),(0.,10.,0.)]
-        
+
         print ("Center of mass: {0}".format(center_of_mass(pts)))
         print ("Centroid: {0}".format(centroid(pts)))
-    
+
     """
     L  = 0
     cx = 0
@@ -563,4 +563,4 @@ if __name__ == '__main__':
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    print volume(mesh)
+    print(volume(mesh))
