@@ -17,9 +17,10 @@ docs = [
         [
         ]
     },
-    {'vec_diff_evo':
+    {'differential_evolution':
         [
-        'solver'
+        'solver',
+        'plot'
         ]
     }
 ]
