@@ -1594,11 +1594,7 @@ mesh summary
     # **************************************************************************
 
     def plot(self, **kwargs):
-        from brg.datastructures.mesh.drawing import draw_mesh
-        draw_mesh(self, **kwargs)
-
-    def draw(self, **kwargs):
-        from brg.datastructures.mesh.drawing import draw_mesh
+        from brg.datastructures.mesh.utilities.drawing import draw_mesh
         draw_mesh(self, **kwargs)
 
     def view(self):
@@ -1606,6 +1602,9 @@ mesh summary
         viewer = MeshViewer(self)
         viewer.setup()
         viewer.show()
+
+    def draw(self, **kwargs):
+        raise NotImplementedError
 
 
 # ==============================================================================
@@ -1615,24 +1614,13 @@ mesh summary
 if __name__ == '__main__':
 
     import brg
-    from brg.datastructures.mesh.operations.welding import unweld
 
     data = brg.get_data('faces.obj')
     mesh = Mesh.from_obj(data)
 
-    fkey    = '12'
-    where   = mesh.face_vertices(fkey)[0:1]
-    x, y, z = mesh.face_centroid(fkey)
-
-    unweld(mesh, fkey, where)
-
-    mesh.vertex['36']['x'] = x
-    mesh.vertex['36']['y'] = y
-    mesh.vertex['36']['z'] = z
-
     print(mesh)
 
-    mesh.draw(
+    mesh.plot(
         show_vertices=True,
         face_label=dict((fkey, fkey) for fkey in mesh.face)
     )

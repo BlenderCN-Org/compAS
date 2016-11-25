@@ -102,6 +102,8 @@ brg.numerical.spatial : Numerical methods based on spatial co-ordinates.
 
    brg-numerical-spatial-closest_points_points
    brg-numerical-spatial-project_points_heightfield
+   brg-numerical-spatial-bounding_box_2d
+   brg-numerical-spatial-bounding_box_3d
 
 
 
@@ -113,6 +115,7 @@ brg.numerical.statistics : Numerical statistical methods.
 .. toctree::
    :glob:
 
+   brg-numerical-statistics-principal_component_analysis
 
 
 

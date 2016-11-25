@@ -1,7 +1,7 @@
 
 ********************************************************************************
-mesh_isolines
+principal_component_analysis
 ********************************************************************************
 
-.. autofunction:: brg.datastructures.mesh.algorithms.geometry.mesh_isolines
+.. autofunction:: brg.numerical.statistics.principal_component_analysis
 

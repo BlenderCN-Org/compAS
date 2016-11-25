@@ -44,10 +44,10 @@ brg.datastructures.mesh.algorithms.geometry: Compute geometric properties of a m
 .. toctree::
    :glob:
 
-   brg-datastructures-mesh-algorithms-geometry-mesh_contours
-   brg-datastructures-mesh-algorithms-geometry-mesh_isolines
-   brg-datastructures-mesh-algorithms-geometry-mesh_gradient
-   brg-datastructures-mesh-algorithms-geometry-mesh_curvature
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_contours
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_isolines
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_gradient
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_curvature
 
 
 

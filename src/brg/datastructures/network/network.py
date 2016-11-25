@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+""""""
 
 import json
 
@@ -21,16 +21,7 @@ __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
 
 
-# is this a good idea?!
-# perhaps even add it as a separate module...
-class Graph(object):
-    """"""
-    pass
-
-
-# move the purely topological functionality to the graph
-# make a separate class for the dualdata
-class Network(Graph):
+class Network(object):
     """"""
 
     def __init__(self, **kwargs):
@@ -778,7 +769,7 @@ name: {0}
     # --------------------------------------------------------------------------
 
     def draw(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, axes=None):
-        from brg.datastructures.network.drawing import draw_network
+        from brg.datastructures.network.utilities.drawing import draw_network
         draw_network(self,
                      vcolor=vcolor,
                      vlabel=vlabel,

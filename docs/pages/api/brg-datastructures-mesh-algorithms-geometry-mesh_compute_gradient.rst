@@ -1,7 +1,7 @@
 
 ********************************************************************************
-mesh_contours
+mesh_compute_gradient
 ********************************************************************************
 
-.. autofunction:: brg.datastructures.mesh.algorithms.geometry.mesh_contours
+.. autofunction:: brg.datastructures.mesh.algorithms.geometry.mesh_compute_gradient
 

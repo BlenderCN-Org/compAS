@@ -1,7 +1,7 @@
 
 ********************************************************************************
-mesh_curvature
+bounding_box_2d
 ********************************************************************************
 
-.. autofunction:: brg.datastructures.mesh.algorithms.geometry.mesh_curvature
+.. autofunction:: brg.numerical.spatial.bounding_box_2d
 

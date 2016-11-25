@@ -19,6 +19,7 @@ Contents
    pages/examples
    pages/cookbook
    API reference <pages/api>
+   External libs <pages/thirdparty>
    Developers Guide <pages/developers>
    pages/license
    pages/biblio

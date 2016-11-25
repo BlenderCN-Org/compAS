@@ -402,7 +402,12 @@ class Rui(object):
 
 if __name__ == "__main__":
 
-    with open('./data/test.json', 'rb') as fp:
+    import brg
+    import os
+
+    test = brg.get_data('ruitest.json')
+
+    with open(test, 'rb') as fp:
         config = json.loads(fp.read())
 
     macros        = config['rui']['macros']
@@ -410,7 +415,7 @@ if __name__ == "__main__":
     toolbars      = config['rui']['toolbars']
     toolbargroups = config['rui']['toolbargroups']
 
-    rui = Rui('./data/test.rui')
+    rui = Rui(os.path.join(os.path.dirname(test), 'test.rui'))
 
     rui.init()
 

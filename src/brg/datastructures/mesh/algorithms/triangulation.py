@@ -1,6 +1,8 @@
 """This module defines algorithms for generating triangulations."""
 
+from numpy import asarray
 from scipy.spatial import Delaunay
+
 from brg.datastructures.mesh.mesh import Mesh
 
 
@@ -29,6 +31,16 @@ def delaunay_from_mesh(mesh):
 
 
 def delaunay_from_points(points):
+    """"""
+    xyz = asarray(points)
+    assert 2 <= xyz.shape[1], "At least xy xoordinates required."
+    d = Delaunay(xyz[:, 0:2])
+    return Mesh.from_vertices_and_faces(points, d.simplices)
+
+
+# @see: _scripts
+def delaunay_from_boundary(boundary):
+    """"""
     raise NotImplementedError
 
 
