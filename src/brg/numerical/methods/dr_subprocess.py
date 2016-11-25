@@ -1,5 +1,5 @@
 import sys
-sys.path.append('D:/bb/brg_framework/src/')
+sys.path.append('C:/Users/al/Dropbox/bb/brg_framework/src/')
 
 from brg.datastructures.network.network import Network
 
@@ -42,11 +42,11 @@ def residual(f, l, P, S, uvw, Ct, BC, Pn, f0, rtype='force'):
 
 
 # Import
-debug = 0
+debug = 1
 if  debug:
-    ipath = '/home/al/Dropbox/idata.json'
-    opath = '/home/al/Dropbox/odata.json'
-    spath = '/home/al/Dropbox/sdata.json'
+    ipath = 'C:/Users/al/Dropbox/idata.json'
+    opath = 'C:/Users/al/Dropbox/odata.json'
+    spath = 'C:/Users/al/Dropbox/sdata.json'
 else:
     ipath = sys.argv[1]
     opath = sys.argv[2]
