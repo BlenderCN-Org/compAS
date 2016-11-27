@@ -1,9 +1,12 @@
 """brg.numerical.xforms : Matrices for vector and matrix transformations."""
 
+from random import choice
+
 from math import cos
 from math import sin
 
 from numpy import array
+from numpy.random import randint
 
 
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
@@ -88,6 +91,14 @@ def rotation_matrix(angle, direction, point=None, rtype='list'):
     if rtype == 'array':
         return array(R)
     return R
+
+
+def random_rotation_matrix():
+    a = randint(1, high=8) * 10 * 3.14159 / 180
+    d = [choice([0, 1]), choice([0, 1]), choice([0, 1])]
+    if d == [0, 0, 0]:
+        d = [0, 0, 1]
+    return rotation_matrix(a, d)
 
 
 def scale_matrix(factor, rtype='list'):

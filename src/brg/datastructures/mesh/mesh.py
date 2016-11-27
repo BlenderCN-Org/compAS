@@ -1615,12 +1615,38 @@ if __name__ == '__main__':
 
     import brg
 
-    data = brg.get_data('faces.obj')
-    mesh = Mesh.from_obj(data)
+    from brg.datastructures.mesh import Mesh
 
-    print(mesh)
+    mesh = Mesh.from_obj('mesh.obj')
 
-    mesh.plot(
-        show_vertices=True,
-        face_label=dict((fkey, fkey) for fkey in mesh.face)
-    )
+    mesh.set_dva({'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    mesh.set_dva({'is_fixed': False})
+
+    class CustomMesh(Mesh):
+        """"""
+
+        def __init__(self):
+            Mesh.__init__()
+            self.dva.update({
+                'px' : 0.0,
+                'py' : 0.0,
+                'pz' : 0.0, 
+            })
+            self.dea.update({
+                'q' : 1.0,
+                'f' : 0.0,
+                'l' : 0.0,
+            })
+
+        def do_this(self):
+            pass
+
+        def do_that(self):
+            pass
+
+    # print(mesh)
+
+    # mesh.plot(
+    #     show_vertices=True,
+    #     face_label=dict((fkey, fkey) for fkey in mesh.face)
+    # )

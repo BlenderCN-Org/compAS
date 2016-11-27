@@ -100,7 +100,7 @@ ICP = iterative_closest_point
 
 def bounding_box_2d(points, plot_hull=False):
     """Compute the aligned bounding box of set of points.
-	
+
     Note:
         The *object-aligned bounding box* (OABB) is computed using the following
         procedure:
@@ -121,8 +121,8 @@ def bounding_box_2d(points, plot_hull=False):
         points (list): A list of 2D points.
 
     Returns:
-        list: The coordinates of the corners of the bounding box. This list can 
-			  be used to construct a bounding box object to simplify, e.g. plotting.
+        list: The coordinates of the corners of the bounding box. This list can
+              be used to construct a bounding box object to simplify, e.g. plotting.
 
     Examples:
         >>> from numpy import random
@@ -198,7 +198,7 @@ def bounding_box_3d(points):
         points (list): A list of 3D points.
 
     Returns:
-        list: The coordinates of the corners of the bounding box. The list 
+        list: The coordinates of the corners of the bounding box. The list
         can be used to construct a bounding box object for easier plotting.
     """
     points = asarray(points)
@@ -268,75 +268,63 @@ def _compute_global_coords(o, uvw, rst):
 
 if __name__ == "__main__":
 
-    from numpy.random import rand
-    from numpy.random import randint
+    # for i in range(8):
+    #     a = randint(1, high=8) * 10 * 3.14159 / 180
+    #     d = [1, 1, 1]
+    #     cloud = rand(100, 3)
+    #     if i in (1, 2, 5, 6):
+    #         cloud[:, 0] *= - 10.0
+    #         cloud[:, 0] -= 3.0
+    #         d[0] = -1
+    #     else:
+    #         cloud[:, 0] *= 10.0
+    #         cloud[:, 0] += 3.0
+    #     if i in (2, 3, 6, 7):
+    #         cloud[:, 1] *= - 3.0
+    #         cloud[:, 1] -= 3.0
+    #         d[1] = -1
+    #     else:
+    #         cloud[:, 1] *= 3.0
+    #         cloud[:, 1] += 3.0
+    #     if i in (4, 5, 6, 7):
+    #         cloud[:, 2] *= - 6.0
+    #         cloud[:, 2] -= 3.0
+    #         d[2] = -1
+    #     else:
+    #         cloud[:, 2] *= 6.0
+    #         cloud[:, 2] += 3.0
+    #     R = rotation_matrix(a, d)
+    #     cloud[:] = cloud.dot(R)
+
+    import json
+
+    from numpy import asarray
 
     import matplotlib.pyplot as plt
-    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+    import brg
+
+    from brg.utilities.plotters import Bounds3
+    from brg.utilities.plotters import Hull3
+    from brg.utilities.plotters import Cloud3
+    from brg.utilities.plotters import Box3
 
     from brg.numerical.xforms import rotation_matrix
 
-    class CUBE3(object):
-        """"""
-        def __init__(self, points):
-            self.points = points
+    with open(brg.find_resource('cloud.json'), 'rb') as fp:
+        clouds = json.load(fp)
 
-        def plot(self, axes):
-            xmin, ymin, zmin = argmin(self.points, axis=0)
-            xmax, ymax, zmax = argmax(self.points, axis=0)
-            xspan = self.points[xmax, 0] - self.points[xmin, 0]
-            yspan = self.points[ymax, 1] - self.points[ymin, 1]
-            zspan = self.points[zmax, 2] - self.points[zmin, 2]
-            span = max(xspan, yspan, zspan)
-            axes.plot([self.points[xmin, 0]], [self.points[ymin, 1]], [self.points[zmin, 2]], 'w')
-            axes.plot([self.points[xmin, 0] + span], [self.points[ymin, 1] + span], [self.points[zmin, 2] + span], 'w')
+    fig  = plt.figure()
+    axes = fig.add_subplot(111, projection='3d', aspect='equal')
 
-    class HULL3(object):
-        """"""
-        def __init__(self, hull):
-            self.vertices = hull.points
-            self.faces = hull.simplices
+    bounds3 = Bounds3(array([[-15, -15, -15], [15, 15, 15]]))
+    bounds3.plot(axes)
 
-        def plot(self, axes):
-            tri = [[self.vertices[index] for index in face] for face in self.faces]
-            tri_coll = Poly3DCollection(tri)
-            tri_coll.set_facecolors([(0.0, 1.0, 0.0) for face in self.faces])
-            axes.add_collection3d(tri_coll)
+    for cloud in clouds:
+        cloud  = asarray(cloud)
+        bbox   = bounding_box_3d(cloud)
 
-    class BBOX3(object):
-        """"""
-        def __init__(self, corners):
-            self.corners = corners
-            self.faces = [[0, 1, 2, 3], [4, 7, 6, 5], [1, 5, 6, 2], [0, 4, 5, 1], [0, 3, 7, 4], [2, 6, 7, 3]]
-
-        def plot(self, axes):
-            rec = [[self.corners[index] for index in face] for face in self.faces]
-            rec_coll = Poly3DCollection(rec)
-            rec_coll.set_facecolors([(1.0, 0.0, 0.0) for face in self.faces])
-            rec_coll.set_alpha(0.2)
-            axs.add_collection3d(rec_coll)
-
-    points = rand(1000, 3)
-    points[:, 0] *= 10.0
-    points[:, 1] *= 3.0
-    points[:, 2] *= 6.0
-
-    a = randint(1, high=8) * 10 * 3.14159 / 180
-    R = rotation_matrix(a, [0, 0, 1], rtype='array')
-
-    points[:] = points.dot(R)
-
-    hull, corners, volume = bounding_box_3d(points)
-
-    hull3 = HULL3(hull)
-    bbox3 = BBOX3(corners)
-    cube3 = CUBE3(points)
-
-    fig = plt.figure()
-    axs = fig.add_subplot(111, projection='3d', aspect='equal')
-
-    hull3.plot(axs)
-    bbox3.plot(axs)
-    cube3.plot(axs)
+        Cloud3(cloud).plot(axes)
+        Box3(bbox[1]).plot(axes)
 
     plt.show()

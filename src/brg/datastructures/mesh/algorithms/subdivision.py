@@ -350,16 +350,17 @@ if __name__ == "__main__":
     from brg.geometry.polyhedron import Polyhedron
     from brg.datastructures.mesh.viewer import SubdMeshViewer
 
-    cube = Polyhedron.generate(12)
+    cube = Polyhedron.generate(6)
 
     mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=_catmullclark_subdivision)
+    viewer = SubdMeshViewer(mesh, subdfunc=_catmullclark_subdivision, width=600, height=600)
 
     viewer.axes.x_color = (0.1, 0.1, 0.1)
     viewer.axes.y_color = (0.1, 0.1, 0.1)
     viewer.axes.z_color = (0.1, 0.1, 0.1)
 
+    viewer.axes_on = False
     viewer.grid_on = False
 
     viewer.setup()

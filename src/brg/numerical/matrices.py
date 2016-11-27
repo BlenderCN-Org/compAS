@@ -27,30 +27,39 @@ def degree_matrix():
 
 
 def connectivity_matrix(edges, rtype='array'):
-    """Creates a connectivity matrix from a list of edge topologies.
+    """Creates a connectivity matrix from a list of vertex index pairs.
+
+    The connectivity matrix encodes how edges in a network are connected
+    together. Each row represents an edge and has 1 and -1 inserted into the
+    columns for the start and end nodes.
+
+    .. math::
+
+        \mathbf{C}_{ij} =
+        \cases{
+            -1 & if edge i starts at vertex j \cr
+            +1 & if edge i ends at vertex j \cr
+            0  & otherwise
+        }
 
     Note:
         A connectivity matrix is generally sparse and will perform superior
-        in numerical calculations as a sparse matrix than a dense (array)
-        matrix.
+        in numerical calculations as a sparse matrix.
 
     Parameters:
         edges (list): List of lists [[node_i, node_j], [node_k, node_l]].
         rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
 
     Returns:
-        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
-        array: If ''rtype'' is ``'array'``.
+        sparse: If ``rtype`` is ``None``, ``'csc'``, ``'csr'``, ``'coo'``.
 
-    The connectivity matrix displays how edges in a network are connected
-    together. Each row represents an edge and has 1 and -1 inserted into the
-    columns for the start and end nodes (which is the start does not matter).
+        array: If ``rtype`` is ``'array'``.
 
-    Examples:
-        >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
-        [[-1  1  0  0]
-         [-1  0  1  0]
-         [-1  0  0  1]]
+    >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
+    [[-1  1  0  0]
+     [-1  0  1  0]
+     [-1  0  0  1]]
+
     """
     m    = len(edges)
     data = array([-1] * m + [1] * m)

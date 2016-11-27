@@ -79,5 +79,9 @@ if __name__ == '__main__':
     network = Network.from_obj(brg.get_data('lines.obj'))
 
     viewer = NetworkViewer(network)
+
+    viewer.grid_on = False
+    viewer.axes_on = False
+
     viewer.setup()
     viewer.show()

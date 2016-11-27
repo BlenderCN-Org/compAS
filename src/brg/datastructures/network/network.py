@@ -765,10 +765,18 @@ name: {0}
         return self.attributes.get('color.vertex')
 
     # --------------------------------------------------------------------------
-    # drawing
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # visualisation
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
 
-    def draw(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, axes=None):
+    def plot(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, axes=None):
         from brg.datastructures.network.utilities.drawing import draw_network
         draw_network(self,
                      vcolor=vcolor,
@@ -778,6 +786,18 @@ name: {0}
                      ewidth=ewidth,
                      elabel=elabel,
                      axes=axes)
+
+
+    def plot3(self, vcolor=None):
+        import matplotlib.pyplot as plt
+        from brg.utilities.plotters import Bounds3
+        from brg.utilities.plotters import Network3
+        axes = plt.figure().add_subplot(111, projection='3d', aspect='equal')
+        b3 = Bounds3([self.vertex_coordinates(key) for key in self])
+        b3.plot(axes)
+        n3 = Network3(self)
+        n3.plot(axes)
+        plt.show()
 
 
 # ==============================================================================

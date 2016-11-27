@@ -51,13 +51,14 @@ brg.numerical.solvers.quadprog
 
 
 
-brg.numerical.solvers.vec_diff_evo
+brg.numerical.solvers.differential_evolution
 ================================================================================
 
-brg.numerical.solvers.vec_diff_evo : Vectorised differential evolution.
+brg.numerical.solvers.differential_evolution : Differential evolution.
 
 .. toctree::
    :glob:
 
-   brg-numerical-solvers-vec_diff_evo-solver
+   brg-numerical-solvers-differential_evolution-solver
+   brg-numerical-solvers-differential_evolution-plot
 

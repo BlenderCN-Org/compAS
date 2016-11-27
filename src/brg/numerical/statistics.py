@@ -61,12 +61,12 @@ def principal_component_analysis(data):
     u, s, vT = svd(C)
     # eigenvectors
     # note: the eigenvectors are normalised
-    eigenvec = u[:, :nvar]
-    # eigenvec = vT[:, :nvar]
+    # note: vT is exactly what it says it will be => the transposed eigenvectors
+    vectors = vT[:, :nvar]
     # eigenvalues
-    eigenval = s[:nvar]
+    values = s[:nvar]
     # return
-    return eigenvec, eigenval
+    return average, vectors, values
 
 
 # ==============================================================================
@@ -79,27 +79,31 @@ if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
 
-    data = random.rand(100, 2)
+    from brg.numerical.xforms import rotation_matrix
+
+    from brg.utilities.plotters import Axes3
+    from brg.utilities.plotters import Cloud3
+    from brg.utilities.plotters import Bounds3
+
+    data = random.rand(300, 3)
     data[:, 0] *= 10.0
-    data[:, 1] *= 2.0
+    data[:, 1] *= 1.0
+    data[:, 2] *= 4.0
 
-    average = (data.sum(axis=0) / data.shape[0]).reshape((-1, data.shape[1]))
+    a = 3.14159 * 30.0 / 180
+    Ry = rotation_matrix(a, [0, 1.0, 0.0])
 
-    eigenvec, eigenval = principal_component_analysis(data)
+    a = -3.14159 * 45.0 / 180
+    Rz = rotation_matrix(a, [0, 0, 1.0])
 
-    print eigenvec
-    print eigenval
+    data[:] = data.dot(Ry).dot(Rz)
 
-    plt.plot(data[:, 0], data[:, 1], 'ko')
-    plt.plot(average[:, 0], average[:, 1], 'ro')
+    average, vectors, values = principal_component_analysis(data)
 
-    plt.plot([average[:, 0], average[:, 0] + eigenvec[0, 0]],
-             [average[:, 1], average[:, 1] + eigenvec[0, 1]], 'g-')
+    axes = plt.figure().add_subplot(111, projection='3d', aspect='equal')
 
-    plt.plot([average[:, 0], average[:, 0] + eigenvec[1, 0]],
-             [average[:, 1], average[:, 1] + eigenvec[1, 1]], 'b-')
-
-    ax = plt.gca()
-    ax.set_aspect('equal')
+    Bounds3(data).plot(axes)
+    Cloud3(data).plot(axes)
+    Axes3(average, vectors).plot(axes)
 
     plt.show()

@@ -635,6 +635,14 @@ if __name__ == '__main__':
     mesh.scale(0.1)
 
     viewer = VolMeshViewer(mesh, 600, 600, grid_on=False, zoom=5.)
+
+    viewer.grid_on = False
+    viewer.axes_on = False
+
+    viewer.axes.x_color = (0.1, 0.1, 0.1)
+    viewer.axes.y_color = (0.1, 0.1, 0.1)
+    viewer.axes.z_color = (0.1, 0.1, 0.1)
+
     viewer.setup()
     viewer.show()
 

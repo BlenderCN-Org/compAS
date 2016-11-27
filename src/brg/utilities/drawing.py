@@ -5,9 +5,10 @@ from matplotlib.patches import Circle
 from matplotlib.collections import PatchCollection, LineCollection
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 
+                  'Andrew Liew <liew@arch.ethz.ch>']
 
 
 def create_matplotlib_axes(size=(10, 7),
