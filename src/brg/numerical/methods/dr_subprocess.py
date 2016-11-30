@@ -1,9 +1,9 @@
-#import sys
-#sys.path.append('D:/bb/brg_framework/src/')
+import sys
+sys.path.append('C:/Users/al/Dropbox/bb/brg_framework/src/')
 
 from brg.datastructures.network.network import Network
 
-from brg.numerical.functions import lengths
+from brg.numerical.geometry import lengths
 from brg.numerical.matrices import connectivity_matrix
 from brg.numerical.matrices import mass_matrix
 from brg.numerical.linalg import normrow
@@ -22,11 +22,9 @@ from time import time
 import json
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 20, 2016'
+__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
 
 
 def residual(f, l, P, S, uvw, Ct, BC, Pn, f0, rtype='force'):
@@ -42,11 +40,11 @@ def residual(f, l, P, S, uvw, Ct, BC, Pn, f0, rtype='force'):
 
 
 # Import
-debug = 0
+debug = 1
 if  debug:
-    ipath = '/home/al/Dropbox/idata.json'
-    opath = '/home/al/Dropbox/odata.json'
-    spath = '/home/al/Dropbox/sdata.json'
+    ipath = 'C:/Users/al/Dropbox/idata.json'
+    opath = 'C:/Users/al/Dropbox/odata.json'
+    spath = 'C:/Users/al/Dropbox/sdata.json'
 else:
     ipath = sys.argv[1]
     opath = sys.argv[2]

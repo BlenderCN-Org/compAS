@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+""""""
 
 import json
 
@@ -21,16 +21,7 @@ __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
 
 
-# is this a good idea?!
-# perhaps even add it as a separate module...
-class Graph(object):
-    """"""
-    pass
-
-
-# move the purely topological functionality to the graph
-# make a separate class for the dualdata
-class Network(Graph):
+class Network(object):
     """"""
 
     def __init__(self, **kwargs):
@@ -774,11 +765,19 @@ name: {0}
         return self.attributes.get('color.vertex')
 
     # --------------------------------------------------------------------------
-    # drawing
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # visualisation
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
 
-    def draw(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, axes=None):
-        from brg.datastructures.network.drawing import draw_network
+    def plot(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, axes=None):
+        from brg.datastructures.network.utilities.drawing import draw_network
         draw_network(self,
                      vcolor=vcolor,
                      vlabel=vlabel,
@@ -787,6 +786,18 @@ name: {0}
                      ewidth=ewidth,
                      elabel=elabel,
                      axes=axes)
+
+
+    def plot3(self, vcolor=None):
+        import matplotlib.pyplot as plt
+        from brg.utilities.plotters import Bounds3
+        from brg.utilities.plotters import Network3
+        axes = plt.figure().add_subplot(111, projection='3d', aspect='equal')
+        b3 = Bounds3([self.vertex_coordinates(key) for key in self])
+        b3.plot(axes)
+        n3 = Network3(self)
+        n3.plot(axes)
+        plt.show()
 
 
 # ==============================================================================

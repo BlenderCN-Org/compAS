@@ -17,8 +17,10 @@ Examples are:
 """
 
 docs = [
-    {'cycling' : []},
-    {'insert' : []},
-    {'split' : []},
-    {'welding' : []}
+    {'quad'     : []},
+    {'tri'      : []},
+    {'cycling'  : []},
+    {'insert'   : []},
+    {'split'    : []},
+    {'welding'  : []}
 ]

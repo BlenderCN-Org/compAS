@@ -281,13 +281,13 @@ if __name__ == '__main__':
     for i in range(100000):
         u = [1.0, 0.0, 0.0]
     toc = time.time()
-    print toc - tic
+    print(toc - tic)
 
     tic = time.time()
     for i in range(100000):
         u = CVector([1.0, 0.0, 0.0])
     toc = time.time()
-    print toc - tic
+    print(toc - tic)
 
     # t0 = timeit.timeit('[[1.0, 0.0, 0.0] for i in range(100000)]', setup='from vector import Vector', number=1)
     # t1 = timeit.timeit('[Vector([1.0, 0.0, 0.0]) for i in range(100000)]', setup='from vector import Vector', number=1)

@@ -1,17 +1,21 @@
+syntax: glob
+
 .project
 .pydevproject
 
-syntax: regexp
-^__temp$
-^data$
-
-syntax: glob
 *.orig
 *.3dmbak
 *.rui_bak
 *.pyc
 *.in
 *.out
+
+__temp
+
+data
+
 docs/_build
 docs/_static
 docs/_templates
+
+libs/**

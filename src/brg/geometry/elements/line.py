@@ -1,4 +1,4 @@
-from point import Point
+from brg.geometry.elements.point import Point
 
 
 __author__     = ['Tom Van Mele', ]
@@ -131,16 +131,16 @@ if __name__ == '__main__':
 
     l1 = Line([0, 0, 0], [1, 1, 1])
 
-    print type(l1.start)
-    print l1.midpoint
-    print type(l1.midpoint)
-    print l1.length
-    print l1.direction
-    print type(l1.direction)
+    print(type(l1.start))
+    print(l1.midpoint)
+    print(type(l1.midpoint))
+    print(l1.length)
+    print(l1.direction)
+    print(type(l1.direction))
 
     l2 = l1 * 2
-    print l2.start
-    print l2.end
-    print l1.end
+    print(l2.start)
+    print(l2.end)
+    print(l1.end)
     l1 *= 2
-    print l1.end
+    print(l1.end)

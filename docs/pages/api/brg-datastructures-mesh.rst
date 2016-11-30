@@ -28,27 +28,3 @@ This module defines the (poly) mesh class.
 
    brg-datastructures-mesh-mesh-Mesh
 
-
-
-brg.datastructures.mesh.quad
-================================================================================
-
-This module defines the quadmesh class.
-
-.. toctree::
-   :glob:
-
-   brg-datastructures-mesh-quad-QuadMesh
-
-
-
-brg.datastructures.mesh.tri
-================================================================================
-
-This module defines the trimesh class.
-
-.. toctree::
-   :glob:
-
-   brg-datastructures-mesh-tri-TriMesh
-

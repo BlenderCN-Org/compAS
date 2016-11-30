@@ -30,12 +30,11 @@ from subprocess import Popen
 
 import sys
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
+
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 17, 2016'
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
+                  'Andrew Liew <liew@arch.ethz.ch>']
 
 
 old_settings = seterr(all='ignore')
@@ -579,16 +578,16 @@ if __name__ == '__main__':
     m, n = E.shape
     s, t = null.shape
 
-    print m, n
-    print s, t
+    print(m, n)
+    print(s, t)
 
     assert n == s, 'num_cols of E should be equal to num_rows of null(E)'
 
-    print rank(E)
-    print dof(E)
+    print(rank(E))
+    print(dof(E))
 
-    print len(pivots(rref(E)))
-    print len(nonpivots(rref(E)))
+    print(len(pivots(rref(E))))
+    print(len(nonpivots(rref(E))))
 
     # ifile = './data/ifile.mat'
     # ofile = './data/ofile.mat'

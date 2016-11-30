@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from brg_rhino.conduits import Conduit
 
 try:
@@ -49,14 +47,15 @@ if __name__ == "__main__":
     import time
 
     points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-    lines  = [(i, i + 1) for i in range(99)]
+    lines  = [(points[i], points[i + 1]) for i in range(99)]
 
     try:
-        conduit = LinesConduit(points, lines)
+        conduit = LinesConduit(lines)
         conduit.Enabled = True
 
         for i in range(100):
-            conduit.points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+#            points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+#            conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
 
             conduit.redraw()
 

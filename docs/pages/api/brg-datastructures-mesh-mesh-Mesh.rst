@@ -100,6 +100,7 @@ Mesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_trimesh
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_valid
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_vertex_connected
+   .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_vertex_extraordinary
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_vertex_leaf
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_vertex_on_boundary
    .. automethod:: brg.datastructures.mesh.mesh.Mesh.is_vertex_orphan

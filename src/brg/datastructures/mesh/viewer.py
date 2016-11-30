@@ -126,6 +126,41 @@ class SubdMeshViewer(Viewer):
             self.subd = self.subdfunc(self.mesh, k=5)
 
 
+class MultiMeshViewer(Viewer):
+    """"""
+
+    def __init__(self, meshes, colors, width=1440, height=900):
+        super(MultiMeshViewer, self).__init__(width=width, height=height)
+        self.meshes = meshes
+        self.colors = colors
+
+    def display(self):
+        for i in range(len(self.meshes)):
+            mesh = self.meshes[i]
+            key_index = mesh.key_index()
+            xyz = [mesh.vertex_coordinates(key) for key in mesh.vertex]
+            faces = [mesh.face_vertices(fkey, True) for fkey in mesh.face]
+            faces = [[xyz[key_index[key]] for key in vertices] for vertices in faces]
+            polygons = []
+            for points in faces:
+                color_front = self.colors[i]
+                color_back  = (0.2, 0.2, 0.2, 1.0)
+                polygons.append({'points': points,
+                                 'color.front': color_front,
+                                 'color.back' : color_back})
+            lines = []
+            for u, v in mesh.edges():
+                lines.append({'start': mesh.vertex_coordinates(u),
+                              'end'  : mesh.vertex_coordinates(v),
+                              'color': (0.1, 0.1, 0.1),
+                              'width': 1.})
+            xdraw_polygons(polygons)
+            xdraw_lines(lines)
+
+    def keypress(self, key, x, y):
+        pass
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================

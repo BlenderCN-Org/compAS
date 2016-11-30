@@ -18,22 +18,22 @@ brg.numerical : A package for numerical computation.
    brg-numerical-solvers
 
 
-brg.numerical.functions
+brg.numerical.geometry
 ================================================================================
 
-<docstring missing>
+brg.numerical.geometry : Geometry-based numerical functions.
 
 .. toctree::
    :glob:
 
-   brg-numerical-functions-lengths
+   brg-numerical-geometry-lengths
 
 
 
 brg.numerical.linalg
 ================================================================================
 
-<docstring missing>
+brg.numerical.linalg : Array-based linear algebra functions.
 
 .. toctree::
    :glob:
@@ -57,12 +57,13 @@ brg.numerical.linalg
 brg.numerical.matrices
 ================================================================================
 
-<docstring missing>
+brg.numerical.matrices : Useful matrices for numerical analysis.
 
 .. toctree::
    :glob:
 
    brg-numerical-matrices-connectivity_matrix
+   brg-numerical-matrices-mass_matrix
    brg-numerical-matrices-equilibrium_matrix
    brg-numerical-matrices-laplacian_matrix
 
@@ -71,7 +72,7 @@ brg.numerical.matrices
 brg.numerical.operators
 ================================================================================
 
-<docstring missing>
+brg.numerical.operators : Vector/mathematical numerical operators.
 
 .. toctree::
    :glob:
@@ -80,7 +81,7 @@ brg.numerical.operators
 
 
 
-brg.numerical.spatial
+brg.numerical.preconditioning
 ================================================================================
 
 <docstring missing>
@@ -88,15 +89,40 @@ brg.numerical.spatial
 .. toctree::
    :glob:
 
+
+
+
+brg.numerical.spatial
+================================================================================
+
+brg.numerical.spatial : Numerical methods based on spatial co-ordinates.
+
+.. toctree::
+   :glob:
+
    brg-numerical-spatial-closest_points_points
    brg-numerical-spatial-project_points_heightfield
+   brg-numerical-spatial-bounding_box_2d
+   brg-numerical-spatial-bounding_box_3d
+
+
+
+brg.numerical.statistics
+================================================================================
+
+brg.numerical.statistics : Numerical statistical methods.
+
+.. toctree::
+   :glob:
+
+   brg-numerical-statistics-principal_component_analysis
 
 
 
 brg.numerical.utilities
 ================================================================================
 
-<docstring missing>
+brg.numerical.utilities : Various numerical/array utilities.
 
 .. toctree::
    :glob:
@@ -110,7 +136,7 @@ brg.numerical.utilities
 brg.numerical.xforms
 ================================================================================
 
-<docstring missing>
+brg.numerical.xforms : Matrices for vector and matrix transformations.
 
 .. toctree::
    :glob:

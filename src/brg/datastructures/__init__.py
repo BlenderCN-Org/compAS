@@ -8,9 +8,9 @@ The BRG framework currently provides three types of datastructures:
 
 """
 
-from mesh.mesh import Mesh
-from network.network import Network
-from volmesh.volmesh import VolMesh
+from brg.datastructures.mesh.mesh import Mesh
+from brg.datastructures.network.network import Network
+from brg.datastructures.volmesh.volmesh import VolMesh
 
 
 docs = [

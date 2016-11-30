@@ -16,13 +16,14 @@
 #     'stl',
 # ]
 
-from obj import OBJ
+from brg.files.obj import OBJ
 
 docs = [
-    'amf',
-    'csv',
-    'dxf',
-    'obj',
-    'ply',
-    'stl',
+    {'amf' : []},
+    {'csv' : []},
+    {'dxf' : []},
+    {'obj' : []},
+    {'ply' : []},
+    {'rui' : []},
+    {'stl' : []},
 ]

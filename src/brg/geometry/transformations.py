@@ -1,4 +1,4 @@
-from functions import length
+from brg.geometry.functions import length
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]

@@ -9,7 +9,7 @@
   </extend_rhino_menus>
   <menus />
   <tool_bar_groups>
-    <tool_bar_group guid="5d89deb7-72ff-45a1-8641-a8339af897f0" dock_bar_guid32="a2909f48-5eda-4f48-b2af-d8f4280d9100" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="2458ba94-e1e0-4bb4-ba99-fceaf020b27f" single_file="False" hide_single_tab="False" point_floating="18,88">
+    <tool_bar_group guid="5d89deb7-72ff-45a1-8641-a8339af897f0" dock_bar_guid32="eb6ed135-f23a-470e-82f2-022cec9c0998" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="2458ba94-e1e0-4bb4-ba99-fceaf020b27f" single_file="False" hide_single_tab="False" point_floating="222,194">
       <text>
         <locale_1033>MeshTools</locale_1033>
       </text>
@@ -19,7 +19,7 @@
         </text>
         <tool_bar_id>38ef53c7-4deb-4c17-b7c2-dc9d210cadf8</tool_bar_id>
       </tool_bar_group_item>
-      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="True" floating="False" mru_float_style="8192" bar_id="59459" mru_width="32767" point_pos="0,64" float_point="18,88" rect_mru_dock_pos="0,64,1445,102" dock_location_u="59419" dock_location="top" float_size="56,56" />
+      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="False" floating="True" mru_float_style="8192" bar_id="59459" mru_width="32767" point_pos="-2,-2" float_point="222,194" rect_mru_dock_pos="0,64,1436,102" dock_location_u="59419" dock_location="top" float_size="678,56" />
     </tool_bar_group>
   </tool_bar_groups>
   <tool_bars>

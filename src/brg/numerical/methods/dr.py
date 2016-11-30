@@ -20,13 +20,9 @@ from brg.numerical.linalg import normrow
 from result import Result
 
 
-__author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = 'Jul 8, 2015'
+__author__     = ['Tom Van Mele', ]
 
 
 class Coeff():

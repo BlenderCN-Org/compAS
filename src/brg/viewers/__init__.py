@@ -17,11 +17,11 @@
 # ]
 
 docs = [
-    'axes',
-    'camera',
-    'drawing',
-    'grid',
-    'mouse',
-    'trackball',
-    'viewer',
+    {'axes' : []},
+    {'camera' : []},
+    {'drawing' : []},
+    {'grid' : []},
+    {'mouse' : []},
+    {'trackball' : []},
+    {'viewer' : []},
 ]

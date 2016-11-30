@@ -70,6 +70,7 @@ def laplacian_matrix(network, rtype='array'):
     Parameters:
         network (brg.datastructures.network.network.Network) :
             The network datastructure.
+
         rtype (str) :
             Optional.
             The format in which the Laplacian should be returned.

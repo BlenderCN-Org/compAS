@@ -46,60 +46,59 @@ if __name__ == '__main__':
 
     import brg
 
-    # from brg.datastructures.network.network import Network
+    from brg.datastructures.network.network import Network
 
-    # network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(brg.find_resource('saddle.obj'))
 
-    # network.set_dva({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
-    # network.set_dea({'q': 1.0})
+    network.set_dva({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    network.set_dea({'q': 1.0})
 
-    # for key in network:
-    #     network.vertex[key]['is_anchor'] = network.is_vertex_leaf(key)
+    for key in network:
+        network.vertex[key]['is_anchor'] = network.is_vertex_leaf(key)
 
-    # for index, u, v, attr in network.edges_enum(True):
-    #     network.edge[u][v]['q'] = float(index)
+    k_i   = network.key_index()
+    xyz   = network.get_vertices_attributes(('x', 'y', 'z'))
+    loads = network.get_vertices_attributes(('px', 'py', 'pz'))
+    q     = network.get_edges_attribute('q')
 
-    # k_i   = dict((k, i) for i, k in network.vertices_enum())
-    # xyz   = network.get_vertices_attributes(('x', 'y', 'z'))
-    # loads = network.get_vertices_attributes(('px', 'py', 'pz'))
-    # fixed = [k_i[key] for key in network if network.vertex[key]['is_anchor']]
-    # edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
-    # q     = network.get_edges_attribute('q')
-    # res   = fd(xyz, edges, fixed, q, loads)
+    fixed = [k_i[k] for k in network if network.vertex[k]['is_anchor']]
+    edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
 
-    # for key in network:
-    #     index = k_i[key]
-    #     network.vertex[key]['x'] = res.xyz[index][0]
-    #     network.vertex[key]['y'] = res.xyz[index][1]
-    #     network.vertex[key]['z'] = res.xyz[index][2]
-
-    # network.draw(vcolor=dict((key, '#ff0000') for key in network if network.vertex[key]['is_anchor']))
-
-    from brg.datastructures.mesh.mesh import Mesh
-
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-
-    mesh.set_dva({'is_anchor': False})
-    mesh.set_dea({'q': 1.0})
-
-    for key in mesh:
-        mesh.vertex[key]['is_anchor'] = mesh.vertex_degree(key) == 2
-
-    # for index, (u, v, attr) in mesh.edges_enum(True):
-    #     mesh.edge[u][v]['q'] = float(index)
-
-    k_i   = dict((k, i) for i, k in mesh.vertices_enum())
-    xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), 0.0)
-    fixed = [k_i[key] for key in mesh if mesh.vertex[key]['is_anchor']]
-    edges = [(k_i[u], k_i[v]) for u, v in mesh.edges_iter()]
-    q     = mesh.get_edges_attribute('q')
     res   = fd(xyz, edges, fixed, q, loads)
 
-    for key in mesh:
+    for key in network:
         index = k_i[key]
-        mesh.vertex[key]['x'] = res.xyz[index][0]
-        mesh.vertex[key]['y'] = res.xyz[index][1]
-        mesh.vertex[key]['z'] = res.xyz[index][2]
+        network.vertex[key]['x'] = res.xyz[index][0]
+        network.vertex[key]['y'] = res.xyz[index][1]
+        network.vertex[key]['z'] = res.xyz[index][2]
 
-    mesh.draw(vertex_color=dict((key, '#ff0000') for key in mesh if mesh.vertex[key]['is_anchor']))
+    network.plot3()
+
+    # from brg.datastructures.mesh.mesh import Mesh
+
+    # mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+    # mesh.set_dva({'is_anchor': False})
+    # mesh.set_dea({'q': 1.0})
+
+    # for key in mesh:
+    #     mesh.vertex[key]['is_anchor'] = mesh.vertex_degree(key) == 2
+
+    # # for index, (u, v, attr) in mesh.edges_enum(True):
+    # #     mesh.edge[u][v]['q'] = float(index)
+
+    # k_i   = dict((k, i) for i, k in mesh.vertices_enum())
+    # xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))
+    # loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), 0.0)
+    # fixed = [k_i[key] for key in mesh if mesh.vertex[key]['is_anchor']]
+    # edges = [(k_i[u], k_i[v]) for u, v in mesh.edges_iter()]
+    # q     = mesh.get_edges_attribute('q')
+    # res   = fd(xyz, edges, fixed, q, loads)
+
+    # for key in mesh:
+    #     index = k_i[key]
+    #     mesh.vertex[key]['x'] = res.xyz[index][0]
+    #     mesh.vertex[key]['y'] = res.xyz[index][1]
+    #     mesh.vertex[key]['z'] = res.xyz[index][2]
+
+    # mesh.plot(vertex_color=dict((key, '#ff0000') for key in mesh if mesh.vertex[key]['is_anchor']))

@@ -3,12 +3,10 @@
 from numpy import set_printoptions
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Oct 20, 2016'
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
+                  'Andrew Liew <liew@arch.ethz.ch>']
 
 
 float_precision = '2f'

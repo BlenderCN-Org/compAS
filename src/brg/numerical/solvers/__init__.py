@@ -1,29 +1,26 @@
 """brg.numerical.solvers : Specific numerical solvers."""
 
 docs = [
-    {'_mma':
+    {'linprog':
         [
         ]
     },
-    {'lma:'
+    {'lma':
         [
         ]
     },
-    {'lp':
-        [
-        ]
-    }.
     {'mma':
         [
         ]
     },
-    {'qp':
+    {'quadprog':
         [
         ]
     },
-    {'vec_diff_evo':
+    {'differential_evolution':
         [
-        'solver'
+        'solver',
+        'plot'
         ]
     }
 ]

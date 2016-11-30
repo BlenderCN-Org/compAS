@@ -23,6 +23,16 @@ Examples are:
 
 
 
+.. rubric:: **Subpackages**
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   brg-datastructures-mesh-operations-quad
+   brg-datastructures-mesh-operations-tri
+
+
 brg.datastructures.mesh.operations.cycling
 ================================================================================
 

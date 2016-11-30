@@ -1,12 +1,12 @@
-from functions import distance_sqrd
-from functions import length
-from functions import vector_component
+from brg.geometry.functions import distance_sqrd
+from brg.geometry.functions import length
+from brg.geometry.functions import vector_component
 
-from transformations import normalize
-from transformations import scale
+from brg.geometry.transformations import normalize
+from brg.geometry.transformations import scale
 
-from arithmetic import subtract_vectors
-from arithmetic import add_vectors
+from brg.geometry.arithmetic import subtract_vectors
+from brg.geometry.arithmetic import add_vectors
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]

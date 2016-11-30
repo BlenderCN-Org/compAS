@@ -8,9 +8,12 @@ subpackages `tri` and `quad`.
 """
 
 docs = [
-    {'duality'     : ['construct_dual_mesh', ]},
-    {'geometry'    : []},
-    {'orientation' : ['mesh_unify_cycle_directions', 'mesh_flip_cycle_directions', ]},
-    {'smoothing'   : ['mesh_smooth', ]},
-    {'subdivision' : ['subdivide', 'subdivided', 'tri_subdivision', 'corner_subdivision', 'quad_subdivision', 'catmullclark_subdivision']}
+    {'quad'          : []},
+    {'tri'           : []},
+    {'duality'       : ['construct_dual_mesh', ]},
+    {'geometry'      : ['mesh_compute_contours', 'mesh_compute_isolines', 'mesh_compute_gradient', 'mesh_compute_curvature', ]},
+    {'orientation'   : ['mesh_unify_cycle_directions', 'mesh_flip_cycle_directions', ]},
+    {'smoothing'     : ['mesh_smooth_centroid', 'mesh_smooth_centerofmass', 'mesh_smooth_length', 'mesh_smooth_area', ]},
+    {'subdivision'   : ['subdivide', 'subdivided', 'tri_subdivision', 'corner_subdivision', 'quad_subdivision', 'catmullclark_subdivision', 'doosabin_subdivision', ]},
+    {'triangulation' : ['delaunay_from_mesh', 'delaunay_from_points', ]}
 ]

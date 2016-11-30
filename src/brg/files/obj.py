@@ -1,4 +1,7 @@
-import urllib2
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
 
 from brg.utilities.maps import geometric_key
 
@@ -277,6 +280,6 @@ if __name__ == '__main__':
     sample = 'http://block.arch.ethz.ch/labs/samples/saddle.obj'
 
     obj = OBJ(sample, remote=True)
-    print obj.parser.vertices
-    print obj.parser.lines
-    print obj.parser.points
+    print(obj.parser.vertices)
+    print(obj.parser.lines)
+    print(obj.parser.points)

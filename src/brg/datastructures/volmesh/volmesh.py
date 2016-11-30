@@ -81,7 +81,7 @@ class VolMesh(object):
 
     def __str__(self):
         """"""
-        print self.name
+        print(self.name)
 
     @property
     def name(self):
@@ -630,11 +630,19 @@ if __name__ == '__main__':
 
     mesh = VolMesh.from_json(brg.get_data('boxes.json'))
 
-    print mesh.name
+    print(mesh.name)
 
     mesh.scale(0.1)
 
     viewer = VolMeshViewer(mesh, 600, 600, grid_on=False, zoom=5.)
+
+    viewer.grid_on = False
+    viewer.axes_on = False
+
+    viewer.axes.x_color = (0.1, 0.1, 0.1)
+    viewer.axes.y_color = (0.1, 0.1, 0.1)
+    viewer.axes.z_color = (0.1, 0.1, 0.1)
+
     viewer.setup()
     viewer.show()
 

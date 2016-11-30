@@ -9,7 +9,7 @@ docs = [
         'random',
         'tile',
         'zeros',
-        'diag'
+        'diag',
         'eye'
         ]
     },

@@ -14,6 +14,16 @@ subpackages `tri` and `quad`.
 
 
 
+.. rubric:: **Subpackages**
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   brg-datastructures-mesh-algorithms-quad
+   brg-datastructures-mesh-algorithms-tri
+
+
 brg.datastructures.mesh.algorithms.duality
 ================================================================================
 
@@ -29,18 +39,22 @@ brg.datastructures.mesh.algorithms.duality
 brg.datastructures.mesh.algorithms.geometry
 ================================================================================
 
-<docstring missing>
+brg.datastructures.mesh.algorithms.geometry: Compute geometric properties of a mesh.
 
 .. toctree::
    :glob:
 
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_contours
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_isolines
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_gradient
+   brg-datastructures-mesh-algorithms-geometry-mesh_compute_curvature
 
 
 
 brg.datastructures.mesh.algorithms.orientation
 ================================================================================
 
-<docstring missing>
+brg.datastructures.mesh.algorithms.orientation: Algorithms related to mesh orientation and orientability.
 
 .. toctree::
    :glob:
@@ -58,7 +72,10 @@ brg.datastructures.mesh.algorithms.smoothing
 .. toctree::
    :glob:
 
-   brg-datastructures-mesh-algorithms-smoothing-mesh_smooth
+   brg-datastructures-mesh-algorithms-smoothing-mesh_smooth_centroid
+   brg-datastructures-mesh-algorithms-smoothing-mesh_smooth_centerofmass
+   brg-datastructures-mesh-algorithms-smoothing-mesh_smooth_length
+   brg-datastructures-mesh-algorithms-smoothing-mesh_smooth_area
 
 
 
@@ -76,4 +93,18 @@ brg.datastructures.mesh.algorithms.subdivision
    brg-datastructures-mesh-algorithms-subdivision-corner_subdivision
    brg-datastructures-mesh-algorithms-subdivision-quad_subdivision
    brg-datastructures-mesh-algorithms-subdivision-catmullclark_subdivision
+   brg-datastructures-mesh-algorithms-subdivision-doosabin_subdivision
+
+
+
+brg.datastructures.mesh.algorithms.triangulation
+================================================================================
+
+This module defines algorithms for generating triangulations.
+
+.. toctree::
+   :glob:
+
+   brg-datastructures-mesh-algorithms-triangulation-delaunay_from_mesh
+   brg-datastructures-mesh-algorithms-triangulation-delaunay_from_points
 

@@ -3,14 +3,14 @@
 brg.numerical.gpu
 ********************************************************************************
 
-<...docstring missing...>
+brg.numerical.gpu : A package for using the GPU for numerical computation.
 
 
 
 brg.numerical.gpu.array
 ================================================================================
 
-<docstring missing>
+brg.numerical.gpu.array : Forming, sending and retrieving GPUArrays.
 
 .. toctree::
    :glob:
@@ -22,13 +22,14 @@ brg.numerical.gpu.array
    brg-numerical-gpu-array-tile
    brg-numerical-gpu-array-zeros
    brg-numerical-gpu-array-diag
+   brg-numerical-gpu-array-eye
 
 
 
 brg.numerical.gpu.math
 ================================================================================
 
-<docstring missing>
+brg.numerical.gpu.math : Basic mathematical functions on GPUArrays.
 
 .. toctree::
    :glob:
@@ -61,7 +62,7 @@ brg.numerical.gpu.math
 brg.numerical.gpu.linalg
 ================================================================================
 
-<docstring missing>
+brg.numerical.gpu.linalg : Linear algebra equivalents for GPUArrays.
 
 .. toctree::
    :glob:
@@ -84,7 +85,7 @@ brg.numerical.gpu.linalg
 brg.numerical.gpu.utilities
 ================================================================================
 
-<docstring missing>
+brg.numerical.gpu.utilities : Miscellaneous GPU functions.
 
 .. toctree::
    :glob:

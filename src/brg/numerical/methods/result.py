@@ -1,10 +1,8 @@
 """brg.numerical.methods.result : A Class to store numerical method results."""
 
-__author__     = ['Tom Van Mele vanmelet@ethz.ch']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
-__date__       = 'Jul 8, 2015'
+__author__     = ['Tom Van Mele vanmelet@ethz.ch']
 
 
 class Result(object):

@@ -1594,11 +1594,7 @@ mesh summary
     # **************************************************************************
 
     def plot(self, **kwargs):
-        from brg.datastructures.mesh.drawing import draw_mesh
-        draw_mesh(self, **kwargs)
-
-    def draw(self, **kwargs):
-        from brg.datastructures.mesh.drawing import draw_mesh
+        from brg.datastructures.mesh.utilities.drawing import draw_mesh
         draw_mesh(self, **kwargs)
 
     def view(self):
@@ -1606,6 +1602,9 @@ mesh summary
         viewer = MeshViewer(self)
         viewer.setup()
         viewer.show()
+
+    def draw(self, **kwargs):
+        raise NotImplementedError
 
 
 # ==============================================================================
@@ -1615,24 +1614,39 @@ mesh summary
 if __name__ == '__main__':
 
     import brg
-    from brg.datastructures.mesh.operations.welding import unweld
 
-    data = brg.get_data('faces.obj')
-    mesh = Mesh.from_obj(data)
+    from brg.datastructures.mesh import Mesh
 
-    fkey    = '12'
-    where   = mesh.face_vertices(fkey)[0:1]
-    x, y, z = mesh.face_centroid(fkey)
+    mesh = Mesh.from_obj('mesh.obj')
 
-    unweld(mesh, fkey, where)
+    mesh.set_dva({'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    mesh.set_dva({'is_fixed': False})
 
-    mesh.vertex['36']['x'] = x
-    mesh.vertex['36']['y'] = y
-    mesh.vertex['36']['z'] = z
+    class CustomMesh(Mesh):
+        """"""
 
-    print mesh
+        def __init__(self):
+            Mesh.__init__()
+            self.dva.update({
+                'px' : 0.0,
+                'py' : 0.0,
+                'pz' : 0.0, 
+            })
+            self.dea.update({
+                'q' : 1.0,
+                'f' : 0.0,
+                'l' : 0.0,
+            })
 
-    mesh.draw(
-        show_vertices=True,
-        face_label=dict((fkey, fkey) for fkey in mesh.face)
-    )
+        def do_this(self):
+            pass
+
+        def do_that(self):
+            pass
+
+    # print(mesh)
+
+    # mesh.plot(
+    #     show_vertices=True,
+    #     face_label=dict((fkey, fkey) for fkey in mesh.face)
+    # )
