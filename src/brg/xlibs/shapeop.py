@@ -13,15 +13,15 @@ __license__   = 'MIT license'
 __email__     = 'vanmelet@ethz.ch'
 
 
-def planarize_mesh_faces(mesh):
-    key_index = mesh.key_index()
+def planarize_mesh_faces(mesh, kmax=100):
+    k_i    = mesh.key_index()
     vcount = len(mesh)
     points = shapeopPython.doubleArray(3 * vcount)
     for i, (key, attr) in mesh.vertices_enum(True):
         i *= 3
-        points[i]   = attr['x']
-        points[i+1] = attr['y']
-        points[i+2] = attr['z']
+        points[i]     = attr['x']
+        points[i + 1] = attr['y']
+        points[i + 2] = attr['z']
     solver = shapeopPython.shapeop_create()
     shapeopPython.shapeop_setPoints(solver, points, vcount)
     # add a plane constraint to all faces
@@ -31,10 +31,10 @@ def planarize_mesh_faces(mesh):
         indices = shapeopPython.intArray(v)
         for i in range(v):
             key = vertices[i]
-            indices[i] = key_index[key]
+            indices[i] = k_i[key]
         shapeopPython.shapeop_addConstraint(solver, 'Plane', indices, v, 0.5)
     # add a closeness constraint to the fixed vertices
-    anchors = [key_index[key] for key in mesh if mesh.vertex_degree(key) == 2]
+    anchors = [k_i[key] for key in mesh if mesh.vertex_degree(key) == 2]
     for a in anchors:
         indices = shapeopPython.intArray(1)
         indices[0] = a
@@ -43,15 +43,15 @@ def planarize_mesh_faces(mesh):
     for key in mesh:
         if mesh.is_vertex_on_boundary(key):
             indices = shapeopPython.intArray(1)
-            indices[0] = key_index[key]
+            indices[0] = k_i[key]
             shapeopPython.shapeop_addConstraint(solver, 'Closeness', indices, 1, 0.5)
         else:
             indices = shapeopPython.intArray(1)
-            indices[0] = key_index[key]
+            indices[0] = k_i[key]
             shapeopPython.shapeop_addConstraint(solver, 'Closeness', indices, 1, 0.1)
     # solve
     shapeopPython.shapeop_init(solver)
-    shapeopPython.shapeop_solve(solver, 500)
+    shapeopPython.shapeop_solve(solver, kmax)
     shapeopPython.shapeop_getPoints(solver, points, vcount)
     shapeopPython.shapeop_delete(solver)
     # update
@@ -62,15 +62,15 @@ def planarize_mesh_faces(mesh):
         attr['z'] = points[i + 2]
 
 
-def circularize_mesh_faces(mesh):
+def circularize_mesh_faces(mesh, kmax=100):
     key_index = mesh.key_index()
     vcount = len(mesh)
     points = shapeopPython.doubleArray(3 * vcount)
     for i, (key, attr) in mesh.vertices_enum(True):
         i *= 3
-        points[i]   = attr['x']
-        points[i+1] = attr['y']
-        points[i+2] = attr['z']
+        points[i]     = attr['x']
+        points[i + 1] = attr['y']
+        points[i + 2] = attr['z']
     solver = shapeopPython.shapeop_create()
     shapeopPython.shapeop_setPoints(solver, points, vcount)
     for fkey in mesh.face:
@@ -100,7 +100,7 @@ def circularize_mesh_faces(mesh):
             shapeopPython.shapeop_addConstraint(solver, 'Closeness', indices, 1, 0.1)
     # solve
     shapeopPython.shapeop_init(solver)
-    shapeopPython.shapeop_solve(solver, 1000)
+    shapeopPython.shapeop_solve(solver, kmax)
     shapeopPython.shapeop_getPoints(solver, points, vcount)
     shapeopPython.shapeop_delete(solver)
     # update
@@ -116,13 +116,13 @@ def circularize_mesh_faces(mesh):
 # ==============================================================================
 
 if __name__ == '__main__':
-    
+
     import brg
 
     from brg.datastructures.mesh.mesh import Mesh
     from brg.datastructures.mesh.viewer import MultiMeshViewer
     from brg.datastructures.mesh.numerical.methods import mesh_fd
-    
+
     mesh = Mesh.from_obj(brg.find_resource('faces.obj'))
 
     mesh.set_dva({'is_anchor': False, 'pz': -0.5})
@@ -131,21 +131,21 @@ if __name__ == '__main__':
     for key in mesh:
         mesh.vertex[key]['is_anchor'] = mesh.vertex_degree(key) == 2
 
-    mesh_fd(mesh)    
-    
+    mesh_fd(mesh)
+
     p_mesh = mesh.copy()
     c_mesh = p_mesh.copy()
 
     # meshes = [mesh, p_mesh, c_mesh]
     meshes = [c_mesh]
-    
+
     # planarize_mesh_faces(p_mesh)
     circularize_mesh_faces(c_mesh)
 
     # colors = [(1.0, 0.5, 0.5, 1.0), (0.5, 1.0, 0.5, 1.0), (0.5, 0.5, 1.0, 1.0)]
     # colors = [(1.0, 0.5, 0.5, 1.0), (0.5, 0.5, 1.0, 1.0)]
     colors = [(1.0, 0.5, 0.5, 1.0)]
-    
+
     viewer = MultiMeshViewer(meshes, colors, 800, 600)
     viewer.grid_on = False
     viewer.setup()

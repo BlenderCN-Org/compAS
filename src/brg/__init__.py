@@ -1,7 +1,4 @@
-"""This is the introductory text for the ``brg`` section in the documentation page
-'reference.rst'.
-"""
-
+"""..."""
 
 import os
 import warnings

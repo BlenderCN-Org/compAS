@@ -73,17 +73,25 @@ if __name__ == "__main__":
 
     from brg.datastructures.mesh.tri import Mesh
     from brg.geometry.polyhedron import Polyhedron
+    from brg.datastructures.mesh.algorithms.orientation import mesh_flip_cycle_directions
     from brg.datastructures.mesh.viewer import SubdMeshViewer
 
     tet = Polyhedron.generate(4)
 
     mesh = Mesh.from_vertices_and_faces(tet.vertices, tet.faces)
+    mesh_flip_cycle_directions(mesh)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision)
+    viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
 
     viewer.axes.x_color = (0.1, 0.1, 0.1)
     viewer.axes.y_color = (0.1, 0.1, 0.1)
     viewer.axes.z_color = (0.1, 0.1, 0.1)
+
+    viewer.axes_on = False
+    viewer.grid_on = False
+
+    for _ in range(20):
+        viewer.camera.zoom_in()
 
     viewer.setup()
     viewer.show()

@@ -28,8 +28,8 @@ def trimesh_edge_cotangent(mesh, u, v):
 
 
 def trimesh_edge_cotangents(mesh, u, v):
-    a = self.edge_cotangent(u, v)
-    b = self.edge_cotangent(v, u)
+    a = trimesh_edge_cotangent(u, v)
+    b = trimesh_edge_cotangent(v, u)
     return a, b
 
 
@@ -88,6 +88,10 @@ def cotangent_laplacian_matrix(mesh):
     L = L - spdiags(L * ones(n), 0, n, n)
     L = L.tocsr()
     return L
+
+
+def positive_cotangent_laplacian_matrix(mesh):
+    raise NotImplementedError
 
 
 # ==============================================================================

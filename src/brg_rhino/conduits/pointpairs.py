@@ -20,19 +20,22 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-class LinesConduit(Conduit):
+class PointPairsConduit(Conduit):
     """"""
-    def __init__(self, lines, thickness=1, color=None):
-        super(LinesConduit, self).__init__()
-        self.lines = lines
-        self.n = len(lines)
+    def __init__(self, points, pairs, thickness=1, color=None):
+        super(PointPairsConduit, self).__init__()
+        self.points = points
+        self.pairs = pairs
+        self.n = len(pairs)
         self.thickness = thickness
         color = color or (255, 255, 255)
         self.color = FromArgb(*color)
 
     def DrawForeground(self, e):
         lines = List[Line](self.n)
-        for sp, ep in self.lines:
+        for i, j in self.pairs:
+            sp = self.points[i]
+            ep = self.points[j]
             lines.Add(Line(Point3d(*sp), Point3d(*ep)))
         e.Display.DrawLines(lines, self.color, self.thickness)
 
@@ -47,15 +50,14 @@ if __name__ == "__main__":
     import time
 
     points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-    lines  = [(points[i], points[i + 1]) for i in range(99)]
+    pairs  = [(i, i + 1) for i in range(99)]
 
     try:
-        conduit = LinesConduit(lines)
+        conduit = PointPairsConduit(points, pairs)
         conduit.Enabled = True
 
         for i in range(100):
-            points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-            conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
+            conduit.points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
 
             conduit.redraw()
 

@@ -75,13 +75,6 @@ class Mesh(object):
 
     """
 
-    # from_vertices_and_faces = classmethod(mesh_from_vertices_and_faces)
-    # from_data               = classmethod(mesh_from_data)
-    # from_obj                = classmethod(mesh_from_obj)
-    # from_json               = classmethod(mesh_from_json)
-    # from_boundary           = classmethod(mesh_from_boundary)
-    # from_points             = classmethod(mesh_from_points)
-
     def __init__(self, **kwargs):
         self._fkey = 0
         self._vkey = 0
@@ -367,8 +360,8 @@ mesh summary
         >>> mesh = Mesh()
         >>> mesh.add_vertex()
         '0'
-        >>> k2i = mesh.key_index()
-        >>> k2i['0']
+        >>> k_i = mesh.key_index()
+        >>> k_i['0']
         0
         """
         return dict((k, i) for i, k in self.vertices_enum())
@@ -384,8 +377,8 @@ mesh summary
         >>> mesh = Mesh()
         >>> mesh.add_vertex()
         '0'
-        >>> i2k = mesh.index_key()
-        >>> i2k[0]
+        >>> i_k = mesh.index_key()
+        >>> i_k[0]
         '0'
         """
         return dict(self.vertices_enum())

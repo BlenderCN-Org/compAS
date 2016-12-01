@@ -1,13 +1,22 @@
 """A Toolbar providing an interface to common mesh tools."""
 
 from brg.geometry.elements.polyhedron import Polyhedron
-from brg_rhino.datastructures.mesh import RhinoMesh
+
+from brg.datastructures.mesh.mesh import Mesh
 
 from brg.datastructures.mesh.algorithms.tri.subdivision import loop_subdivision
 
 from brg.datastructures.mesh.algorithms.subdivision import quad_subdivision
 from brg.datastructures.mesh.algorithms.subdivision import doosabin_subdivision
 from brg.datastructures.mesh.algorithms.subdivision import _catmullclark_subdivision
+
+from brg_rhino.datastructures.mesh import RhinoMesh
+
+# from brg_rhino.datastructures.mixins.keys import SelectComponents
+# from brg_rhino.datastructures.mixins.attributes import EditAttributes
+# from brg_rhino.datastructures.mixins.geometry import EditGeometry
+# from brg_rhino.datastructures.mixins.geometry import DisplayGeometry
+# from brg_rhino.datastructures.mixins.labels import DisplayLabels
 
 import brg_rhino.utilities as rhino
 
@@ -25,11 +34,19 @@ __license__   = 'MIT license'
 __email__     = 'vanmelet@ethz.ch'
 
 
-class ControlMesh(RhinoMesh):
+class ControlMesh(Mesh):
     """"""
 
     def __init__(self, **kwargs):
         super(ControlMesh, self).__init__(**kwargs)
+        self.attributes.update({
+            'layer'               : None,
+            'color.vertex'        : None,
+            'color.edge'          : None,
+            'color.face'          : None,
+            'color.normal:vertex' : None,
+            'color.normal:face'   : None,
+        })
         self.dva.update({
             'is_fixed' : False,
         })
@@ -117,7 +134,6 @@ class MeshTools(object):
         # provide support for fixed vertices
         # provide support for edge weights
         # provide support for force densities
-        raise NotImplementedError
         mesh = self.mesh
         options = ['vertices', 'edges', 'faces']
         option = rs.GetString('Edit attributes of ...', options[0], options)
@@ -282,8 +298,9 @@ class MeshTools(object):
 
 if __name__ == "__main__":
 
-    from brg.files.rui import Rui
-    from brg.files.rui import get_macros
+    from brg_rhino.ui.rui import Rui
+    from brg_rhino.ui.rui import get_macros
+    from brg_rhino.ui.rui import update_macro
 
     toolbars = [{'name' : 'MeshTools', 'items' : [
         {'type': 'normal', 'left_macro' : 'init', },
@@ -299,19 +316,10 @@ if __name__ == "__main__":
         {'type': 'normal', 'left_macro' : 'modify_tri', },
         {'type': 'normal', 'left_macro' : 'subd_tri', },
     ]}]
+
     toolbargroups = [{'name' : 'MeshTools', 'toolbars' : ['MeshTools', ]}]
 
-    rui = Rui('./mtools.rui')
-
-    rui.init()
-
     macros = get_macros(MeshTools, 'mtools')
-
-    def find_macro(name, macros):
-        for i, macro in enumerate(macros):
-            if macro['name'] == name:
-                return i, macro
-        return None, None
 
     init_script = [
         '-_RunPythonScript ResetEngine (',
@@ -320,17 +328,13 @@ if __name__ == "__main__":
         'mtools.init()',
         ')',
     ]
-    i, macro = find_macro('init', macros)
 
-    if macro:
-        macro['script'] = ''.join(init_script)
+    update_macro(macros, 'init', 'script', ''.join(init_script))
 
-    macros[i] = macro
+    rui = Rui('./mtools.rui')
 
+    rui.init()
     rui.add_macros(macros)
     rui.add_toolbars(toolbars)
     rui.add_toolbargroups(toolbargroups)
-
-    # rui.macros['init']['script'] = ''.join(init_script)
-
     rui.write()

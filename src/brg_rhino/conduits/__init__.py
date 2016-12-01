@@ -30,7 +30,7 @@ class Conduit(DisplayConduit):
 
 
 docs = [
-    'lines',
-    'points',
-    'splines',
+    {'lines'   : ['LinesConduit', ]},
+    {'points'  : ['PointsConduit', ]},
+    {'splines' : ['SplinesConduit', ]},
 ]

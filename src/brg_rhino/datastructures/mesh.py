@@ -6,7 +6,7 @@ from brg.utilities.maps import geometric_key
 from brg_rhino.datastructures.mixins.attributes import EditAttributes
 from brg_rhino.datastructures.mixins.geometry import EditGeometry
 from brg_rhino.datastructures.mixins.geometry import DisplayGeometry
-from brg_rhino.datastructures.mixins.keys import GetKeys
+from brg_rhino.datastructures.mixins.keys import SelectComponents
 from brg_rhino.datastructures.mixins.labels import DisplayLabels
 
 from brg_rhino.geometry.surface import Surface
@@ -16,27 +16,23 @@ import brg_rhino.utilities as rhino
 try:
     import Rhino
     import scriptcontext as sc
-    import rhinoscriptsyntax as rs
-
 except ImportError as e:
-
     import platform
     if platform.system() == 'Windows':
         raise e
+
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 
 
-@rhino.add_gui_helpers((
-    EditAttributes,
-    EditGeometry,
-    DisplayGeometry,
-    GetKeys,
-    DisplayLabels
-))
-class RhinoMesh(Mesh):
+class RhinoMesh(EditAttributes,
+                EditGeometry,
+                DisplayGeometry,
+                SelectComponents,
+                DisplayLabels,
+                Mesh):
 
     def __init__(self, **kwargs):
         super(RhinoMesh, self).__init__(**kwargs)

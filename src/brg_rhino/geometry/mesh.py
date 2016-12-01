@@ -1,9 +1,15 @@
-# -*- coding: utf-8 -*-
+""""""
 
 try:
+    from System.Collections.Generic import List
+
     import Rhino
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
+
+    from Rhino.Geometry import Point3d
+
+    find_object = sc.doc.Objects.Find
 
 except ImportError as e:
 
@@ -14,11 +20,8 @@ except ImportError as e:
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.1'
+__license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = '29.09.2014'
 
 
 class MeshError(Exception):
@@ -30,6 +33,10 @@ class Mesh(object):
 
     def __init__(self, guid):
         self.guid = guid
+        self.mesh = find_object(self.guid)
+        self.geometry = self.mesh.Geometry
+        self.attributes = self.mesh.Attributes
+        self.otype = self.geometry.ObjectType
 
     def get_coordinates(self):
         return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]
@@ -162,6 +169,26 @@ class Mesh(object):
     #         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
     #         vindices.append(temp[0])
     #     return vindices
+
+    # ==========================================================================
+    # geometric stuff
+    # ==========================================================================
+
+    def normal(self, point):
+        pass
+
+    def normals(self, points):
+        pass
+
+    def closest_point(self, point, maxdist=None):
+        maxdist = maxdist or 0.0
+        face, point = self.geometry.ClosestPoint(Point3d(*point), maxdist)
+        return list(point)
+
+    def closest_points(self, points, maxdist=None):
+        # points = List[Point3d](len(points))
+        # points = self.geometry.PullPointsToMesh()
+        return [self.closest_point(point, maxdist) for point in points]
 
 
 # ==============================================================================

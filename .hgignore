@@ -19,3 +19,5 @@ docs/_static
 docs/_templates
 
 libs/**
+
+threejs/**
