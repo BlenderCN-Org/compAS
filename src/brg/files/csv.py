@@ -1,6 +1,9 @@
 """"""
 
-import urllib2
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
@@ -74,6 +77,6 @@ class CSVWriter(object):
 if __name__ == '__main__':
 
     csv = CSVReader('make_blocks.csv', ',')
-    print csv.headers()
-    print csv.rows()
-    print csv.columns(True)
+    print(csv.headers())
+    print(csv.rows())
+    print(csv.columns(True))

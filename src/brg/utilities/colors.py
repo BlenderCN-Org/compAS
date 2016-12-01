@@ -7,7 +7,10 @@ __date__       = 'Jun 12, 2015'
 
 
 BASE16  = '0123456789abcdef'
-HEX2DEC = dict((v, int(v, base=16)) for v in [x + y for x in BASE16 for y in BASE16])
+try:
+    HEX2DEC = dict((v, int(v, base=16)) for v in [x + y for x in BASE16 for y in BASE16])
+except:
+    HEX2DEC = dict((v, int(v, 16)) for v in [x + y for x in BASE16 for y in BASE16])
 
 
 def i2rgb(i):

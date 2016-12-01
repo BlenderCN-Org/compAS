@@ -63,7 +63,7 @@ def connectivity_matrix(edges, rtype='array'):
     """
     m    = len(edges)
     data = array([-1] * m + [1] * m)
-    rows = array(range(m) + range(m))
+    rows = array(list(range(m)) + list(range(m)))
     cols = array([edge[0] for edge in edges] + [edge[1] for edge in edges])
     C    = coo_matrix((data, (rows, cols)))
     if rtype == 'array':

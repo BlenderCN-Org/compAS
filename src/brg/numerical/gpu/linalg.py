@@ -19,9 +19,11 @@ except ImportError as e:
     pass
 
 
+__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
+__version__    = '0.1'
+__date__       = 'Oct 17, 2016'
 
 
 def conj(a):
@@ -79,7 +81,7 @@ def cross(a, b, bsize):
     """
     m = a.shape[0]
     c = pycuda.gpuarray.empty((m, 3), float64)
-    grid = (int(ceil(m/bsize)), 1)
+    grid = (int(ceil(m / bsize)), 1)
     cross_product(a, b, c, block=(bsize, 3, 1), grid=grid)
     return c
 
@@ -193,7 +195,7 @@ def normrow(a):
         >>> type(a)
         pycuda.gpuarray.GPUArray
     """
-    return sqrt(sum(a*a, axis=1))
+    return sqrt(sum(a * a, axis=1))
 
 
 def pinv(a):

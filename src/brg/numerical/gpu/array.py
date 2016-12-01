@@ -70,7 +70,7 @@ def eye(n, bit=64):
         >>> type(a)
         pycuda.gpuarray.GPUArray
     """
-    if  bit == 32:
+    if bit == 32:
         a = skcuda.linalg.eye(n, dtype=float32)
     elif bit == 64:
         a = skcuda.linalg.eye(n, dtype=float64)
@@ -123,16 +123,16 @@ def give(a, bit=64, type='real'):
         >>> a.reshape((1, 6))
         array([[ 1.,  2.,  3.,  4.,  5.,  6.]])
     """
-    if  type == 'real':
-        if  bit == 32:
+    if type == 'real':
+        if bit == 32:
             b = pycuda.gpuarray.to_gpu(array(a).astype(float32))
-        elif  bit == 64:
+        elif bit == 64:
             b = pycuda.gpuarray.to_gpu(array(a).astype(float64))
     elif type == 'complex':
-        if  bit == 32:
+        if bit == 32:
             raise NotImplementedError
             # b = pycuda.gpuarray.to_gpu(array(a).astype(complex32))
-        elif  bit == 64:
+        elif bit == 64:
             b = pycuda.gpuarray.to_gpu(array(a).astype(complex64))
     return b
 
@@ -155,9 +155,9 @@ def ones(shape, bit=64):
         >>> type(a)
         pycuda.gpuarray.GPUArray
     """
-    if  bit == 32:
+    if bit == 32:
         a = skcuda.misc.ones(shape, float32)
-    if  bit == 64:
+    if bit == 64:
         a = skcuda.misc.ones(shape, float64)
     return a
 
@@ -179,9 +179,9 @@ def random(shape, bit=64):
         pycuda.gpuarray.GPUArray
 
     """
-    if  bit == 32:
+    if bit == 32:
         a = pycuda.curandom.rand(shape, dtype=float32)
-    if  bit == 64:
+    if bit == 64:
         a = pycuda.curandom.rand(shape, dtype=float64)
     return a
 
@@ -211,12 +211,12 @@ def tile(a, shape):
     """
     m = a.shape[0]
     n = a.shape[1]
-    b = zeros((m*shape[0], n))
+    b = zeros((m * shape[0], n))
     for i in range(shape[0]):
-        b[i*m:i*m+m, :] = a
-    c = zeros((m*shape[0], n*shape[1]))
+        b[i * m:i * m + m, :] = a
+    c = zeros((m * shape[0], n * shape[1]))
     for i in range(shape[1]):
-        c[:, i*n:i*n+n] = b
+        c[:, i * n:i * n + n] = b
     return c
 
 
