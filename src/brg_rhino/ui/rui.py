@@ -202,7 +202,7 @@ def get_macros(controller, instance_name):
         button_text = annotations.get('button_text') or text
         menu_text   = annotations.get('menu_text') or ' '.join(text.split('_'))
         macros.append({
-            'name'        : name,
+            'name'        : instance_name + '.' + name,
             'script'      : script,
             'tooltip'     : tooltip,
             'help_text'   : help_text,
@@ -210,6 +210,20 @@ def get_macros(controller, instance_name):
             'menu_text'   : menu_text,
         })
     return macros
+
+
+def find_macro(name, macros):
+    for i, macro in enumerate(macros):
+        if macro['name'] == name:
+            return i, macro
+    return None, None
+
+
+def update_macro(macros, name, key, value):
+    i, macro = find_macro(name, macros)
+    if macro:
+        macro[key] = value
+    macros[i] = macro
 
 
 class Rui(object):

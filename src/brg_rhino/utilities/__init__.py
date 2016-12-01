@@ -74,6 +74,7 @@ from objects import set_mesh_vertex_colors
 from misc import add_gui_helpers
 from misc import browse_for_folder
 from misc import browse_for_file
+from misc import print_display_on
 from misc import display_message
 from misc import display_text
 from misc import display_image

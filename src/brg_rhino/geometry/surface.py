@@ -1,7 +1,15 @@
-# -*- coding: utf-8 -*-
+""""""
+
+from brg_rhino.exceptions import RhinoSurfaceError
 
 try:
+    import Rhino
     import rhinoscriptsyntax as rs
+    import scriptcontext as sc
+
+    from Rhino.Geometry import Point3d
+
+    find_object = sc.doc.Objects.Find
 
 except ImportError as e:
 
@@ -19,62 +27,15 @@ __status__     = 'Development'
 __date__       = '29.09.2014'
 
 
-def surface_heightfield(self, density=10, over_space=True):
-    """"""
-    try:
-        du, dv = density
-    except TypeError:
-        du = density
-        dv = density
-    du = int(du)
-    dv = int(dv)
-    xyz = []
-    rs.EnableRedraw(False)
-    if rs.IsPolysurface(self.guid):
-        faces = rs.ExplodePolysurfaces(self.guid)
-    elif rs.IsSurface(self.guid):
-        faces = [self.guid]
-    else:
-        raise SurfaceError('object is not a surface')
-    if over_space:
-        for guid in faces:
-            face = Surface(guid)
-            uv = face.space(density)
-            for u, v in uv:
-                xyz.append(list(rs.EvaluateSurface(face.guid, u, v)))
-    else:
-        for guid in faces:
-            bbox = rs.BoundingBox(guid)
-            xmin = bbox[0][0]
-            xmax = bbox[1][0]
-            ymin = bbox[0][1]
-            ymax = bbox[3][1]
-            xstep = 1.0 * (xmax - xmin) / (du - 1)
-            ystep = 1.0 * (ymax - ymin) / (dv - 1)
-            seeds = []
-            for i in xrange(du):
-                for j in xrange(dv):
-                    seed = xmin + i * xstep, ymin + j * ystep, 0
-                    seeds.append(seed)
-            points = map(list, rs.ProjectPointToSurface(seeds, guid, [0, 0, 1]))
-            xyz += points
-    if len(faces) > 1:
-        rs.DeleteObjects(faces)
-    rs.EnableRedraw(True)
-    return xyz
-
-
-class SurfaceError(Exception):
-    pass
-
-
 class Surface(object):
     """"""
 
-    heightfield = surface_heightfield
-
     def __init__(self, guid=None):
         self.guid = guid
+        self.surface = find_object(guid)
+        self.geometry = self.surface.Geometry
+        self.attributes = self.surface.Attributes
+        self.otype = self.geometry.ObjectType
 
     def space(self, density=10):
         """"""
@@ -92,7 +53,7 @@ class Surface(object):
         elif rs.IsSurface(self.guid):
             faces = [self.guid]
         else:
-            raise SurfaceError('object is not a surface')
+            raise RhinoSurfaceError('object is not a surface')
         for face in faces:
             domainU = rs.SurfaceDomain(face, 0)
             domainV = rs.SurfaceDomain(face, 1)
@@ -105,6 +66,50 @@ class Surface(object):
             rs.DeleteObjects(faces)
         rs.EnableRedraw(True)
         return uv
+
+    def surface_heightfield(self, density=10, over_space=True):
+        """"""
+        try:
+            du, dv = density
+        except TypeError:
+            du = density
+            dv = density
+        du = int(du)
+        dv = int(dv)
+        xyz = []
+        rs.EnableRedraw(False)
+        if rs.IsPolysurface(self.guid):
+            faces = rs.ExplodePolysurfaces(self.guid)
+        elif rs.IsSurface(self.guid):
+            faces = [self.guid]
+        else:
+            raise RhinoSurfaceError('object is not a surface')
+        if over_space:
+            for guid in faces:
+                face = Surface(guid)
+                uv = face.space(density)
+                for u, v in uv:
+                    xyz.append(list(rs.EvaluateSurface(face.guid, u, v)))
+        else:
+            for guid in faces:
+                bbox = rs.BoundingBox(guid)
+                xmin = bbox[0][0]
+                xmax = bbox[1][0]
+                ymin = bbox[0][1]
+                ymax = bbox[3][1]
+                xstep = 1.0 * (xmax - xmin) / (du - 1)
+                ystep = 1.0 * (ymax - ymin) / (dv - 1)
+                seeds = []
+                for i in xrange(du):
+                    for j in xrange(dv):
+                        seed = xmin + i * xstep, ymin + j * ystep, 0
+                        seeds.append(seed)
+                points = map(list, rs.ProjectPointToSurface(seeds, guid, [0, 0, 1]))
+                xyz += points
+        if len(faces) > 1:
+            rs.DeleteObjects(faces)
+        rs.EnableRedraw(True)
+        return xyz
 
     def descent(self, points=None):
         """"""
@@ -141,7 +146,7 @@ class Surface(object):
                 vector = [p1[_] - p0[_] for _ in range(3)]
                 descent.append((p0, vector))
         else:
-            raise SurfaceError('object is not a surface')
+            raise RhinoSurfaceError('object is not a surface')
         return descent
 
     def curvature(self, points=None):
@@ -172,7 +177,7 @@ class Surface(object):
                 props = rs.SurfaceCurvature(self.guid, uv)
                 curvature.append((point, (props[1], props[3], props[5])))
         else:
-            raise SurfaceError('object is not a surface')
+            raise RhinoSurfaceError('object is not a surface')
         return curvature
 
     def borders(self):
@@ -182,16 +187,21 @@ class Surface(object):
         return curves
 
     def project_points(self, points):
-        if not points:
-            return
         projections = []
         for point in points:
             ppoints = rs.ProjectPointToSurface(point, self.guid, [0, 0, 1])
             if not ppoints:
-                raise SurfaceError('Could not project point to surface.')
+                raise RhinoSurfaceError('Could not project point to surface.')
             ppoint = ppoints[0]
             projections.append(list(ppoint))
         return projections
+
+    def closest_point(self, point, maxdist=None):
+        rc, u, v = self.geometry.ClosestPoint(Point3d(*point))
+        return list(self.geoemtry.PointAt(u, v))
+
+    def closest_points(self, points, maxdist=None):
+        return [self.closest_point(point) for point in points]
 
 
 # ==============================================================================

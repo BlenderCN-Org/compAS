@@ -39,7 +39,6 @@ from brg.geometry.spatial import closest_point_on_segment
 from brg.geometry.spatial import closest_point_on_polyline
 from brg.geometry.spatial import closest_point_on_plane
 
-# always return indices
 # FLAG: return_index
 # add closest_ppoint_on_polygon
 
@@ -62,12 +61,12 @@ from brg.geometry.queries import is_point_on_polyline
 
 
 docs = [
-    # 'arithmetic',
-    # 'functions',
-    # 'intersections',
-    # 'planar',
-    # 'queries',
-    # 'spatial',
-    # 'transformations',
-    # 'utilities'
+    {'arithmetic'      : []},
+    {'functions'       : []},
+    {'intersections'   : []},
+    {'planar'          : []},
+    {'queries'         : []},
+    {'spatial'         : []},
+    {'transformations' : []},
+    {'utilities'       : []}
 ]

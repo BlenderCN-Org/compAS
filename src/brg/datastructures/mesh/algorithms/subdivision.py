@@ -354,7 +354,7 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=_catmullclark_subdivision, width=600, height=600)
+    viewer = SubdMeshViewer(mesh, subdfunc=doosabin_subdivision, width=600, height=600)
 
     viewer.axes.x_color = (0.1, 0.1, 0.1)
     viewer.axes.y_color = (0.1, 0.1, 0.1)
@@ -362,6 +362,9 @@ if __name__ == "__main__":
 
     viewer.axes_on = False
     viewer.grid_on = False
+
+    for _ in range(20):
+        viewer.camera.zoom_in()
 
     viewer.setup()
     viewer.show()

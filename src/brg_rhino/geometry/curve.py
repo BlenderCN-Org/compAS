@@ -1,8 +1,12 @@
-# -*- coding: utf-8 -*-
+""""""
+
+from brg_rhino.exceptions import RhinoCurveError
 
 import brg_rhino.utilities as rhino
 
 try:
+    from Rhino.Geometry import Point3d
+
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
 
@@ -18,12 +22,10 @@ except ImportError as e:
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = '29.09.2014'
 
 
+# rework by extending the RhinoCommon object
 class Curve(object):
     """"""
 
@@ -31,6 +33,8 @@ class Curve(object):
         self.guid = guid
         self.curve = find_object(guid)
         self.geometry = self.curve.Geometry
+        self.attributes = self.curve.Attributes
+        self.otype = self.geometry.ObjectType
 
     def hide(self):
         return rs.HideObject(self.guid)
@@ -58,7 +62,7 @@ class Curve(object):
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) > 2)
 
-    def space(self, density=10):
+    def space(self, density):
         space = []
         density = int(density)
         if rs.IsCurve(self.guid):
@@ -77,10 +81,19 @@ class Curve(object):
             rs.DeleteObjects(segments)
             rs.EnableRedraw(True)
         else:
-            raise CurveError('object is not a curve')
+            raise RhinoCurveError('object is not a curve')
         return space
 
-    def heightfield(self, density=10):
+    def draw_space(self, density):
+        space = self.space(density)
+        points = []
+        for point in space:
+            points.append({
+
+            })
+        rhino.xdraw_points(points)
+
+    def heightfield(self, density):
         heightfield = []
         space = self.space(density)
         if space:
@@ -88,13 +101,17 @@ class Curve(object):
             heightfield = map(list, xyz)
         return heightfield
 
+    def draw_heightfield(self):
+        pass
+
     def curvature(self):
         raise NotImplementedError
 
-    def tangents(self, points=None):
+    def draw_curvature(self):
+        pass
+
+    def tangents(self, points):
         tangents = []
-        if not points:
-            points = self.heightfield()
         if rs.IsPolyCurve(self.guid):
             pass
         elif rs.IsCurve(self.guid):
@@ -103,12 +120,19 @@ class Curve(object):
                 vector = list(rs.CurveTangent(self.guid, param))
                 tangents.append((point, vector))
         else:
-            raise CurveError('object is not a curve')
+            raise RhinoCurveError('object is not a curve')
         return tangents
 
-    def descent(self, points=None):
+    def draw_tangents(self):
+        pass
+
+    def descent(self, points):
         tangents = self.tangents(points)
-        return [(point, vector) if vector[2] < 0 else (point, [-v for v in vector]) for point, vector in tangents]
+        tangents = [
+            (point, vector) if vector[2] < 0 else (point, [-v for v in vector])
+            for point, vector in tangents
+        ]
+        return tangents
 
     def divide(self, number_of_segments, over_space=False):
         points = []
@@ -118,27 +142,25 @@ class Curve(object):
             if space:
                 points = [list(rs.EvaluateCurve(self.guid, param)) for param in space]
         else:
-            temp = rs.DivideCurve(self.guid, number_of_segments, create_points=False, return_points=True)
-            points = map(list, temp)
+            points = rs.DivideCurve(self.guid, number_of_segments, create_points=False, return_points=True)
+            points[:] = map(list, points)
         rs.EnableRedraw(True)
         return points
 
     def divide_length(self, length_of_segments):
         rs.EnableRedraw(False)
-        temp = rs.DivideCurveLength(self.guid, length_of_segments, create_points=False, return_points=True)
-        points = map(list, temp)
+        points = rs.DivideCurveLength(self.guid, length_of_segments, create_points=False, return_points=True)
+        points[:] = map(list, points)
         rs.EnableRedraw(True)
         return points
 
-    def closest_points(self, points):
-        closest = []
-        for point in points:
-            t = rs.CurveClosestPoint(self.guid, point)
-            closest.append(rs.EvaluateCurve(self.guid, t))
-        return closest
+    def closest_point(self, point, maxdist=None):
+        maxdist = maxdist or 0.0
+        rc, t = self.geometry.ClosestPoint(Point3d(*point), maxdist)
+        return list(self.geometry.PointAt(t))
 
-    def pulled_points(self, points):
-        return self.closest_points(points)
+    def closest_points(self, points, maxdist=None):
+        return [self.closest_point(point, maxdist) for point in points]
 
 
 # ==============================================================================

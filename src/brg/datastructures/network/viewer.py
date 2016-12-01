@@ -26,7 +26,7 @@ class NetworkViewer(Viewer):
         self.vcount = len(self.network.vertices())
 
     # --------------------------------------------------------------------------
-    # main drawing functionality
+    # main drawing functionality++
     # --------------------------------------------------------------------------
 
     def display(self):
@@ -36,7 +36,7 @@ class NetworkViewer(Viewer):
         for key, attr in self.network.vertices_iter(True):
             points.append({
                 'pos'  : (attr['x'], attr['y'], attr['z']),
-                'size' : 10.,
+                'size' : 6.,
                 'color': color,
             })
         lines = []
@@ -76,9 +76,16 @@ if __name__ == '__main__':
     import brg
     from brg.datastructures.network.network import Network
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(brg.find_resource('lines.obj'))
 
-    viewer = NetworkViewer(network)
+    network.attributes['color.vertex'] = (0, 0, 0)
+
+    network.add_edge('0', '14')
+    network.add_edge('15', '10')
+    network.add_edge('21', '24')
+
+
+    viewer = NetworkViewer(network, 600, 600)
 
     viewer.grid_on = False
     viewer.axes_on = False

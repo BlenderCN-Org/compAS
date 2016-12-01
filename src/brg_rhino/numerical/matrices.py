@@ -1,9 +1,11 @@
 """This module defines matrix representations of the data structures that
 are compatible with Rhino (i.e. with DotNet/IronPython)."""
 
-from xalglib import sparsecreate
-from xalglib import sparseset
-from xalglib import sparseconvertotcrs
+
+from brg_rhino.numerical.alglib.xalglib import sparsecreate
+from brg_rhino.numerical.alglib.xalglib import sparseset
+from brg_rhino.numerical.alglib.xalglib import sparseconvertotcrs
+
 
 __author__    = 'Tom Van Mele'
 __copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'

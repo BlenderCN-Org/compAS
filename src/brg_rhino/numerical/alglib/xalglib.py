@@ -36,9 +36,9 @@ curdir = os.path.dirname(__file__)
 if curdir=="":
     curdir = "."
 _net_candidates = []
-_net_candidates.append(os.path.join(os.path.relpath(curdir),"alglibnet2.dll"))
-_net_candidates.append(os.path.join(sys.prefix,"alglibnet2.dll"))
-_net_candidates.append(os.path.join(os.sep+"usr","local","alglibnet2.dll"))
+_net_candidates.append(os.path.join(os.path.relpath(curdir), "alglibnet2.dll"))
+_net_candidates.append(os.path.join(sys.prefix, "alglibnet2.dll"))
+_net_candidates.append(os.path.join(os.sep + "usr", "local", "alglibnet2.dll"))
 for _candidate in _net_candidates:
     if os.path.isfile(_candidate):
         clr.AddReferenceToFileAndPath(_candidate)

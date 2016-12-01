@@ -130,6 +130,13 @@ def browse_for_file(title=None, folder=None, filter=None):
 # ==============================================================================
 
 
+def print_display_on(on=True):
+    if on:
+        rs.Command('_PrintDisplay State On Color Display Thickness 1 _Enter')
+    else:
+        rs.Command('_PrintDisplay State Off _Enter')
+
+
 def display_message(message):
     return ShowMessageBox(message, 'Message')
 

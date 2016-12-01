@@ -29,11 +29,11 @@ def mesh_fd(mesh):
 # ==============================================================================
 # Debugging
 # ==============================================================================
-    
+
 if __name__ == "__main__":
 
     import brg
-    
+
     from brg.datastructures.mesh.mesh import Mesh
     from brg.datastructures.mesh.viewer import MeshViewer
 

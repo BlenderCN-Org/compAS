@@ -245,6 +245,14 @@ def angles_2d(u, v):
 def vector_component(u, v):
     """Compute the component of u in the direction of v.
 
+    Note:
+        This is similar to computing direction cosines, or to the projection of
+        a vector onto another vector. See the respective Wikipedia pages for more
+        info:
+
+            - `Direction cosine <https://en.wikipedia.org/wiki/Direction_cosine>`_
+            - `Vector projection <https://en.wikipedia.org/wiki/Vector_projection>`_
+
     Parameters:
         u (sequence of float) : XYZ components of the vector.
         v (sequence of float) : XYZ components of the direction.
@@ -253,7 +261,8 @@ def vector_component(u, v):
         tuple: XYZ components of the component.
 
     Examples:
-        >>> vector_component()
+        >>> vector_component([1, 2, 3], [1, 0, 0])
+        [1, 0, 0]
     """
     x = dot(u, v) / length_sqrd(v)
     return x * v[0], x * v[1], x * v[2]
@@ -540,27 +549,30 @@ def volume(polyhedron):
 
 if __name__ == '__main__':
 
-    from brg.datastructures.mesh.mesh import Mesh
+    # from brg.datastructures.mesh.mesh import Mesh
 
-    vertices = [
-        [0.0, 0.0, 0.0],
-        [1.0, 0.0, 0.0],
-        [1.0, 1.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [0.0, 0.0, 1.0],
-        [1.0, 0.0, 1.0],
-        [1.0, 1.0, 1.0],
-        [0.0, 1.0, 1.0],
-    ]
-    faces = [
-        [0, 1, 2, 3],
-        [4, 7, 6, 5],
-        [1, 5, 6, 2],
-        [2, 6, 7, 3],
-        [0, 4, 5, 1],
-        [3, 7, 4, 0]
-    ]
+    # vertices = [
+    #     [0.0, 0.0, 0.0],
+    #     [1.0, 0.0, 0.0],
+    #     [1.0, 1.0, 0.0],
+    #     [0.0, 1.0, 0.0],
+    #     [0.0, 0.0, 1.0],
+    #     [1.0, 0.0, 1.0],
+    #     [1.0, 1.0, 1.0],
+    #     [0.0, 1.0, 1.0],
+    # ]
+    # faces = [
+    #     [0, 1, 2, 3],
+    #     [4, 7, 6, 5],
+    #     [1, 5, 6, 2],
+    #     [2, 6, 7, 3],
+    #     [0, 4, 5, 1],
+    #     [3, 7, 4, 0]
+    # ]
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    print(volume(mesh))
+    # print(volume(mesh))
+
+    c = vector_component([2., 2., 3.], [0., 1., 0.])
+    print(c)
