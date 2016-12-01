@@ -19,7 +19,7 @@ docs = [
     },
     {'differential_evolution':
         [
-        'solver',
+        'de_solver',
         'plot'
         ]
     }

@@ -14,9 +14,11 @@ except ImportError as e:
     pass
 
 
+__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
+__version__    = '0.1'
+__date__       = 'Oct 17, 2016'
 
 
 def abs(a):
