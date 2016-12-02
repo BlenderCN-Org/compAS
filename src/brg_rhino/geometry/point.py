@@ -34,7 +34,8 @@ class Point(object):
         self.otype = self.geometry.ObjectType
 
     def closest_point(self, point, maxdist=None):
-        return (self.geometry.X, self.geometry.Y, self.geometry.Z)
+        loc = self.geometry.Location
+        return (loc.X, loc.Y, loc.Z)
 
     def closest_points(self, points, maxdist=None):
         return [self.closest_point(point, maxdist) for point in points]
