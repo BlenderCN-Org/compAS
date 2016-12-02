@@ -24,6 +24,20 @@ def delete_objects(objects):
         bpy.ops.object.delete()
 
 
+def delete_objects_all():
+    """ Delete all sccene objects.
+
+    Parameters:
+        None
+
+    Returns:
+        None
+    """
+    for object in bpy.context.scene.objects:
+        object.select = True
+        bpy.ops.object.delete()
+
+
 def get_objects_by_layer(layer, names=False):
     """ Retrieves the scene objects that are on a given layer.
 
@@ -41,6 +55,20 @@ def get_objects_by_layer(layer, names=False):
         return objects, object_names
     else:
         return objects
+
+
+def object_layer(object, layer):
+    """ Changes the layer of the object.
+
+    Parameters:
+        object (obj): Object whose layer is to change.
+        layer (int): Layer number.
+
+    Returns:
+        None
+    """
+    mask = tuple(i == layer for i in range(20))
+    object.layers = mask
 
 
 def select_objects(objects):

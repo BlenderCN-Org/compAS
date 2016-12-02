@@ -54,7 +54,7 @@ def create_matplotlib_axes(size=(10, 7),
                   'ymin': 0, 'dy': 0.1, 'ymax': 1,
                   'zmin': 0, 'dz': 0.1, 'zmax': 1}
     fig = plt.figure(facecolor='white', figsize=size)
-    if  three_dim:
+    if three_dim:
         ax = Axes3D(fig)
         ax.w_xaxis.set_pane_color((1, 1, 1, 1))
         ax.w_yaxis.set_pane_color((1, 1, 1, 1))
@@ -71,14 +71,14 @@ def create_matplotlib_axes(size=(10, 7),
     else:
         plt.xlabel(xlabel, fontname=fontname, fontsize=fontsize)
         plt.ylabel(ylabel, fontname=fontname, fontsize=fontsize)
-        if  grid:
+        if grid:
             plt.grid()
         plt.minorticks_on()
         plt.axis([limits['xmin'], limits['xmax'],
                   limits['ymin'], limits['ymax']])
         plt.tick_params(which='major', length=ticklength,
                         labelsize=tickfontsize)
-        plt.tick_params(which='minor', length=ticklength*0.33)
+        plt.tick_params(which='minor', length=ticklength * 0.33)
         axes = plt.gca()
         axes.set_xscale(xscale)
         axes.set_yscale(yscale)
