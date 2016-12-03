@@ -184,7 +184,6 @@ def smooth_network_angle(network, fixed=None, kmax=1, d=0.5, callback=None):
             if len(nbrs) < 4:
                 continue
             if len(nbrs) > 4:
-                # move to centroid
                 continue
             o    = key_xyz[key]
             n0   = key_xyz[nbrs[0]]

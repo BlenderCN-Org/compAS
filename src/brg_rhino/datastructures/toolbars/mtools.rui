@@ -9,7 +9,7 @@
   </extend_rhino_menus>
   <menus />
   <tool_bar_groups>
-    <tool_bar_group guid="c9728dd6-7242-4d8b-9190-c2c8e28b47cf" dock_bar_guid32="8174d031-36e0-467b-9ef4-650d48dfdae3" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="99db4f5d-5692-4f8b-96b0-4f49dad832db" single_file="False" hide_single_tab="False" point_floating="-2147483648,0">
+    <tool_bar_group guid="c9728dd6-7242-4d8b-9190-c2c8e28b47cf" dock_bar_guid32="8bf54583-b40f-4d4d-8bbe-7ee399740ab3" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="99db4f5d-5692-4f8b-96b0-4f49dad832db" single_file="False" hide_single_tab="False" point_floating="-2147483648,0">
       <text>
         <locale_1033>MeshTools</locale_1033>
       </text>

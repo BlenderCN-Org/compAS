@@ -1,5 +1,6 @@
 import os
 import json
+from json import encoder
 
 try:
     from System.Diagnostics import Process
@@ -11,13 +12,13 @@ except ImportError as e:
         raise e
 
 
+encoder.FLOAT_REPR = lambda o: format(o, '.16g')
+
+
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = 'Mar 5, 2015'
 
 
 class ScriptServerError(Exception):

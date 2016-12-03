@@ -95,9 +95,6 @@ def iterative_closest_point(a, b):
     raise NotImplementedError
 
 
-ICP = iterative_closest_point
-
-
 def bounding_box_2d(points, plot_hull=False):
     """Compute the aligned bounding box of set of points.
 
@@ -298,18 +295,13 @@ if __name__ == "__main__":
 
     import json
 
-    from numpy import asarray
-
     import matplotlib.pyplot as plt
 
     import brg
 
     from brg.utilities.plotters import Bounds3
-    from brg.utilities.plotters import Hull3
     from brg.utilities.plotters import Cloud3
     from brg.utilities.plotters import Box3
-
-    from brg.numerical.xforms import rotation_matrix
 
     with open(brg.find_resource('cloud.json'), 'rb') as fp:
         clouds = json.load(fp)

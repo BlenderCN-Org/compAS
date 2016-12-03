@@ -20,6 +20,10 @@ class RhinoGeometryError(BRGRhinoError):
     pass
 
 
+class RhinoPointError(RhinoGeometryError):
+    pass
+
+
 class RhinoCurveError(RhinoGeometryError):
     pass
 
