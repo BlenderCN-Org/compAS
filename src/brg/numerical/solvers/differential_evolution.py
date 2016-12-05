@@ -154,22 +154,13 @@ def de_plot(data, ms, path):
     plt.savefig(path + 'data.png')
 
 
-# ==============================================================================
-# Debugging
-# ==============================================================================
-
-# ------------------------------------------------------------------------------
-# USE THIS SPACE FOR MULTIPROCESSING FUNCTIONS
-# ------------------------------------------------------------------------------
-
-
 def funct(agents, args, t):
     return fn(agents[:, t], args)
 
 
-# ------------------------------------------------------------------------------
-# USE THIS SPACE FOR MULTIPROCESSING FUNCTIONS
-# ------------------------------------------------------------------------------
+# ==============================================================================
+# Debugging
+# ==============================================================================
 
 if __name__ == "__main__":
 
@@ -184,14 +175,3 @@ if __name__ == "__main__":
     fopt, xopt, data = de_solver(fn, bounds, population=100, iterations=20,
                               results=True, threads=1)
     de_plot(data, 5, '/home/al/Temp/')
-
-
-
-    # Optimisation
-    # tic = time()
-    # png_path = '/home/al/Temp/'
-    # args = (C, Ct, X, l0, ks, P, Pn, V, BC, M, ind, tol, steps)
-    # print('Optimisation started...')
-    # fopt, uopt, data = de_solver(fn, bounds, population=settings['pop_factor'],
-    #             iterations=trials, results=True, threads=threads, args=args)
-    # plot(data, 5, png_path)
