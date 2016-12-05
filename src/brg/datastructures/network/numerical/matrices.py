@@ -10,58 +10,45 @@ __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
 
 
+def _return_matrix(M, rtype):
+    if rtype == 'list':
+        return M.toarray().tolist()
+    if rtype == 'array':
+        return M.toarray()
+    if rtype == 'csr':
+        return M.tocsr()
+    if rtype == 'csc':
+        return M.tocsc()
+    if rtype == 'coo':
+        return M.tocoo()
+    return M
+
+
 def adjacency_matrix(network, rtype='array'):
-    k2i = dict((key, index) for index, key in network.vertices_enum())
-    temp = [(1, k2i[key], k2i[nbr]) for key in network.vertices_iter() for nbr in network.neighbours(key)]
+    k_i = dict((key, index) for index, key in network.vertices_enum())
+    temp = [(1, k_i[key], k_i[nbr]) for key in network.vertices_iter() for nbr in network.neighbours(key)]
     data, rows, cols = zip(*temp)
     A = coo_matrix((data, (rows, cols)))
-    if rtype == 'array':
-        return A.toarray()
-    elif rtype == 'csc':
-        return A.tocsc()
-    elif rtype == 'csr':
-        return A.tocsr()
-    elif rtype == 'coo':
-        return A
-    else:
-        return A
+    return _return_matrix(A, rtype)
 
 
 def degree_matrix(network, rtype='array'):
     d = [(network.degree(key), index, index) for index, key in network.vertices_enum()]
     d = zip(*d)
     D = coo_matrix((d[0], (d[1], d[2])))
-    if rtype == 'array':
-        return D.toarray()
-    elif rtype == 'csc':
-        return D.tocsc()
-    elif rtype == 'csr':
-        return D.tocsr()
-    elif rtype == 'coo':
-        return D
-    else:
-        return D
+    return _return_matrix(D, rtype)
 
 
 def connectivity_matrix(network, rtype='array'):
     """"""
-    k2i   = dict((key, index) for index, key in network.vertices_enum())
-    edges = [(k2i[u], k2i[v]) for u, v in network.edges_iter()]
+    k_i   = dict((key, index) for index, key in network.vertices_enum())
+    edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
     m     = len(edges)
     data  = array([-1] * m + [1] * m)
     rows  = array(range(m) + range(m))
     cols  = array(edges).reshape((-1, 1), order='F').squeeze()
     C     = coo_matrix((data, (rows, cols)))
-    if rtype == 'array':
-        return C.toarray()
-    elif rtype == 'csc':
-        return C.tocsc()
-    elif rtype == 'csr':
-        return C.tocsr()
-    elif rtype == 'coo':
-        return C
-    else:
-        return C
+    return _return_matrix(C, rtype)
 
 
 def laplacian_matrix(network, rtype='array'):
@@ -90,17 +77,49 @@ def laplacian_matrix(network, rtype='array'):
     """
     C = connectivity_matrix(network, rtype='csr')
     L = C.transpose().dot(C)
-    if rtype == 'list':
-        return L.toarray().tolist()
-    if rtype == 'array':
-        return L.toarray()
-    if rtype == 'csr':
-        return L.tocsr()
-    if rtype == 'csc':
-        return L.tocsc()
-    if rtype == 'coo':
-        return L.tocoo()
-    return L
+    return _return_matrix(L, rtype)
+
+
+def face_matrix(network, rtype='csr'):
+    """Construct the face matrix of a network.
+
+    Parameters:
+        network (brg.datastructures.network.network.Network) :
+            A ``brg`` network datastructure object.
+        rtype (str) : Optional.
+            The type of matrix to be returned. The default is ``'csr'``.
+
+    Returns:
+        ...
+
+    The face matrix represents the relationship between faces and vertices.
+    Each row of the matrix represents a face. Each column represents a vertex.
+    The matrix is filled with zeros except where a relationship between a vertex
+    and a face exist.
+
+    .. math::
+
+        F_{ij} =
+        \cases{
+            1 & if vertex j is part of face i \cr
+            0 & otherwise
+        }
+
+    The face matrix can for example be used to compute the centroids of all
+    faces of a network:
+
+    >>> import brg
+    >>> from brg.datastructures.network.network import Network
+    >>> network = Network.from_obj(brg.find_resource('lines.obj'))
+    >>> F = face_matrix(network, 'csr')
+    >>> xyz = array([network.vertex_coordinates(key) for key in network])
+    >>> c = F.dot(xyz)
+
+    """
+    k_i = dict((key, index) for index, key in network.vertices_enum())
+    ijk = array([(i, k_i[k], 1) for i, fkey in enumerate(network.face) for k in network.face_vertices(fkey)])
+    F   = coo_matrix((ijk[:, 2], (ijk[:, 0], ijk[:, 1]))).tocsr()
+    return _return_matrix(F, rtype)
 
 
 # ==============================================================================
@@ -119,7 +138,7 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(brg.find_resource('lines.obj'))
 
     A = adjacency_matrix(network)
     C = connectivity_matrix(network)
