@@ -72,7 +72,7 @@ def material_delete_all():
         None
     """
     for material in bpy.data.materials:
-        material.user_clear();
+        material.user_clear()
         bpy.data.materials.remove(material)
 
 
@@ -201,7 +201,7 @@ def xdraw_texts(texts):
         list: Created text objects.
     """
     objects = []
-    bpy.ops.object.text_add(radius=1, view_align=True, location=[0, 0, 0], 
+    bpy.ops.object.text_add(radius=1, view_align=True, location=[0, 0, 0],
                             layers=layer_mask(0))
     object = bpy.context.object
     for t in texts:
@@ -251,9 +251,9 @@ if __name__ == '__main__':
     xdraw_lines(lines)
 
     cubes = [{'name': 's1', 'pos': [1, 1, 1], 'radius': 0.5, 'color': 'red'},
-               {'name': 's2', 'pos': [2, 2, 2], 'radius': 1.0, 'color': 'blue'}]
+             {'name': 's2', 'pos': [2, 2, 2], 'radius': 1.0, 'color': 'blue'}]
     xdraw_cubes(cubes)
-    texts = [{'name': 't1', 'pos': [1, 1, 3], 'radius': 0.5, 'color': 'red', 
+    texts = [{'name': 't1', 'pos': [1, 1, 3], 'radius': 0.5, 'color': 'red',
               'text': 'T1'},
              {'name': 't2', 'pos': [2, 2, 4], 'radius': 1.0, 'color': 'blue',
               'text': 'T2'}]
