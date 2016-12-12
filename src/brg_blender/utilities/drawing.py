@@ -42,6 +42,40 @@ def color_vertex(object, vertices, color):
                 col.data[i].color = color
 
 
+def material_create(name, color, alpha=1):
+    """ Create a material.
+
+    Parameters:
+        name (str): Name of the material.
+        color (tuple): (R, G, B) with values [0 1].
+        alpha (float): Alpha value from [0, 1].
+
+    Returns:
+        obj: Created material object
+    """
+    material = bpy.data.materials.new(name)
+    material.diffuse_color = color
+    material.diffuse_shader = 'LAMBERT'
+    material.diffuse_intensity = 1.0
+    material.alpha = alpha
+    material.ambient = 1
+    return material
+
+
+def material_delete_all():
+    """ Delete all materials.
+
+    Parameters:
+        None
+
+    Returns:
+        None
+    """
+    for material in bpy.data.materials:
+        material.user_clear()
+        bpy.data.materials.remove(material)
+
+
 def xdraw_mesh(name, vertices=[], edges=[], faces=[], layer=0):
     """ Draws a Blender mesh in the given layer.
 
@@ -60,12 +94,11 @@ def xdraw_mesh(name, vertices=[], edges=[], faces=[], layer=0):
     bpy.context.scene.objects.link(object)
     mesh.from_pydata(vertices, edges, faces)
     mesh.update(calc_edges=True)
-    object_layer(object, layer)
+    object_layer([object], layer)
     return object
 
 
 def xdraw_lines(lines):
-    # COLOR NOT YET IMPLEMENTED, FIX DUPLICATE NAME ERROR
     """ Draw a set of lines.
 
     Parameters:
@@ -158,6 +191,44 @@ def xdraw_cubes(cubes):
     return objects
 
 
+def xdraw_texts(texts):
+    """ Draw a set of text objects.
+
+    Parameters:
+        texts (dic): 'radius', 'pos', 'color', 'name', 'text' as the keys.
+
+    Returns:
+        list: Created text objects.
+    """
+    objects = []
+    bpy.ops.object.text_add(radius=1, view_align=True, location=[0, 0, 0],
+                            layers=layer_mask(0))
+    object = bpy.context.object
+    for t in texts:
+        copy = object.copy()
+        copy.location = Vector(t['pos'])
+        copy.data = copy.data.copy()
+        copy.scale *= t['radius']
+        copy.data.materials.append(bpy.data.materials[t['color']])
+        copy.name = t['name']
+        copy.data.body = t['text']
+        objects.append(copy)
+    delete_objects([object])
+    for object in objects:
+        bpy.context.scene.objects.link(object)
+    return objects
+
+
+material_delete_all()
+material_create('red', (1, 0, 0))
+material_create('orange', (1, 0.5, 0))
+material_create('yellow', (1, 1, 0))
+material_create('blue', (0, 0, 1))
+material_create('green', (0, 1, 0))
+material_create('white', (1, 1, 1))
+material_create('black', (0, 0, 0))
+material_create('grey', (0.5, 0.5, 0.5))
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
@@ -171,7 +242,7 @@ if __name__ == '__main__':
     vertices = [[0, 0, 0], [0, 1, 0], [1, 0, 0], [1, 1, 0]]
     edges = [[1, 3], [2, 3]]
     faces = [[0, 1, 2]]
-    xdraw_mesh('mesh', vertices, edges, faces, layer=5)
+    xdraw_mesh('mesh', vertices, edges, faces, layer=0)
 
     lines = [{'start': [0, 0, 1], 'end': [0, 1, 1], 'name': 'line1',
               'layer': 1, 'radius': 0.1, 'color': 'blue'},
@@ -180,5 +251,10 @@ if __name__ == '__main__':
     xdraw_lines(lines)
 
     cubes = [{'name': 's1', 'pos': [1, 1, 1], 'radius': 0.5, 'color': 'red'},
-               {'name': 's2', 'pos': [2, 2, 2], 'radius': 1.0, 'color': 'blue'}]
-    #xdraw_cubes(cubes)
+             {'name': 's2', 'pos': [2, 2, 2], 'radius': 1.0, 'color': 'blue'}]
+    xdraw_cubes(cubes)
+    texts = [{'name': 't1', 'pos': [1, 1, 3], 'radius': 0.5, 'color': 'red',
+              'text': 'T1'},
+             {'name': 't2', 'pos': [2, 2, 4], 'radius': 1.0, 'color': 'blue',
+              'text': 'T2'}]
+    xdraw_texts(texts)

@@ -57,18 +57,33 @@ def get_objects_by_layer(layer, names=False):
         return objects
 
 
-def object_layer(object, layer):
-    """ Changes the layer of the object.
+def object_layer(objects, layer):
+    """ Changes the layer of the objects.
 
     Parameters:
-        object (obj): Object whose layer is to change.
+        objects (list): Objects whose layer to change.
         layer (int): Layer number.
 
     Returns:
         None
     """
     mask = tuple(i == layer for i in range(20))
-    object.layers = mask
+    for object in objects:
+        object.layers = mask
+
+
+def object_name_show(objects, show=True):
+    """ Display the name of listed objects.
+
+    Parameters:
+        objects (obj): Objects to display name.
+        show (boolean): show=True or False.
+
+    Returns:
+        None
+    """
+    for object in objects:
+        object.show_name = show
 
 
 def select_objects(objects):
