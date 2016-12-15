@@ -12,7 +12,8 @@ except ImportError as e:
         raise e
 
 
-encoder.FLOAT_REPR = lambda o: format(o, '.16g')
+encoder.FLOAT_REPR = lambda o: format(o, '.12g')
+encoder.c_make_encoder = None
 
 
 __author__     = ['Tom Van Mele', ]

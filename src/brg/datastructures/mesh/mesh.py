@@ -469,6 +469,10 @@ mesh summary
         return mesh
 
     @classmethod
+    def from_lines(cls, lines):
+        raise NotImplementedError
+
+    @classmethod
     def from_obj(cls, filepath, **kwargs):
         """Initialise a mesh from the data described in an obj file.
 

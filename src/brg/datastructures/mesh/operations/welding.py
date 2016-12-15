@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-# @Date      : 2016-10-18 21:56:20
-# @Author    : Tom Van Mele (vanmelet@ethz.ch)
-# @Copyright : 2016, Block Research Group
-# @License   : MIT License
+""""""
+
+__author__    = 'Tom Van Mele'
+__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
+__license__   = 'MIT license'
+__email__     = 'vanmelet@ethz.ch'
 
 
 def unweld(mesh, fkey, where=None):

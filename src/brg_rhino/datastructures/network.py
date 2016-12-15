@@ -110,3 +110,18 @@ class RhinoNetwork(Network):
             rhino.xdraw_points(points, layer=self.layer, clear=clear, redraw=False)
         if show_edges:
             rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=True)
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    import brg_rhino.utilities as rhino
+
+    lines = rhino.get_lines()
+    lines = rhino.get_line_coordinates(lines)
+
+    network = RhinoNetwork.from_lines(lines)
+    network.draw()

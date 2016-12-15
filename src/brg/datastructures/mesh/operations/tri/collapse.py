@@ -1,7 +1,7 @@
 """"""
 
 from brg.geometry.elements.line import Line
-from brg.datastructures.mesh.exceptions import MeshError
+from brg.exceptions import MeshError
 
 
 __author__     = 'Tom Van Mele'
@@ -20,7 +20,7 @@ def is_collapse_legal(mesh, u, v):
         v (str) : The vertex to collapse.
 
     Returns:
-        bool : 
+        bool :
             `True` if the collapse is legal. `False` otherwise.
 
     Note:

@@ -1,6 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """"""
+
+# WARNING: angle_smallest only works reliably if the smallest angle is indeed the
+# relevant angle
+
+# it would be more robust (in fact, the only robust solution), if the ...
+# smoothing (centroidal) first!!
+
 
 from brg.geometry.functions import angle_smallest as angle
 from brg.geometry.planar import is_ccw

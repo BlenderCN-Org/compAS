@@ -6,6 +6,10 @@ from subprocess import Popen
 from subprocess import PIPE
 
 
+encoder.FLOAT_REPR = lambda o: format(o, '.12g')
+encoder.c_make_encoder = None
+
+
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -109,11 +113,8 @@ class ScriptServer(object):
         if not idict:
             idict = {}
         idict.update(kwargs)
-        e_frepr = encoder.FLOAT_REPR
-        encoder.FLOAT_REPR = lambda o: format(o, '.16g')
         with open(self.ipath, 'wb+') as fh:
             json.dump(idict, fh)
-        encoder.FLOAT_REPR = e_frepr
         with open(self.opath, 'wb+') as fh:
             fh.write('')
         args = [self.python, '-u', self.script, self.ipath, self.opath]

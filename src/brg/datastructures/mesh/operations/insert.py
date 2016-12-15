@@ -1,6 +1,9 @@
-# @Author    : Tom Van Mele (vanmelet@ethz.ch)
-# @Copyright : Copyright 2016, Block Research Group - ETH Zurich
-# @License   : MIT License
+""""""
+
+__author__    = 'Tom Van Mele'
+__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
+__license__   = 'MIT license'
+__email__     = 'vanmelet@ethz.ch'
 
 
 # this is the same as split_face

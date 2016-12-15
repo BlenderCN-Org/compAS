@@ -4,7 +4,7 @@ from math import cos
 from math import pi
 
 from brg.datastructures.mesh.operations.split import split_edge
-from brg.datastructures.mesh.exceptions import MeshError
+from brg.exceptions import MeshError
 
 
 __author__     = 'Tom Van Mele'

@@ -17,7 +17,7 @@ __date__       = 'Oct 3, 2014'
 
 
 def sort_points(point, cloud):
-    """Sorts points of a pointcloud to a make_blocks point.
+    """Sorts points of a pointcloud to a point.
 
     Notes:
         Check kdTree class for an optimized implementation (MR).
@@ -35,7 +35,7 @@ def sort_points(point, cloud):
         >>> sort_points()
     """
     minsq = [distance_sqrd(p, point) for p in cloud]
-    return zip(*sorted(zip(minsq, cloud, range(len(cloud)))))
+    return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
 
 
 def closest_point(point, cloud):
@@ -53,8 +53,8 @@ def closest_point(point, cloud):
         tuple: closest point
         int: closest point index
     """
-    list1, list2, list3 = sort_points(point, cloud)
-    return list1[0], list2[0], list3[0]
+    data = sort_points(point, cloud)
+    return data[0]
 
 
 def closest_point_on_line(p1, p2, tp):
@@ -139,4 +139,11 @@ def closest_point_on_plane(p0, n, p):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    from random import randint
+
+    cloud = [[float(randint(0, 1000)), float(randint(0, 1000)), 0.0] for x in range(100)]
+
+    s = sort_points([0, 0, 0], cloud)
+
+    print(s)

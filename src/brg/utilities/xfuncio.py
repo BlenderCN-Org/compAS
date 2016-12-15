@@ -21,6 +21,7 @@
 
 import os
 import json
+from json import encoder
 
 from subprocess import Popen
 from subprocess import PIPE
@@ -41,7 +42,6 @@ HIL H 47,
 8093 Zurich, Switzerland
 '''
 
-
 wrapper = """
 import sys
 import importlib
@@ -51,6 +51,7 @@ import cStringIO
 import cProfile
 import pstats
 import traceback
+from json import encoder
 
 
 basedir  = sys.argv[1]
@@ -102,8 +103,13 @@ else:
     odict['iterations'] = None
     odict['profile']    = stream.getvalue()
 
+e_frepr = encoder.FLOAT_REPR
+encoder.FLOAT_REPR = lambda o: format(o, '.16g')
+
 with open(opath, 'wb+') as fp:
     json.dump(odict, fp)
+
+encoder.FLOAT_REPR = e_frepr
 """
 
 
@@ -122,10 +128,18 @@ def xecuteio(funcname, basedir, tmpdir, *args, **kwargs):
     ipath = os.path.join(tmpdir, '%s.in' % funcname)
     opath = os.path.join(tmpdir, '%s.out' % funcname)
     idict = {'args': args, 'kwargs': kwargs}
+
+    e_frepr = encoder.FLOAT_REPR
+    encoder.FLOAT_REPR = lambda o: format(o, '.16g')
+
     with open(ipath, 'wb+') as fh:
         json.dump(idict, fh)
+
     with open(opath, 'wb+') as fh:
         fh.write('')
+
+    encoder.FLOAT_REPR = e_frepr
+
     process_args = ['pythonw', '-u', '-c', wrapper, basedir, funcname, ipath, opath]
     process = Popen(process_args, stderr=PIPE, stdout=PIPE)
     while True:

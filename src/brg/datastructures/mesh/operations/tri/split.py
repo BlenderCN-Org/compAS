@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
+""""""
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = '2015-12-03 13:43:05'
 
 
 def split_edge(mesh, u, v, t=0.5, allow_boundary=False, interpolate_attr=False):
