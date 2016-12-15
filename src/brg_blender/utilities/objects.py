@@ -6,7 +6,6 @@ import bpy
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
 __date__       = 'Oct 17, 2016'
 
 
@@ -84,6 +83,24 @@ def object_name_show(objects, show=True):
     """
     for object in objects:
         object.show_name = show
+
+
+def objects_join(objects):
+    """ Join a list of objects.
+
+    Parameters:
+        objects (list): Objects to join.
+
+    Returns:
+        obj: Joined object.
+    """
+    for object in bpy.context.scene.objects:
+        object.select = False
+    for object in objects:
+        object.select = True
+    bpy.context.scene.objects.active = objects[0]
+    bpy.ops.object.join()
+    return objects[0]
 
 
 def select_objects(objects):
