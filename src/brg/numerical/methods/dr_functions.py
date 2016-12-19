@@ -166,7 +166,8 @@ def run(X, edges, BC_, P_, E_, A_, tol, steps, s0_=None, ct='ct',
         Uo = Un
         X += V
         if ts % 100 == 0:
-            print('Step: ' + str(ts) + '   ' + 'Residual: ' + str(res))
+            print('Step: ' + str(ts) + '   ' + 'Residual: ' +
+                  '{0:.3g}'.format(res))
         ts += 1
 
     # Summary

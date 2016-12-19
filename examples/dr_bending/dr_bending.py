@@ -34,9 +34,9 @@ ind_m = list(range(m))
 ind_n = list(range(n))
 E = [[ind_m, 5 * 10**9]]
 A = [[ind_m, 0.001]]
-P = [[ind_n, [0, 0, 100]]]
+P = [[ind_n, [0, 0, 5000 / n]]]
 BC = [[[0], [0, 0, 0]],
-      [[n - 1], [0, 0, 0]]]
+      [[n - 1], [1, 0, 0]]]
 EIx = [5 * 10**9 * 7.955532**(-8)] * n
 EIy = [5 * 10**9 * 7.955532**(-8)] * n
 beams = {'nodes': [ind_n], 'EIx': [EIx], 'EIy': [EIy]}
@@ -44,6 +44,5 @@ Xn = dr_functions.run(X, edges, BC, P, E, A, tol=1, steps=10000, beams=beams,
                       factor=5)
 for c, i in enumerate(Xn):
     bpy.data.objects['mesh_beam'].data.vertices[c].co = i
-bpy.context.scene.update()
 
 print('\nSCRIPT FINISHED\n')
