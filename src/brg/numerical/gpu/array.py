@@ -161,7 +161,6 @@ def ones(shape, bit=64):
         a = skcuda.misc.ones(shape, float64)
     return a
 
-
 def random(shape, bit=64):
     """ Create random values in the range [0, 1] as GPUArray.
 
@@ -185,6 +184,14 @@ def random(shape, bit=64):
         a = pycuda.curandom.rand(shape, dtype=float64)
     return a
 
+def real(a):
+    return a.real
+
+def reshape(a,shape):
+    return a.reshape(shape)
+
+def flatten(a):
+    return a.ravel()
 
 def tile(a, shape):
     """ Horizontally and vertically tile a GPUArray.
