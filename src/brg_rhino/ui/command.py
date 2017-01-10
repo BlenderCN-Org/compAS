@@ -43,6 +43,8 @@ class CommandLoop(object):
 
 #rhino style command line menu
 def command_line_menu(interface):
+    if rs.GetDocumentData(interface["ID"],interface["ID"]): 
+        interface["default"] = rs.GetDocumentData(interface["ID"],interface["ID"])
     new_options = []
     sub_menus = {}
     for option in interface["options"]:
@@ -62,7 +64,6 @@ def command_line_menu(interface):
 if __name__ == "__main__":
 
     #template for command line menu
-
 	interface_3 =   {"options":["sub_sub_option_1","sub_sub_option_2"],
 	                "message":"Select C",
 	                "default":"sub_sub_option_1",
@@ -80,10 +81,5 @@ if __name__ == "__main__":
 	                "default":"option_1",
 	                "show":None,
 	                "ID":"interface_1"}
-	
-	
-	if rs.GetDocumentData(interface_1["ID"],interface_1["ID"]): interface_1["default"] = rs.GetDocumentData(interface_1["ID"],interface_1["ID"])
-	if rs.GetDocumentData(interface_2["ID"],interface_2["ID"]): interface_2["default"] = rs.GetDocumentData(interface_2["ID"],interface_2["ID"])
-	if rs.GetDocumentData(interface_3["ID"],interface_3["ID"]): interface_3["default"] = rs.GetDocumentData(interface_3["ID"],interface_3["ID"])
 	
 	print command_line_menu(interface_1)
