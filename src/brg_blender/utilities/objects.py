@@ -20,7 +20,7 @@ def delete_objects(objects):
     """
     for object in objects:
         object.select = True
-        bpy.ops.object.delete()
+    bpy.ops.object.delete()
 
 
 def delete_objects_all():
@@ -34,7 +34,7 @@ def delete_objects_all():
     """
     for object in bpy.context.scene.objects:
         object.select = True
-        bpy.ops.object.delete()
+    bpy.ops.object.delete()
 
 
 def get_objects_by_layer(layer, names=False):
