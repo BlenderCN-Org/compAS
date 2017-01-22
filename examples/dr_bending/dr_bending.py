@@ -40,8 +40,8 @@ BC = [[[0], [0, 0, 0]],
 EIx = [5 * 10**9 * 7.955532**(-8)] * n
 EIy = [5 * 10**9 * 7.955532**(-8)] * n
 beams = {'nodes': [ind_n], 'EIx': [EIx], 'EIy': [EIy]}
-Xn = dr_functions.run(X, edges, BC, P, E, A, tol=1, steps=10000, beams=beams,
-                      factor=5)
+Xn = dr_functions.run(X, edges, BC, P, E, A, tol=5, steps=10000, beams=beams,
+                      factor=2, view=1)
 for c, i in enumerate(Xn):
     bpy.data.objects['mesh_beam'].data.vertices[c].co = i
 
