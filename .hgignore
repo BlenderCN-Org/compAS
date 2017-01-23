@@ -1,0 +1,22 @@
+syntax: glob
+
+.project
+.pydevproject
+
+*.orig
+*.3dmbak
+*.rui_bak
+*.pyc
+*.in
+*.out
+
+__temp
+
+data
+docs
+docs2
+docs3
+
+libs/**
+
+threejs/**
