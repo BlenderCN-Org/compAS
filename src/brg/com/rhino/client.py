@@ -13,6 +13,9 @@ __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
 
 
+__all__ = ['RhinoClient', ]
+
+
 class RhinoClientError(Exception):
     pass
 
@@ -24,17 +27,14 @@ class RhinoClient(object):
         This only works on Windows!
 
     Parameters:
-        delay_start (bool) : Delay the creation of a COM interface.
-            *Optional*: Default is ``False``.
+        delay_start (bool, optional) : Delay the creation of a COM interface.
+            Default is ``False``.
+    
+    Examples:
+        >>> r = RhinoApp()
+        >>> r.AddPoint(0, 0, 0)
+        <guid>
 
-    Attributes:
-        app (object) : The COM object.
-        rsm (object) : The rhinoscriptsyntax COM module.
-        rsi (object) : The rhinoscriptsynatx interface.
-
-    >>> r = RhinoApp()
-    >>> r.AddPoint(0, 0, 0)
-    <guid>
     """
 
     def __init__(self, delay_start=False):

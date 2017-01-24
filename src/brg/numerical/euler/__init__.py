@@ -7,7 +7,5 @@ euler
 
 .. module:: brg.numerical.euler
 
-:mod:`brg.numerical.euler`
-
 
 """

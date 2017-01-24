@@ -7,8 +7,6 @@ plotters
 
 .. module:: brg.plotters
 
-:mod:`brg.plotters`
-
 
 drawing
 =======
@@ -16,8 +14,6 @@ drawing
 .. currentmodule:: brg.plotters.drawing
 
 :mod:`brg.plotters.drawing`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -50,8 +46,6 @@ utilities
 
 :mod:`brg.plotters.utilities`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -66,8 +60,6 @@ helpers
 
 :mod:`brg.plotters.helpers`
 
-.. rubric:: Classes
-
 .. autosummary::
     :toctree: generated/
 
@@ -78,6 +70,5 @@ helpers
     Cloud2D
     Cloud3D
     Hull
-
 
 """

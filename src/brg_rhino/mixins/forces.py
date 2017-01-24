@@ -7,23 +7,17 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Descriptors', ]
+__all__ = ['DisplayMeshForces', 'DisplayNetworkForces', ]
 
 
-class Descriptors(Mixin):
+class DisplayMeshForces(Mixin):
+    """"""
+    pass
 
-    @property
-    def layer(self):
-        """:obj:`str` : The layer of the network.
 
-        Any value of appropriate type assigned to this property will be stored in
-        the instance's attribute dict.
-        """
-        return self.attributes.get('layer')
-
-    @layer.setter
-    def layer(self, layer):
-        self.attributes['layer'] = layer
+class DisplayNetworkForces(Mixin):
+    """"""
+    pass
 
 
 # ==============================================================================

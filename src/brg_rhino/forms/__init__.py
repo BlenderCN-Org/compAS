@@ -7,13 +7,9 @@ forms
 
 .. module:: brg_rhino.forms
 
-:mod:`brg_rhino.forms`
-
 
 Windows forms for ...
 
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/

@@ -7,8 +7,6 @@ methods
 
 .. module:: brg.numerical.methods
 
-:mod:`brg.numerical.methods`
-
 
 dynamic_relaxation
 ==================
@@ -16,8 +14,6 @@ dynamic_relaxation
 .. currentmodule:: brg.numerical.methods.dynamic_relaxation
 
 :mod:`brg.numerical.methods.dynamic_relaxation`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -36,8 +32,6 @@ dr_functions
 
 :mod:`brg.numerical.methods.dr_functions`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -54,8 +48,6 @@ force_density
 
 :mod:`brg.numerical.methods.force_density`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -68,8 +60,6 @@ jiggle
 .. currentmodule:: brg.numerical.methods.jiggle
 
 :mod:`brg.numerical.methods.jiggle`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/

@@ -4,6 +4,9 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['MatlabEngine', ]
+
+
 class MatlabEngineError(Exception):
 
     def __init__(self, message=None):

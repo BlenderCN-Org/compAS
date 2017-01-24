@@ -7,13 +7,9 @@ conduits
 
 .. module:: brg_rhino.conduits
 
-:mod:`brg_rhino.conduits`
-
 
 Definition of display conduits.
 
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/

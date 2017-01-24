@@ -7,16 +7,15 @@ tree
 
 .. module:: brg.datastructures.tree
 
-:mod:`brg.datastructures.tree`
 
 Package for working with tree structures.
 
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/
 
     KDTree
+
 
 operations
 ==========
@@ -27,8 +26,6 @@ algorithms
 .. currentmodule:: brg.datastructures.tree.algorithms
 
 :mod:`brg.datastructures.tree.algorithms`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -43,9 +40,6 @@ algorithms
 
 
 numerical
-=========
-
-utilities
 =========
 
 

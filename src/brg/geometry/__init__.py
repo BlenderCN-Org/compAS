@@ -7,9 +7,9 @@ geometry
 
 .. module:: brg.geometry
 
-:mod:`brg.geometry`
 
 A package defining common geometric functions and objects.
+
 
 elements
 ========
@@ -17,8 +17,6 @@ elements
 .. currentmodule:: brg.geometry.elements
 
 :mod:`brg.geometry.elements`
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated
@@ -40,8 +38,6 @@ basics
 .. currentmodule:: brg.geometry.basics
 
 :mod:`brg.geometry.basics`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -125,8 +121,6 @@ planar
 
 :mod:`brg.geometry.planar`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -146,8 +140,6 @@ spatial
 .. currentmodule:: brg.geometry.spatial
 
 :mod:`brg.geometry.spatial`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -175,8 +167,6 @@ intersections
 
 :mod:`brg.geometry.brg.geometry.intersections`
 
-.. rubric:: Functions
-
 
 transformations
 ===============
@@ -184,8 +174,6 @@ transformations
 .. currentmodule:: brg.geometry.transformations
 
 :mod:`brg.geometry.transformations`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/

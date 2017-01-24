@@ -7,8 +7,6 @@ gpu
 
 .. module:: brg.numerical.gpu
 
-:mod:`brg.numerical.gpu`
-
 
 geometry
 ========
@@ -16,8 +14,6 @@ geometry
 .. currentmodule:: brg.numerical.gpu.geometry
 
 :mod:`brg.numerical.gpu.geometry`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -29,8 +25,6 @@ cuda.array
 .. currentmodule:: brg.numerical.gpu.cuda.array
 
 :mod:`brg.numerical.gpu.cuda.array`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -55,8 +49,6 @@ cuda.linalg
 
 :mod:`brg.numerical.gpu.cuda.linalg`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -79,8 +71,6 @@ cuda.math
 .. currentmodule:: brg.numerical.gpu.cuda.math
 
 :mod:`brg.numerical.gpu.cuda.math`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -115,11 +105,10 @@ cuda.utilities
 
 :mod:`brg.numerical.gpu.cuda.utilities`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
     
     cuda_device
+
 
 """

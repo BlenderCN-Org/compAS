@@ -17,10 +17,10 @@ from brg.geometry.basics import area_polygon
 
 from brg.geometry.elements.line import Line
 
-from brg.datastructures.traversal import bfs
-from brg.datastructures.traversal import bfs2
+from brg.datastructures.tree.algorithms import bfs
+from brg.datastructures.tree.algorithms import bfs2
 
-from brg.datastructures.tree.kdtree import KDTree
+from brg.datastructures.tree import KDTree
 
 
 __author__     = 'Tom Van Mele'

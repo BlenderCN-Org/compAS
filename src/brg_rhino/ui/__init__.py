@@ -7,8 +7,6 @@ ui
 
 .. module:: brg_rhino.ui
 
-:mod:`brg_rhino.ui`
-
 
 
 """

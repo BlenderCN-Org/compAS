@@ -10,7 +10,7 @@ from brg.geometry import cross
 from brg.geometry import length_vector
 from brg.geometry import area_polygon
 
-from brg.datastructures.utilities import geometric_key
+from brg.utilities import geometric_key
 
 from brg.datastructures.tree.algorithms import bfs
 

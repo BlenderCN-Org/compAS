@@ -19,7 +19,9 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'mesh_from_guid', 'mesh_from_surface', 'mesh_from_surface_uv',
+    'mesh_from_guid',
+    'mesh_from_surface',
+    'mesh_from_surface_uv',
     'mesh_from_surface_heightfield',
     'draw_mesh',
 ]

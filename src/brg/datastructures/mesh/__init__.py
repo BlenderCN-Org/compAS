@@ -7,11 +7,9 @@ mesh
 
 .. module:: brg.datastructures.mesh
 
-:mod:`brg.datastructures.mesh`
 
 Package for working with mesh objects.
 
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/
@@ -25,8 +23,6 @@ operations
 .. currentmodule:: brg.datastructures.mesh.operations
 
 :mod:`brg.datastructures.mesh.operations`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -48,8 +44,6 @@ algorithms
 .. currentmodule:: brg.datastructures.mesh.algorithms
 
 :mod:`brg.datastructures.mesh.algorithms`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -111,8 +105,6 @@ numerical
 
 :mod:`brg.datastructures.mesh.numerical`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
     
@@ -123,19 +115,6 @@ numerical
     trimesh_edge_cotangents
     trimesh_cotangent_laplacian_matrix
     trimesh_positive_cotangent_laplacian_matrix
-
-
-utilities
-=========
-
-.. currentmodule:: brg.datastructures.mesh.utilities
-
-:mod:`brg.datastructures.mesh.utilities`
-
-.. rubric:: Functions
-
-.. autosummary::
-    :toctree: generated/
 
 """
 

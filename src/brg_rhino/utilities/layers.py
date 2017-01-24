@@ -15,10 +15,7 @@ except ImportError as e:
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
-__status__     = 'Development'
-__date__       = 'Jul 18, 2015'
 
 
 __all__ = [
@@ -29,6 +26,40 @@ __all__ = [
 
 
 def create_layers(layers):
+    """Create layers in Rhino.
+
+    Parameters:
+        layers (dict): Structured layer information. The keys of the dictionary
+            are layer names. The values are dictionaries themselves with the
+            following (optional) items:
+
+                - color => RGB tuple
+                - visible => True / False
+                - locked => True / False
+                - layers => a dictionary of child layers with the same structure as described
+
+    Examples:
+
+        .. code-block:: python
+
+            layers = {
+                'Main': {
+                    'layers': {
+                        'Sub1': {'color': (255, 0, 0)},
+                        'Sub2': {},
+                        'Sub3': {'visible': False, 'layers': {
+                            'Sub31': {},
+                            'Sub32': {},
+                            ...
+                        }}
+                    }
+                }
+            }
+
+            create_layers(layers)
+
+    """
+
     def recurse(layers, parent=None):
         for name in layers:
             if not name:
@@ -48,33 +79,63 @@ def create_layers(layers):
                 rs.AddLayer(fullname, color, visible, locked)
             if 'layers' in attr :
                 recurse(attr['layers'], fullname)
+
     rs.EnableRedraw(False)
     recurse(layers)
     rs.EnableRedraw(True)
 
 
-def clear_layers(layers):
+def clear_layers(layers, clear_children=True):
+    """Clear all objects from the given layers.
+
+    Parameters:
+        layers (list): A list of layer names.
+        clear_children (bool): Optional. The children of the layers in the list
+            will also be cleared if ``True``. Default is ``True``.
+
+    Note:
+        This function is typically used in combination with :func:`.create_layers`.
+        The latter requires a layer structure, for example in the form of a dict,
+        rather than a list of layer names. All layers in the structured layer dict
+        can be cleared by simply taking the keys of the dict, while setting the
+        flag for clearing the child layers to ``True``.
+
+    Examples:
+        >>> layers = {'Main': {'layers': {'Sub1': {}, 'Sub2': {'layers': {'SubSub1': {}}}}}}
+        >>> create_layers(layers)
+        >>> clear_layers(layers)
+
+    """
     to_delete = []
+
     def recurse(layers):
         for layer in layers:
             if not rs.IsLayer(layer):
                 continue
+
             rs.ShowObjects([guid for guid in rs.HiddenObjects() if rs.ObjectLayer(guid) == layer])
             to_delete.extend(rs.ObjectsByLayer(layer))
-            if rs.LayerChildCount(layer):
-                recurse(rs.LayerChildren(layer))
+
+            if clear_children:
+                if rs.LayerChildCount(layer):
+                    recurse(rs.LayerChildren(layer))
+
     rs.EnableRedraw(False)
+
     recurse(layers)
+
     for guid in to_delete:
         obj = find_object(guid)
         if not obj:
             continue
         purge_object(obj.RuntimeSerialNumber)
+
     rs.EnableRedraw(True)
 
 
 def delete_layers(layers):
     to_delete = []
+
     def recurse(layers, parent=None):
         for name in layers:
             if not name:
@@ -89,6 +150,7 @@ def delete_layers(layers):
             if 'layers' in attr:
                 recurse(attr['layers'], fullname)
             to_delete.append(fullname)
+
     rs.EnableRedraw(False)
     recurse(layers)
     for layer in to_delete:

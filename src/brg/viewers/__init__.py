@@ -7,13 +7,9 @@ viewers
 
 .. module:: brg.viewers
 
-:mod:`brg.viewers`
-
 
 Standalone (OpenGL) viewers for visualisation outside of CAD environments.
 
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/
@@ -28,8 +24,6 @@ drawing
 .. currentmodule:: brg.viewers.drawing
 
 :mod:`brg.viewers.drawing`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -50,8 +44,6 @@ helpers
 
 :mod:`brg.viewers.helpers`
 
-.. rubric:: Classes
-
 .. autosummary::
     :toctree: generated/
 
@@ -67,8 +59,6 @@ widgets
 .. currentmodule:: brg.viewers.widgets
 
 :mod:`brg.viewers.widgets`
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/

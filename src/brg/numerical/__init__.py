@@ -6,9 +6,9 @@ numerical
 
 .. module:: brg.numerical
 
-:mod:`brg.numerical`
 
 A package for numerical computation.
+
 
 .. rubric:: Submodules
 
@@ -28,8 +28,6 @@ geometry
 
 :mod:`brg.numerical.geometry`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -42,8 +40,6 @@ linalg
 .. currentmodule:: brg.numerical.linalg
 
 :mod:`brg.numerical.linalg`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -70,8 +66,6 @@ matrices
 
 :mod:`brg.numerical.matrices`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -92,8 +86,6 @@ operators
 
 :mod:`brg.numerical.operators`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -108,8 +100,6 @@ spatial
 .. currentmodule:: brg.numerical.spatial
 
 :mod:`brg.numerical.spatial`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -128,8 +118,6 @@ statistics
 
 :mod:`brg.numerical.statistics`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -142,8 +130,6 @@ utilities
 .. currentmodule:: brg.numerical.utilities
 
 :mod:`brg.numerical.utilities`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -158,8 +144,6 @@ xforms
 .. currentmodule:: brg.numerical.xforms
 
 :mod:`brg.numerical.xforms`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/

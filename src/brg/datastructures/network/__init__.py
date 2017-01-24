@@ -7,11 +7,9 @@ network
 
 .. module:: brg.datastructures.network
 
-:mod:`brg.datastructures.network`
 
 Package for working with network objects.
 
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/
@@ -26,8 +24,6 @@ operations
 
 :mod:`brg.datastructures.network.operations`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -38,8 +34,6 @@ algorithms
 .. currentmodule:: brg.datastructures.network.algorithms
 
 :mod:`brg.datastructures.network.algorithms`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -81,8 +75,6 @@ numerical
 
 :mod:`brg.datastructures.network.numerical`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
     
@@ -91,19 +83,6 @@ numerical
     network_connectivity_matrix
     network_laplacian_matrix
     network_face_matrix
-
-
-utilities
-=========
-
-.. currentmodule:: brg.datastructures.network.utilities
-
-:mod:`brg.datastructures.network.utilities`
-
-.. rubric:: Functions
-
-.. autosummary::
-    :toctree: generated/
 
 """
 

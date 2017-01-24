@@ -12,15 +12,15 @@ Package for communicating with external software.
 
 
 mlab
-----
+====
 
 .. currentmodule:: brg.com.mlab
+
+:mod:`brg.com.mlab`
 
 Communication with Matlab. Note that the Matlab engine and shared session are only
 available since Matlab r2014b. For older versions of Matlab, use :class:`.MatlabProcess``
 instead.
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/
@@ -31,11 +31,11 @@ instead.
 
 
 rhino
------
-
-.. rubric:: Classes
+=====
 
 .. currentmodule:: brg.com.rhino
+
+:mod:`brg.com.rhino`
 
 .. autosummary::
     :toctree: generated/
@@ -44,11 +44,11 @@ rhino
 
 
 threedec
---------
-
-.. rubric:: Classes
+========
 
 .. currentmodule:: brg.com.threedec
+
+:mod:`brg.com.threedec`
 
 .. autosummary::
     :toctree: generated/

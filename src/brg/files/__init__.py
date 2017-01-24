@@ -7,7 +7,6 @@ files
 
 .. module:: brg.files
 
-:mod:`brg.files`
 
 A package for working with different types of files.
 
@@ -18,8 +17,6 @@ CSV
 .. currentmodule:: brg.files.csv
 
 :mod:`brg.files.csv`
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/
@@ -34,8 +31,6 @@ OBJ
 .. currentmodule:: brg.files.obj
 
 :mod:`brg.files.obj`
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/

@@ -7,7 +7,9 @@ utilities
 
 .. module:: brg_rhino.utilities
 
-:mod:`brg_rhino.utilities`
+
+This package contains many convenience functions for working and interacting
+with Rhino.
 
 
 document

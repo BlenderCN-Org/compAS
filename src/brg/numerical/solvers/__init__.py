@@ -7,7 +7,5 @@ solvers
 
 .. module:: brg.numerical.solvers
 
-:mod:`brg.numerical.solvers`
-
 
 """

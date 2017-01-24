@@ -7,8 +7,6 @@ utilities
 
 .. module:: brg.utilities
 
-:mod:`brg.utilities`
-
 
 _datetime
 =========
@@ -16,8 +14,6 @@ _datetime
 .. currentmodule:: brg.utilities._datetime
 
 :mod:`brg.utilities._datetime`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -31,8 +27,6 @@ colors
 .. currentmodule:: brg.utilities.colors
 
 :mod:`brg.utilities.colors`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -55,8 +49,6 @@ maps
 
 :mod:`brg.utilities.maps`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -70,8 +62,6 @@ mixing
 .. currentmodule:: brg.utilities.mixing
 
 :mod:`brg.utilities.mixing`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -87,8 +77,6 @@ names
 
 :mod:`brg.utilities.names`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -101,8 +89,6 @@ profiling
 .. currentmodule:: brg.utilities.profiling
 
 :mod:`brg.utilities.profiling`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -117,8 +103,6 @@ scripts
 
 :mod:`brg.utilities.scripts`
 
-.. rubric:: Classes
-
 .. autosummary::
     :toctree: generated/
 
@@ -132,8 +116,6 @@ xfunc
 
 :mod:`brg.utilities.xfunc`
 
-.. rubric:: Classes
-
 .. autosummary::
     :toctree: generated/
     
@@ -146,8 +128,6 @@ xfuncio
 .. currentmodule:: brg.utilities.xfuncio
 
 :mod:`brg.utilities.xfuncio`
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/

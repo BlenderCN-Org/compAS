@@ -29,7 +29,6 @@ class MatlabSession(object):
     see `Connect Python to Running MATLAB Session <https://ch.mathworks.com/help/matlab/matlab_external/connect-python-to-running-matlab-session.html>`_
     
     Examples:
-
         >>> m = MatlabSession()
         >>> m.session_name
         'MATLAB_13404'

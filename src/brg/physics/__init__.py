@@ -7,8 +7,6 @@ physics
 
 .. module:: brg.physics
 
-:mod:`brg.physics`
-
 
 diffusion
 =========
@@ -16,8 +14,6 @@ diffusion
 .. currentmodule:: brg.physics.diffusion
 
 :mod:`brg.physics.diffusion`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -33,8 +29,6 @@ heat
 
 :mod:`brg.physics.heat`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -45,8 +39,6 @@ nbody
 .. currentmodule:: brg.physics.nbody
 
 :mod:`brg.physics.nbody`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/

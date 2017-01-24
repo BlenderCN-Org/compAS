@@ -13,6 +13,9 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['MatlabProcess', ]
+
+
 class MatlabProcessError(Exception):
     def __init__(self, message=None):
         if not message:
@@ -31,27 +34,27 @@ class MatlabProcess(object):
         ws_filename (str, optional) : Filename for workspace storage.
             Defaults to `'./workspace.mat'`.
 
+    Examples:
+        >>> m = MatlabProcess()
 
-    >>> m = MatlabProcess()
+        >>> m.start()
+        >>> m.write_value('a', 37)
+        >>> m.run_command('tf = isprime(a);')
+        >>> m.read_workspace()
+        >>> m.stop()
+        >>> print m.ws_data
 
-    >>> m.start()
-    >>> m.write_value('a', 37)
-    >>> m.run_command('tf = isprime(a);')
-    >>> m.read_workspace()
-    >>> m.stop()
-    >>> print m.ws_data
+        >>> m.write_value('a', 17)
+        >>> m.run_command('res = isprime(a);')
+        >>> m.read_value('res')
+        True
 
-    >>> m.write_value('a', 17)
-    >>> m.run_command('res = isprime(a);')
-    >>> m.read_value('res')
-    True
+        >>> m.run_command('res = isprime(a);', ivars={'a': 17})
+        >>> m.read_value('res')
+        True
 
-    >>> m.run_command('res = isprime(a);', ivars={'a': 17})
-    >>> m.read_value('res')
-    True
-
-    >>> m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
-    {'res': True}
+        >>> m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
+        {'res': True}
 
     """
 
@@ -179,12 +182,11 @@ if __name__ == "__main__":
 
     m.write_value('a', 37)
     m.run_command('res = isprime(a);')
-    print m.read_value('res')
 
+    print m.read_value('res')
     print m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
 
     m.read_workspace()
-
     m.stop()
 
     print m.ws_data
