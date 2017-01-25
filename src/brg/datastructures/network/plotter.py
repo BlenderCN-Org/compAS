@@ -1,5 +1,7 @@
 from brg.utilities import color_to_colordict
 
+from brg.geometry import centroid_points_2d
+
 from brg.plotters.utilities import assert_axes_dimension
 from brg.plotters.utilities import width_to_dict
 

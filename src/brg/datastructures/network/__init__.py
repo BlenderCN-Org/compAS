@@ -27,6 +27,8 @@ operations
 .. autosummary::
     :toctree: generated/
 
+    split_edge_network
+
 
 algorithms
 ==========
@@ -37,18 +39,18 @@ algorithms
 
 .. autosummary::
     :toctree: generated/
-    
+
     network_vertex_coloring
 
 .. autosummary::
     :toctree: generated/
-    
+
     construct_dual_network
-    find_network_faces   
+    find_network_faces
 
 .. autosummary::
     :toctree: generated/
-    
+
     is_network_crossed
     are_network_edges_crossed
     count_network_crossings
@@ -59,7 +61,7 @@ algorithms
 
 .. autosummary::
     :toctree: generated/
-    
+
     smooth_network_mixed
     smooth_network_centroid
     smooth_network_area
@@ -77,7 +79,7 @@ numerical
 
 .. autosummary::
     :toctree: generated/
-    
+
     network_adjacency_matrix
     network_degree_matrix
     network_connectivity_matrix

@@ -41,7 +41,7 @@ layers
 
 .. autosummary::
     :toctree: generated/
-    
+
     create_layers
     clear_layers
     delete_layers
@@ -54,16 +54,17 @@ objects
 
 :mod:`brg_rhino.utilities.objects`
 
+.. note::
 
-Note that the meaning of the naming conventions used here is somewhat different
-than those used in Rhino and rhinoscriptsyntax modules.
+    Note that the meaning of the naming conventions used here is somewhat different
+    than those used in Rhino and rhinoscriptsyntax modules.
 
-Functions prefixed with ``get_`` imply that guids are obtained by applying some
-kind of filter. For example, get all lines with a specified naming pattern, on a
-specific layer, or with a specific color.
+    Functions prefixed with ``get_`` imply that guids are obtained by applying some
+    kind of filter. For example, get all lines with a specified naming pattern, on a
+    specific layer, or with a specific color.
 
-Functions prefixed with ``select_`` imply that guids are obtained by manual
-selection.
+    Functions prefixed with ``select_`` imply that guids are obtained by manual
+    selection.
 
 
 .. rubric:: Functions

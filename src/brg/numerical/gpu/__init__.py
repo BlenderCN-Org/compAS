@@ -28,7 +28,7 @@ cuda.array
 
 .. autosummary::
     :toctree: generated/
-    
+
     cuda_diag
     cuda_eye
     cuda_get
@@ -74,7 +74,7 @@ cuda.math
 
 .. autosummary::
     :toctree: generated/
-    
+
     cuda_abs
     cuda_argmax
     cuda_argmin
@@ -107,7 +107,7 @@ cuda.utilities
 
 .. autosummary::
     :toctree: generated/
-    
+
     cuda_device
 
 

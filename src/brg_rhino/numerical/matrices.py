@@ -1,6 +1,9 @@
-from brg_rhino.numerical.alglib.xalglib import sparsecreate
-from brg_rhino.numerical.alglib.xalglib import sparseset
-from brg_rhino.numerical.alglib.xalglib import sparseconvertotcrs
+try:
+    from brg_rhino.numerical.alglib.xalglib import sparsecreate
+    from brg_rhino.numerical.alglib.xalglib import sparseset
+    from brg_rhino.numerical.alglib.xalglib import sparseconvertotcrs
+except ImportError:
+    pass
 
 
 __author__    = 'Tom Van Mele'
@@ -12,7 +15,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'connectivity_matrix',
     'laplacian_matrix',
-    'edgeweighted_laplacaian_matrix',
+    'edgeweighted_laplacian_matrix',
 ]
 
 

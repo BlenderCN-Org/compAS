@@ -9,7 +9,6 @@ __email__      = 'liew@arch.ethz.ch'
 
 __all__ = [
     'lengths',
-    'rotate',
 ]
 
 
@@ -36,10 +35,6 @@ def lengths(C, X):
     """
     uvw = C.dot(X)
     return uvw, normrow(uvw)
-
-
-def rotate(points):
-    raise NotImplementedError
 
 
 # ==============================================================================

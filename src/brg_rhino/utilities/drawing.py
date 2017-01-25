@@ -1,11 +1,10 @@
-""""""
+from functools import wraps
 
 from brg_rhino.utilities import clear_layers
 
 try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
-    import System
 
     from System.Collections.Generic import List
     from System.Drawing.Color import FromArgb
@@ -22,7 +21,6 @@ try:
     from Rhino.Geometry import PipeCapMode
     from Rhino.Geometry import Curve
     from Rhino.Geometry import Sphere
-    from Rhino.DocObjects.ObjectColorSource import ColorFromObject
     from Rhino.DocObjects.ObjectColorSource import ColorFromObject
     from Rhino.DocObjects.ObjectDecoration import EndArrowhead
     from Rhino.DocObjects.ObjectDecoration import StartArrowhead
@@ -50,8 +48,21 @@ except ImportError as e:
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
 __email__      = 'vanmelet@ethz.ch'
+
+
+__all__ = [
+    'xdraw_labels',
+    'xdraw_points',
+    'xdraw_lines',
+    'xdraw_geodesics',
+    'xdraw_polylines',
+    'xdraw_faces',
+    'xdraw_cylinders',
+    'xdraw_pipes',
+    'xdraw_spheres',
+    'xdraw_mesh',
+]
 
 
 # ==============================================================================
@@ -64,6 +75,8 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 def wrap_xdrawfunc(f):
+    """Wraps all ``xdraw_`` functions with support for recurring keyword arguments."""
+    @wraps(f)
     def wrapper(*args, **kwargs):
         layer  = kwargs.get('layer', None)
         clear  = kwargs.get('clear', False)
@@ -84,6 +97,7 @@ def wrap_xdrawfunc(f):
 
 @wrap_xdrawfunc
 def xdraw_labels(labels):
+    """Draw labels as text dots and optionally set individual name and color."""
     guids = []
     for l in iter(labels):
         pos   = l['pos']
@@ -108,6 +122,8 @@ def xdraw_labels(labels):
 
 @wrap_xdrawfunc
 def xdraw_points(points):
+    """Draw points and optionally set individual name, layer, and color properties.
+    """
     guids = []
     for p in iter(points):
         pos   = p['pos']
@@ -136,6 +152,9 @@ def xdraw_points(points):
 
 @wrap_xdrawfunc
 def xdraw_lines(lines):
+    """Draw lines and optionally set individual name, color, arrow, layer, and
+    width properties.
+    """
     guids = []
     for l in iter(lines):
         sp    = l['start']
@@ -174,13 +193,16 @@ def xdraw_lines(lines):
 
 @wrap_xdrawfunc
 def xdraw_geodesics(geodesics):
+    """Draw geodesic lines on specified surfaces, and optionally set individual
+    name, color, arrow, and layer properties.
+    """
     guids = []
     for g in iter(geodesics):
         sp    = g['start']
         ep    = g['end']
+        srf   = g['srf']
         name  = g.get('name', '')
         color = g.get('color')
-        srf   = g.get('srf')
         arrow = g.get('arrow')
         layer = g.get('layer')
         # replace this by a proper rhinocommon call
@@ -210,6 +232,9 @@ def xdraw_geodesics(geodesics):
 
 @wrap_xdrawfunc
 def xdraw_polylines(polylines):
+    """Draw polylines, and optionally set individual name, color, arrow, and
+    layer properties.
+    """
     guids = []
     for p in iter(polylines):
         points = p['points']
@@ -245,6 +270,9 @@ def xdraw_polylines(polylines):
 
 @wrap_xdrawfunc
 def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0):
+    """Draw polygonal faces as Breps, and optionally set individual name, color,
+    and layer properties.
+    """
     guids = []
     for f in iter(faces):
         points  = f['points']

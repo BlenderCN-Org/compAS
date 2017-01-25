@@ -13,7 +13,7 @@ external processes. The implementations are basically convenience wrappers
 around :mod:`xalglib`, which is the IronPython interface to ``alglib``, a cross-platform
 numerical analysis and data processing library.
 
-For more information, see `www.alglib.net`_.
+For more information, see `<www.alglib.net>`_.
 
 
 linalg
@@ -43,7 +43,7 @@ matrices
 
     connectivity_matrix
     laplacian_matrix
-    edgweighted_laplacian_matrix
+    edgeweighted_laplacian_matrix
 
 .. autosummary::
     :toctree: generated/

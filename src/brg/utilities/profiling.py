@@ -26,14 +26,14 @@ def print_profile(func):
         function : The decorated function.
 
     Examples:
-        
+
         .. code-block:: python
-            
+
             @print_profile
             def f(n):
                 \"\"\"Sum up all integers below n.\"\"\"
                 return sum(for i in range(n))
-            
+
             print f(100)
             print f.__doc__
             print f.__name__
@@ -63,7 +63,7 @@ def print_profile(func):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     @print_profile
     def f(n):
         """sum all integers below n"""

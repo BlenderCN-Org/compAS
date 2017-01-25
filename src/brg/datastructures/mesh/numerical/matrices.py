@@ -130,7 +130,7 @@ def trimesh_positive_cotangent_laplacian_matrix(mesh):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     import brg
     from brg.datastructures.mesh import Mesh
 

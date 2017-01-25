@@ -7,8 +7,6 @@ brg_rhino
 
 .. module:: brg_rhino
 
-:mod:`brg_rhino`
-
 
 Package for the integration of the framework in the Rhino CAD modeling environment.
 

@@ -560,16 +560,33 @@ name: {0}
     def set_vertex_attribute(self, key, name, value):
         self.vertex[key][name] = value
 
+    def set_vertex_attributes(self, key, attr_dict):
+        self.vertex[key] = attr_dict
+
     def get_vertex_attribute(self, key, name, default=None):
         return self.vertex[key].get(name, default)
 
     def set_edge_attribute(self, u, v, name, value):
-        self.edge[u][v][name] = value
+        if v in self.edge[u]:
+            self.edge[u][v][name] = value
+        else:
+            self.edge[v][u][name] = value
+
+    def set_edge_attributes(self, u, v, attr_dict):
+        if v in self.edge[u]:
+            self.edge[u][v] = attr_dict
+        else:
+            self.edge[v][u] = attr_dict
 
     def get_edge_attribute(self, u, v, name, default=None):
         if u in self.edge[v]:
             return self.edge[v][u].get(name, default)
         return self.edge[u][v].get(name, default)
+
+    def get_edge_attributes(self, u, v):
+        if v in self.edge[u]:
+            return self.edge[u][v]
+        return self.edge[v][u]
 
     def set_face_attribute(self, fkey, name, value):
         if not self.dualdata:
@@ -645,12 +662,12 @@ name: {0}
             if fkey in fkey_centroid:
                 p2 = fkey_centroid[fkey]
                 v02 = [p2[i] - p0[i] for i in range(3)]
-                area += 0.25 * length(cross(v01, v02))
+                area += 0.25 * length_vector(cross(v01, v02))
             fkey = self.halfedge[nbr][key]
             if fkey in fkey_centroid:
                 p3 = fkey_centroid[fkey]
                 v03 = [p3[i] - p0[i] for i in range(3)]
-                area += 0.25 * length(cross(v01, v03))
+                area += 0.25 * length_vector(cross(v01, v03))
         return area
 
     # --------------------------------------------------------------------------
@@ -777,7 +794,7 @@ name: {0}
     # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
 
-    def plot(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None):
+    def plot(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, flabel=None):
         import matplotlib.pyplot as plt
         from brg.datastructures.network.plotter import NetworkPlotter2D
         from brg.plotters.drawing import create_axes_2d
@@ -792,10 +809,10 @@ name: {0}
         plotter.ecolor = ecolor
         plotter.elabel = elabel
         plotter.ewidth = ewidth
+        plotter.flabel = flabel
         plotter.plot(axes)
         axes.autoscale()
-        plt.show()        
-
+        plt.show()
 
     def plot3(self, vcolor=None):
         import matplotlib.pyplot as plt
