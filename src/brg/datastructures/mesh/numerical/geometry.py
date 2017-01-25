@@ -1,12 +1,6 @@
-from numpy import array
-from numpy import meshgrid
-from numpy import linspace
-from numpy import amax
-from numpy import amin
 
-from scipy.interpolate import griddata
-
-import matplotlib.pyplot as plt
+from brg.numerical.geometry import contours_scalarfield
+from brg.numerical.geometry import plot_contours_scalarfield
 
 
 __author__    = ['Tom Van Mele', ]
@@ -15,31 +9,36 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = []
+__all__ = [
+    'mesh_contours',
+    'plot_mesh_contours',
+    'mesh_isolines',
+    'plot_mesh_isolines',
+]
 
 
 def mesh_contours(mesh, N=50):
-    xyz = array([mesh.vertex_coordinates(key) for key in mesh])
-    x = xyz[:, 0]
-    y = xyz[:, 1]
-    z = xyz[:, 2]
-    X, Y = meshgrid(
-        linspace(amin(x), amax(x), N),
-        linspace(amin(y), amax(y), N)
-    )
-    Z = griddata((x, y), z, (X, Y), method='cubic')
-    ax = plt.figure(aspect='equal').add_subplot(111)
-    c = ax.contour(X, Y, Z, N)
-    plt.show()
-    # contours = [0] * len(c.collections)
-    # for i, collection in enumerate(iter(c.collections)):
-    #     paths = collection.get_paths()
-    #     contours[i] = [0] * len(paths)
-    #     for j, path in enumerate(iter(paths)):
-    #         polygons = path.to_polygons()
-    #         contours[i][j] = [0] * len(polygons)
-    #         for k, polygon in enumerate(iter(polygons)):
-    #             contours[i][j][k] = polygon.tolist()
+    xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]
+    z = [mesh.vertex_coordinates(key, 'z') for key in mesh]
+    return contours_scalarfield(xy, z, N)
+
+
+def plot_mesh_contours(mesh, N=50):
+    xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]
+    z = [mesh.vertex_coordinates(key, 'z') for key in mesh]
+    plot_contours_scalarfield(xy, z, N)
+
+
+def mesh_isolines(mesh, attr_name, N=50):
+    xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]
+    s = [mesh.vertex[key][attr_name] for key in mesh]
+    return contours_scalarfield(xy, s, N)
+
+
+def plot_mesh_isolines(mesh, attr_name, N=50):
+    xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]
+    s = [mesh.vertex[key][attr_name] for key in mesh]
+    plot_contours_scalarfield(xy, s, N)
 
 
 # ==============================================================================
@@ -58,8 +57,10 @@ if __name__ == "__main__":
     points = [mesh.vertex_coordinates(key) for key in mesh]
     centroid = centroid_points(points)
 
-    distances = [distance_point_point(point, centroid) for point in points]
-
-    print distances
+    for key, attr in mesh.vertices_iter(True):
+        xyz = mesh.vertex_coordinates(key)
+        attr['d'] = distance_point_point(xyz, centroid)
 
     mesh.plot()
+
+    plot_mesh_isolines(mesh, 'd')

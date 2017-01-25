@@ -107,7 +107,7 @@ numerical
 
 .. autosummary::
     :toctree: generated/
-    
+
     mesh_adjacency_matrix
     mesh_connectivity_matrix
     mesh_laplacian_matrix
@@ -116,7 +116,14 @@ numerical
     trimesh_cotangent_laplacian_matrix
     trimesh_positive_cotangent_laplacian_matrix
 
+.. autosummary::
+    :toctree: generated/
+
+    mesh_contours
+    plot_mesh_contours
+    mesh_isolines
+    plot_mesh_isolines
+
 """
 
 from .mesh import Mesh
-

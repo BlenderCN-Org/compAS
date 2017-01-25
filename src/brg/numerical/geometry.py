@@ -53,6 +53,7 @@ def rotate(points):
     raise NotImplementedError
 
 
+# rename to scalarfield_contours
 def contours_scalarfield(xy, s, N=30, method='cubic'):
     """Compute the contour lines of a scalarfield.
 
@@ -110,7 +111,6 @@ def contours_scalarfield(xy, s, N=30, method='cubic'):
     ax = plt.figure().add_subplot(111, aspect='equal')
     c = ax.contour(X, Y, S, N)
     plt.draw()
-    plt.show()
     contours = [0] * len(c.collections)
     levels = c.levels
     for i, coll in enumerate(iter(c.collections)):
