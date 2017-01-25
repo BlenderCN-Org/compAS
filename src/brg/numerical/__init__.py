@@ -31,7 +31,7 @@ geometry
 .. autosummary::
     :toctree: generated/
 
-    lengths
+    contours_scalarfield
 
 
 linalg
