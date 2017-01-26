@@ -54,7 +54,7 @@ def rotate(points):
 
 
 # rename to scalarfield_contours
-def contours_scalarfield(xy, s, N=30, method='cubic'):
+def contours_scalarfield(xy, s, N=50):
     """Compute the contour lines of a scalarfield.
 
     The computation of the contour lines is based on the ``contours`` function
@@ -63,16 +63,16 @@ def contours_scalarfield(xy, s, N=30, method='cubic'):
     Parameters:
         xy (array-like): The xy-coordinates at which the scalar field is defined.
         s (array-like): The values of the scalar field.
-        N (int): Optional. The number of contour lines to compute. Default is ``30``.
+        N (int): Optional. The number of contour lines to compute. Default is ``50``.
 
     Returns:
-        tuple: The first item in the tuple is a list of `levels`, i.e. the values
-            of the scalarfield at the contour. The second item in the tuple is a
-            list of contour lines. Each contour line is a list of paths, and each
-            path is a list polygons.
+        tuple: A tuple of a list of levels and a list of contour geometry.
+
+        The list of levels contains the values of the scalarfield at each of
+        the contours. The second item in the tuple is a list of contour lines.
+        Each contour line is a list of paths, and each path is a list polygons.
 
     Examples:
-
         >>> import brg
         >>> from brg.datastructures.mesh import Mesh
         >>> from brg.geometry import centroid_points
@@ -125,7 +125,42 @@ def contours_scalarfield(xy, s, N=30, method='cubic'):
 
 
 def plot_contours_scalarfield(xy, s, N=50):
-    """"""
+    """Plot the contours of a scalarfield.
+
+    Parameters:
+        xy (array-like): The xy-coordinates at which the scalar field is defined.
+        s (array-like): The values of the scalar field.
+        N (int): Optional. The number of contour lines to compute. Default is ``30``.
+
+    Examples:
+        >>> import brg
+        >>> from brg.datastructures.mesh import Mesh
+        >>> from brg.geometry import centroid_points
+        >>> from brg.geometry import distance_point_point
+        >>> mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+        >>> points = [mesh.vertex_coordinates(key) for key in mesh]
+        >>> centroid = centroid_points(points)
+        >>> distances = [distance_point_point(point, centroid) for point in points]
+        >>> xy = [[points[i][0], points[i][1]] for i in range(len(points))]
+        >>> plot_contours_scalarfield(xy, distances)
+
+    .. plot::
+
+        import brg
+        from brg.datastructures.mesh import Mesh
+        from brg.geometry import centroid_points
+        from brg.geometry import distance_point_point
+        from brg.numerical.geometry import plot_contours_scalarfield
+
+        mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+        points = [mesh.vertex_coordinates(key) for key in mesh]
+        centroid = centroid_points(points)
+        d = [distance_point_point(point, centroid) for point in points]
+        xy = [[points[i][0], points[i][1]] for i in range(len(points))]
+
+        plot_contours_scalarfield(xy, d)
+
+    """
     xy = asarray(xy)
     s = asarray(s)
     x = xy[:, 0]

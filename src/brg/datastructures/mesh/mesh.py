@@ -60,39 +60,67 @@ class Mesh(object):
         dualdata (Mesh, optional) : A ``Mesh`` object for keeping track of face attributes
             by storing them on dual vertices.
 
-    >>> import brg
-    >>> from brg.datastructures import Mesh
-    >>> datafile = brg.get_data('faces.obj')
-    >>> mesh = Mesh.from_obj(datafile)
-    >>> print mesh
+    Examples:
 
-    >>> for key in mesh.vertex:
-    ...     print key
-    ...
+        >>> import brg
+        >>> from brg.datastructures import Mesh
+        >>> mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
-    >>> for key in mesh.vertices():
-    ...     print key
-    ...
+        >>> mesh.plot()
 
-    >>> for key in mesh.vertices_iter():
-    ...     print key
-    ...
+        .. plot::
 
-    >>> for index, key in mesh.vertices_enum():
-    ...     print index, key
-    ...
+            import brg
+            from brg.datastructures.mesh import Mesh
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+            mesh.plot()
 
-    >>> for key, attr in mesh.vertices(True):
-    ...     print key, attr
-    ...
+        >>> import matplotlib.pyplot as plt
+        >>> fig = plt.figure()
+        >>> ax1 = fig.add_subplot(121, aspect='equal')
+        >>> ax2 = fig.add_subplot(122, aspect='equal')
+        >>> mesh.plot(axes=ax1, vlabel=dict((key, key) for key in mesh))
+        >>> mesh.plot(axes=ax1, flabel=dict((fkey, fkey) for fkey in mesh.face))
 
-    >>> for key, attr in mesh.vertices_iter(True):
-    ...     print key, attr
-    ...
+        .. plot::
 
-    >>> for index, key, attr in mesh.vertices_enum(True):
-    ...     print index, key, attr
-    ...
+            import brg
+            from brg.datastructures.mesh import Mesh
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+            import matplotlib.pyplot as plt
+            fig = plt.figure()
+            ax1 = fig.add_subplot(121, aspect='equal')
+            ax2 = fig.add_subplot(122, aspect='equal')
+            mesh.plot(axes=ax1, vlabel=dict((key, key) for key in mesh))
+            mesh.plot(axes=ax2, flabel=dict((fkey, fkey) for fkey in mesh.face))
+
+        >>> for key in mesh.vertex:
+        ...     print key
+        ...
+
+        >>> for key in mesh.vertices():
+        ...     print key
+        ...
+
+        >>> for key in mesh.vertices_iter():
+        ...     print key
+        ...
+
+        >>> for index, key in mesh.vertices_enum():
+        ...     print index, key
+        ...
+
+        >>> for key, attr in mesh.vertices(True):
+        ...     print key, attr
+        ...
+
+        >>> for key, attr in mesh.vertices_iter(True):
+        ...     print key, attr
+        ...
+
+        >>> for index, key, attr in mesh.vertices_enum(True):
+        ...     print index, key, attr
+        ...
 
     """
 
@@ -1626,7 +1654,7 @@ mesh summary
     def plot(self, vcolor=None, vlabel=None, vsize=None, fcolor=None, flabel=None):
         import matplotlib.pyplot as plt
         from brg.plotters.drawing import create_axes_2d
-        from brg.datastructures.mesh.plotter import MeshPlotter2D        
+        from brg.datastructures.mesh.plotter import MeshPlotter2D
         axes = create_axes_2d()
         plotter = MeshPlotter2D(self)
         plotter.vcolor = vcolor

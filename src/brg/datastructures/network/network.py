@@ -22,7 +22,22 @@ __email__      = '<vanmelet@ethz.ch>'
 
 
 class Network(object):
-    """"""
+    """
+
+    Examples:
+        >>> import brg
+        >>> from brg.datastructures.network import Network
+        >>> network = Network.from_obj(brg.get_data('lines.obj'))
+        >>> network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)
+
+    .. plot::
+
+        import brg
+        from brg.datastructures.network import Network
+        network = Network.from_obj(brg.get_data('lines.obj'))
+        network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)
+
+    """
 
     def __init__(self):
         self.vertex       = {}
@@ -840,6 +855,4 @@ if __name__ == '__main__':
 
     network = Network.from_obj(brg.get_data('lines.obj'))
 
-    vcolor = dict((key, '#ff0000') for key in network.vertex if network.degree(key) == 1)
-
-    network.plot3(vcolor=vcolor)
+    network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)

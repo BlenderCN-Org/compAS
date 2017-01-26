@@ -32,6 +32,7 @@ geometry
     :toctree: generated/
 
     contours_scalarfield
+    plot_contours_scalarfield
 
 
 linalg
