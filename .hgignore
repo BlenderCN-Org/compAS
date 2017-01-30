@@ -14,9 +14,9 @@ __temp
 
 data
 
-docs/_build
-docs/_static
-docs/_templates
+docs
+docs2
+docs3
 
 libs/**
 
