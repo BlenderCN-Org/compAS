@@ -13,10 +13,15 @@ syntax: glob
 __temp
 
 data
-docs
-docs2
-docs3
+
+docs/_build
+docs/_static
+docs/_templates
 
 libs/**
 
 threejs/**
+syntax: regexp
+^examples/objects_to_mesh_in_rhino/toolbar\.rui$
+syntax: regexp
+^\.settings/org\.eclipse\.core\.resources\.prefs$
