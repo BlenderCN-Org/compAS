@@ -54,11 +54,13 @@ def rotate(points):
 
 
 # rename to scalarfield_contours
+# rename to isolines_scalarfield
 def contours_scalarfield(xy, s, N=50):
     """Compute the contour lines of a scalarfield.
 
     The computation of the contour lines is based on the ``contours`` function
-    available through matplotlib (`<http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour>`_).
+    available through matplotlib
+    (`<http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour>`_).
 
     Parameters:
         xy (array-like): The xy-coordinates at which the scalar field is defined.
@@ -124,6 +126,7 @@ def contours_scalarfield(xy, s, N=50):
     return levels, contours
 
 
+# rename to plot_isolines_scalarfield
 def plot_contours_scalarfield(xy, s, N=50):
     """Plot the contours of a scalarfield.
 

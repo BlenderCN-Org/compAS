@@ -98,6 +98,10 @@ name: {0}
     # --------------------------------------------------------------------------
 
     @property
+    def adjacency(self):
+        return self.halfedge
+
+    @property
     def name(self):
         return self.attributes['name']
 

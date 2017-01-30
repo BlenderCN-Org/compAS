@@ -43,7 +43,7 @@ class MeshPlotter2D(object):
         fcolor = color_to_colordict(self.fcolor, self.mesh.faces(), self.default_face_color)
         vlabel = self.vlabel or {}
         flabel = self.flabel or {}
-        vsize  = self.vsize or 0.1
+        vsize  = self.vsize or 0.15
         # vertices
         if self.vertices_on:
             points = []
@@ -56,7 +56,7 @@ class MeshPlotter2D(object):
                     'radius'    : vsize,
                     'textcolor' : self.default_text_color,
                     'facecolor' : vcolor[key],
-                    'edgecolor' : self.default_edge_color, 
+                    'edgecolor' : self.default_edge_color,
                 })
             draw_xpoints_2d(points, axes)
         # faces
@@ -70,7 +70,7 @@ class MeshPlotter2D(object):
                     'text'      : text,
                     'textcolor' : self.default_text_color,
                     'facecolor' : fcolor[fkey],
-                    'edgecolor' : self.default_edge_color, 
+                    'edgecolor' : self.default_edge_color,
                 })
             draw_xpolygons_2d(polygons, axes)
 
@@ -80,10 +80,9 @@ class MeshPlotter2D(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     import brg
     from brg.datastructures.mesh import Mesh
-    from brg.plotters.drawing import create_axes_2d
 
     import matplotlib.pyplot as plt
 

@@ -200,13 +200,27 @@ def draw_xpoints_2d(points, axes):
     for point in points:
         pos = point['pos']
         radius = point['radius']
+        text = point.get('text')
         fcolor = point.get('facecolor') or '#ffffff'
         ecolor = point.get('edgecolor') or '#000000'
         lwidth = point.get('linewidth') or 1.0
+        textcolor = point.get('textcolor') or '000000'
+        fontsize = point.get('fontsize') or 6
         circles.append(Circle(pos, radius=radius))
         facecolor.append(fcolor)
         edgecolor.append(ecolor)
         linewidth.append(lwidth)
+        if text:
+            axes.text(
+                pos[0] - 0.01,
+                pos[1] - 0.01,
+                text,
+                fontsize=fontsize,
+                zorder=ZORDER_LABELS,
+                ha='center',
+                va='center',
+                color=textcolor
+            )
     coll = PatchCollection(
         circles,
         linewidths=linewidth,
