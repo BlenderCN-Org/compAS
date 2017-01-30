@@ -74,7 +74,7 @@ __all__ = [
 ]
 
 
-def add_vectors(*vectors):
+def add_vectors(vectors):
     """Adds multiple 3d vectors
 
     Parameters:
