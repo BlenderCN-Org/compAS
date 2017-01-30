@@ -75,7 +75,7 @@ def normalize_vectors(vectors):
 # ------------------------------------------------------------------------------
 
 
-def scale_points(vector, f):
+def scale_vector(vector, f):
     """Scales vector by factor
 
     Parameters:
@@ -85,7 +85,11 @@ def scale_points(vector, f):
     Returns:
         Tuple: Scaled vector
     """
-    return vector[0] * f, vector[1] * f, vector[2] * f
+    return vector[0] * f, vector[1] * f, vector[2] * f  
+
+
+def scale_points(vector, f):
+    pass
 
 
 # ------------------------------------------------------------------------------

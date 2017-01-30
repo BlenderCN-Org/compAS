@@ -3,6 +3,8 @@ from brg.geometry.basics import add_vectors
 from brg.geometry.basics import subtract_vectors
 from brg.geometry.basics import dot
 from brg.geometry.basics import cross
+from brg.geometry.transformations import scale_vector
+from brg.geometry.spatial import is_point_on_segment
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
@@ -143,33 +145,45 @@ def is_ray_intersecting_triangle(p1, v1, a, b, c):
      return False
 
 
-#to be checked and documented (name? are_boxes_intersecting)
-#imports need to be checked
-#input two lists of eight points each
-#return true or false
-def box_box_intersection(box_1,box_2):
-    #box = 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
-    lines = [(bb1[0],bb1[1]),(bb1[1],bb1[2]),(bb1[2],bb1[3]),(bb1[3],bb1[0])]
-    lines += [(bb1[4],bb1[5]),(bb1[5],bb1[6]),(bb1[6],bb1[7]),(bb1[7],bb1[4])]
-    lines += [(bb1[0],bb1[4]),(bb1[1],bb1[5]),(bb1[2],bb1[6]),(bb1[3],bb1[7])]
+def is_box_intersecting_box(box_1,box_2):
+    """Checks if two boxes are intersecting in 3D.
+
+    Parameters:
+        box_1(list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
+        box_2(list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
+
+    Returns:
+        bool: True if the boxes intersect, False otherwise.
+        
+    Todo:
+        WARNING! Does not check if one box is completely enclosed by the other.
     
-    tris = [(bb2[0],bb2[1],bb2[2]),(bb2[0],bb2[2],bb2[3])]#bottom
-    tris += [(bb2[4],bb2[5],bb2[6]),(bb2[4],bb2[6],bb2[7])]#top
-    tris += [(bb2[0],bb2[4],bb2[7]),(bb2[0],bb2[7],bb2[3])]#side 1
-    tris += [(bb2[0],bb2[1],bb2[5]),(bb2[0],bb2[5],bb2[4])]#side 2
-    tris += [(bb2[1],bb2[2],bb2[6]),(bb2[1],bb2[6],bb2[5])]#side 3
-    tris += [(bb2[2],bb2[3],bb2[7]),(bb2[2],bb2[7],bb2[6])]#side 4
+
+    """
     
+    #all edges of box one
+    edges = [(box_1[0],box_1[1]),(box_1[1],box_1[2]),(box_1[2],box_1[3]),(box_1[3],box_1[0])]
+    edges += [(box_1[4],box_1[5]),(box_1[5],box_1[6]),(box_1[6],box_1[7]),(box_1[7],box_1[4])]
+    edges += [(box_1[0],box_1[4]),(box_1[1],box_1[5]),(box_1[2],box_1[6]),(box_1[3],box_1[7])]
+    #triangulates box two
+    tris = [(box_2[0],box_2[1],box_2[2]),(box_2[0],box_2[2],box_2[3])]#bottom
+    tris += [(box_2[4],box_2[5],box_2[6]),(box_2[4],box_2[6],box_2[7])]#top
+    tris += [(box_2[0],box_2[4],box_2[7]),(box_2[0],box_2[7],box_2[3])]#side 1
+    tris += [(box_2[0],box_2[1],box_2[5]),(box_2[0],box_2[5],box_2[4])]#side 2
+    tris += [(box_2[1],box_2[2],box_2[6]),(box_2[1],box_2[6],box_2[5])]#side 3
+    tris += [(box_2[2],box_2[3],box_2[7]),(box_2[2],box_2[7],box_2[6])]#side 4
+    #checks for edge triangle intersections
     intx = False
-    for pt1,pt2 in lines:
+    for pt1,pt2 in edges:
         for a,b,c in tris:
             for p1,p2 in [(pt1,pt2),(pt2,pt1)]:
                 v1 = subtract_vectors(p2,p1)
                 t = is_ray_intersecting_triangle(p1, v1, a, b, c)
                 if t:
-                    v1 = scale_points(v1, t)
-                    test_pt = add_vectors([v1,p1])
+                    v1 = scale_vector(v1, t)
+                    test_pt = add_vectors(v1,p1)
                     if is_point_on_segment(p1, p2, test_pt, tol=0.0001):
+                        #intersection found
                         intx = True
                         break
             else:
@@ -187,23 +201,34 @@ def box_box_intersection(box_1,box_2):
 
 if __name__ == '__main__':
     
-    
+    print "computing..."
     
     import random
     import time
     
-    x = random()
-    y = random()
-    z = random()
-    box_a = [(0,0,0),(x,0,0),(x,y,0),(0,y,0)]
-    box_a +=  [(0,0,z),(x,0,z),(x,y,z),(0,y,z)]
+    steps = 1000
+    count = 0
     
-    box_b = [(0.5,0.5,0),(1.5,0.5,0),(1.5,1.5,0),(0.5,1.5,0)]
-    box_b += [(0.5,0.5,1),(1.5,0.5,1),(1.5,1.5,1),(0.5,1.5,1)]
+
     
+    tic = time.time()
+    for i in range(steps):
     
-    print box_box_intersection(box_a,box_b)
+        x = random.random()
+        y = random.random()
+        z = random.random()
+        box_a = [(0.0,0.0,0.0),(x,0.0,0.0),(x,y,0.0),(0.0,y,0.0)]
+        box_a +=  [(0.0,0.0,z),(x,0.0,z),(x,y,z),(0.0,y,z)]
+        
+        box_b = [(0.5,0.5,0.0),(1.5,0.5,0.0),(1.5,1.5,0.0),(0.5,1.5,0.0)]
+        box_b += [(0.5,0.5,1.0),(1.5,0.5,1.0),(1.5,1.5,1.0),(0.5,1.5,1.0)]
+            
+
+        if is_box_intersecting_box(box_a,box_b):
+            pass
+            count += 1
     
-    
+    tac = time.time()
+    print '{0} s for {1} iterations. {2} intersections found'.format(round(tac-tic,4),steps,count)
     
     
