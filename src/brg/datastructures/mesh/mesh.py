@@ -75,24 +75,23 @@ class Mesh(object):
             mesh = Mesh.from_obj(brg.get_data('faces.obj'))
             mesh.plot()
 
-        >>> import matplotlib.pyplot as plt
-        >>> fig = plt.figure()
-        >>> ax1 = fig.add_subplot(121, aspect='equal')
-        >>> ax2 = fig.add_subplot(122, aspect='equal')
-        >>> mesh.plot(axes=ax1, vlabel=dict((key, key) for key in mesh))
-        >>> mesh.plot(axes=ax1, flabel=dict((fkey, fkey) for fkey in mesh.face))
+        >>> mesh.plot(vlabel={key: key for key in mesh})
 
         .. plot::
 
             import brg
             from brg.datastructures.mesh import Mesh
             mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-            import matplotlib.pyplot as plt
-            fig = plt.figure()
-            ax1 = fig.add_subplot(121, aspect='equal')
-            ax2 = fig.add_subplot(122, aspect='equal')
-            mesh.plot(axes=ax1, vlabel=dict((key, key) for key in mesh))
-            mesh.plot(axes=ax2, flabel=dict((fkey, fkey) for fkey in mesh.face))
+            mesh.plot(vlabel={key: key for key in mesh})
+
+        >>> mesh.plot(flabel={fkey: fkey for fkey in mesh.face})
+
+        .. plot::
+
+            import brg
+            from brg.datastructures.mesh import Mesh
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+            mesh.plot(flabel={fkey: fkey for fkey in mesh.face})
 
         >>> for key in mesh.vertex:
         ...     print key
@@ -319,32 +318,32 @@ mesh summary
     def name(self, value):
         self.attributes['name'] = value
 
-    # remove?
-    # replace by actual function?
-    # current implementation/usage is not very transparent...
-    @property
-    def color(self):
-        """:obj:`dict` : The color specification of the mesh.
+    # # remove?
+    # # replace by actual function?
+    # # current implementation/usage is not very transparent...
+    # @property
+    # def color(self):
+    #     """:obj:`dict` : The color specification of the mesh.
 
-        Only key-value pairs can be assigned to this property, with the key specifying
-        the element type, and the value the color as an rgb tuple. For example::
+    #     Only key-value pairs can be assigned to this property, with the key specifying
+    #     the element type, and the value the color as an rgb tuple. For example::
 
-            >>> mesh.color = ('vertex', (255, 0, 0))
-        """
-        return dict(
-            (key[6:], self.attributes[key])
-            for key in self.attributes if key.startswith('color.')
-        )
+    #         >>> mesh.color = ('vertex', (255, 0, 0))
+    #     """
+    #     return dict(
+    #         (key[6:], self.attributes[key])
+    #         for key in self.attributes if key.startswith('color.')
+    #     )
 
-    @color.setter
-    def color(self, value):
-        try:
-            value[0]
-            value[1]
-            value[1][2]
-        except Exception:
-            return
-        self.attributes['color.{0}'.format(value[0])] = value[1]
+    # @color.setter
+    # def color(self, value):
+    #     try:
+    #         value[0]
+    #         value[1]
+    #         value[1][2]
+    #     except Exception:
+    #         return
+    #     self.attributes['color.{0}'.format(value[0])] = value[1]
 
     @property
     def xyz(self):
@@ -871,6 +870,9 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
+
+    def get_attribute(self, name, default):
+        return self.attributes.get(name, default)
 
     # write out full name?
     def set_dva(self, attr_dict=None, **kwargs):
@@ -1439,9 +1441,7 @@ mesh summary
         #     have_scipy = False
         # else:
         #     have_scipy = True
-
         from scipy.spatial import cKDTree
-
         fkey_index = dict((fkey, index) for index, fkey in self.faces_enum())
         index_fkey = dict(self.faces_enum())
         points = [self.face_centroid(fkey) for fkey in self.faces_iter()]
@@ -1451,7 +1451,7 @@ mesh summary
         for fkey in self.face:
             nbrs  = []
             index = fkey_index[fkey]
-            point = points[index]
+            # point = points[index]
             # _, nnbrs = tree.query(point, k=10, n_jobs=-1)
             nnbrs = closest[index]
             found = set()
@@ -1651,11 +1651,14 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
 
-    def plot(self, vcolor=None, vlabel=None, vsize=None, fcolor=None, flabel=None):
+    def plot(self, axes=None, vcolor=None, vlabel=None, vsize=None, fcolor=None, flabel=None):
         import matplotlib.pyplot as plt
         from brg.plotters.drawing import create_axes_2d
         from brg.datastructures.mesh.plotter import MeshPlotter2D
-        axes = create_axes_2d()
+        local_axes = False
+        if not axes:
+            axes = create_axes_2d()
+            local_axes = True
         plotter = MeshPlotter2D(self)
         plotter.vcolor = vcolor
         plotter.vlabel = vlabel
@@ -1663,8 +1666,9 @@ mesh summary
         plotter.fcolor = fcolor
         plotter.flabel = flabel
         plotter.plot(axes)
-        axes.autoscale()
-        plt.show()
+        if local_axes:
+            axes.autoscale()
+            plt.show()
 
     def view(self):
         from brg.datastructures.mesh.viewer import MeshViewer
@@ -1680,6 +1684,7 @@ mesh summary
 if __name__ == '__main__':
 
     import brg
+    # import matplotlib.pyplot as plt
 
     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
@@ -1688,6 +1693,45 @@ if __name__ == '__main__':
 
     print(mesh)
 
-    flabel = dict((fkey, fkey) for fkey in mesh.face)
+    mesh.plot(vlabel={key: key for key in mesh})
 
-    mesh.plot(flabel=flabel)
+    # flabel = dict((fkey, fkey) for fkey in mesh.face)
+
+    # fig = plt.figure(facecolor='white')
+
+    # ax1 = fig.add_subplot(121, aspect='equal')
+    # ax2 = fig.add_subplot(122, aspect='equal')
+
+    # mesh.plot(axes=ax1, vlabel=dict((key, key) for key in mesh))
+    # mesh.plot(axes=ax2, flabel=dict((fkey, fkey) for fkey in mesh.face))
+
+    # x = mesh.x
+    # y = mesh.y
+
+    # xlim = [min(x), max(x)]
+    # ylim = [min(y), max(y)]
+
+    # xspan = xlim[1] - xlim[0]
+    # yspan = ylim[1] - ylim[0]
+
+    # xlim[0] -= 0.05 * xspan
+    # xlim[1] += 0.05 * xspan
+
+    # ylim[0] -= 0.05 * yspan
+    # ylim[1] += 0.05 * yspan
+
+    # ax1.set_xlim(xlim)
+    # ax1.set_ylim(ylim)
+
+    # ax1.set_frame_on(False)
+    # ax1.set_xticks([])
+    # ax1.set_yticks([])
+
+    # ax2.set_xlim(xlim)
+    # ax2.set_ylim(ylim)
+
+    # ax2.set_frame_on(False)
+    # ax2.set_xticks([])
+    # ax2.set_yticks([])
+
+    # plt.show()

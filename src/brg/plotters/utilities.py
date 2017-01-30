@@ -27,6 +27,10 @@ def width_to_dict(width, dictkeys, defval=None):
     raise Exception('This is not a valid width format: {0}'.format(type(width)))
 
 
+def synchronize_scale_axes(axes):
+    pass
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
