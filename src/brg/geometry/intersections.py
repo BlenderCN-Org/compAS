@@ -94,6 +94,44 @@ def circle_circle_intersections_2d(p1, r1, p2, r2):
     return i1, i2
 
 
+#to be checked and documented (name? are_boxes_intersecting)
+#imports need to be checked
+#input two lists of eight points each
+#return true or false
+def box_box_intersection(box_1,box_2):
+    #box = 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
+    lines = [(bb1[0],bb1[1]),(bb1[1],bb1[2]),(bb1[2],bb1[3]),(bb1[3],bb1[0])]
+    lines += [(bb1[4],bb1[5]),(bb1[5],bb1[6]),(bb1[6],bb1[7]),(bb1[7],bb1[4])]
+    lines += [(bb1[0],bb1[4]),(bb1[1],bb1[5]),(bb1[2],bb1[6]),(bb1[3],bb1[7])]
+    
+    tris = [(bb2[0],bb2[1],bb2[2]),(bb2[0],bb2[2],bb2[3])]#bottom
+    tris += [(bb2[4],bb2[5],bb2[6]),(bb2[4],bb2[6],bb2[7])]#top
+    tris += [(bb2[0],bb2[4],bb2[7]),(bb2[0],bb2[7],bb2[3])]#side 1
+    tris += [(bb2[0],bb2[1],bb2[5]),(bb2[0],bb2[5],bb2[4])]#side 2
+    tris += [(bb2[1],bb2[2],bb2[6]),(bb2[1],bb2[6],bb2[5])]#side 3
+    tris += [(bb2[2],bb2[3],bb2[7]),(bb2[2],bb2[7],bb2[6])]#side 4
+    
+    intx = False
+    for pt1,pt2 in lines:
+        for a,b,c in tris:
+            for p1,p2 in [(pt1,pt2),(pt2,pt1)]:
+                v1 = subtract_vectors(p2,p1)
+                t = is_ray_intersecting_triangle(p1, v1, a, b, c)
+                if t:
+                    v1 = scale_points(v1, t)
+                    test_pt = add_vectors([v1,p1])
+                    if is_point_on_segment(p1, p2, test_pt, tol=0.0001):
+                        intx = True
+                        break
+            else:
+                continue
+            break
+        else:
+            continue
+        break
+    return intx
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
