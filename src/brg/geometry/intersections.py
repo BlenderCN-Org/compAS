@@ -102,7 +102,7 @@ def circle_circle_intersections_2d(p1, r1, p2, r2):
 def is_ray_intersecting_triangle(p1, v1, a, b, c):
      """
      Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)
-     based on Moeller Trumbore intersection algorithm
+     based on the Moeller Trumbore intersection algorithm
 
      Parameters:
          p1, v1 (tuples): 3d point and 3d vector of line
@@ -157,15 +157,12 @@ def is_box_intersecting_box(box_1,box_2):
         
     Todo:
         WARNING! Does not check if one box is completely enclosed by the other.
-    
-
     """
-    
     #all edges of box one
     edges = [(box_1[0],box_1[1]),(box_1[1],box_1[2]),(box_1[2],box_1[3]),(box_1[3],box_1[0])]
     edges += [(box_1[4],box_1[5]),(box_1[5],box_1[6]),(box_1[6],box_1[7]),(box_1[7],box_1[4])]
     edges += [(box_1[0],box_1[4]),(box_1[1],box_1[5]),(box_1[2],box_1[6]),(box_1[3],box_1[7])]
-    #triangulates box two
+    #triangulation of box two
     tris = [(box_2[0],box_2[1],box_2[2]),(box_2[0],box_2[2],box_2[3])]#bottom
     tris += [(box_2[4],box_2[5],box_2[6]),(box_2[4],box_2[6],box_2[7])]#top
     tris += [(box_2[0],box_2[4],box_2[7]),(box_2[0],box_2[7],box_2[3])]#side 1
@@ -206,11 +203,9 @@ if __name__ == '__main__':
     import random
     import time
     
-    steps = 1000
+    steps = 5000
     count = 0
-    
 
-    
     tic = time.time()
     for i in range(steps):
     
@@ -225,7 +220,6 @@ if __name__ == '__main__':
             
 
         if is_box_intersecting_box(box_a,box_b):
-            pass
             count += 1
     
     tac = time.time()

@@ -345,6 +345,16 @@ def is_point_on_segment(p1, p2, tp, tol=0.0001):
         return True
     return False
 
+#is this not a simpler and faster check?!
+#---------------------------------------
+# def is_point_on_segment(p1, p2, tp, tol=0.0001):
+#     a = distance_point_point(p1, p2)
+#     b = distance_point_point(p1, tp)
+#     c = distance_point_point(p2, tp)
+#     if b+c <= a+tol:
+#         return True
+#     return False
+
 
 def is_point_on_polyline(points, tp, tol=0):
     for i in xrange(len(points) - 1):
