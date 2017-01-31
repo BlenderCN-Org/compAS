@@ -345,6 +345,16 @@ def is_point_on_segment(p1, p2, tp, tol=0.0001):
         return True
     return False
 
+#is this not a simpler and faster check?!
+#---------------------------------------
+# def is_point_on_segment(p1, p2, tp, tol=0.0001):
+#     a = distance_point_point(p1, p2)
+#     b = distance_point_point(p1, tp)
+#     c = distance_point_point(p2, tp)
+#     if b+c <= a+tol:
+#         return True
+#     return False
+
 
 def is_point_on_polyline(points, tp, tol=0):
     for i in xrange(len(points) - 1):
@@ -470,50 +480,6 @@ def is_point_in_triangle(p, abc):
 # def is_point_in_rectangle(centPt, radius, testPt):
 #     return testPt[0] >= centPt[0] - radius and testPt[0] <= centPt[0] + radius and testPt[1] >= centPt[1] - radius and testPt[1] <= centPt[1] + radius
 
-
-# def is_ray_intersecting_triangle(p1, v1, a, b, c):
-#     """
-#     Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)
-#     based on Moeller Trumbore intersection algorithm
-
-#     Parameters:
-#         p1, v1 (tuples): 3d point and 3d vector of line
-#         a,b,c (list of 3-tuples): 3d points of triangle
-
-#     Returns:
-#         (bool): True if the ray intersects with the triangle, False otherwise.
-#     """
-#     EPSILON = 0.000000001
-#     # Find vectors for two edges sharing V1
-#     e1 = subtract_vectors(b, a)
-#     e2 = subtract_vectors(c, a)
-#     # Begin calculating determinant - also used to calculate u parameter
-#     p = cross(v1, e2)
-#     # if determinant is near zero, ray lies in plane of triangle
-#     det = dot(e1, p)
-#     # NOT CULLING
-#     if(det > - EPSILON and det < EPSILON):
-#         return False
-#     inv_det = 1.0 / det
-#     # calculate distance from V1 to ray origin
-#     t = subtract_vectors(p1, a)
-#     # Calculate u parameter and make_blocks bound
-#     u = dot(t, p) * inv_det
-#     # The intersection lies outside of the triangle
-#     if(u < 0.0 or u > 1.0):
-#         return False
-#     # Prepare to make_blocks v parameter
-#     q = cross(t, e1)
-#     # Calculate V parameter and make_blocks bound
-#     v = dot(v1, q) * inv_det
-#     # The intersection lies outside of the triangle
-#     if(v < 0.0 or u + v  > 1.0):
-#         return False
-#     t = dot(e2, q) * inv_det
-#     if(t > EPSILON):
-#         return True
-#     # No hit, no win
-#     return False
 
 
 # def is_line_line_intersection_2d(p1, v1, p2, v2, points=False):

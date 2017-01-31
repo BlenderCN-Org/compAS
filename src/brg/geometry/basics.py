@@ -14,6 +14,7 @@ __email__      = '<vanmelet@ethz.ch>'
 
 __all__ = [
     'add_vectors',
+    'add_vectors_list',
     'subtract_vectors',
     'vector_component',
     'vector_component_2d',
@@ -74,7 +75,7 @@ __all__ = [
 ]
 
 
-def add_vectors(*vectors):
+def add_vectors_list(vectors):
     """Adds multiple 3d vectors
 
     Parameters:
@@ -85,6 +86,19 @@ def add_vectors(*vectors):
     """
     x, y, z = zip(*vectors)
     return sum(x), sum(y), sum(z)
+
+
+def add_vectors(u, v):
+    """Adds two vectors.
+
+    Parameters:
+        u (tuple, list, Vector): The first vector.
+        v (tuple, list, Vector): The second vector.
+
+    Returns:
+        Tuple: Resulting vector
+    """
+    return u[0] + v[0], u[1] + v[1], u[2] + v[2]
 
 
 def subtract_vectors(u, v):

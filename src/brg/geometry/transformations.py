@@ -1,4 +1,7 @@
 from brg.geometry.basics import length_vector
+from brg.geometry.basics import add_vectors
+from brg.geometry.basics import subtract_vectors
+from math import cos, sin, sqrt
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
@@ -42,9 +45,36 @@ def translate_lines(lines, vector):
 # ------------------------------------------------------------------------------
 
 
-def rotate_points(points, axis, angle):
-    raise NotImplementedError
+    """Rotates points around an arbitrary axis in 3D.
 
+    Parameters:
+        p1 (tuple): start point of axis
+        p2 (tuple): end point of axis
+        points (list of tuples): the points to rotate 
+        angle (float): the angle of rotation in radians
+        
+    Returns:
+        points (list of tuples): the rotated points 
+    """
+def rotate_points(p1, p2, points, angle):
+    axis = subtract_vectors(p2,p1)
+    x,y,z = normalize_vector(axis)
+    # rotation matrix factors     
+    c = cos(angle)
+    t = (1 - cos(angle))
+    s = sin(angle)
+    # rotation matrix 
+    rot_mat = [[t*x**2 + c,t*x*y - s*z,t*x*z + s*y],
+        [t*x*y + s*z, t*y**2 + c,t*y*z - s*x],
+        [t*x*z - s*y,t*y*z + s*x,t*z**2 + c]]
+    rotated_pts = []
+    for p0 in points:
+        # translation vector to axis origin
+        vec_trans = subtract_vectors(p0,p1)#p
+        # rotation matrix * translation vector
+        vec = [sum([x * y for x, y in zip(rot_mat[i],vec_trans)]) for i in xrange(3)]    
+        rotated_pts.append(add_vectors(p1,vec))      
+    return rotated_pts
 
 # ------------------------------------------------------------------------------
 # normalize
@@ -75,7 +105,7 @@ def normalize_vectors(vectors):
 # ------------------------------------------------------------------------------
 
 
-def scale_points(vector, f):
+def scale_vector(vector, f):
     """Scales vector by factor
 
     Parameters:
@@ -85,7 +115,11 @@ def scale_points(vector, f):
     Returns:
         Tuple: Scaled vector
     """
-    return vector[0] * f, vector[1] * f, vector[2] * f
+    return vector[0] * f, vector[1] * f, vector[2] * f  
+
+
+def scale_points(vector, f):
+    pass
 
 
 # ------------------------------------------------------------------------------
@@ -123,4 +157,14 @@ def project_points_line():
 # ==============================================================================
 
 if __name__ == '__main__':
-    pass
+    from math import radians,pi
+    
+    p1 = (0.0,0.0,0.0)
+    p2 = (0.0,0.0,1.0)
+    
+    pts = [(1.0,1.0,1.0)]
+    
+    angle = pi*0.5
+    
+    print rotate_points(p1, p2, pts, angle)
+    
