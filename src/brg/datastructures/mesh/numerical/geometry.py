@@ -17,6 +17,9 @@ __all__ = [
 ]
 
 
+# move to algorithms.geometry?
+# check for numpy scipy?
+# wrap in try-except?
 def mesh_contours(mesh, N=50):
     """Compute the contours of the mesh.
 
@@ -49,6 +52,7 @@ def mesh_contours(mesh, N=50):
     return contours_scalarfield(xy, z, N)
 
 
+# move to utilities? plotters?
 def plot_mesh_contours(mesh, N=50):
     """Plot the contours of a mesh.
 
@@ -57,22 +61,45 @@ def plot_mesh_contours(mesh, N=50):
         N (int): The density of the plot.
 
     Examples:
-        >>> mesh = Mesh.from_obj('saddle.obj', sample=True)
-        >>> plot_mesh_contours(mesh)
 
-    .. plot::
+        .. code-block:: python
 
-        import brg
-        from brg.datastructures.mesh import Mesh
-        mesh = Mesh.from_obj(brg.get_data('saddle.obj'))
-        plot_mesh_contours(mesh)
+            from random import randint
+            import brg
+            from brg.datastructures.mesh import Mesh
+            from brg.datastructures.mesh.numerical import plot_mesh_contours
+
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+            boundary = set(mesh.vertices_on_boundary())
+
+            for key in mesh:
+                if key not in boundary:
+                    mesh[key]['z'] = float(randint(0, 5))
+
+            plot_mesh_contours(mesh, N=50)
+
+
+        .. plot::
+
+            from random import randint
+            import brg
+            from brg.datastructures.mesh import Mesh
+            from brg.datastructures.mesh.numerical import plot_mesh_contours
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+            boundary = set(mesh.vertices_on_boundary())
+            for key in mesh:
+                if key not in boundary:
+                    mesh[key]['z'] = float(randint(0, 5))
+            plot_mesh_contours(mesh, N=50)
+
 
     See Also:
         :func:`brg.numerical.geometry.plot_contours_scalarfield`
 
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]
-    z = [mesh.vertex_coordinates(key, 'z') for key in mesh]
+    z = [mesh.vertex_coordinates(key, 'z')[0] for key in mesh]
     plot_contours_scalarfield(xy, z, N)
 
 
@@ -114,6 +141,8 @@ def plot_mesh_isolines(mesh, attr_name, N=50):
 
 if __name__ == "__main__":
 
+    from random import randint
+
     import brg
     from brg.datastructures.mesh import Mesh
     from brg.geometry import centroid_points
@@ -121,13 +150,21 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
-    points = [mesh.vertex_coordinates(key) for key in mesh]
-    centroid = centroid_points(points)
+    boundary = set(mesh.vertices_on_boundary())
 
-    for key, attr in mesh.vertices_iter(True):
-        xyz = mesh.vertex_coordinates(key)
-        attr['d'] = distance_point_point(xyz, centroid)
+    for key in mesh:
+        if key not in boundary:
+            mesh[key]['z'] = float(randint(0, 5))
 
-    mesh.plot()
+    plot_mesh_contours(mesh, N=50)
 
-    plot_mesh_isolines(mesh, 'd')
+    # points = [mesh.vertex_coordinates(key) for key in mesh]
+    # centroid = centroid_points(points)
+
+    # for key, attr in mesh.vertices_iter(True):
+    #     xyz = mesh.vertex_coordinates(key)
+    #     attr['d'] = distance_point_point(xyz, centroid)
+
+    # mesh.plot()
+
+    # plot_mesh_isolines(mesh, 'd')

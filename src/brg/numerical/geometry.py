@@ -194,6 +194,7 @@ if __name__ == "__main__":
     points = [mesh.vertex_coordinates(key) for key in mesh]
     centroid = centroid_points(points)
 
+    # add distances_points_point(points, centroid)
     distances = [distance_point_point(point, centroid) for point in points]
 
     xy = [[points[i][0], points[i][1]] for i in range(len(points))]
