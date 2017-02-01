@@ -52,23 +52,23 @@ def optimise_trimesh_topology(mesh,
 
     lmin = (1 - tol) * (4.0 / 5.0) * target
     lmax = (1 + tol) * (4.0 / 3.0) * target
-    
+
     fac = float(target_start / target)
-    
+
     boundary = set(mesh.vertices_on_boundary())
     count = 0
-    
+
     if not kmax_start:
         kmax_start = kmax / 2.0
 
     kmax_start = float(kmax_start)
 
     for k in xrange(kmax):
-        
+
         if k <= kmax_start:
             scale_val = fac * (1.0 - k / kmax_start)
             dlmin = lmin * scale_val
-            dlmax = lmax * scale_val 
+            dlmax = lmax * scale_val
         else:
             dlmin = 0
             dlmax = 0
@@ -77,10 +77,10 @@ def optimise_trimesh_topology(mesh,
             print k
 
         count += 1
-        
-        if k % 20 == 0:    
+
+        if k % 20 == 0:
             num_vertices_1 = len(mesh.vertex)
-        
+
         # split
         if count == 1:
             visited = set()
@@ -90,9 +90,7 @@ def optimise_trimesh_topology(mesh,
                 if u in visited or v in visited:
                     continue
 
-                l = mesh.edge_length(u, v)
-
-                if l <= lmax + dlmax:
+                if mesh.edge_length(u, v) <= lmax + dlmax:
                     continue
                 if verbose:
                     print 'split edge: {0} - {1}'.format(u, v)
@@ -111,9 +109,7 @@ def optimise_trimesh_topology(mesh,
                 if u in visited or v in visited:
                     continue
 
-                l = mesh.edge_length(u, v)
-
-                if l >= lmin - dlmin:
+                if mesh.edge_length(u, v) >= lmin - dlmin:
                     continue
 
                 if verbose:
@@ -171,20 +167,19 @@ def optimise_trimesh_topology(mesh,
         # count
         else:
             count = 0
-            
-        if (k-10) % 20 == 0:    
+
+        if (k - 10) % 20 == 0:
             num_vertices_2 = len(mesh.vertex)
 
             if abs(1 - num_vertices_1 / float(num_vertices_2)) < divergence and k > kmax_start:
                 break
-            
-        # smoothen
 
+        # smoothen
         boundary = set(mesh.vertices_on_boundary())
         smooth_mesh_centroid(mesh, fixed=boundary, kmax=1)
 
         if ufunc:
-            ufunc(mesh,k)
+            ufunc(mesh, k)
 
 
 # ==============================================================================
@@ -196,7 +191,6 @@ if __name__ == '__main__':
     import time
 
     from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.utilities import draw_mesh
 
     vertices = [
         (0.0, 0.0, 0.0),
@@ -231,4 +225,4 @@ if __name__ == '__main__':
 
     print t1 - t0
 
-    draw_mesh(mesh)
+    mesh.plot(vsize=0.05)

@@ -64,8 +64,8 @@ if __name__ == "__main__":
     vlabel = dict((key, key) for key in dmesh)
     flabel = dict((fkey, fkey) for fkey in dmesh.face)
 
-    dmesh.draw(vertex_label=vlabel,
-               face_label=flabel,
-               vertex_size=None,
-               show_vertices=True,
-               show_faces=True)
+    dmesh.plot(
+        vlabel=vlabel,
+        flabel=flabel,
+        vsize=None
+    )
