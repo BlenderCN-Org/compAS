@@ -17,8 +17,8 @@ from brg.geometry.basics import area_polygon
 
 from brg.geometry.elements.line import Line
 
-from brg.datastructures.tree.algorithms import bfs
-from brg.datastructures.tree.algorithms import bfs2
+from brg.datastructures.network.algorithms import network_bfs
+from brg.datastructures.network.algorithms import network_bfs2
 
 from brg.datastructures.tree import KDTree
 
@@ -1197,7 +1197,7 @@ mesh summary
         if not self.vertex:
             return False
         root = self.vertices_iter().next()
-        nodes = bfs2(self.halfedge, root)
+        nodes = network_bfs2(self.halfedge, root)
         return len(nodes) == len(self.vertex)
 
     def is_manifold(self):
@@ -1473,7 +1473,7 @@ mesh summary
             adjacency[fkey] = nbrs
         return adjacency
 
-    def face_tree(self, root, algo=bfs):
+    def face_tree(self, root, algo=network_bfs):
         return algo(self.face_adjacency(), root)
 
     # **************************************************************************
