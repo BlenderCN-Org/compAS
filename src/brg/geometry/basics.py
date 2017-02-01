@@ -339,6 +339,10 @@ def distance_point_point_sqrd_2d(a, b):
     return length_vector_sqrd_2d(v)
 
 
+def distance_points_point(points, target):
+    return [distance_point_point(point, target) for point in points]
+
+
 def distance_point_line(point, line):
     """Compute the distance between a point and a line.
 
@@ -351,8 +355,8 @@ def distance_point_line(point, line):
         line (list, tuple) : Line defined by two points.
 
     Returns:
-        float : The distance between the point and the line. 
-    
+        float : The distance between the point and the line.
+
     References:
         .. [wiki:distance] https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -367,6 +371,7 @@ def distance_point_line(point, line):
 
 
 def distance_point_line_2d(point, line):
+    """Compute the distance in the XY plane between a point and a line."""
     a, b = line
     ab   = [b[i] - a[i] for i in range(2)]
     l_ab = length_vector_2d(ab)
@@ -377,6 +382,7 @@ def distance_point_line_2d(point, line):
 
 
 def distance_point_line_sqrd(point, line):
+    """Compute the squared distance between a point and a line."""
     a, b = line
     ab   = [b[i] - a[i] for i in range(3)]
     l_ab = length_vector_sqrd(ab)
@@ -387,6 +393,7 @@ def distance_point_line_sqrd(point, line):
 
 
 def distance_point_line_sqrd_2d(point, line):
+    """Compute the squared distance in the XY plane between a point and a line."""
     a, b = line
     ab   = [b[i] - a[i] for i in range(2)]
     l_ab = length_vector_sqrd(ab)
@@ -404,7 +411,7 @@ def distance_point_plane(point, plane):
 
     Parameters:
         point (list) : Point coordinates.
-        plane (list) : Three points defining a plane.
+        plane (tuple) : A point and a vector defining a plane.
 
     Returns:
         float : Distance between point and plane.
@@ -414,11 +421,18 @@ def distance_point_plane(point, plane):
         >>> plane = [...]
         >>> distance_point_plane(point, plane)
 
+    Note:
+        The equation of a plane is
+
+        .. math::
+
+            Ax + By + 
+
     References:
         .. [mathinsight:distance-point-plane] http://mathinsight.org/distance_point_plane
 
     """
-    raise NotImplementedError
+    
 
 
 def distance_point_plane_2d(point, plane):

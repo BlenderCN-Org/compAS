@@ -18,44 +18,43 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'lengths',
-    'rotate',
-    'contours_scalarfield'
+    # 'lengths',
+    # 'rotate',
+    'scalarfield_contours',
+    'plot_scalarfield_contours',
 ]
 
 
-def lengths(C, X):
-    """Calculates the lengths and co-ordinate differences.
+# def lengths(C, X):
+#     """Calculates the lengths and co-ordinate differences.
 
-    Parameters:
-        C (sparse): Connectivity matrix (m x n)
-        X (array): Co-ordinates of vertices/points (n x 3).
+#     Parameters:
+#         C (sparse): Connectivity matrix (m x n)
+#         X (array): Co-ordinates of vertices/points (n x 3).
 
-    Returns:
-        array: Vectors of co-ordinate differences in x, y and z (m x 3).
-        array: Lengths of members (m x 1)
+#     Returns:
+#         array: Vectors of co-ordinate differences in x, y and z (m x 3).
+#         array: Lengths of members (m x 1)
 
-    Examples:
-        >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
-        >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
-        >>> uvw
-        array([[ 1,  1,  0],
-               [-1, -1,  1]])
-        >>> l
-        array([[ 1.41421356],
-               [ 1.73205081]])
-    """
-    uvw = C.dot(X)
-    return uvw, normrow(uvw)
-
-
-def rotate(points):
-    raise NotImplementedError
+#     Examples:
+#         >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
+#         >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
+#         >>> uvw
+#         array([[ 1,  1,  0],
+#                [-1, -1,  1]])
+#         >>> l
+#         array([[ 1.41421356],
+#                [ 1.73205081]])
+#     """
+#     uvw = C.dot(X)
+#     return uvw, normrow(uvw)
 
 
-# rename to scalarfield_contours
-# rename to isolines_scalarfield
-def contours_scalarfield(xy, s, N=50):
+# def rotate(points):
+#     raise NotImplementedError
+
+
+def scalarfield_contours(xy, s, N=50):
     """Compute the contour lines of a scalarfield.
 
     The computation of the contour lines is based on the ``contours`` function
@@ -100,6 +99,10 @@ def contours_scalarfield(xy, s, N=50):
         ...             print polygon
         ...
 
+    See Also:
+
+        :func:`brg.datastructures.numerical.geometry.mesh_contours`
+
     """
     xy = asarray(xy)
     s = asarray(s)
@@ -126,8 +129,7 @@ def contours_scalarfield(xy, s, N=50):
     return levels, contours
 
 
-# rename to plot_isolines_scalarfield
-def plot_contours_scalarfield(xy, s, N=50):
+def plot_scalarfield_contours(xy, s, N=50):
     """Plot the contours of a scalarfield.
 
     Parameters:
@@ -136,32 +138,45 @@ def plot_contours_scalarfield(xy, s, N=50):
         N (int): Optional. The number of contour lines to compute. Default is ``30``.
 
     Examples:
-        >>> import brg
-        >>> from brg.datastructures.mesh import Mesh
-        >>> from brg.geometry import centroid_points
-        >>> from brg.geometry import distance_point_point
-        >>> mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-        >>> points = [mesh.vertex_coordinates(key) for key in mesh]
-        >>> centroid = centroid_points(points)
-        >>> distances = [distance_point_point(point, centroid) for point in points]
-        >>> xy = [[points[i][0], points[i][1]] for i in range(len(points))]
-        >>> plot_contours_scalarfield(xy, distances)
 
-    .. plot::
+        .. code-block:: python
 
-        import brg
-        from brg.datastructures.mesh import Mesh
-        from brg.geometry import centroid_points
-        from brg.geometry import distance_point_point
-        from brg.numerical.geometry import plot_contours_scalarfield
+            import brg
 
-        mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-        points = [mesh.vertex_coordinates(key) for key in mesh]
-        centroid = centroid_points(points)
-        d = [distance_point_point(point, centroid) for point in points]
-        xy = [[points[i][0], points[i][1]] for i in range(len(points))]
+            from brg.datastructures.mesh import Mesh
+            from brg.geometry import centroid_points
+            from brg.geometry import distance_point_point
 
-        plot_contours_scalarfield(xy, d)
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+            points = [mesh.vertex_coordinates(key) for key in mesh]
+            centroid = centroid_points(points)
+
+            xy = [[points[i][0], points[i][1]] for i in range(len(points))]
+            d = [distance_point_point(point, centroid) for point in points]
+
+            plot_contours_scalarfield(xy, d)
+
+
+        .. plot::
+
+            import brg
+            from brg.datastructures.mesh import Mesh
+            from brg.geometry import centroid_points
+            from brg.geometry import distance_point_point
+            from brg.numerical.geometry import plot_contours_scalarfield
+
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+            points = [mesh.vertex_coordinates(key) for key in mesh]
+            centroid = centroid_points(points)
+            d = [distance_point_point(point, centroid) for point in points]
+            xy = [[points[i][0], points[i][1]] for i in range(len(points))]
+
+            plot_contours_scalarfield(xy, d)
+
+    See Also:
+
+        :func:`brg.datastructures.numerical.geometry.plot_mesh_contours`
 
     """
     xy = asarray(xy)
@@ -199,4 +214,4 @@ if __name__ == "__main__":
 
     xy = [[points[i][0], points[i][1]] for i in range(len(points))]
 
-    plot_contours_scalarfield(xy, distances, 20)
+    plot_scalarfield_contours(xy, distances, 20)

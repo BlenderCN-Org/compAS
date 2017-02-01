@@ -84,7 +84,7 @@ def subdivide_mesh_corner(mesh):
     # split every edge
     edgepoints = []
     for u, v in mesh.edges():
-        w = split_edge(mesh, u, v, allow_boundary=True)
+        w = split_edge_mesh(mesh, u, v, allow_boundary=True)
         edgepoints.append(w)
     edgepoints = set(edgepoints)
     # create 4 new faces for every old face
@@ -119,7 +119,7 @@ def subdivide_mesh_quad(mesh):
     # split every edge
     ekeys = []
     for u, v in mesh.edges():
-        w = split_edge(mesh, u, v, allow_boundary=True)
+        w = split_edge_mesh(mesh, u, v, allow_boundary=True)
         ekeys.append(w)
     # insert a vertex at the centroid of every face
     # create a new face for every vertex of the old faces
@@ -172,7 +172,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
         edgepoints = []
         for u, v in mesh.edges():
             # is_edge_naked?
-            w = split_edge(mesh, u, v, allow_boundary=True)
+            w = split_edge_mesh(mesh, u, v, allow_boundary=True)
             if u in bkeys and v in bkeys:
                 if u not in bkey_edgepoints:
                     bkey_edgepoints[u] = []
@@ -244,7 +244,7 @@ def _subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
 
     for level in range(k):
 
-        ekeys = quad_subdivision(subd)
+        ekeys = subdivide_mesh_quad(subd)
 
         key_xyz = dict((key, subd.vertex_coordinates(key)) for key in subd)
 
@@ -341,7 +341,7 @@ def subdivide_mesh_doosabin(mesh, k=1, fixed=None):
 
 def subdivide_trimesh_loop(mesh, k=1, fixed=None):
     """Subdivide a triangle mesh using the Loop algorithm.
-    
+
     Examples:
 
         >>> from brg.datastructures.mesh.mesh import Mesh
@@ -398,7 +398,7 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
             subd.vertex[key]['z'] = xyz[2]
 
         for u, v in subd.edges():
-            w = split_edge(subd, u, v)
+            w = split_edge_mesh(subd, u, v)
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w
             v1 = key_xyz[u]
@@ -432,7 +432,7 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
 
 def subdivide_quadmesh_quad(mesh, k=1):
     """Subdivide a quad mesh using the quad algorithm.
-    
+
     Examples:
 
         >>> from brg.datastructures.mesh.quad import QuadMesh

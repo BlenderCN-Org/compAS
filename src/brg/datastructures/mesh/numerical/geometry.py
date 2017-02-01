@@ -52,7 +52,6 @@ def mesh_contours(mesh, N=50):
     return contours_scalarfield(xy, z, N)
 
 
-# move to utilities? plotters?
 def plot_mesh_contours(mesh, N=50):
     """Plot the contours of a mesh.
 
@@ -104,12 +103,12 @@ def plot_mesh_contours(mesh, N=50):
 
 
 def mesh_isolines(mesh, attr_name, N=50):
-    """Compute the isolines of a specified attribute of the mesh.
+    """Compute the isolines of a specified attribute of the vertices of a mesh.
 
     Parameters:
-        mesh
-        attr_name
-        N
+        mesh (:class:`brg.datastructures.mesh.Mesh`): A mesh object.
+        attr_name (str): The name of the vertex attribute.
+        N (int): Optional. The density of the isolines. Default is ``50``.
 
     Returns:
         tuple: A tuple of a list of levels and a list of isolines.
@@ -117,11 +116,8 @@ def mesh_isolines(mesh, attr_name, N=50):
         The list of levels contains the z-values at each of the isolines.
         Each isoline is a list of paths, and each path is a list polygons.
 
-    Examples:
-        >>>
-
     See Also:
-        :func:`brg.numerical.geometry.isolines_scalarfield`
+        :func:`brg.numerical.geometry.contours_scalarfield`
 
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]
@@ -130,6 +126,52 @@ def mesh_isolines(mesh, attr_name, N=50):
 
 
 def plot_mesh_isolines(mesh, attr_name, N=50):
+    """Plot the isolines of a vertex attribute of the mesh.
+
+    Parameters:
+        mesh (:class:`brg.datastructures.mesh.Mesh`): A mesh object.
+        attr_name (str): The name of the vertex attribute.
+        N (int): Optional. The density of the isolines. Default is ``50``.
+
+    Examples:
+
+        .. code-block:: python
+
+            import brg
+            from brg.datastructures.mesh import Mesh
+            from brg.geometry import centroid_points
+            from brg.geometry import distance_point_point
+            from brg.datastructures.mesh.numerical import plot_mesh_isolines
+
+            points = [mesh.vertex_coordinates(key) for key in mesh]
+            centroid = centroid_points(points)
+
+            for key, attr in mesh.vertices_iter(True):
+                xyz = mesh.vertex_coordinates(key)
+                attr['d'] = distance_point_point(xyz, centroid)
+
+            plot_mesh_isolines(mesh, 'd')
+
+
+        .. plot::
+
+            import brg
+            from brg.datastructures.mesh import Mesh
+            from brg.geometry import centroid_points
+            from brg.geometry import distance_point_point
+            from brg.datastructures.mesh.numerical import plot_mesh_isolines
+            points = [mesh.vertex_coordinates(key) for key in mesh]
+            centroid = centroid_points(points)
+            for key, attr in mesh.vertices_iter(True):
+                xyz = mesh.vertex_coordinates(key)
+                attr['d'] = distance_point_point(xyz, centroid)
+            plot_mesh_isolines(mesh, 'd')
+
+
+    See Also:
+        :func:`brg.numerical.geometry.plot_contours_scalarfield`
+
+    """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]
     s = [mesh.vertex[key][attr_name] for key in mesh]
     plot_contours_scalarfield(xy, s, N)
@@ -145,8 +187,6 @@ if __name__ == "__main__":
 
     import brg
     from brg.datastructures.mesh import Mesh
-    from brg.geometry import centroid_points
-    from brg.geometry import distance_point_point
 
     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
@@ -157,14 +197,3 @@ if __name__ == "__main__":
             mesh[key]['z'] = float(randint(0, 5))
 
     plot_mesh_contours(mesh, N=50)
-
-    # points = [mesh.vertex_coordinates(key) for key in mesh]
-    # centroid = centroid_points(points)
-
-    # for key, attr in mesh.vertices_iter(True):
-    #     xyz = mesh.vertex_coordinates(key)
-    #     attr['d'] = distance_point_point(xyz, centroid)
-
-    # mesh.plot()
-
-    # plot_mesh_isolines(mesh, 'd')
