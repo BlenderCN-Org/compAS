@@ -55,7 +55,7 @@ class GA_VIS:
         xtics: int
             The number of tics in the x axis or vertical lines in the visualization. 
         """
-        self.boundaries = {}
+        #self.boundaries = {}
         self.color_dict = {0:'r',1:'y',2:'g',3:'c',4:'b',5:'k'}
         self.conversion_function = None
         self.generation = 0
@@ -65,7 +65,7 @@ class GA_VIS:
         self.lable_size = 15
         self.num_gen = 0
         self.num_pop = 0
-        self.num_var = 0
+        #self.num_var = 0
         self.number_size = 15
         self.output_path = ''
         self.pop   = {'binary':{},'decoded':{},'scaled':{},
@@ -81,9 +81,9 @@ class GA_VIS:
         with open(self.input_path+filename, 'rb') as fh:
             ga = json.load(fh)
         
-        self.num_var        = ga['num_var']
+        #self.num_var        = ga['num_var']
         self.num_pop        = ga['num_pop']
-        self.boundaries     = ga['boundaries']
+        #self.boundaries     = ga['boundaries']
         self.fit_name       = ga['fit_name']
         self.min_fit        = ga['min_fit']
         self.fit_type       = ga['fit_type']

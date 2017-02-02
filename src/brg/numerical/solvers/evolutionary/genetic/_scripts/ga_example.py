@@ -1,5 +1,5 @@
 import os                      
-from brg_ga.algorithms.ga import GA
+from brg.numerical.solvers.evolutionary.genetic.algorithms.ga import GA
 
 __author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
@@ -45,7 +45,7 @@ int_data = []
 GA.fit_function = foo
 
 GA.num_fit_func = len(GA.fit_name)
-GA.output_path = 'C:/Users/mtomas/workspaces/brg_ga/_scripts/out/'
+GA.output_path = 'out/'
 GA.input_path = GA.output_path
 if not os.path.exists(GA.output_path):
     os.makedirs(GA.output_path)
@@ -56,4 +56,12 @@ print 'GA.best_individual_index',GA.best_individual_index
 print 'best fit value',GA.current_pop['fit_value'][GA.best_individual_index]
 print 'best individual',GA.current_pop['decoded'][GA.best_individual_index]
 
+from brg.numerical.solvers.evolutionary.genetic.visualization.ga_visualization import GA_VIS
+vis = GA_VIS()
+vis.input_path = GA.output_path
+vis.output_path = vis.input_path 
+filename = GA.fit_name+'.json'
+vis.conversion_function = None
+vis.start_from_gen = 0
 
+vis.draw_ga_evolution(filename)

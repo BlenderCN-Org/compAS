@@ -1,8 +1,5 @@
-import os,sys                      
-main_dir = os.path.dirname(__file__)
-ga_path = main_dir
-sys.path.append(ga_path)
-from moga import MOGA
+import os,sys
+from brg.numerical.solvers.evolutionary.genetic.algorithms.moga import MOGA
 
 __author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
@@ -40,7 +37,7 @@ for name in GA.fit_names:
     GA.fit_functions.append(fit.fitness)
 
 GA.num_fit_func = len(GA.fit_names)
-GA.output_path = main_dir + '/out/'
+GA.output_path =  '/out/'
 if not os.path.exists(GA.output_path):
     os.makedirs(GA.output_path)
 
@@ -54,27 +51,23 @@ for j in range(len(t_list)):
 
 #GA.create_fixed_start_pop(scaled=scaled, binary=None)
 
-
-
 GA.moga()
 
+from brg.numerical.solvers.evolutionary.genetic.visualization.multi_objective_vis import MULTI_VIS
+vis = MULTI_VIS()
+vis.input_path = GA.output_path
 
-if __name__ == '__main__':
-    from multi_objective_vis import MULTI_VIS
-    vis = MULTI_VIS()
-    vis.input_path = 'C:/Users/mtomas/workspaces/brg_researchers/tomas.mendez/NSGA-II/out/'
-    
-    filename = ''
-    for name in GA.fit_names:
-        filename += name+'_'
-    filename +='.json'
-    #vis.generation = 1
-    vis.output_path = vis.input_path
-    #vis.scale = ((-0.05,1.05),(-0.05,1.05))
-    fit_list = ( (0,1),(1,0))
-    labels = ('A','B')
-    #vis.add_fixed_individuals(fit_list,labels)
-    vis.draw_objective_spaces(filename,number=False)
+filename = ''
+for name in GA.fit_names:
+    filename += name+'_'
+filename +='.json'
+#vis.generation = 1
+vis.output_path = vis.input_path
+#vis.scale = ((-0.05,1.05),(-0.05,1.05))
+fit_list = ( (0,1),(1,0))
+labels = ('A','B')
+#vis.add_fixed_individuals(fit_list,labels)
+vis.draw_objective_spaces(filename,number=False)
 
 
 

@@ -602,7 +602,7 @@ class MOGA:
         return binary_pop
     
     def unscale_pop(self,scaled_pop):
-    """Returns an unscaled population from a scaled one. The variable values are scaled
+        """Returns an unscaled population from a scaled one. The variable values are scaled
         from 0 to x, where x is the highest number described by the number of binary digits
         used to encode that variable. For example, if ``GA.num_bin_dig`` for a variable is 8, that 
         variable will be scaled back from its bounds to its corresponding value from 0 to 255. 
@@ -616,7 +616,7 @@ class MOGA:
         -------
         unscaled_pop: dict
             The unscaled population dictionary. 
-    """
+        """
         unscaled_pop = {}
         for i in range(len(scaled_pop)):
             unscaled_pop[i] = {}
