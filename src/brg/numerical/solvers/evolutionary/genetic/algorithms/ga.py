@@ -498,7 +498,7 @@ class GA:
         generation: int
             The generation number. 
         """
-        filename  = 'generation '+ "%03d" % generation + '_population'+ ".pop"
+        filename  = 'generation '+ "%04d" % generation + '_population'+ ".pop"
         pf_file  = open(self.output_path +(str(filename)), "wb")
         pf_file.write('Generation \n' )
         pf_file.write(str(generation)+'\n')
@@ -612,7 +612,7 @@ class GA:
         """
         file_pop  = {'binary':{},'decoded':{},'scaled':{},'fit_value':{},
                      'pf':{}}
-        filename  = 'generation '+ "%03d" % gen + '_population'+ ".pop"
+        filename  = 'generation '+ "%04d" % gen + '_population'+ ".pop"
         filename = self.input_path+filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
