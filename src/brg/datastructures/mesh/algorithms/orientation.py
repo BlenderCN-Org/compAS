@@ -1,4 +1,4 @@
-from brg.datastructures.tree.algorithms import bfs
+from brg.datastructures.network.algorithms import network_bfs
 
 
 __author__     = 'Tom Van Mele'
@@ -38,7 +38,7 @@ def unify_cycles_mesh(mesh, root=None):
         root = mesh.face.iterkeys().next()
     # pass unify as callback function
     # what about the return value?
-    bfs(mesh.face_adjacency(), root, unify)
+    network_bfs(mesh.face_adjacency(), root, unify)
     mesh.halfedge = dict((key, {}) for key in mesh.vertices_iter())
     for fkey, face in mesh.face.iteritems():
         for u, v in face.iteritems():
@@ -75,5 +75,8 @@ if __name__ == "__main__":
     mesh = Mesh.from_obj(brg.get_data('faces_big.obj'))
 
     unify_cycles_mesh(mesh)
+
+    # run_profile(unify_mesh_cycles)(mesh)
+    # profiled(unify_mesh_cycles)(mesh)
 
     print mesh

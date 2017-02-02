@@ -12,7 +12,7 @@ from brg.geometry import area_polygon
 
 from brg.utilities import geometric_key
 
-from brg.datastructures.tree.algorithms import bfs
+from brg.datastructures.network.algorithms import network_bfs
 
 
 __author__     = 'Tom Van Mele'
@@ -535,7 +535,7 @@ name: {0}
                 adj[fkey].append(nkey)
         return adj
 
-    def face_tree(self, root, algo=bfs):
+    def face_tree(self, root, algo=network_bfs):
         adj = self.face_adjacency()
         tree = algo(root, adj)
         return tree

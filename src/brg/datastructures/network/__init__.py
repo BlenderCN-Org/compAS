@@ -69,6 +69,17 @@ algorithms
     smooth_network_length
     smooth_network_angle
 
+.. autosummary::
+    :toctree: generated/
+
+    network_dfs
+    network_bfs
+    network_dfs_paths
+    network_bfs_paths
+    network_shortest_path
+    network_dijkstra_distances
+    network_shortest_path_dijkstra
+
 
 numerical
 =========

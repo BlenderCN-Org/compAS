@@ -55,10 +55,6 @@ algorithms
 
     planarize_mesh
     circularize_mesh
-    mesh_contours
-    mesh_isolines
-    mesh_gradient
-    mesh_curvature
 
 .. autosummary::
     :toctree: generated/

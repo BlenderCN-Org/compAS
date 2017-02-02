@@ -9,7 +9,7 @@
   </extend_rhino_menus>
   <menus />
   <tool_bar_groups>
-    <tool_bar_group guid="c877b986-7a1c-478b-97e6-932c9cf96603" dock_bar_guid32="00000000-0000-0000-0000-000000000000" dock_bar_guid64="983521cf-55b0-4fe5-8b85-e9f98e8faaf2" active_tool_bar_group="543161c5-5175-46cd-b912-455b47648e1e" single_file="False" hide_single_tab="False" point_floating="88,152">
+    <tool_bar_group guid="c877b986-7a1c-478b-97e6-932c9cf96603" dock_bar_guid32="00000000-0000-0000-0000-000000000000" dock_bar_guid64="bb25877d-738b-4635-a5e8-73b14c6110dd" active_tool_bar_group="543161c5-5175-46cd-b912-455b47648e1e" single_file="False" hide_single_tab="False" point_floating="88,152">
       <text>
         <locale_1033>Toolbar group</locale_1033>
       </text>

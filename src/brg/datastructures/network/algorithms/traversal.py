@@ -13,7 +13,9 @@ __all__ = [
     'network_bfs2',
     'network_dfs_paths',
     'network_bfs_paths',
-    'network_shortest_path'
+    'network_shortest_path',
+    'network_dijkstra_distances',
+    'network_shortest_path_dijkstra'
 ]
 
 
@@ -233,20 +235,126 @@ def network_shortest_path(adjacency, root, goal):
         return None
 
 
-def network_shortest_path_dijkstra(adjacency, weight, goal):
-    """"""
+# ==============================================================================
+# dijkstra
+# ==============================================================================
+
+
+def network_dijkstra_distances(adjacency, weight, target):
+    """Compute Dijkstra distances to a specific vertex of a network to every other
+    vertex of the network.
+
+    Parameters:
+        adjacency (dict): An adjacency dictionary. Each key represents a vertex
+            and maps to a list of neighbouring vertex keys.
+        weight (dict): A dictionary of edge weights.
+        target (str): The key of the vertex to which the distances are computed.
+
+    Returns:
+        dict: A dictionary of distances from every vertex in the network.
+
+    Examples:
+        >>>
+
+    Notes:
+        ...
+
+    """
     adjacency = dict((key, set(nbrs)) for key, nbrs in adjacency.items())
-    dist = dict((key, 0 if key == goal else 1e17) for key in adjacency)
-    visited = set()
+    dist = dict((key, 0 if key == target else 1e17) for key in adjacency)
     tovisit = set(adjacency.keys())
+    visited = set()
     while tovisit:
-        node = min(tovisit, key=lambda k: dist[k])
-        visited.add(node)
-        tovisit.remove(node)
-        for nbr in adjacency[node]:
-            if dist[nbr] > dist[node] + weight[(node, nbr)]:
-                dist[nbr] = dist[node] + weight[(node, nbr)]
+        u = min(tovisit, key=lambda k: dist[k])
+        tovisit.remove(u)
+        visited.add(u)
+        for v in adjacency[u] - visited:
+            d_uuv = dist[u] + weight[(u, v)]
+            if d_uuv < dist[v]:
+                dist[v] = d_uuv
     return dist
+
+
+def network_shortest_path_dijkstra(adjacency, weight, source, target):
+    """Find the shortest path between two vertices if the edge weights are not
+    all one.
+
+    Parameters:
+        adjacency (dict): An adjacency dictionary. Each key represents a vertex
+            and maps to a list of neighbouring vertex keys.
+        weight (dict): A dictionary of edge weights.
+        source (str): The start vertex.
+        target (str): The end vertex.
+
+    Returns:
+        list: The shortest path.
+
+    Note:
+        The edge weights should all be positive.
+        For a directed graph, set the weights of the reversed edges to ``+inf``.
+        For an undirected graph, add the same weight for an edge in both directions.
+
+    Examples:
+        >>> import brg
+        >>> from brg.datastructures.network import Network
+        >>> network = Network.from_obj(brg.get_data('lines.obj'))
+        >>> weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges_iter())
+        >>> weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+        >>> path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
+        >>> print path
+        ['0', '30', '11', '15', '26']
+
+        .. code-block:: python
+
+            edges = []
+            for i in range(len(path) - 1):
+                u = path[i]
+                v = path[i + 1]
+                if v not in network.edge[u]:
+                    u, v = v, u
+                edges.append([u, v])
+
+            network.plot(
+                vlabel={key: key for key in network},
+                vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
+                vsize=0.15,
+                ecolor={(u, v): (255, 0, 0) for u, v in edges},
+                ewidth={(u, v): 2.0 for u, v in edges}
+            )
+
+
+        .. plot::
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import network_shortest_path_dijkstra
+            network = Network.from_obj(brg.get_data('lines.obj'))
+            weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
+            weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+            path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
+            edges = []
+            for i in range(len(path) - 1):
+                u = path[i]
+                v = path[i + 1]
+                if v not in network.edge[u]:
+                    u, v = v, u
+                edges.append([u, v])
+            network.plot(
+                vlabel={key: key for key in network},
+                vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
+                vsize=0.15,
+                ecolor={(u, v): (255, 0, 0) for u, v in edges},
+                ewidth={(u, v): 2.0 for u, v in edges}
+            )
+
+    """
+    dist = network_dijkstra_distances(adjacency, weight, target)
+    path = [source]
+    node = source
+    while node != target:
+        node = min(adjacency[node], key=lambda k: dist[k])
+        path.append(node)
+    return path
 
 
 # ==============================================================================
@@ -260,58 +368,14 @@ if __name__ == '__main__':
 
     network = Network.from_obj(brg.get_data('lines.obj'))
 
-    # tree = network_dfs_tree(network.adjacency, '0')
-
-    # # start with the longest path
-    # # remove all keys from the dictionary that are in this path
-
-    # longest = sorted(tree.items(), key=lambda item: len(item[1]))
-
-    # for node, path in longest:
-    #     print node, path
-
-    # spine = {}
-    # for i, key in enumerate(longest[-1][1]):
-    #     spine[key] = i
-
-    # for key in spine:
-    #     try:
-    #         del tree[key]
-    #     except KeyError:
-    #         pass
-
-    # print
-
-    # for node, path in tree.items():
-    #     print node, path
-
-    # # while longest:
-    # #     node, path = longest.pop()
-    # #     if node in tree:
-    # #         print node, path
-    # #         for key in path:
-    # #             try:
-    # #                 del tree[key]
-    # #             except KeyError:
-    # #                 pass
-
-    # edges = []
-    # for i in range(len(longest[-1][1]) - 1):
-    #     u = longest[-1][1][i]
-    #     v = longest[-1][1][i + 1]
-    #     if v not in network.edge[u]:
-    #         u, v = v, u
-    #     edges.append([u, v])
-
-    path = network_shortest_path(network.adjacency, '0', '26')
+    # path = network_shortest_path(network.adjacency, '0', '26')
 
     weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
     weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-    dist = network_shortest_path_dijkstra(network.adjacency, weight, '0')
+    path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
 
-    for key, d in dist.items():
-        print key, d
+    print path
 
     edges = []
     for i in range(len(path) - 1):
