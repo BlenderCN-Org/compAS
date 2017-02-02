@@ -90,7 +90,7 @@ def xecute(funcname, basedir, *args, **kwargs):
         line = line.strip()
         lines.append(line)
         if mode:
-            print line
+            print(line)
     _, stderr = process.communicate()
     if stderr:
         raise Exception(stderr)
@@ -133,4 +133,4 @@ if __name__ == '__main__':
     res = xfunc('brg.datastructures.geometric_key', [0.1, 0.001, 0.3])
 
     for r in res:
-        print r
+        print(r)

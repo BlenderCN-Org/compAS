@@ -1,6 +1,6 @@
 # Euler ETH cluster commands
 
-Updated: 5 Dec 16
+Updated: 2 Feb 17
 Dr. Andrew Liew : liew@arch.ethz.ch
 Block Research Group
 
@@ -20,7 +20,7 @@ Last login: Wed Nov 23 13:12:52 2016 from arch-hix-dock-449.ethz.ch
 ```bash
 $ scp file.ext liewa@euler.ethz.ch:
 liewa@euler.ethz.ch's password: 
-file.ext                                      100%    400     150.0KB/s   00:01    
+file.ext                                      100%    400     150.0KB/s   00:01
 $ 
 ```
 
@@ -29,7 +29,7 @@ $
 ```bash
 $ scp liewa@euler.ethz.ch:file.ext file.ext
 liewa@euler.ethz.ch's password: 
-file.ext                                      100%    400     150.0KB/s   00:01    
+file.ext                                      100%    400     150.0KB/s   00:01
 $ 
 ```
 
@@ -122,14 +122,14 @@ purgatory         1  Open:Inact        -    -    -    -    24    24     0     0
 ### Set multithreading environment variable
 
 ```bash
-[liewa@euler07 ~]$ OMP_NUM_THREADS=48
+[liewa@euler07 ~]$ OMP_NUM_THREADS=24
 [liewa@euler07 ~]$ 
 ```
 
 ### Submit job
 
 ```bash
-[liewa@euler07 ~]$ bsub -W 1:30 -n 48 -o results.txt python script.py
+[liewa@euler07 ~]$ bsub -W 1:30 -n 24 -o results.txt python script.py
 Generic job.
 Job <33567817> is submitted to queue <normal.4h>.
 [liewa@euler07 ~]$ 
@@ -141,4 +141,26 @@ Job <33567817> is submitted to queue <normal.4h>.
 JOBID      USER    STAT  QUEUE      FROM_HOST   EXEC_HOST   JOB_NAME   SUBMIT_TIME
 33567817   liewa   PEND  normal.4h  euler07                 *script.py Dec  5 11:17
 [liewa@euler07 ~]$ 
+```
+
+### Detailed job information
+```bash
+[liewa@euler01 ~]$ bbjobs 36754805
+Job information
+  Job ID                          : 36754805
+  Status                          : PENDING
+  User                            : liewa
+  Queue                           : normal.4h
+  Command                         : python script.py
+  Working directory               : $HOME/-
+Requested resources
+  Requested cores                 : 24
+  Requested runtime               : 30 min
+  Requested memory                : 1024 MB per core, 24576 MB total
+  Requested scratch               : not specified
+  Dependency                      : -
+Job history
+  Submitted at                    : 10:33 2017-02-02
+  Queue wait time                 : 200 sec
+[liewa@euler01 ~]$ 
 ```

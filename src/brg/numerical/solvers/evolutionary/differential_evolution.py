@@ -1,4 +1,4 @@
-"""brg.numerical.solvers.differential_evolution : Differential evolution."""
+"""brg.numerical.solvers.evolutionary : Differential evolution."""
 
 from numpy import array
 from numpy import argmin
@@ -12,7 +12,7 @@ from numpy.random import rand
 from random import sample
 from functools import partial
 
-import matplotlib.pyplot as plt
+import json
 import multiprocessing
 
 
@@ -23,8 +23,8 @@ __version__    = '0.10'
 __date__       = '10.10.2016'
 
 
-def de_solver(fn, bounds, population, iterations, results=None, threads=0,
-              args=()):
+def de_solver(fn, bounds, population, iterations, results=None, threads=1,
+              F=0.8, CR=0.9, name='Differential evolution', args=()):
     """ Call the differential evolution solver.
 
     Note:
@@ -35,14 +35,16 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=0,
         bounds (list): List of tuples defining bounds for each DoF.
         population (int): Number of agents in the population.
         iterations (int): Number of cross-over cycles or steps to perform.
-        results (boolean): Store results or not.
+        results (str): Where to store results files.
         threads (int): Number of threads/processes for multiprocessing.
+        F (float): Differential evolution parameter.
+        CR (float): Differential evolution cross-over ratio parameter.
+        name (str): Name of the analysis.
         arg (seq): Sequence of optional arguments to pass to fn.
 
     Returns:
         float: Optimal value of objective function.
         array: Values that give optimum (minimised) function.
-        array: Data for plotting.
 
     Examples:
         >>> def fn(u, *args):
@@ -52,7 +54,8 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=0,
         >>>     z = (x + 2*y - 7)**2 + (2*x + y - 5)**2
         >>>     return z
         >>> bounds = [(-10, 10) for i in range(2)]
-        >>> fopt, xopt = solver(fn, bounds, population=100, iterations=150)
+        >>> fopt, xopt = solver(fn, bounds, population=100, iterations=150,
+                                threads=0)
         Iteration: 0 fopt: 9.29475634582
         Iteration: 1 fopt: 0.714845258545
         Iteration: 2 fopt: 0.714845258545
@@ -63,8 +66,8 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=0,
         >>> print(xopt)
         array([ 1.,  3.])
     """
-    F = 0.8
-    CR = 0.9
+
+    # Setup population
     k = len(bounds)
     b_ran = array([bound[1] - bound[0] for bound in bounds])[:, newaxis]
     b_min = array([bound[0] for bound in bounds])[:, newaxis]
@@ -89,11 +92,13 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=0,
     else:
         fun = fn(agents, args)
     fopt = min(fun)
-    print('Iteration: ' + str(ts) + ' fopt: ' + str(fopt))
+    print('Iteration: {0}  fopt: {1}'.format(ts, fopt))
     ac = zeros((k, population))
     bc = zeros((k, population))
     cc = zeros((k, population))
     data = zeros((iterations, population))
+
+    # Start evolution
     while ts < iterations:
         if results:
             data[ts, :] = fun
@@ -126,32 +131,43 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=0,
         ac *= 0
         bc *= 0
         cc *= 0
-        print('Iteration: ' + str(ts) + ' fopt: ' + str(fopt))
+        print('Iteration: {0}  fopt: {1}'.format(ts, fopt))
+
+        # Save generation
+        if results:
+            fnm = results + 'generation_{0:0>4}_population.pop'.format(ts - 1)
+            with open(fnm, 'w') as f:
+                f.write('Generation\n')
+                f.write('{0}\n'.format(ts - 1))
+                f.write('\n')
+                f.write('Number of individuals per generation\n')
+                f.write('{0}\n'.format(population))
+                f.write('\n')
+                f.write('Population scaled variables\n')
+                for i in range(population):
+                    entry = [str(i)] + [str(j) for j in list(agents[:, i])]
+                    f.write(', '.join(entry) + '\n')
+                f.write('\n')
+                f.write('Population fitness value\n')
+                for i in range(population):
+                    f.write('{0}, {1}\n'.format(i, fun[i]))
+                f.write('\n')
+
+    # Save parameters
     if results:
-        return fopt, xopt, data
-    else:
-        return fopt, xopt
+        parameters = {
+            'num_pop': population,
+            'fit_name': name,
+            'min_fit': None,
+            'fit_type': 'min',
+            'end_gen': ts,
+            'num_gen': iterations,
+            'start_from_gen': 0}
+        fnm = '{0}parameters.json'.format(results)
+        with open(fnm, 'w+') as fp:
+            json.dump(parameters, fp)
 
-
-def de_plot(data, ms, path):
-    """ Plot the differential evolution results.
-
-    Parameters:
-        data (array): Data array (iterations x population).
-        ms (float): Markersize of points.
-        path (str): Path to save figure.
-
-    Returns:
-        None
-    """
-    n = data.shape[0]
-    m = data.shape[1]
-    nt = tile(array(list(range(1, n + 1)))[:, newaxis], (1, m))
-    plt.plot(nt.ravel(), data.ravel(), 'o', markersize=ms)
-    plt.grid(True)
-    plt.xlabel('Evolution')
-    plt.ylabel('Function')
-    plt.savefig(path + 'data.png')
+    return fopt, xopt
 
 
 def funct(agents, args, t):
@@ -168,10 +184,8 @@ if __name__ == "__main__":
         # Booth's function, fopt=0, xopt=(1, 3)
         x = u[0]
         y = u[1]
-        z = (x + 2*y - 7)**2 + (2*x + y - 5)**2
+        z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
         return z
 
     bounds = [(-10, 10) for i in range(2)]
-    fopt, xopt, data = de_solver(fn, bounds, population=100, iterations=20,
-                              results=True, threads=1)
-    de_plot(data, 5, '/home/al/Temp/')
+    fopt, xopt = de_solver(fn, bounds, population=20, iterations=100, threads=0)

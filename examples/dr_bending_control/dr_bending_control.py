@@ -30,12 +30,13 @@ __date__       = 'Jan 28, 2017'
 layer_clear(0)
 
 # Create starting mesh from lines
-ux1 = -0.11
-ux2 = 0.45
-uy1 = -0.04
-uy2 = -0.03
-ur1 = 1.2 * pi / 2
-ur2 = 1.2 * pi / 2
+ux1 = -0.1
+ux2 = 0.3
+uz1 = 0.0
+uz2 = 0.05
+ur1 = 0.5 * pi / 2
+ur2 = 1.7 * pi / 2
+ur2 = None
 L = 1.0
 nx = 100
 n = nx + 1
@@ -44,8 +45,8 @@ x = [i * dx for i in range(nx + 1)]
 edges = [[i, i + 1] for i in range(nx)]
 vertices = [[x[i] * (ux2 - ux1) + ux1, 0, 0.2 * sin(pi * x[i] / L)] 
             for i in range(n)]
-vertices[0][2] += uy1
-vertices[-1][2] += uy2
+vertices[0][2] += uz1
+vertices[-1][2] += uz2
 
 # Boundaries
 BC = [[[0], [0, 0, 0]],
@@ -66,32 +67,34 @@ E = [[mr, 5 * 10**9]]
 A = [[mr, 0.001]]
 EIx = [5 * 10**9 * 7.955532**(-8)] * n
 EIy = [5 * 10**9 * 7.955532**(-8)] * n
+P = [[[nr], [0, 0, 1]]]
 beams = {'beam_0': {'nodes': nr, 'EIx': EIx, 'EIy': EIy}}
 l0 = [dx] * nx
 mesh = xdraw_mesh('mesh_beam', vertices=vertices, edges=edges)
 select_objects_none()
 
 # Analyse
-X = run(vertices, edges, l0, A, E, BC, beams=beams, rtype='magnitude_0.1', 
-        tol=100, refresh=100, factor=10)
-for c, i in enumerate(X):
-    bpy.data.objects['mesh_beam'].data.vertices[c].co = i
+X = run(vertices, edges, l0, A, E, BC, P=P, beams=beams, rtype='magnitude_1', 
+        tol=100, refresh=100, factor=10, bmesh=None)
+for c, Xi in enumerate(X):
+    mesh.data.vertices[c].co = Xi
 dL, L = mesh_edge_lengths(mesh) 
 print(L)
 
 # Norms
 target = get_objects_by_layer(4)[0]
-points = bezier_curve_interpolate(target, 20)
-ind = closest_points_points(points, X, distances=False)
+points = bezier_curve_interpolate(target, nx + 1)
+indices = closest_points_points(points, X, distances=False)
 lines = []
 norms = []
-for c, i in enumerate(ind):
+for c in range(nx + 1):
     start = points[c]
-    end = list(X[i, :])
+#    end = list(X[c, :])
+    end = list(X[indices[c], :])
     dU = (array(end) - array(start))
     norms.append(dU)
     lines.append({'start': start, 'end': end, 'layer': 0, 
-                 'radius': 0.002, 'color': 'white', 'name': '{0}'.format(i)})
+                 'radius': 0.001, 'color': 'white', 'name': '{0}'.format(c)})
     xdraw_lines(lines)
 print(array(norms))
 

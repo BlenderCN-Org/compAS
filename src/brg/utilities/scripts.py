@@ -127,7 +127,7 @@ class ScriptServer(object):
             if not line:
                 break
             line = line.strip()
-            print line
+            print(line)
             # check if this does what it is supposed to do
             if self.updatefunc:
                 self.updatefunc(self.updateconduit, line)
@@ -149,38 +149,38 @@ class ScriptServer(object):
         return self.data
 
     def print_error(self):
-        print '=' * 80
-        print 'Error'
-        print '-' * 80
-        print self.error
-        print
+        print('=' * 80)
+        print('Error')
+        print('-' * 80)
+        print(self.error)
+        print()
 
     def print_profile(self):
-        print '=' * 80
-        print 'Profile'
-        print '-' * 80
-        print self.profile
-        print
+        print('=' * 80)
+        print('Profile')
+        print('-' * 80)
+        print(self.profile)
+        print()
 
     def print_data(self):
-        print '=' * 80
-        print 'Data'
-        print '-' * 80
-        print self.data
-        print
+        print('=' * 80)
+        print('Data')
+        print('-' * 80)
+        print(self.data)
+        print()
 
     def print_iterations(self):
-        print '=' * 80
-        print 'Iterations'
-        print '-' * 80
-        print self.iterations
-        print
+        print('=' * 80)
+        print('Iterations')
+        print('-' * 80)
+        print(self.iterations)
+        print()
 
     def print_output(self, title=None):
         if title:
-            print '#' * 80
-            print title
-            print
+            print('#' * 80)
+            print(title)
+            print()
         self.print_error()
         self.print_data()
         self.print_iterations()
@@ -203,4 +203,4 @@ if __name__ == '__main__':
     except ScriptServerError:
         server.print_error()
     else:
-        print result
+        print(result)

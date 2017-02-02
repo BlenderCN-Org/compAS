@@ -127,7 +127,7 @@ def xecuteio(funcname, basedir, tmpdir, *args, **kwargs):
             break
         line = line.strip()
         if mode:
-            print line
+            print(line)
     _, stderr = process.communicate()
 
     if stderr:
@@ -204,6 +204,6 @@ if __name__ == '__main__':
 
     xfunc(xfname, *xfargs, **xfkwargs)
 
-    print xfunc.data
-    print xfunc.error
-    print xfunc.profile
+    print(xfunc.data)
+    print(xfunc.error)
+    print(xfunc.profile)

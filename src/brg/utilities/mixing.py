@@ -62,23 +62,23 @@ if __name__ == '__main__':
 
     # test3
     def func1(self):
-        print 'f1'
+        print('f1')
 
     def func2(self):
-        print 'f2'
+        print('f2')
 
     class B(object):
         """"""
 
         def func1(self):
-            print 'B'
+            print('B')
 
         # test4
         def meth1(self):
-            print 'B'
+            print('B')
 
         def _meth(self):
-            print 'B'
+            print('B')
 
     @mix_in_attributes((B, ), protected=True, overwrite=False)
     @mix_in_functions((func1, func2))
@@ -87,10 +87,10 @@ if __name__ == '__main__':
     class A(object):
         pass
 
-    print 'mro', inspect.getmro(A)
-    print 'comments', inspect.getcomments(A.func1)
-    print 'comments', inspect.getcomments(A.meth1)
-    print 'dir', dir(A)
+    print('mro', inspect.getmro(A))
+    print('comments', inspect.getcomments(A.func1))
+    print('comments', inspect.getcomments(A.meth1))
+    print('dir', dir(A))
 
     a = A()
     a.func1()
