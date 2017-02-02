@@ -98,7 +98,7 @@ class GA_VIS:
     def get_pop_from_pop_file(self):
         file_pop  = {'binary':{},'decoded':{},'scaled':{},'fit_value':{},
                      'pf':{}}
-        filename  = 'generation '+ "%04d" % self.generation + '_population'+ ".pop"
+        filename  = 'generation_'+ "%04d" % self.generation + '_population'+ ".pop"
         filename = self.input_path+filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
@@ -164,6 +164,8 @@ class GA_VIS:
                 max_list.append(max_)
                 avg_list.append(avg_)
             except:
+                if self.generation == 0:
+                    raise ValueError('population files not found')
                 self.num_gen = self.generation-1
                 print 'generation ',self.generation,' pop file not found'
                 print 'results plotted until generation ',self.generation -1
