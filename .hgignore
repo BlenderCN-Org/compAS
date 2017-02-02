@@ -2,6 +2,7 @@ syntax: glob
 
 .project
 .pydevproject
+.settings
 
 *.orig
 *.3dmbak
@@ -14,14 +15,12 @@ __temp
 
 data
 
-docs
-docs2
-docs3
+docs/build
+docs/source/pages/reference
 
 libs/**
 
 threejs/**
+
 syntax: regexp
 ^examples/objects_to_mesh_in_rhino/toolbar\.rui$
-syntax: regexp
-^\.settings/org\.eclipse\.core\.resources\.prefs$
