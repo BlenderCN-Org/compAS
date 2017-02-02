@@ -26,4 +26,3 @@ Package for the integration of the framework in the Rhino CAD modeling environme
     brg_rhino.utilities
 
 """
-

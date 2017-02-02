@@ -30,7 +30,32 @@ class OBJ(object):
 
 
 class OBJReader(object):
-    """"""
+    """Read the contents of an *obj* file.
+
+    Parameters:
+        filepath (str): Path to the file.
+        remote (bool): Optional. Is the file on a remote location? Default is ``False``.
+
+    Attributes:
+        filepath (str): Path to the file.
+        remote (bool): Is the file on a remote location.
+        content (iter): The contents of the file, line by line.
+        vertices (list): Vertex coordinates.
+        weights (list): Vertex weights.
+        textures (list): Vertex textures.
+        normals (list): Vertex normals.
+        points (list): Point objects, referencing the list of vertices.
+        lines (list): Line objects, referencing the list of vertices.
+        faces (list): Face objects, referencing the list of vertices.
+        curves (list): Curves
+        curves2 (list): Curves
+        surfaces (list): Surfaces
+
+    References:
+        http://paulbourke.net/dataformats/obj/
+
+    """
+
     def __init__(self, filepath, remote=False):
         self.filepath = filepath
         self.remote = remote
@@ -94,6 +119,25 @@ class OBJReader(object):
         pass
 
     def read(self):
+        """Read the contents of the file, line by line.
+
+        Every line is split into a *head* and a *tail*.
+        The *head* determines the meaning of the data found in *tail*.
+
+        * ``#``: comment
+        * ``v``: vertex coordinates
+        * ``vt``: vertex texture
+        * ``vn``: vertex normal
+        * ``vp``: parameter vertex
+        * ``p``: point
+        * ``l``: line
+        * ``f``: face
+        * ``deg``: freeform attribute *degree*
+        * ``bmat``: freeform attribute *basis matrix*
+        * ``step``: freeform attribute *step size*
+        * ``cstype``: freeform attribute *curve or surface type*
+
+        """
         if not self.content:
             return
         for line in self.content:
@@ -134,9 +178,20 @@ class OBJReader(object):
                 continue
 
     def _read_comment(self, data):
+        """Read a comment.
+
+        Comments start with ``#``.
+        """
         pass
 
     def _read_vertex_coordinates(self, data):
+        """Read the coordinates of a vertex.
+
+        Two types of formats are possible:
+
+        * x y z
+        * x y z w
+        """
         if len(data) == 3:
             self.vertices.append([float(x) for x in data])
             self.weights.append(1.0)
@@ -170,7 +225,12 @@ class OBJReader(object):
         if name == 'f':
             if len(data) < 3:
                 return
-            self.faces.append([int(i) - 1 for i in data])
+            face = []
+            for d in data:
+                parts = d.split('/')
+                i = int(parts[0]) - 1
+                face.append(i)
+            self.faces.append(face)
             if self.group:
                 self.groups[self.group].append(('f', len(self.faces) - 1))
             return
@@ -248,7 +308,7 @@ class OBJParser(object):
         index_to_index = dict((index, key_to_index[key]) for index, key in index_to_key.iteritems())
         self.vertices = [xyz for xyz in vertex.itervalues()]
         self.points = [index_to_index[index] for index in self.reader.points]
-        self.lines = [(index_to_index[line[0]], index_to_index[line[1]]) for line in self.reader.lines if len(line) == 2]
+        self.lines = [[index_to_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
         self.polylines = [[index_to_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
         self.faces = [[index_to_index[index] for index in face] for face in self.reader.faces]
         self.groups = self.reader.groups
@@ -277,9 +337,12 @@ class OBJWriter(object):
 # ==============================================================================
 
 if __name__ == '__main__':
-    sample = 'http://block.arch.ethz.ch/labs/samples/saddle.obj'
 
-    obj = OBJ(sample, remote=True)
+    import brg
+
+    obj = OBJ(brg.get_data('faces.obj'))
+
     print(obj.parser.vertices)
     print(obj.parser.lines)
     print(obj.parser.points)
+    print(obj.parser.faces)

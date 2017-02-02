@@ -179,7 +179,7 @@ def plot_scalarfield_contours(xy, s, N=50):
 
     See Also:
 
-        :func:`brg.datastructures.numerical.geometry.plot_mesh_contours`
+        :func:`brg.datastructures.mesh.numerical.geometry.plot_mesh_contours`
 
     """
     xy = asarray(xy)

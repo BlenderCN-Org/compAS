@@ -9,7 +9,15 @@ class DXF(object):
 
 
 class DXFReader(object):
-    pass
+    """"""
+
+    def __init__(self, filepath):
+        self.filepath = filepath
+
+    def read(self):
+        with open(self.filepath, 'rb') as fp:
+            for line in fp:
+                print line.strip()
 
 
 class DXFParser(object):

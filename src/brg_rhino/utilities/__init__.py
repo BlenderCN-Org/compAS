@@ -19,8 +19,6 @@ document
 
 :mod:`brg_rhino.utilities.document`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -36,8 +34,6 @@ layers
 .. currentmodule:: brg_rhino.utilities.layers
 
 :mod:`brg_rhino.utilities.layers`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -67,52 +63,26 @@ objects
     selection.
 
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
     get_objects
-
-.. autosummary::
-    :toctree: generated/
-
     get_object_names
     get_object_attributes
     get_object_attributes_from_name
-
-.. autosummary::
-    :toctree: generated/
-
     delete_object
     delete_objects
-    
-.. autosummary::
-    :toctree: generated/
-
     purge_object
     purge_objects
-
-.. autosummary::
-    :toctree: generated/
-
     get_points
     get_curves
     get_lines
     get_polylines
     get_polygons
-
-.. autosummary::
-    :toctree: generated/
-
     get_point_coordinates
     get_line_coordinates
     get_polyline_coordinates
     get_polygon_coordinates
-
-.. autosummary::
-    :toctree: generated/
-
     get_meshes
     get_mesh_face_vertices
     get_mesh_vertex_coordinates
@@ -122,10 +92,6 @@ objects
     get_mesh_vertex_index
     get_mesh_face_index
     get_mesh_edge_index
-
-.. autosummary::
-    :toctree: generated/
-
     select_point
     select_points
     select_curve
@@ -140,10 +106,6 @@ objects
     select_surfaces
     select_mesh
     select_meshes
-
-.. autosummary::
-    :toctree: generated/
-
     is_curve_line
     is_curve_polyline
     is_curve_polygon
@@ -155,8 +117,6 @@ scripts
 .. currentmodule:: brg_rhino.utilities.scripts
 
 :mod:`brg_rhino.utilities.scripts`
-
-.. rubric:: Classes
 
 .. autosummary::
     :toctree: generated/
@@ -170,8 +130,6 @@ misc
 .. currentmodule:: brg_rhino.utilities.misc
 
 :mod:`brg_rhino.utilities.misc`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
@@ -199,11 +157,9 @@ drawing
 
 :mod:`brg_rhino.utilities.drawing`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
-    
+
     xdraw_labels
     xdraw_points
     xdraw_lines

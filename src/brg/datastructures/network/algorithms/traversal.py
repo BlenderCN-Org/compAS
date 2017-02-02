@@ -295,16 +295,20 @@ def network_shortest_path_dijkstra(adjacency, weight, source, target):
         For an undirected graph, add the same weight for an edge in both directions.
 
     Examples:
-        >>> import brg
-        >>> from brg.datastructures.network import Network
-        >>> network = Network.from_obj(brg.get_data('lines.obj'))
-        >>> weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges_iter())
-        >>> weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-        >>> path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
-        >>> print path
-        ['0', '30', '11', '15', '26']
 
         .. code-block:: python
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import network_shortest_path_dijkstra
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges_iter())
+            weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+
+            path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
+            print path  # ['0', '30', '11', '15', '26']
 
             edges = []
             for i in range(len(path) - 1):

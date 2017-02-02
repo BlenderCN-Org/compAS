@@ -23,8 +23,6 @@ linalg
 
 :mod:`brg_rhino.numerical.linalg`
 
-.. rubric:: Functions
-
 .. autosummary::
     :toctree: generated/
 
@@ -35,8 +33,6 @@ matrices
 .. currentmodule:: brg_rhino.numerical.matrices
 
 :mod:`brg_rhino.numerical.matrices`
-
-.. rubric:: Functions
 
 .. autosummary::
     :toctree: generated/
