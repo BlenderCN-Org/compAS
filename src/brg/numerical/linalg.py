@@ -47,7 +47,7 @@ old_settings = seterr(all='ignore')
 
 
 def nullspace(A, tol=0.001):
-    """Calculates the nullspace of the input matrix A.
+    r"""Calculates the nullspace of the input matrix A.
 
     Parameters:
         A (array, list): Matrix A represented as an array or list.
@@ -80,7 +80,7 @@ def nullspace(A, tol=0.001):
 
 
 def rank(A, tol=0.001):
-    """Calculates the rank of the input matrix A.
+    r"""Calculates the rank of the input matrix A.
 
     Parameters:
         A (array, list): Matrix A represented as an array or list.
@@ -105,7 +105,7 @@ def rank(A, tol=0.001):
 
 
 def dof(A, tol=0.001, condition=False):
-    """Returns the degrees-of-freedom of the input matrix A.
+    r"""Returns the degrees-of-freedom of the input matrix A.
 
     Parameters:
         A (array, list): Matrix A represented as an array or list.
@@ -135,7 +135,7 @@ def dof(A, tol=0.001, condition=False):
 
 
 def pivots(U):
-    """Identify the pivots of input matrix U.
+    r"""Identify the pivots of input matrix U.
 
     Parameters:
         U (array, list): Matrix U represented as an array or list.
@@ -161,7 +161,7 @@ def pivots(U):
 
 
 def nonpivots(U):
-    """Identify the non-pivots of input matrix U.
+    r"""Identify the non-pivots of input matrix U.
 
     Parameters:
         U (array, list): Matrix U represented as an array or list.
@@ -183,7 +183,7 @@ def nonpivots(U):
 
 
 def rref(A, algo='qr', tol=None, **kwargs):
-    """Reduced row-echelon form of matrix A.
+    r"""Reduced row-echelon form of matrix A.
 
     Parameters:
         A (array, list): Matrix A represented as an array or list.

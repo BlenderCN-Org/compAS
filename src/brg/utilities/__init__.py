@@ -118,7 +118,7 @@ xfunc
 
 .. autosummary::
     :toctree: generated/
-    
+
     XFunc
 
 
@@ -131,7 +131,7 @@ xfuncio
 
 .. autosummary::
     :toctree: generated/
-    
+
     XFuncIO
 
 

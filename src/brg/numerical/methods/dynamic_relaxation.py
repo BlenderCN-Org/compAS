@@ -8,7 +8,6 @@ from numpy import isinf
 from numpy import mean
 from numpy import newaxis
 from numpy import ones
-from numpy import sqrt
 from numpy import sin
 from numpy import sum
 from numpy import tile
@@ -22,8 +21,6 @@ from brg.numerical.geometry import lengths
 from brg.numerical.matrices import connectivity_matrix
 from brg.numerical.matrices import mass_matrix
 from brg.numerical.linalg import normrow
-
-from time import time
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
@@ -395,9 +392,6 @@ if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
 
-    from brg.datastructures.network.utilities.drawing import draw_network
-
-
     dva = {
         'is_fixed': False,
         'x': 0.0,
@@ -481,4 +475,4 @@ if __name__ == "__main__":
         attr['y'] = xyz[index][1]
         attr['z'] = xyz[index][2]
 
-    draw_network(network)
+    network.plot()

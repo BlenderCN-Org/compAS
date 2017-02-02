@@ -41,16 +41,8 @@ algorithms
     :toctree: generated/
 
     network_vertex_coloring
-
-.. autosummary::
-    :toctree: generated/
-
     construct_dual_network
     find_network_faces
-
-.. autosummary::
-    :toctree: generated/
-
     is_network_crossed
     are_network_edges_crossed
     count_network_crossings
@@ -58,20 +50,12 @@ algorithms
     is_network_planar
     is_network_planar_embedding
     embed_network_in_plane
-
-.. autosummary::
-    :toctree: generated/
-
     smooth_network_mixed
     smooth_network_centroid
     smooth_network_area
     smooth_network_mass
     smooth_network_length
     smooth_network_angle
-
-.. autosummary::
-    :toctree: generated/
-
     network_dfs
     network_bfs
     network_dfs_paths

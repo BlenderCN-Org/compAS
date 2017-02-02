@@ -1,7 +1,4 @@
-from numpy import array
-from numpy import float32
-from numpy import float64
-from numpy import complex64
+import numpy as np
 
 try:
     import pycuda
@@ -25,7 +22,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'cuda_diag', 'cuda_eye', 'cuda_get', 'cuda_give', 'cuda_ones', 'cuda_random', 
+    'cuda_diag', 'cuda_eye', 'cuda_get', 'cuda_give', 'cuda_ones', 'cuda_random',
     'cuda_real', 'cuda_reshape', 'cuda_flatten', 'cuda_tile', 'cuda_zeros',
 ]
 
@@ -74,9 +71,9 @@ def cuda_eye(n, bit=64):
         pycuda.gpuarray.GPUArray
     """
     if bit == 32:
-        a = skcuda.linalg.eye(n, dtype=float32)
+        a = skcuda.linalg.eye(n, dtype=np.float32)
     elif bit == 64:
-        a = skcuda.linalg.eye(n, dtype=float64)
+        a = skcuda.linalg.eye(n, dtype=np.float64)
     return a
 
 
@@ -128,15 +125,15 @@ def cuda_give(a, bit=64, type='real'):
     """
     if type == 'real':
         if bit == 32:
-            b = pycuda.gpuarray.to_gpu(array(a).astype(float32))
+            b = pycuda.gpuarray.to_gpu(np.array(a).astype(np.float32))
         elif bit == 64:
-            b = pycuda.gpuarray.to_gpu(array(a).astype(float64))
+            b = pycuda.gpuarray.to_gpu(np.array(a).astype(np.float64))
     elif type == 'complex':
         if bit == 32:
             raise NotImplementedError
             # b = pycuda.gpuarray.to_gpu(array(a).astype(complex32))
         elif bit == 64:
-            b = pycuda.gpuarray.to_gpu(array(a).astype(complex64))
+            b = pycuda.gpuarray.to_gpu(np.array(a).astype(np.complex64))
     return b
 
 
@@ -159,10 +156,11 @@ def cuda_ones(shape, bit=64):
         pycuda.gpuarray.GPUArray
     """
     if bit == 32:
-        a = skcuda.misc.ones(shape, float32)
+        a = skcuda.misc.ones(shape, np.float32)
     if bit == 64:
-        a = skcuda.misc.ones(shape, float64)
+        a = skcuda.misc.ones(shape, np.float64)
     return a
+
 
 def cuda_random(shape, bit=64):
     """ Create random values in the range [0, 1] as GPUArray.
@@ -182,19 +180,23 @@ def cuda_random(shape, bit=64):
 
     """
     if bit == 32:
-        a = pycuda.curandom.rand(shape, dtype=float32)
+        a = pycuda.curandom.rand(shape, dtype=np.float32)
     if bit == 64:
-        a = pycuda.curandom.rand(shape, dtype=float64)
+        a = pycuda.curandom.rand(shape, dtype=np.float64)
     return a
+
 
 def cuda_real(a):
     return a.real
 
-def cuda_reshape(a,shape):
+
+def cuda_reshape(a, shape):
     return a.reshape(shape)
+
 
 def cuda_flatten(a):
     return a.ravel()
+
 
 def cuda_tile(a, shape):
     """ Horizontally and vertically tile a GPUArray.
@@ -221,10 +223,10 @@ def cuda_tile(a, shape):
     """
     m = a.shape[0]
     n = a.shape[1]
-    b = zeros((m * shape[0], n))
+    b = cuda_zeros((m * shape[0], n))
     for i in range(shape[0]):
         b[i * m:i * m + m, :] = a
-    c = zeros((m * shape[0], n * shape[1]))
+    c = cuda_zeros((m * shape[0], n * shape[1]))
     for i in range(shape[1]):
         c[:, i * n:i * n + n] = b
     return c

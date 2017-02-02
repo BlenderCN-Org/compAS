@@ -13,7 +13,7 @@ Windows forms for ...
 
 .. autosummary::
     :toctree: generated/
-    
+
     AttributesForm
     BrowserForm
     ChartForm

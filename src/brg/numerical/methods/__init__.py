@@ -25,22 +25,6 @@ dynamic_relaxation
     dr
 
 
-dr_functions
-============
-
-.. currentmodule:: brg.numerical.methods.dr_functions
-
-:mod:`brg.numerical.methods.dr_functions`
-
-.. autosummary::
-    :toctree: generated/
-
-    beam_indices
-    beam_shear
-    residual
-    run
-
-
 force_density
 =============
 

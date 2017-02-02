@@ -49,48 +49,24 @@ algorithms
     :toctree: generated/
 
     construct_dual_mesh
-
-.. autosummary::
-    :toctree: generated/
-
     planarize_mesh
     circularize_mesh
-
-.. autosummary::
-    :toctree: generated/
-
     unify_cycles_mesh
     flip_cycles_mesh
-
-.. autosummary::
-    :toctree: generated/
-
     smooth_mesh_centroid
     smooth_mesh_centerofmass
     smooth_mesh_length
     smooth_mesh_area
     smooth_mesh_angle
-
-.. autosummary::
-    :toctree: generated/
-
     subdivide_mesh
     subdivide_mesh_tri
     subdivide_mesh_quad
     subdivide_mesh_catmullclark
     subdivide_mesh_doosabin
     subdivide_trimesh_loop
-
-.. autosummary::
-    :toctree: generated/
-
     delaunay_from_mesh
     delaunay_from_points
     delaunay_from_boundary
-
-.. autosummary::
-    :toctree: generated/
-
     optimise_trimesh_topology
 
 
@@ -111,10 +87,6 @@ numerical
     trimesh_edge_cotangents
     trimesh_cotangent_laplacian_matrix
     trimesh_positive_cotangent_laplacian_matrix
-
-.. autosummary::
-    :toctree: generated/
-
     mesh_contours
     plot_mesh_contours
     mesh_isolines

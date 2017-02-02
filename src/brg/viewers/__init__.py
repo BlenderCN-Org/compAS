@@ -13,7 +13,7 @@ Standalone (OpenGL) viewers for visualisation outside of CAD environments.
 
 .. autosummary::
     :toctree: generated/
-    
+
     Viewer
     ViewerApp
 
@@ -50,7 +50,7 @@ helpers
     Axes
     Camera
     Grid
-    Mouse    
+    Mouse
 
 
 widgets

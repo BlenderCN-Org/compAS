@@ -38,7 +38,7 @@ def optimise_trimesh_topology(mesh,
     length:
 
     Parameters:
-        mesh (Mesh) : A triangle mesh. 
+        mesh (Mesh) : A triangle mesh.
         target (float) : The target length.
         tol (float) : Length deviation tolerance. Defaults to `0.1`
         kmax (int) : The number of iterations.
@@ -46,6 +46,79 @@ def optimise_trimesh_topology(mesh,
 
     Returns:
         None
+
+    Note:
+        This algorithm not only changes the geometry of the mesh, but also its
+        topology as needed to achieve the specified target lengths.
+        Topological changes are made such that vertex valencies are well-balanced
+        and close to ...
+
+    Examples:
+
+        .. code-block:: python
+
+            from brg.datastructures.mesh import Mesh
+            from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
+
+            vertices = [
+                (0.0, 0.0, 0.0),
+                (10.0, 0.0, 0.0),
+                (10.0, 10.0, 0.0),
+                (0.0, 10.0, 0.0),
+                (5.0, 5.0, 0.0)
+            ]
+
+            faces = [
+                ('0', '1', '4'),
+                ('1', '2', '4'),
+                ('2', '3', '4'),
+                ('3', '0', '4')
+            ]
+
+            mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+            optimise_trimesh_topology(
+                mesh,
+                target=0.5,
+                target_start=1.0,
+                tol=0.05,
+                kmax=300,
+                allow_boundary=True,
+                verbose=False
+            )
+
+            mesh.plot(vsize=0.05)
+
+        .. plot::
+
+            from brg.datastructures.mesh import Mesh
+            from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
+            vertices = [
+                (0.0, 0.0, 0.0),
+                (10.0, 0.0, 0.0),
+                (10.0, 10.0, 0.0),
+                (0.0, 10.0, 0.0),
+                (5.0, 5.0, 0.0)
+            ]
+            faces = [
+                ('0', '1', '4'),
+                ('1', '2', '4'),
+                ('2', '3', '4'),
+                ('3', '0', '4')
+            ]
+            mesh = Mesh.from_vertices_and_faces(vertices, faces)
+            optimise_trimesh_topology(
+                mesh,
+                target=0.5,
+                target_start=1.0,
+                tol=0.05,
+                kmax=300,
+                allow_boundary=True,
+                verbose=False
+            )
+            mesh.plot(vsize=0.05)
+
+
     """
     if verbose:
         print target

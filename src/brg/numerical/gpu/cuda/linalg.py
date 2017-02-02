@@ -24,7 +24,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'cuda_conj', 'cuda_cross', 'cuda_det', 'cuda_dot', 'cuda_eig', 
+    'cuda_conj', 'cuda_cross', 'cuda_det', 'cuda_dot', 'cuda_eig',
     'cuda_hermitian', 'cuda_inv', 'cuda_normrow', 'cuda_pinv',
     'cuda_svd', 'cuda_trace', 'cuda_transpose'
 ]

@@ -87,12 +87,14 @@ if __name__ == '__main__':
     # fixed = [k_i[key] for key in mesh if mesh.vertex[key]['is_anchor']]
     # edges = [(k_i[u], k_i[v]) for u, v in mesh.edges_iter()]
     # q     = mesh.get_edges_attribute('q')
-    # res   = fd(xyz, edges, fixed, q, loads)
+    # xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads)
 
     # for key in mesh:
     #     index = k_i[key]
-    #     mesh.vertex[key]['x'] = res.xyz[index][0]
-    #     mesh.vertex[key]['y'] = res.xyz[index][1]
-    #     mesh.vertex[key]['z'] = res.xyz[index][2]
+    #     mesh.vertex[key]['x'] = xyz[index][0]
+    #     mesh.vertex[key]['y'] = xyz[index][1]
+    #     mesh.vertex[key]['z'] = xyz[index][2]
 
-    # mesh.plot(vertex_color=dict((key, '#ff0000') for key in mesh if mesh.vertex[key]['is_anchor']))
+    # mesh.plot(
+    #     vcolor={key: '#ff0000' for key in mesh if mesh.vertex[key]['is_anchor']}
+    # )
