@@ -23,22 +23,6 @@ operations
 algorithms
 ==========
 
-.. currentmodule:: brg.datastructures.tree.algorithms
-
-:mod:`brg.datastructures.tree.algorithms`
-
-.. autosummary::
-    :toctree: generated/
-    
-    bfs
-    bfs2
-    dfs
-    dfs2
-    bfs_paths
-    dfs_paths
-    shortest_path
-
-
 numerical
 =========
 

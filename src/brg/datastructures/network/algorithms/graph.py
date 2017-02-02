@@ -131,7 +131,7 @@ def embed_network_in_plane(network, fix=None, straightline=True):
     while count:
         graph = nx.Graph(edges)
         pos = nx.spring_layout(graph)
-        if not are_edges_crossed(edges, pos):
+        if not are_network_edges_crossed(edges, pos):
             is_embedded = True
             break
         count -= 1

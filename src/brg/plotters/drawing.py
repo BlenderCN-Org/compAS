@@ -200,13 +200,27 @@ def draw_xpoints_2d(points, axes):
     for point in points:
         pos = point['pos']
         radius = point['radius']
+        text = point.get('text')
         fcolor = point.get('facecolor') or '#ffffff'
         ecolor = point.get('edgecolor') or '#000000'
         lwidth = point.get('linewidth') or 1.0
+        textcolor = point.get('textcolor') or '000000'
+        fontsize = point.get('fontsize') or 6
         circles.append(Circle(pos, radius=radius))
         facecolor.append(fcolor)
         edgecolor.append(ecolor)
         linewidth.append(lwidth)
+        if text:
+            axes.text(
+                pos[0] - 0.01,
+                pos[1] - 0.01,
+                text,
+                fontsize=fontsize,
+                zorder=ZORDER_LABELS,
+                ha='center',
+                va='center',
+                color=textcolor
+            )
     coll = PatchCollection(
         circles,
         linewidths=linewidth,
@@ -244,7 +258,8 @@ def draw_lines_2d(lines,
                   axes,
                   linewidth=1.0,
                   linestyle='-',
-                  color='#000000'):
+                  color='#000000',
+                  alpha=1.0):
     """"""
     l = len(lines)
     if isinstance(linewidth, (int, float)):
@@ -258,7 +273,7 @@ def draw_lines_2d(lines,
         linewidths=linewidth,
         colors=color,
         linestyle=linestyle,
-        alpha=1.0,
+        alpha=alpha,
         zorder=ZORDER_LINES
     )
     axes.add_collection(coll)
@@ -273,6 +288,7 @@ def draw_xlines_2d(lines, axes):
         ep    = line['end']
         width = line.get('width') or 1.0
         color = line.get('color') or '#000000'
+        alpha = line.get('alpha') or 1.0
         fromto.append((sp, ep))
         widths.append(width)
         colors.append(color)
@@ -281,7 +297,7 @@ def draw_xlines_2d(lines, axes):
         linewidths=widths,
         colors=colors,
         linestyle='-',
-        alpha=1.0,
+        alpha=alpha,
         zorder=ZORDER_LINES
     )
     axes.add_collection(coll)
@@ -348,13 +364,13 @@ def draw_xlabels_2d(labels, axes):
         fontsize  = label['fontsize']
         color     = label.get('color') or '#ffffff'
         textcolor = label.get('textcolor') or '#000000'
-        bbox      = dict(color=color, edgecolor=color, alpha=1.0, pad=0.0) 
+        bbox      = dict(color=color, edgecolor=color, alpha=1.0, pad=0.0)
         t = axes.text(
             x,
             y,
             text,
             fontsize=fontsize,
-            zorder=zorder,
+            zorder=ZORDER_LABELS,
             ha='center',
             va='center',
             color=textcolor

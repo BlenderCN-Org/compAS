@@ -32,6 +32,16 @@ __all__ = [
 ]
 
 
+# plot specific vertices, edges, faces
+# specify text color, per label
+# width per edge
+# arrow per edge
+# plot paths (defaults for start/end, ...)
+# alternative plot functions
+# add conversion functions to base class definition
+# defaults for everything
+
+
 class NetworkPlotter2D(object):
     """"""
 
