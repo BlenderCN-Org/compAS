@@ -1,5 +1,6 @@
 from brg.geometry.basics import length_vector
 from brg.geometry.basics import dot
+from brg.geometry.basics import vector_component
 
 from brg.geometry.utilities import multiply_matrix_vector
 
@@ -223,12 +224,29 @@ def project_points_plane(points, plane):
     return [project_point_plane(point, plane) for point in points]
 
 
-def project_point_line():
-    pass
+def project_point_line(point, line):
+    """Project a point onto a line.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        line (tuple): Two points defining a line.
+
+    Returns:
+        list: XYZ coordinates of the projected point.
+
+    References:
+        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line
+
+    """
+    a, b = line
+    vector = [b[i] - a[i] for i in range(3)]
+    c = vector_component(point, vector)
+    return [c[i] + a[i] for i in range(3)]
 
 
-def project_points_line():
-    pass
+def project_points_line(points, line):
+    """Project a list of points onto a line."""
+    return [project_point_line(point, line) for point in points]
 
 
 # ==============================================================================
