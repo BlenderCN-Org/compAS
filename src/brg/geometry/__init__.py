@@ -10,6 +10,24 @@ geometry
 
 A package defining common geometric functions and objects.
 
+The functions in this package expect input arguments to be structured in a certain
+way. This is properly documented in their *docstrings* (or at least, it should be :).
+In general the following is assumed.
+
+* point: the xyz coordinates as iterable of floats.
+* vector: the xyz coordinates of the end point. the start is always the origin.
+* line: a tuple with two points.
+* ray: a tuple with two points.
+* segment: a tuple with two points.
+* circle: a tuple with a point,
+    the normal vector of the plane of the circle, and the radius as float.
+* polygon: a sequence of points.
+    first and last are not the same. the polygon is assumed closed.
+* polyline: a sequence of points.
+    first and last are the same if the polyline is closed.
+    otherwise, it is assumed open.
+* polyhedron: vertices and faces.
+
 
 elements
 ========
@@ -86,6 +104,23 @@ basics
     center_of_mass_polyhedron
     midpoint_line
     midpoint_line_2d
+    sort_points
+    bounding_box
+    bounding_box_2d
+    closest_point
+    closest_point_on_line
+    closest_point_on_segment
+    closest_point_on_polyline
+    closest_point_on_plane
+    is_colinear
+    is_coplanar
+    is_point_on_plane
+    is_point_on_line
+    is_point_on_segment
+    is_point_on_polyline
+    is_point_in_triangle
+    normalize_vector
+    normalize_vectors
 
 
 planar
@@ -108,38 +143,22 @@ planar
     closest_part_of_triangle
 
 
-spatial
-=======
-
-.. currentmodule:: brg.geometry.spatial
-
-:mod:`brg.geometry.spatial`
-
-.. autosummary::
-    :toctree: generated/
-
-    sort_points
-    bounding_box
-    closest_point
-    closest_point_on_line
-    closest_point_on_segment
-    closest_point_on_polyline
-    closest_point_on_plane
-    is_colinear
-    is_coplanar
-    is_point_on_plane
-    is_point_on_line
-    is_point_on_segment
-    is_point_on_polyline
-    is_point_in_triangle
-
-
 intersections
 =============
 
 .. currentmodule:: brg.geometry.intersections
 
 :mod:`brg.geometry.brg.geometry.intersections`
+
+.. autosummary::
+    :toctree: generated/
+
+    line_line_intersection
+    line_line_intersection_2d
+    lines_intersection
+    lines_intersection_2d
+    circle_circle_intersections
+    circle_circle_intersections_2d
 
 
 transformations
@@ -155,7 +174,6 @@ transformations
     translate_points
     translate_lines
     rotate_points
-    normalize_vectors
     scale_vector
     scale_vectors
     mirror_points_line

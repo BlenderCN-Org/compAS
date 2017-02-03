@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from math import acos
 from math import pi
 from math import sqrt
@@ -19,6 +21,8 @@ __all__ = [
     'subtract_vectors',
     'vector_component',
     'vector_component_2d',
+    'normalize_vector',
+    'normalize_vectors',
 
     'dot',
     'dot_2d',
@@ -69,6 +73,26 @@ __all__ = [
 
     'normal_triangle',
     'normal_polygon',
+
+    'bounding_box',
+    'bounding_box_2d',
+
+    'sort_points',
+
+    'closest_point',
+    'closest_point_on_line',
+    'closest_point_on_segment',
+    'closest_point_on_plane',
+    'closest_point_on_polyline',
+
+    'is_colinear',
+    'is_coplanar',
+    'is_convex',
+    'is_point_on_plane',
+    'is_point_on_line',
+    'is_point_on_segment',
+    'is_point_on_polyline',
+    'is_point_in_triangle',
 ]
 
 
@@ -140,6 +164,25 @@ def vector_component(u, v):
 def vector_component_2d(u, v):
     x = dot_2d(u, v) / length_vector_sqrd_2d(v)
     return x * v[0], x * v[1]
+
+
+def normalize_vector(vector):
+    """normalizes a vector
+
+    Parameters:
+        v1 (tuple, list, Vector): The vector.
+
+    Returns:
+        Tuple: normalized vector
+    """
+    l = float(length_vector(vector))
+    if l <= 0:
+        l = 1e-9
+    return vector[0] / l, vector[1] / l, vector[2] / l
+
+
+def normalize_vectors(vectors):
+    return [normalize_vector(vector) for vector in vectors]
 
 
 # ------------------------------------------------------------------------------
@@ -691,64 +734,6 @@ def angle_smallest_points_2d(a, b, c):
 
 
 # ------------------------------------------------------------------------------
-# orientation
-# ------------------------------------------------------------------------------
-
-
-def normal_polygon(points, unitized=True):
-    """Compute the normal of a polygon defined by a sequence of points.
-
-    Note:
-        The points in the list should be unique. For example, the first and last
-        point in the list should not be the same.
-
-    Parameters:
-        points (sequence): A sequence of points.
-
-    Returns:
-        list: The normal vector.
-
-    Raises:
-        ValueError: If less than three points are provided.
-    """
-    p = len(points)
-    assert p > 2, "At least three points required"
-    nx = 0
-    ny = 0
-    nz = 0
-    for i in range(-1, p - 1):
-        p1  = points[i - 1]
-        p2  = points[i]
-        p3  = points[i + 1]
-        v1  = [p1[axis] - p2[axis] for axis in range(3)]
-        v2  = [p3[axis] - p2[axis] for axis in range(3)]
-        n   = cross(v1, v2)
-        nx += n[0]
-        ny += n[1]
-        nz += n[2]
-    if not unitized:
-        # since the length of the cross product vector is twice the area of the
-        # triangle formed by vectors involved in the cross product
-        return 0.5 * nx, 0.5 * ny, 0.5 * nz
-    a2 = length_vector([nx, ny, nz])
-    return nx / a2, ny / a2, nz / a2
-
-
-def normal_triangle(triangle, unitized=True):
-    """Compute the normal vector of a triangle.
-    """
-    assert len(triangle) == 3, "Three points are required."
-    a, b, c = triangle
-    ab = [b[i] - a[i] for i in range(3)]
-    ac = [c[i] - a[i] for i in range(3)]
-    n  = cross(ab, ac)
-    if not unitized:
-        return n
-    lvec = length_vector(n)
-    return n[0] / lvec, n[1] / lvec, n[2] / lvec
-
-
-# ------------------------------------------------------------------------------
 # average
 # ------------------------------------------------------------------------------
 
@@ -952,6 +937,530 @@ def volume_polyhedron(polyhedron):
             n  = cross(ab, ac)
             V += dot(a, n)
     return V / 6.
+
+
+# ------------------------------------------------------------------------------
+# orientation
+# ------------------------------------------------------------------------------
+
+
+def normal_polygon(points, unitized=True):
+    """Compute the normal of a polygon defined by a sequence of points.
+
+    Note:
+        The points in the list should be unique. For example, the first and last
+        point in the list should not be the same.
+
+    Parameters:
+        points (sequence): A sequence of points.
+
+    Returns:
+        list: The normal vector.
+
+    Raises:
+        ValueError: If less than three points are provided.
+    """
+    p = len(points)
+    assert p > 2, "At least three points required"
+    nx = 0
+    ny = 0
+    nz = 0
+    for i in range(-1, p - 1):
+        p1  = points[i - 1]
+        p2  = points[i]
+        p3  = points[i + 1]
+        v1  = [p1[axis] - p2[axis] for axis in range(3)]
+        v2  = [p3[axis] - p2[axis] for axis in range(3)]
+        n   = cross(v1, v2)
+        nx += n[0]
+        ny += n[1]
+        nz += n[2]
+    if not unitized:
+        # since the length of the cross product vector is twice the area of the
+        # triangle formed by vectors involved in the cross product
+        return 0.5 * nx, 0.5 * ny, 0.5 * nz
+    a2 = length_vector([nx, ny, nz])
+    return nx / a2, ny / a2, nz / a2
+
+
+def normal_triangle(triangle, unitized=True):
+    """Compute the normal vector of a triangle.
+    """
+    assert len(triangle) == 3, "Three points are required."
+    a, b, c = triangle
+    ab = [b[i] - a[i] for i in range(3)]
+    ac = [c[i] - a[i] for i in range(3)]
+    n  = cross(ab, ac)
+    if not unitized:
+        return n
+    lvec = length_vector(n)
+    return n[0] / lvec, n[1] / lvec, n[2] / lvec
+
+
+# ------------------------------------------------------------------------------
+# bounding boxes
+# ------------------------------------------------------------------------------
+
+
+def bounding_box(points):
+    """Computes the bounding box of a list of points.
+    """
+    x, y, z = zip(*points)
+    min_x = min(x)
+    max_x = max(x)
+    min_y = min(y)
+    max_y = max(y)
+    min_z = min(z)
+    max_z = max(z)
+    return [(min_x, min_y, min_z),
+            (max_x, min_y, min_z),
+            (max_x, max_y, min_z),
+            (min_x, max_y, min_z),
+            (min_x, min_y, max_z),
+            (max_x, min_y, max_z),
+            (max_x, max_y, max_z),
+            (min_x, max_y, max_z)]
+
+
+def bounding_box_2d(points):
+    x, y = zip(*points)
+    min_x = min(x)
+    max_x = max(x)
+    min_y = min(y)
+    max_y = max(y)
+    return [(min_x, min_y),
+            (max_x, min_y),
+            (max_x, max_y),
+            (min_x, max_y)]
+
+
+# ------------------------------------------------------------------------------
+# proximity
+# ------------------------------------------------------------------------------
+
+
+def sort_points(point, cloud):
+    """Sorts points of a pointcloud to a point.
+
+    Notes:
+        Check kdTree class for an optimized implementation (MR).
+
+    Parameters:
+        point (tuple): x,y,z make_blocks point value
+        cloud (sequence): A sequence locations in three-dimensional space.
+
+    Returns:
+        list (floats): min distances
+        list (tuples): sorted points
+        list (ints): closest point indices
+
+    Examples:
+        >>> sort_points()
+    """
+    minsq = [distance_point_point_sqrd(p, point) for p in cloud]
+    return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
+
+
+def closest_point(point, cloud):
+    """Calculates the closest point to a pointcloud.
+
+    Notes:
+        Check kdTree class for an optimized implementation (MR).
+
+    Parameters:
+        point (tuple): x,y,z make_blocks point value
+        cloud (sequence): A sequence locations in three-dimensional space.
+
+    Returns:
+        float: min distance
+        tuple: closest point
+        int: closest point index
+    """
+    data = sort_points(point, cloud)
+    return data[0]
+
+
+def closest_point_on_line(point, line):
+    """
+    Computes closest point on line to a given point.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        line (tuple): Two points defining the line.
+
+    Returns:
+        list: XYZ coordinates of closest point.
+
+    See Also:
+        :func:`brg.geometry.transformations.project_point_line`
+
+    """
+    a, b = line
+    ab = [b[i] - a[i] for i in range(3)]
+    ap = [point[i] - a[i] for i in range(3)]
+    c = vector_component(ap, ab)
+    return [a[i] + c[i] for i in range(3)]
+
+
+def closest_point_on_segment(point, segment):
+    """
+    Computes closest point on line segment (p1, p2) to testpoint.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        saegment (tuple): Two points defining the segment.
+
+    Returns:
+        list: XYZ coordinates of closest point.
+
+    """
+    a, b = segment
+    p  = closest_point_on_line(point, segment)
+    d  = distance_point_point_sqrd(a, b)
+    d1 = distance_point_point_sqrd(a, p)
+    d2 = distance_point_point_sqrd(b, p)
+    if d1 > d or d2 > d:
+        if d1 < d2:
+            return a
+        return b
+    return p
+
+
+def closest_point_on_polyline(point, polyline):
+    # should be straight forward using the closest_point_on_line_segment function
+    raise NotImplementedError
+
+
+def closest_point_on_plane(point, plane):
+    """
+    Compute closest point on a plane to a given point.
+
+    Parameters:
+        point (sequenceof float): XYZ coordinates of point.
+        plane (tuple): The base point and normal defining the plane.
+
+    Returns:
+        (list): XYZ coordinates of the closest point.
+
+    Examples:
+        >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+        >>> point = [1.0, 2.0, 3.0]
+        >>> closest_point_on_plane(point, plane)
+
+    References:
+        http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
+
+    """
+    base, normal = plane
+    x, y, z = base
+    a, b, c  = normalize_vector(normal)
+    x1, y1, z1 = point
+    d = a * x + b * y + c * z
+    k = (a * x1 + b * y1 + c * z1 - d) / (a**2 + b**2 + c**2)
+    return [x1 - k * a,
+            y1 - k * b,
+            z1 - k * c, ]
+
+
+# ------------------------------------------------------------------------------
+# queries
+# ------------------------------------------------------------------------------
+
+
+def is_colinear(a, b, c):
+    """Verify if three points are colinear.
+
+    Parameters:
+        a (tuple, list, Point): Point 1.
+        b (tuple, list, Point): Point 2.
+        c (tuple, list, Point): Point 3.
+
+    Returns:
+        bool: True if the points are collinear, False otherwise.
+    """
+    return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1])  * (c[0] - a[0]) == 0
+
+
+def is_coplanar(points, tol=0.01):
+    """Verify if the points are coplanar.
+
+    Compute the normal vector (cross product) of the vectors formed by the first
+    three points. Include one more vector at a time to compute a new normal and
+    compare with the original normal. If their cross product is not zero, they
+    are not parallel, which means the point are not in the same plane.
+
+    Four points are coplanar if the volume of the tetrahedron defined by them is
+    0. Coplanarity is equivalent to the statement that the pair of lines
+    determined by the four points are not skew, and can be equivalently stated
+    in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.
+
+    Parameters:
+        points (sequence): A sequence of locations in three-dimensional space.
+
+    Returns:
+        bool: True if the points are coplanar, False otherwise.
+
+    """
+    tol2 = tol ** 2
+    if len(points) == 4:
+        v01 = (points[1][0] - points[0][0], points[1][1] - points[0][1], points[1][2] - points[0][2],)
+        v02 = (points[2][0] - points[0][0], points[2][1] - points[0][1], points[2][2] - points[0][2],)
+        v23 = (points[3][0] - points[2][0], points[3][1] - points[2][1], points[3][2] - points[2][2],)
+        res = dot(v02, cross(v01, v23))
+        return res**2 < tol2
+    # len(points) > 4
+    # compare length of cross product vector to tolerance
+    u = [points[1][i] - points[0][i] for i in range(3)]
+    v = [points[2][i] - points[1][i] for i in range(3)]
+    w = cross(u, v)
+    for i in range(1, len(points) - 2):
+        u = v
+        v = [points[i + 2][j] - points[i + 1][j] for j in range(3)]
+        wuv = cross(w, cross(u, v))
+        if wuv[0]**2 > tol2 or wuv[1]**2 > tol2 or wuv[2]**2 > tol2:
+            return False
+    return True
+
+
+def is_convex(points):
+    c = center_of_mass_polygon(points)
+    for i in range(-1, len(points) - 1):
+        p0 = points[i]
+        p1 = points[i - 1]
+        p2 = points[i + 1]
+        v0 = (c[0] - p0[0], c[1] - p0[1], c[2] - p0[2])
+        v1 = (p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2])
+        v2 = (p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2])
+        a1, _ = angles_vectors(v1, v0)
+        a2, _ = angles_vectors(v0, v2)
+        if a1 + a2 > 180:
+            return False
+    return True
+
+
+def is_point_on_plane(point, plane, tol=0.0):
+    """Verify if a point lies in a plane.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        plane (tuple): Base point and normal defining a plane.
+        tol (float): Optional. A tolerance. Default is ``0.0``.
+
+    Returns:
+        (bool): True if the point is in on the plane, False otherwise.
+
+    """
+    d = distance_point_plane(point, plane)
+    return d <= tol
+
+
+def is_point_on_line(point, line, tol=0.0):
+    """Verify if a point lies on a line.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        line (tuple): Two points defining a line.
+        tol (float): Optional. A tolerance. Default is ``0.0``.
+
+    Returns:
+        (bool): True if the point is in on the line, False otherwise.
+
+    """
+    d = distance_point_line(point, line)
+    return d <= tol
+
+
+def is_point_on_segment(point, segment, tol=0.0):
+    a, b = segment
+    if not is_point_on_line(point, segment, tol=tol):
+        return False
+    d_ab = distance_point_point(a, b)
+    if d_ab == 0:
+        return False
+    d_pa = distance_point_point(a, point)
+    d_pb = distance_point_point(b, point)
+    if d_pa + d_pb <= d_ab + tol:
+        return True
+    return False
+
+
+def is_closest_point_on_segment(point, segment, tol=0.0, return_point=False):
+    """Verify if the closest point on the line of a segment is on the segment.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates of the point.
+        segment (tuple): Two points defining the line segment.
+        tol (float): Optional. A tolerance. Default is ``0.0``.
+        return_point (bool): Optional. If ``True`` return the closest point.
+            Default is ``False``.
+
+    Returns:
+        (bool/tuple): the point if the point is in on the line, False otherwise.
+        (bool): True if the point is in on the line, False otherwise.
+
+    """
+    a, b = segment
+    v = [b[i] - a[i] for i in range(3)]
+    d_ab = distance_point_point_sqrd(a, b)
+    if d_ab == 0:
+        return
+    u = sum((point[i] - a[i]) * v[i] for i in range(3)) / d_ab
+    c = a[0] + u * v[0], a[1] + u * v[1], a[2] + u * v[2]
+    d_ac = distance_point_point_sqrd(a, c)
+    d_bc = distance_point_point_sqrd(b, c)
+    if d_ac + d_bc <= d_ab + tol:
+        if return_point:
+            return c
+        return True
+    return False
+
+
+def is_point_on_polyline(points, tp, tol=0):
+    for i in xrange(len(points) - 1):
+        clospt = closest_point_on_segment(points[i], points[i + 1], tp)
+        if distance_point_point(clospt, tp) <= tol:
+            return True
+    return False
+
+
+def is_point_in_triangle(p, abc):
+    """Verify if a point (p) is inside line of the triangle abc.
+
+    Parameters:
+        p (tuple): 3d point
+        abc (tuples): 3d triangle points
+
+    Returns:
+        (bool): True if the point is in inside the triangle, False otherwise.
+    """
+    def is_on_same_side(p1, p2, a, b):
+        v = subtract_vectors(b, a)
+        cp1 = cross(v, subtract_vectors(p1, a))
+        cp2 = cross(v, subtract_vectors(p2, a))
+        if dot(cp1, cp2) >= 0:
+            return True
+        else:
+            return False
+    a, b, c = abc
+    if is_on_same_side(p, a, b, c) and is_on_same_side(p, b, a, c) and is_on_same_side(p, c, a, b):
+        return True
+    return False
+
+
+# def is_point_in_polygon(points,tp):
+#     """Verify if a point is in the interior of a polygon.
+
+#     Note:
+#         This test only makes sense in the x/y plane
+
+#     Parameters:
+#         points (Polygon): list of ordered points.
+#         tp (3-tuple): 3d test point
+
+#         not implemented:
+#             include_boundary (bool): Should the boundary be included in the test?
+#                 Defaults to False.
+#             A tolerance value would be nice too... float errors are problematic
+#             points which are located on the boundary are not always uniquely defines as inside/outside
+
+#     Returns:
+#         bool: True if the point is in the polygon, False otherwise.
+#     """
+#     x,y = tp[0],tp[1]
+
+#     points = [(pt[0],pt[1]) for pt in points]# make 2D
+
+#     n = len(points)
+#     inside =False
+#     p1x,p1y = points[0]
+#     for i in range(n+1):
+#         p2x,p2y = points[i % n]
+#         if y > min(p1y,p2y):
+#             if y <= max(p1y,p2y):
+#                 if x <= max(p1x,p2x):
+#                     if p1y != p2y:
+#                         xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+#                     if p1x == p2x or x <= xinters:
+#                         inside = not inside
+#         p1x,p1y = p2x,p2y
+#     return inside
+
+
+# def is_point_in_circle(pt1,pt2,pt3, tp):
+#     centPt, radius = circle_from_points_2d(pt1,pt2,pt3)
+#     #    if not temp:
+#     #        return False
+#     #    centPt, radius = temp
+#     #    rs.AddCircle((centPt[0],centPt[1],0),radius)
+
+#     if is_point_in_rectangle(centPt, radius, tp):
+#         dx = centPt[0] - tp[0]
+#         dy = centPt[1] - tp[1]
+#         dx *= dx
+#         dy *= dy
+#         distanceSquared = dx + dy
+#         radiusSquared = radius * radius
+#         return distanceSquared <= radiusSquared
+#     return False
+
+
+# #needed in is_point_in_circle
+# def circle_from_points_2d(pt1,pt2,pt3):
+#     ax =pt1[0]
+#     ay = pt1[1]  #first Point X and Y
+#     bx =pt2[0]
+#     by = pt2[1]   #Second Point X and Y
+#     cx =pt3[0]
+#     cy =pt3[1]   #Third Point X and Y
+#     #****************Following are Basic Procedure**********************///
+#     x1 = (bx + ax) / 2
+#     y11 = (by + ay) / 2
+#     dy1 = bx - ax
+#     dx1 = -(by - ay)
+#     #***********************
+#     x2 = (cx + bx) / 2
+#     y2 = (cy + by) / 2
+#     dy2 = cx - bx
+#     dx2 = -(cy - by)
+#     #****************************
+#     try:
+#         ox = (y11 * dx1 * dx2 + x2 * dx1 * dy2 - x1 * dy1 * dx2 - y2 * dx1 * dx2)/ (dx1 * dy2 - dy1 * dx2)
+#         oy = (ox - x1) * dy1 / dx1 + y11
+#     except:
+#         return None,None
+#     #***********************************
+#     dx = ox - ax
+#     dy = oy - ay
+#     radius = (dx * dx + dy * dy)**0.5
+#     return (ox,oy,0),radius
+
+
+# #needed in is_point_in_circle
+# def is_point_in_rectangle(centPt, radius, testPt):
+#     return testPt[0] >= centPt[0] - radius and testPt[0] <= centPt[0] + radius and testPt[1] >= centPt[1] - radius and testPt[1] <= centPt[1] + radius
+
+
+# def is_line_line_intersection_2d(p1, v1, p2, v2, points=False):
+#     """Verify if two lines intersect in 2d on the xy plane.
+
+#     Parameters:
+#         p1, v1 (tuples): 3d point and 3d vector of line A
+#         p2, v2 (tuples): 3d point and 3d vector of line B
+#         points (bool): if True v1,v2 will be interpreted as end points of the lines
+#     Returns:
+#         (bool): True if there is a intersection, False otherwise.
+
+#     """
+#     if points:
+#         p1b = v1
+#         p2b = v2
+#     else:
+#         p1b = add_vectors(p1, v1)
+#         p2b = add_vectors(p2, v2)
+#     d = (p2b[1] - p2[1]) * (p1b[0] - p1[0]) - (p2b[0] - p2[0]) * (p1b[1] - p1[1])
+#     if d == 0:
+#         return False
+#     return True
 
 
 # ==============================================================================

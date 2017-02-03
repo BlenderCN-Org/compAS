@@ -3,8 +3,9 @@ from brg.geometry.basics import add_vectors
 from brg.geometry.basics import subtract_vectors
 from brg.geometry.basics import dot
 from brg.geometry.basics import cross
+from brg.geometry.basics import is_point_on_segment
+
 from brg.geometry.transformations import scale_vector
-from brg.geometry.spatial import is_point_on_segment
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
@@ -197,32 +198,29 @@ def is_box_intersecting_box(box_1,box_2):
 # ==============================================================================
 
 if __name__ == '__main__':
-    
+
     print "computing..."
-    
+
     import random
     import time
-    
+
     steps = 5000
     count = 0
 
     tic = time.time()
     for i in range(steps):
-    
+
         x = random.random()
         y = random.random()
         z = random.random()
-        box_a = [(0.0,0.0,0.0),(x,0.0,0.0),(x,y,0.0),(0.0,y,0.0)]
-        box_a +=  [(0.0,0.0,z),(x,0.0,z),(x,y,z),(0.0,y,z)]
-        
-        box_b = [(0.5,0.5,0.0),(1.5,0.5,0.0),(1.5,1.5,0.0),(0.5,1.5,0.0)]
-        box_b += [(0.5,0.5,1.0),(1.5,0.5,1.0),(1.5,1.5,1.0),(0.5,1.5,1.0)]
-            
+        box_a = [(0.0, 0.0, 0.0), (x, 0.0, 0.0), (x, y, 0.0), (0.0, y, 0.0)]
+        box_a += [(0.0, 0.0, z), (x, 0.0, z), (x, y, z), (0.0, y, z)]
 
-        if is_box_intersecting_box(box_a,box_b):
+        box_b = [(0.5, 0.5, 0.0), (1.5, 0.5, 0.0), (1.5, 1.5, 0.0), (0.5, 1.5, 0.0)]
+        box_b += [(0.5, 0.5, 1.0), (1.5, 0.5, 1.0), (1.5, 1.5, 1.0), (0.5, 1.5, 1.0)]
+
+        if is_box_intersecting_box(box_a, box_b):
             count += 1
-    
+
     tac = time.time()
-    print '{0} s for {1} iterations. {2} intersections found'.format(round(tac-tic,4),steps,count)
-    
-    
+    print '{0} s for {1} iterations. {2} intersections found'.format(round(tac - tic, 4), steps, count)

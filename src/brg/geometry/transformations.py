@@ -1,4 +1,3 @@
-from brg.geometry.basics import length_vector
 from brg.geometry.basics import dot
 from brg.geometry.basics import vector_component
 
@@ -18,8 +17,6 @@ __all__ = [
     'translate_points',
     'translate_lines',
     'rotate_points',
-    'normalize_vector',
-    'normalize_vectors',
     'scale_vector',
     'scale_vectors',
     'mirror_points_point',
@@ -89,30 +86,6 @@ def rotate_points(points, axis, angle, origin=None):
     # translate points back
     points = translate_points(points, origin)
     return points
-
-
-# ------------------------------------------------------------------------------
-# normalize
-# ------------------------------------------------------------------------------
-
-
-def normalize_vector(vector):
-    """normalizes a vector
-
-    Parameters:
-        v1 (tuple, list, Vector): The vector.
-
-    Returns:
-        Tuple: normalized vector
-    """
-    l = float(length_vector(vector))
-    if l <= 0:
-        l = 1e-9
-    return vector[0] / l, vector[1] / l, vector[2] / l
-
-
-def normalize_vectors(vectors):
-    return [normalize_vector(vector) for vector in vectors]
 
 
 # ------------------------------------------------------------------------------

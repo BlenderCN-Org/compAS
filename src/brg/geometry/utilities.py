@@ -82,6 +82,14 @@ def multiply_matrix_matrix(A, B):
     return [[sum(x * y for x, y in zip(row, col)) for col in B] for row in A]
 
 
+def to_local_coords():
+    pass
+
+
+def to_global_coords():
+    pass
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
