@@ -179,7 +179,9 @@ def closest_point_on_plane(point, plane):
         (list): XYZ coordinates of the closest point.
 
     Examples:
-        >>> closest_point_to_plane()
+        >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+        >>> point = [1.0, 2.0, 3.0]
+        >>> closest_point_on_plane(point, plane)
 
     References:
         http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
@@ -516,10 +518,6 @@ def is_point_in_triangle(p, abc):
 
 if __name__ == "__main__":
 
-    from random import randint
-
-    cloud = [[float(randint(0, 1000)), float(randint(0, 1000)), 0.0] for x in range(100)]
-
-    s = sort_points([0, 0, 0], cloud)
-
-    print(s)
+    plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+    point = [1.0, 2.0, 3.0]
+    print(closest_point_on_plane(point, plane))

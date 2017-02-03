@@ -426,9 +426,14 @@ def distance_point_plane(point, plane):
         The equation of a plane is
 
         .. math::
+
+            Ax + By + Cz + D = 0
+
+        where
+
+        .. math::
             :nowrap:
 
-            Ax + By + Cz + D = 0, \text{where}
             \begin{align}
                 D &= - Ax_0 - Bx_0 - Cz_0 \\
                 Q &= (x_0, y_0, z_0) \\
@@ -479,7 +484,8 @@ def distance_line_line(l1, l2):
     b = [x4[i] - x3[i] for i in range(3)]
     c = [x3[i] - x1[i] for i in range(3)]
     n = cross(a, b)
-    n = n / length_vector(n)
+    l = length_vector(n)
+    n = [n[i] / l for i in range(3)]
     return fabs(dot(n, c))
 
 
