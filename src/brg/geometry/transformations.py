@@ -154,8 +154,21 @@ def scale_vectors(vectors, f):
 # ------------------------------------------------------------------------------
 
 
-def mirror_points_point():
-    pass
+def mirror_point_point(point, mirror):
+    """Mirror a point about a point.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates of the point to mirror.
+        mirror (sequence of float): XYZ coordinates of the mirror point.
+
+    """
+    ab = [mirror[i] - point[i] for i in range(3)]
+    return [mirror[i] + ab[i] for i in range(3)]
+
+
+def mirror_points_point(points, mirror):
+    """Mirror multiple points about a point."""
+    return [mirror_point_point(point, mirror) for point in points]
 
 
 def mirror_points_line():
@@ -208,7 +221,7 @@ def project_point_plane(point, plane):
 
 
 def project_points_plane(points, plane):
-    """Project a cloud of point onto a plane.
+    """Project multiple points onto a plane.
 
     Parameters:
         points (sequence of sequence of float): Cloud of XYZ coordinates.
@@ -245,7 +258,7 @@ def project_point_line(point, line):
 
 
 def project_points_line(points, line):
-    """Project a list of points onto a line."""
+    """Project multiple points onto a line."""
     return [project_point_line(point, line) for point in points]
 
 
