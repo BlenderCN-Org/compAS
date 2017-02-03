@@ -12,6 +12,7 @@ from brg.geometry.basics import center_of_mass_polygon
 from brg.geometry.basics import angles_vectors
 from brg.geometry.basics import length_vector_sqrd
 
+from brg.geometry.transformations import normalize_vector
 from brg.geometry.transformations import normalize_vectors
 from brg.geometry.transformations import scale_vectors
 
@@ -115,81 +116,86 @@ def closest_point(point, cloud):
     return data[0]
 
 
-def closest_point_on_line(p1, p2, tp):
+def closest_point_on_line(point, line):
     """
-    Computes closest point on line (p1, p2) to testpoint.
+    Computes closest point on line to a given point.
 
     Parameters:
-        p1, v1 (tuples): two 3d points defining the line
-        tp (3-tuple): 3d testpoint
+        point (sequence of float): XYZ coordinates.
+        line (tuple): Two points defining the line.
 
     Returns:
-        (3-tuple): closest point on line
+        list: XYZ coordinates of closest point.
+
+    See Also:
+        :func:`brg.geometry.transformations.project_point_line`
+
     """
-    t = subtract_vectors(tp, p1)
-    v = subtract_vectors(p2, p1)
-    s = vector_component(t, v)
-    return (p1[0] + s * v[0],
-            p1[1] + s * v[1],
-            p1[2] + s * v[2])
+    a, b = line
+    ab = [b[i] - a[i] for i in range(3)]
+    ap = [point[i] - a[i] for i in range(3)]
+    c = vector_component(ap, ab)
+    return [a[i] + c[i] for i in range(3)]
 
 
-def closest_point_on_segment(p1, p2, tp):
+def closest_point_on_segment(point, segment):
     """
     Computes closest point on line segment (p1, p2) to testpoint.
 
     Parameters:
-        p1, p2 (tuples): two 3d points defining the line segment
-        tp (3-tuple): 3d testpoint
+        point (sequence of float): XYZ coordinates.
+        saegment (tuple): Two points defining the segment.
 
     Returns:
-        (3-tuple): closest point on line segment
+        list: XYZ coordinates of closest point.
+
     """
-    p  = closest_point_on_line(p1, p2, tp)
-    d  = distance_point_point_sqrd(p1, p2)
-    d1 = distance_point_point_sqrd(p1, p)
-    d2 = distance_point_point_sqrd(p2, p)
+    a, b = segment
+    p  = closest_point_on_line(point, segment)
+    d  = distance_point_point_sqrd(a, b)
+    d1 = distance_point_point_sqrd(a, p)
+    d2 = distance_point_point_sqrd(b, p)
     if d1 > d or d2 > d:
         if d1 < d2:
-            return p1
-        return p2
+            return a
+        return b
     return p
 
 
-def closest_point_on_polyline(points, tp):
+def closest_point_on_polyline(point, polyline):
     # should be straight forward using the closest_point_on_line_segment function
     raise NotImplementedError
 
 
-def closest_point_on_plane(p0, n, p):
+def closest_point_on_plane(point, plane):
     """
-    Computes closest point on plane (p1, v1) to testpoint.
-
-    Warning:
-        Not tested!
+    Compute closest point on a plane to a given point.
 
     Parameters:
-        p0 (sequence) : XYZ coordinates of point on plane.
-        n (sequence) : XYZ coordinates of normal vecor at point ``p0``.
-        p (sequence) : XYZ coordinates of point in space.
+        point (sequenceof float): XYZ coordinates of point.
+        plane (tuple): The base point and normal defining the plane.
 
     Returns:
-        (3-tuple): Closest point on plane to given point in space.
+        (list): XYZ coordinates of the closest point.
 
     Examples:
         >>> closest_point_to_plane()
 
     References:
-        `Wikipedia: Distance from a point to a plane <http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane>`_
+        http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
-    Todo:
-        - check if this is correct (compare to previous implementation).
     """
-    n  = normalize_vectors([n])[0]
-    d0 = n[0] * p[0] + n[1] * p[1] + n[2] * p[2] - (n[0] * p0[0] + n[1] * p0[1] + n[2] * p0[2])
-    d  = d0 / length_vector(n)
-    n  = scale_vectors([n], - d)[0]
-    return add_vectors(p, n)
+    base, normal = plane
+    x, y, z = base
+    a, b, c  = normalize_vector(normal)
+    x1, y1, z1 = point
+    d = a * x + b * y + c * z
+    k = (a * x1 + b * y1 + c * z1 - d) / (a**2 + b**2 + c**2)
+    return [
+        x1 - k * a,
+        y1 - k * b,
+        z1 - k * c
+    ]
 
 
 # ------------------------------------------------------------------------------

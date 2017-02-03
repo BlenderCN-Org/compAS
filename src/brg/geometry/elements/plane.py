@@ -82,5 +82,3 @@ if __name__ == '__main__':
     print plane.normal.x
     print plane.normal.y
     print plane.normal.z
-
-    print plane.distance_from_point([0, 2, 10])

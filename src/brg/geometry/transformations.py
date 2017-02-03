@@ -171,11 +171,19 @@ def mirror_points_point(points, mirror):
     return [mirror_point_point(point, mirror) for point in points]
 
 
-def mirror_points_line():
+def mirror_point_line(point, line):
     pass
 
 
-def mirror_points_plane():
+def mirror_points_line(points, line):
+    pass
+
+
+def mirror_point_plane(point, plane):
+    pass
+
+
+def mirror_points_plane(points, plane):
     pass
 
 
@@ -252,9 +260,10 @@ def project_point_line(point, line):
 
     """
     a, b = line
-    vector = [b[i] - a[i] for i in range(3)]
-    c = vector_component(point, vector)
-    return [c[i] + a[i] for i in range(3)]
+    ab = [b[i] - a[i] for i in range(3)]
+    ap = [point[i] - a[i] for i in range(3)]
+    c = vector_component(ap, ab)
+    return [a[i] + c[i] for i in range(3)]
 
 
 def project_points_line(points, line):
