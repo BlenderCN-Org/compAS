@@ -29,27 +29,6 @@ In general the following is assumed.
 * polyhedron: vertices and faces.
 
 
-elements
-========
-
-.. currentmodule:: brg.geometry.elements
-
-:mod:`brg.geometry.elements`
-
-.. autosummary::
-    :toctree: generated
-
-    Line
-    Plane
-    Point
-    Polygon
-    Polyhedron
-    Polyline
-    Spline
-    Surface
-    Vector
-
-
 basics
 ======
 
@@ -61,21 +40,18 @@ basics
     :toctree: generated/
 
     add_vectors
+    add_vectorlist
     subtract_vectors
-    cross
-    cross_2d
-    dot
-    dot_2d
+    vector_from_to
     vector_component
     vector_component_2d
-    angles_points
-    angles_points_2d
-    angles_vectors
-    angles_vectors_2d
-    angle_smallest_points
-    angle_smallest_points_2d
-    angle_smallest_vectors
-    angle_smallest_vectors_2d
+    normalize_vector
+    normalize_vectors
+    circle_from_points
+    dot
+    dot_2d
+    cross
+    cross_2d
     length_vector
     length_vector_2d
     length_vector_sqrd
@@ -90,13 +66,14 @@ basics
     distance_point_line_sqrd_2d
     distance_point_plane
     distance_line_line
-    normal_polygon
-    normal_triangle
-    area_polygon
-    area_polygon_2d
-    area_triangle
-    area_triangle_2d
-    volume_polyhedron
+    angles_points
+    angles_points_2d
+    angles_vectors
+    angles_vectors_2d
+    angle_smallest_points
+    angle_smallest_points_2d
+    angle_smallest_vectors
+    angle_smallest_vectors_2d
     centroid_points
     centroid_points_2d
     center_of_mass_polygon
@@ -104,23 +81,30 @@ basics
     center_of_mass_polyhedron
     midpoint_line
     midpoint_line_2d
-    sort_points
+    area_polygon
+    area_polygon_2d
+    area_triangle
+    area_triangle_2d
+    volume_polyhedron
+    normal_polygon
+    normal_triangle
     bounding_box
     bounding_box_2d
-    closest_point
+    closest_point_in_cloud
     closest_point_on_line
     closest_point_on_segment
     closest_point_on_polyline
     closest_point_on_plane
     is_colinear
     is_coplanar
+    is_polygon_convex
     is_point_on_plane
     is_point_on_line
     is_point_on_segment
+    is_closest_point_on_segment
     is_point_on_polyline
     is_point_in_triangle
-    normalize_vector
-    normalize_vectors
+    is_point_in_circle
 
 
 planar
@@ -196,6 +180,30 @@ utilities
 
     multiply_matrix_vector
     multiply_matrix_matrix
+
+
+elements
+========
+
+The objects defined in this package provide an object-oriented interface to most
+of the functionality in the geometry package.
+
+.. currentmodule:: brg.geometry.elements
+
+:mod:`brg.geometry.elements`
+
+.. autosummary::
+    :toctree: generated
+
+    Line
+    Plane
+    Point
+    Polygon
+    Polyhedron
+    Polyline
+    Spline
+    Surface
+    Vector
 
 """
 

@@ -10,6 +10,10 @@ __all__ = [
 ]
 
 
+class BRGGeometryInputError(Exception):
+    pass
+
+
 def multiply_matrix_vector(matrix, vector):
     r"""Multiply a matrix with a vector.
 
@@ -30,7 +34,8 @@ def multiply_matrix_vector(matrix, vector):
         list: The resulting vector
 
     Raises:
-        AssertionError: If not all rows of the matrix have the same length as the vector.
+        BRGGeometryInputError:
+        If not all rows of the matrix have the same length as the vector.
 
     Examples:
         >>> matrix = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
@@ -40,7 +45,8 @@ def multiply_matrix_vector(matrix, vector):
 
     """
     v = len(vector)
-    assert all([len(row) == v for row in matrix]), 'Matrix shape is not compatible with vector length'
+    if not all([len(row) == v for row in matrix]):
+        raise BRGGeometryInputError('Matrix shape is not compatible with vector length.')
     return [sum(x * y for x, y in zip(row, vector)) for row in matrix]
 
 
@@ -64,8 +70,11 @@ def multiply_matrix_matrix(A, B):
         list of list of float: The result matrix.
 
     Raises:
-        AssertionError: If the shapes of the matrices are not compatible.
-        AssertionError: If the row length of B is inconsistent.
+        BRGGeometryInputError:
+        If the shapes of the matrices are not compatible.
+
+        BRGGeometryInputError:
+        If the row length of B is inconsistent.
 
     Examples:
         >>> A = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
@@ -76,8 +85,10 @@ def multiply_matrix_matrix(A, B):
     """
     n = len(B)  # number of rows in B
     o = len(B[0])  # number of cols in B
-    assert all([len(row) == o for row in B]), 'Row length in matrix B is inconsistent.'
-    assert all([len(row) == n for row in A]), 'Matrix shapes are not compatible.'
+    if not all([len(row) == o for row in B]):
+        raise BRGGeometryInputError('Row length in matrix B is inconsistent.')
+    if not all([len(row) == n for row in A]):
+        raise BRGGeometryInputError('Matrix shapes are not compatible.')
     B = zip(*B)
     return [[sum(x * y for x, y in zip(row, col)) for col in B] for row in A]
 

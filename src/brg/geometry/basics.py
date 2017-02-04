@@ -19,10 +19,12 @@ __all__ = [
     'add_vectors',
     'add_vectorlist',
     'subtract_vectors',
+    'vector_from_to',
     'vector_component',
     'vector_component_2d',
     'normalize_vector',
     'normalize_vectors',
+    'circle_from_points',
 
     'dot',
     'dot_2d',
@@ -77,9 +79,7 @@ __all__ = [
     'bounding_box',
     'bounding_box_2d',
 
-    'sort_points',
-
-    'closest_point',
+    'closest_point_in_cloud',
     'closest_point_on_line',
     'closest_point_on_segment',
     'closest_point_on_plane',
@@ -87,7 +87,7 @@ __all__ = [
 
     'is_colinear',
     'is_coplanar',
-    'is_convex',
+    'is_polygon_convex',
     'is_point_on_plane',
     'is_point_on_line',
     'is_point_on_segment',
@@ -189,13 +189,17 @@ def normalize_vector(vector):
         Tuple: normalized vector
     """
     l = float(length_vector(vector))
-    if l <= 0:
-        l = 1e-9
+    if l == 0.0:
+        return vector
     return vector[0] / l, vector[1] / l, vector[2] / l
 
 
 def normalize_vectors(vectors):
     return [normalize_vector(vector) for vector in vectors]
+
+
+def scale_vector(vector, scale):
+    return [vector[i] * scale for i in range(3)]
 
 
 # ------------------------------------------------------------------------------
@@ -239,9 +243,19 @@ def circle_from_points(a, b, c):
 
 # ------------------------------------------------------------------------------
 # operations
+#
+# add_vectors
+# dot_vectors
+# dot_matrix_vector
+# dot_matrices
+# cross_vectors
+# subtract_vectors
+# normalize_vectors
+# scale_vectors
 # ------------------------------------------------------------------------------
 
 
+# rename to 'dot_vectors'
 def dot(u, v):
     """Compute the dot product of two vectors.
 
@@ -440,10 +454,6 @@ def distance_point_point_sqrd_2d(a, b):
     return length_vector_sqrd_2d(v)
 
 
-def distance_points_point(points, target):
-    return [distance_point_point(point, target) for point in points]
-
-
 def distance_point_line(point, line):
     """Compute the distance between a point and a line.
 
@@ -463,9 +473,9 @@ def distance_point_line(point, line):
 
     """
     a, b = line
-    ab   = [b[i] - a[i] for i in range(3)]
-    pa   = [a[i] - point[i] for i in range(3)]
-    pb   = [b[i] - point[i] for i in range(3)]
+    ab   = subtract_vectors(b, a)
+    pa   = subtract_vectors(a, point)
+    pb   = subtract_vectors(b, point)
     l    = length_vector(cross(pa, pb))
     l_ab = length_vector(ab)
     return l / l_ab
@@ -485,9 +495,9 @@ def distance_point_line_2d(point, line):
 def distance_point_line_sqrd(point, line):
     """Compute the squared distance between a point and a line."""
     a, b = line
-    ab   = [b[i] - a[i] for i in range(3)]
-    pa   = [a[i] - point[i] for i in range(3)]
-    pb   = [b[i] - point[i] for i in range(3)]
+    ab   = subtract_vectors(b, a)
+    pa   = subtract_vectors(a, point)
+    pb   = subtract_vectors(b, point)
     l    = length_vector_sqrd(cross(pa, pb))
     l_ab = length_vector_sqrd(ab)
     return l / l_ab
@@ -549,7 +559,7 @@ def distance_point_plane(point, plane):
     return fabs(dot(vector, normal))
 
 
-def distance_line_line(l1, l2):
+def distance_line_line(l1, l2, tol=0.0):
     """Compute the distance between two skew lines.
 
     The distance is the absolute value of the dot product of a unit vector that
@@ -573,15 +583,17 @@ def distance_line_line(l1, l2):
         https://en.wikipedia.org/wiki/Skew_lines#Distance
 
     """
-    x1, x2 = l1
-    x3, x4 = l2
-    a = [x2[i] - x1[i] for i in range(3)]
-    b = [x4[i] - x3[i] for i in range(3)]
-    c = [x3[i] - x1[i] for i in range(3)]
-    n = cross(a, b)
+    a, b = l1
+    c, d = l2
+    ab = subtract_vectors(b, a)
+    cd = subtract_vectors(d, c)
+    ac = subtract_vectors(c, a)
+    n = cross(ab, cd)
     l = length_vector(n)
-    n = [n[i] / l for i in range(3)]
-    return fabs(dot(n, c))
+    if l <= tol:
+        raise Exception('The lines are not skew.')
+    n = scale_vector(n, 1.0 / l)
+    return fabs(dot(n, ac))
 
 
 # ------------------------------------------------------------------------------
@@ -1113,8 +1125,8 @@ def sort_points(point, cloud):
     return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
 
 
-def closest_point(point, cloud):
-    """Calculates the closest point to a pointcloud.
+def closest_point_in_cloud(point, cloud):
+    """Calculates the closest point in a pointcloud.
 
     Notes:
         Check kdTree class for an optimized implementation (MR).
