@@ -15,7 +15,7 @@ from scipy.spatial import distance_matrix
 from scipy.interpolate import griddata
 
 from brg.geometry import cross
-from brg.geometry.transformations import normalize_vector
+from brg.geometry import normalize_vector
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',

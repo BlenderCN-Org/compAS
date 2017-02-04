@@ -253,7 +253,7 @@ if __name__ == "__main__":
     from operator import itemgetter
 
     import brg
-    from brg.datastructures.network.network import Network
+    from brg.datastructures.network import Network
 
     from scipy.sparse.linalg import spsolve
 

@@ -20,12 +20,12 @@ In general the following is assumed.
 * ray: a tuple with two points.
 * segment: a tuple with two points.
 * circle: a tuple with a point,
-    the normal vector of the plane of the circle, and the radius as float.
+  the normal vector of the plane of the circle, and the radius as float.
 * polygon: a sequence of points.
-    first and last are not the same. the polygon is assumed closed.
+  first and last are not the same. the polygon is assumed closed.
 * polyline: a sequence of points.
-    first and last are the same if the polyline is closed.
-    otherwise, it is assumed open.
+  first and last are the same if the polyline is closed.
+  otherwise, it is assumed open.
 * polyhedron: vertices and faces.
 
 

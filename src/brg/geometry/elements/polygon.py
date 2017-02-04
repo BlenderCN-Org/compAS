@@ -6,9 +6,9 @@ from brg.geometry import area_polygon
 from brg.geometry import cross
 from brg.geometry import centroid_points
 from brg.geometry import center_of_mass_polygon
+from brg.geometry import is_coplanar
 
 from brg.geometry.planar import is_polygon_convex
-from brg.geometry.spatial import is_coplanar
 
 
 __author__     = ['Tom Van Mele', ]

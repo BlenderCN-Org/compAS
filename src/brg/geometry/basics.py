@@ -17,7 +17,7 @@ __email__      = '<vanmelet@ethz.ch>'
 
 __all__ = [
     'add_vectors',
-    'add_vectors_list',
+    'add_vectorlist',
     'subtract_vectors',
     'vector_component',
     'vector_component_2d',
@@ -96,7 +96,16 @@ __all__ = [
 ]
 
 
-def add_vectors_list(vectors):
+# ------------------------------------------------------------------------------
+# utilities
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# misc
+# ------------------------------------------------------------------------------
+
+
+def add_vectorlist(vectors):
     """Adds multiple 3d vectors
 
     Parameters:
@@ -133,6 +142,10 @@ def subtract_vectors(u, v):
         Tuple: Resulting vector
     """
     return u[0] - v[0], u[1] - v[1], u[2] - v[2]
+
+
+def vector_from_to(a, b):
+    return [b[i] - a[i] for i in range(3)]
 
 
 def vector_component(u, v):
@@ -183,6 +196,45 @@ def normalize_vector(vector):
 
 def normalize_vectors(vectors):
     return [normalize_vector(vector) for vector in vectors]
+
+
+# ------------------------------------------------------------------------------
+# constructors
+# ------------------------------------------------------------------------------
+
+
+def circle_from_points(a, b, c):
+    """Create a circle from three points.
+
+    Parameters:
+        a (sequence of float): XYZ coordinates.
+        a (sequence of float): XYZ coordinates.
+        a (sequence of float): XYZ coordinates.
+
+    Returns:
+        tuple: center, normal, radius of the circle.
+
+    References:
+        https://en.wikipedia.org/wiki/Circumscribed_circle
+
+    """
+    ab = [b[i] - a[i] for i in range(3)]
+    cb = [b[i] - c[i] for i in range(3)]
+    ba = [a[i] - b[i] for i in range(3)]
+    ca = [a[i] - c[i] for i in range(3)]
+    ac = [c[i] - a[i] for i in range(3)]
+    bc = [c[i] - b[i] for i in range(3)]
+    normal = normalize_vector(cross(ab, ac))
+    d = 2 * length_vector_sqrd(cross(ba, cb))
+    A = length_vector_sqrd(cb) * dot(ba, ca) / d
+    B = length_vector_sqrd(ca) * dot(ab, cb) / d
+    C = length_vector_sqrd(ba) * dot(ac, bc) / d
+    Aa = [A * a[i] for i in range(3)]
+    Bb = [B * b[i] for i in range(3)]
+    Cc = [C * c[i] for i in range(3)]
+    center = add_vectorlist([Aa, Bb, Cc])
+    radius = distance_point_point(center, a)
+    return center, normal, radius
 
 
 # ------------------------------------------------------------------------------
@@ -1222,12 +1274,27 @@ def is_coplanar(points, tol=0.01):
     return True
 
 
-def is_convex(points):
-    c = center_of_mass_polygon(points)
-    for i in range(-1, len(points) - 1):
-        p0 = points[i]
-        p1 = points[i - 1]
-        p2 = points[i + 1]
+def is_polygon_convex(polygon):
+    """Verify if a polygon is convex.
+
+    Parameters:
+        polygon (sequence of sequence of floats): The XYZ coordinates of the
+            corners of the polygon.
+
+    Note:
+        Use this function for *spatial* polygons.
+        If the polygon is in a horizontal plane, use :func:`brg.geometry.planar.is_polygon_convex`
+        instead.
+
+    See Also:
+        :func:`brg.geometry.planar.is_polygon_convex`
+
+    """
+    c = center_of_mass_polygon(polygon)
+    for i in range(-1, len(polygon) - 1):
+        p0 = polygon[i]
+        p1 = polygon[i - 1]
+        p2 = polygon[i + 1]
         v0 = (c[0] - p0[0], c[1] - p0[1], c[2] - p0[2])
         v1 = (p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2])
         v2 = (p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2])
@@ -1315,129 +1382,67 @@ def is_closest_point_on_segment(point, segment, tol=0.0, return_point=False):
     return False
 
 
-def is_point_on_polyline(points, tp, tol=0):
-    for i in xrange(len(points) - 1):
-        clospt = closest_point_on_segment(points[i], points[i + 1], tp)
-        if distance_point_point(clospt, tp) <= tol:
+def is_point_on_polyline(point, polyline, tol=0.0):
+    """Verify if a point is on a polyline.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        polyline (sequence of sequence of float): XYZ coordinates of the points
+            of the polyline.
+        tol (float): Optional. The tolerance. Default is ``0.0``.
+
+    Returns:
+        bool: ``True`` if the point is on the polyline. ``False`` otherwise.
+
+    """
+    for i in xrange(len(polyline) - 1):
+        a = polyline[i]
+        b = polyline[i + 1]
+        c = closest_point_on_segment(point, (a, b))
+        if distance_point_point(point, c) <= tol:
             return True
     return False
 
 
-def is_point_in_triangle(p, abc):
-    """Verify if a point (p) is inside line of the triangle abc.
+def is_point_in_triangle(point, triangle):
+    """Verify if a point is in the interior of a triangle.
 
     Parameters:
-        p (tuple): 3d point
-        abc (tuples): 3d triangle points
+        point (sequence of float): XYZ coordinates.
+        triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.
 
     Returns:
         (bool): True if the point is in inside the triangle, False otherwise.
+
+    Note:
+        Should the point be in the same plane as the triangle?
+
+    See Also:
+        :func:`brg.geometry.planar.is_point_in_triangle`
+
     """
-    def is_on_same_side(p1, p2, a, b):
-        v = subtract_vectors(b, a)
-        cp1 = cross(v, subtract_vectors(p1, a))
-        cp2 = cross(v, subtract_vectors(p2, a))
-        if dot(cp1, cp2) >= 0:
+    def is_on_same_side(p1, p2, segment):
+        a, b = segment
+        v = vector_from_to(a, b)
+        c1 = cross(v, vector_from_to(a, p1))
+        c2 = cross(v, vector_from_to(a, p2))
+        if dot(c1, c2) >= 0:
             return True
         else:
             return False
-    a, b, c = abc
-    if is_on_same_side(p, a, b, c) and is_on_same_side(p, b, a, c) and is_on_same_side(p, c, a, b):
+    a, b, c = triangle
+    if is_on_same_side(point, a, (b, c)) and \
+       is_on_same_side(point, b, (a, c)) and \
+       is_on_same_side(point, c, (a, b)):
         return True
     return False
 
 
-# def is_point_in_polygon(points,tp):
-#     """Verify if a point is in the interior of a polygon.
-
-#     Note:
-#         This test only makes sense in the x/y plane
-
-#     Parameters:
-#         points (Polygon): list of ordered points.
-#         tp (3-tuple): 3d test point
-
-#         not implemented:
-#             include_boundary (bool): Should the boundary be included in the test?
-#                 Defaults to False.
-#             A tolerance value would be nice too... float errors are problematic
-#             points which are located on the boundary are not always uniquely defines as inside/outside
-
-#     Returns:
-#         bool: True if the point is in the polygon, False otherwise.
-#     """
-#     x,y = tp[0],tp[1]
-
-#     points = [(pt[0],pt[1]) for pt in points]# make 2D
-
-#     n = len(points)
-#     inside =False
-#     p1x,p1y = points[0]
-#     for i in range(n+1):
-#         p2x,p2y = points[i % n]
-#         if y > min(p1y,p2y):
-#             if y <= max(p1y,p2y):
-#                 if x <= max(p1x,p2x):
-#                     if p1y != p2y:
-#                         xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
-#                     if p1x == p2x or x <= xinters:
-#                         inside = not inside
-#         p1x,p1y = p2x,p2y
-#     return inside
-
-
-# def is_point_in_circle(pt1,pt2,pt3, tp):
-#     centPt, radius = circle_from_points_2d(pt1,pt2,pt3)
-#     #    if not temp:
-#     #        return False
-#     #    centPt, radius = temp
-#     #    rs.AddCircle((centPt[0],centPt[1],0),radius)
-
-#     if is_point_in_rectangle(centPt, radius, tp):
-#         dx = centPt[0] - tp[0]
-#         dy = centPt[1] - tp[1]
-#         dx *= dx
-#         dy *= dy
-#         distanceSquared = dx + dy
-#         radiusSquared = radius * radius
-#         return distanceSquared <= radiusSquared
-#     return False
-
-
-# #needed in is_point_in_circle
-# def circle_from_points_2d(pt1,pt2,pt3):
-#     ax =pt1[0]
-#     ay = pt1[1]  #first Point X and Y
-#     bx =pt2[0]
-#     by = pt2[1]   #Second Point X and Y
-#     cx =pt3[0]
-#     cy =pt3[1]   #Third Point X and Y
-#     #****************Following are Basic Procedure**********************///
-#     x1 = (bx + ax) / 2
-#     y11 = (by + ay) / 2
-#     dy1 = bx - ax
-#     dx1 = -(by - ay)
-#     #***********************
-#     x2 = (cx + bx) / 2
-#     y2 = (cy + by) / 2
-#     dy2 = cx - bx
-#     dx2 = -(cy - by)
-#     #****************************
-#     try:
-#         ox = (y11 * dx1 * dx2 + x2 * dx1 * dy2 - x1 * dy1 * dx2 - y2 * dx1 * dx2)/ (dx1 * dy2 - dy1 * dx2)
-#         oy = (ox - x1) * dy1 / dx1 + y11
-#     except:
-#         return None,None
-#     #***********************************
-#     dx = ox - ax
-#     dy = oy - ay
-#     radius = (dx * dx + dy * dy)**0.5
-#     return (ox,oy,0),radius
-
-
-# #needed in is_point_in_circle
-# def is_point_in_rectangle(centPt, radius, testPt):
-#     return testPt[0] >= centPt[0] - radius and testPt[0] <= centPt[0] + radius and testPt[1] >= centPt[1] - radius and testPt[1] <= centPt[1] + radius
+def is_point_in_circle(point, circle):
+    center, normal, radius = circle
+    if is_point_on_plane(point, (center, normal)):
+        return distance_point_point(point, center) <= radius
+    return False
 
 
 # def is_line_line_intersection_2d(p1, v1, p2, v2, points=False):
