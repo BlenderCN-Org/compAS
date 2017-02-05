@@ -158,7 +158,18 @@ def is_box_intersecting_box(box_1,box_2):
     Returns:
         bool: True if the boxes intersect, False otherwise.
         
-    Todo:
+    Examples:
+        >>> x,y,z = 1,1,1
+        >>> box_a = [(0.0, 0.0, 0.0), (x, 0.0, 0.0), (x, y, 0.0), (0.0, y, 0.0)]
+        >>> box_a += [(0.0, 0.0, z), (x, 0.0, z), (x, y, z), (0.0, y, z)]
+        >>> box_b = [(0.5, 0.5, 0.0), (1.5, 0.5, 0.0), (1.5, 1.5, 0.0), (0.5, 1.5, 0.0)]
+        >>> box_b += [(0.5, 0.5, 1.0), (1.5, 0.5, 1.0), (1.5, 1.5, 1.0), (0.5, 1.5, 1.0)]
+        >>> if is_box_intersecting_box(box_a, box_b):
+        >>>     print "intersection found"
+        >>> else:
+        >>>     print "no intersection found"
+    
+    Note:
         WARNING! Does not check if one box is completely enclosed by the other.
     """
     #all edges of box one
@@ -182,7 +193,7 @@ def is_box_intersecting_box(box_1,box_2):
                 if t:
                     v1 = scale_vector(v1, t)
                     test_pt = add_vectors(v1,p1)
-                    if is_point_on_segment(p1, p2, test_pt, tol=0.0001):
+                    if is_point_on_segment(test_pt, (p1, p2)):
                         #intersection found
                         intx = True
                         break
@@ -212,9 +223,7 @@ if __name__ == '__main__':
     tic = time.time()
     for i in range(steps):
 
-        x = random.random()
-        y = random.random()
-        z = random.random()
+        x,y,z = 0.51,0.51,0.51
         box_a = [(0.0, 0.0, 0.0), (x, 0.0, 0.0), (x, y, 0.0), (0.0, y, 0.0)]
         box_a += [(0.0, 0.0, z), (x, 0.0, z), (x, y, z), (0.0, y, z)]
 
