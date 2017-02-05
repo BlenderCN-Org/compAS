@@ -12,6 +12,8 @@ from numpy.random import rand
 from random import sample
 from functools import partial
 
+from brg.numerical.solvers.evolutionary.genetic.visualization.ga_visualization import GA_VIS
+
 import json
 import multiprocessing
 
@@ -24,7 +26,7 @@ __date__       = '10.10.2016'
 
 
 def de_solver(fn, bounds, population, iterations, results=None, threads=1,
-              F=0.8, CR=0.9, name='Differential evolution', args=()):
+              F=0.8, CR=0.9, name='Function', args=()):
     """ Call the differential evolution solver.
 
     Note:
@@ -166,6 +168,13 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=1,
         fnm = '{0}parameters.json'.format(results)
         with open(fnm, 'w+') as fp:
             json.dump(parameters, fp)
+        vis = GA_VIS()
+        vis.input_path = results
+        vis.output_path = vis.input_path
+        filename = 'parameters.json'
+        vis.conversion_function = None
+        vis.start_from_gen = 0
+        vis.draw_ga_evolution(filename)
 
     return fopt, xopt
 
