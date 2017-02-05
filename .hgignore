@@ -1,0 +1,26 @@
+syntax: glob
+
+.project
+.pydevproject
+.settings
+
+*.orig
+*.3dmbak
+*.rui_bak
+*.pyc
+*.in
+*.out
+
+__temp
+
+data
+
+docs/build
+docs/source/pages/reference
+
+libs/**
+
+threejs/**
+
+syntax: regexp
+^examples/objects_to_mesh_in_rhino/toolbar\.rui$
