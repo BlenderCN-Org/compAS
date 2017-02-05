@@ -113,6 +113,5 @@ try:
     mdl.results = results
     mdl.save('{0}{1}.obj'.format(path, name))
 except:
-    pass
-with open('{0}{1}.json'.format(path, name), 'w') as f:
-    json.dump(results, f)
+    with open('{0}{1}.json'.format(path, name), 'w') as f:
+        json.dump(results, f)

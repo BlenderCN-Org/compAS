@@ -5,7 +5,13 @@ from brg_blender.utilities.layers import layer_mask
 from brg_blender.utilities.objects import delete_objects
 from brg_blender.utilities.objects import object_layer
 
+from brg.geometry.basics import centroid_points
+from brg.geometry.basics import subtract_vectors
+from brg.geometry.basics import length_vector
+
 from mathutils import Vector
+from math import atan2
+from math import acos
 
 import bpy
 
@@ -15,13 +21,13 @@ __license__    = 'MIT License'
 __date__       = 'Oct 17, 2016'
 
 
-def color_vertex(object, vertices, color):
-    """ Color the vertex of a Blender mesh.
+def color_mesh_vertices(object, vertices, colors):
+    """ Color the vertices of a Blender mesh.
 
     Parameters:
         object (obj): Mesh object.
-        vertices (list, str): List of vertices to color, or 'all'.
-        color (list): RGB colour.
+        vertices (list): List of vertices to color.
+        color (list): List of RGB colors [0, 1] (list).
 
     Returns:
         None
@@ -36,10 +42,33 @@ def color_vertex(object, vertices, color):
     for face in mesh.polygons:
         for i in face.loop_indices:
             j = mesh.loops[i].vertex_index
-            if vertices == 'all':
-                col.data[i].color = color
-            elif j in vertices:
-                col.data[i].color = color
+            if j in vertices:
+                ind = vertices.index(j)
+                col.data[i].color = colors[ind]
+
+
+def draw_pipe(start, end, radius, n=4):
+    """ Create a pipe (cylinder) between two points with given radius.
+
+    Parameters:
+        start (list): Pipe start point [x, y, z].
+        end (list): Pipe end point [x, y, z].
+        radius (float): Radius of the pipe cross-section.
+        n (int): Number of points around cross-section.
+
+    Returns:
+        obj: Created pipe object.
+    """
+    centroid = centroid_points([start, end])
+    L = length_vector(subtract_vectors(end, start))
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=L, vertices=n,
+                                        location=centroid)
+    phi = atan2(end[1] - start[1], end[0] - start[0])
+    theta = acos((end[2] - start[2]) / L)
+    bpy.context.object.rotation_euler[1] = theta
+    bpy.context.object.rotation_euler[2] = phi
+    object = bpy.context.object
+    return object
 
 
 def material_create(name, color, alpha=1):
@@ -51,7 +80,7 @@ def material_create(name, color, alpha=1):
         alpha (float): Alpha value from [0, 1].
 
     Returns:
-        obj: Created material object
+        obj: Created material object.
     """
     material = bpy.data.materials.new(name)
     material.diffuse_color = color
@@ -132,6 +161,29 @@ def xdraw_lines(lines):
             bpy.context.scene.objects.link(object)
         except:
             pass
+    return objects
+
+
+def xdraw_points(points):
+    """ Draw a set of points.
+
+    Parameters:
+        points (dic): 'pos', 'name' as the keys.
+
+    Returns:
+        list: Created points objects.
+    """
+    object = xdraw_mesh('original', vertices=[[0, 0, 0]])
+    objects = []
+    for p in points:
+        copy = object.copy()
+        copy.location = Vector(p['pos'])
+        copy.data = copy.data.copy()
+        copy.name = p['name']
+        objects.append(copy)
+    delete_objects([object])
+    for object in objects:
+        bpy.context.scene.objects.link(object)
     return objects
 
 
@@ -258,3 +310,6 @@ if __name__ == '__main__':
              {'name': 't2', 'pos': [2, 2, 4], 'radius': 1.0, 'color': 'blue',
               'text': 'T2'}]
     xdraw_texts(texts)
+
+    xdraw_points([{'name': 'point1', 'pos': [0, 0, 3]},
+                  {'name': 'point2', 'pos': [1, 1, 3]}])
