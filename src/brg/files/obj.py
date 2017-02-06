@@ -3,7 +3,7 @@ try:
 except ImportError:
     import urllib2
 
-from brg.utilities.maps import geometric_key
+from brg.utilities import geometric_key
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]

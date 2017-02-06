@@ -1,5 +1,5 @@
 from brg.geometry import angle_smallest_vectors
-from brg.geometry.planar import is_ccw
+from brg.geometry.planar import is_ccw_2d
 
 import warnings
 
@@ -107,7 +107,7 @@ def _sort_neighbours(network, ccw=True):
             c = xyz[nbr]
             pos = 0
             b = xyz[ordered[pos]]
-            while not is_ccw(a, b, c):
+            while not is_ccw_2d(a, b, c):
                 pos += 1
                 if pos > i:
                     break
@@ -115,7 +115,7 @@ def _sort_neighbours(network, ccw=True):
             if pos == 0:
                 pos = -1
                 b = xyz[ordered[pos]]
-                while is_ccw(a, b, c):
+                while is_ccw_2d(a, b, c):
                     pos -= 1
                     if pos < -len(ordered):
                         break

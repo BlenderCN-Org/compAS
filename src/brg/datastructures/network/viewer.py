@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-"""An OpenGL viewer for visualising networks."""
-
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
@@ -83,7 +79,6 @@ if __name__ == '__main__':
     network.add_edge('0', '14')
     network.add_edge('15', '10')
     network.add_edge('21', '24')
-
 
     viewer = NetworkViewer(network, 600, 600)
 

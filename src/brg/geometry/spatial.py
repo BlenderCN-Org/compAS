@@ -4,9 +4,10 @@ from math import acos
 from math import pi
 from math import sqrt
 from math import fabs
+from math import cos
+from math import sin
 
-
-SQRT_05 = sqrt(0.5)
+from brg.geometry.utilities import multiply_matrix_vector
 
 
 __author__     = ['Tom Van Mele', ]
@@ -16,67 +17,43 @@ __email__      = '<vanmelet@ethz.ch>'
 
 
 __all__ = [
-    'vector_component',
-    'vector_component_2d',
-    'normalize_vector',
-    'normalize_vectors',
-
     'vector_from_points',
     'plane_from_points',
     'circle_from_points',
 
+    'vector_component',
+
     'add_vectors',
     'subtract_vectors',
+    'scale_vector',
+    'scale_vectors',
+    'normalize_vector',
+    'normalize_vectors',
     'dot_vectors',
-    'dot_matrices',
-    'dot_matrix_vector',
-    'dot',
-    'dot_vectors_2d',
-    'dot_2d',
     'cross_vectors',
-    'cross',
-    'cross_vectors_2d',
-    'cross_2d',
 
     'length_vector',
-    'length_vector_2d',
     'length_vector_sqrd',
-    'length_vector_sqrd_2d',
 
     'distance_point_point',
-    'distance_point_point_2d',
     'distance_point_point_sqrd',
-    'distance_point_point_sqrd_2d',
-
     'distance_point_line',
     'distance_point_line_sqrd',
-    'distance_point_line_2d',
-    'distance_point_line_sqrd_2d',
-
     'distance_point_plane',
     'distance_line_line',
 
     'angles_points',
-    'angles_points_2d',
     'angles_vectors',
-    'angles_vectors_2d',
     'angle_smallest_points',
-    'angle_smallest_points_2d',
     'angle_smallest_vectors',
-    'angle_smallest_vectors_2d',
 
     'midpoint_line',
-    'midpoint_line_2d',
     'centroid_points',
-    'centroid_points_2d',
     'center_of_mass_polygon',
-    'center_of_mass_polygon_2d',
     'center_of_mass_polyhedron',
 
     'area_polygon',
-    'area_polygon_2d',
     'area_triangle',
-    'area_triangle_2d',
 
     'volume_polyhedron',
 
@@ -84,7 +61,6 @@ __all__ = [
     'normal_polygon',
 
     'bounding_box',
-    'bounding_box_2d',
 
     'closest_point_in_cloud',
     'closest_point_on_line',
@@ -92,19 +68,40 @@ __all__ = [
     'closest_point_on_plane',
     'closest_point_on_polyline',
 
-    'is_colinear',
-    'is_coplanar',
-    'is_polygon_convex',
+    'is_colinear',  # is_point_on_line
+    'is_coplanar',  # is_point_on_plane
+    'is_polygon_convex',  # is_polygon_planar
     'is_point_on_plane',
     'is_point_on_line',
     'is_point_on_segment',
+    'is_closest_point_on_segment',
     'is_point_on_polyline',
     'is_point_in_triangle',
+
+    'is_intersection_ray_triangle',
+    'is_intersection_box_box',
+
+    'intersection_line_line',
+    'intersection_lines',
+    'intersection_circle_circle',
+
+    'translate_points',
+    'translate_lines',
+
+    'rotate_points',
+
+    'mirror_point_point',
+    'mirror_points_point',
+    'mirror_point_line',
+    'mirror_points_line',
+    'mirror_point_plane',
+    'mirror_points_plane',
+
+    'project_point_plane',
+    'project_points_plane',
+    'project_point_line',
+    'project_points_line',
 ]
-
-
-class BRGGeometryInputError(Exception):
-    pass
 
 
 # ------------------------------------------------------------------------------
@@ -114,7 +111,7 @@ class BRGGeometryInputError(Exception):
 
 def vector_from_points(a, b):
     """"""
-    return [b[i] - a[i] for i in range(3)]
+    return b[0] - a[0], b[1] - a[1], b[2] - a[2]
 
 
 def plane_from_points(a, b, c):
@@ -149,20 +146,20 @@ def circle_from_points(a, b, c):
         https://en.wikipedia.org/wiki/Circumscribed_circle
 
     """
-    ab = [b[i] - a[i] for i in range(3)]
-    cb = [b[i] - c[i] for i in range(3)]
-    ba = [a[i] - b[i] for i in range(3)]
-    ca = [a[i] - c[i] for i in range(3)]
-    ac = [c[i] - a[i] for i in range(3)]
-    bc = [c[i] - b[i] for i in range(3)]
-    normal = normalize_vector(cross(ab, ac))
-    d = 2 * length_vector_sqrd(cross(ba, cb))
-    A = length_vector_sqrd(cb) * dot(ba, ca) / d
-    B = length_vector_sqrd(ca) * dot(ab, cb) / d
-    C = length_vector_sqrd(ba) * dot(ac, bc) / d
-    Aa = [A * a[i] for i in range(3)]
-    Bb = [B * b[i] for i in range(3)]
-    Cc = [C * c[i] for i in range(3)]
+    ab = subtract_vectors(b, a)
+    cb = subtract_vectors(b, c)
+    ba = subtract_vectors(a, b)
+    ca = subtract_vectors(a, c)
+    ac = subtract_vectors(c, a)
+    bc = subtract_vectors(c, b)
+    normal = normalize_vector(cross_vectors(ab, ac))
+    d = 2 * length_vector_sqrd(cross_vectors(ba, cb))
+    A = length_vector_sqrd(cb) * dot_vectors(ba, ca) / d
+    B = length_vector_sqrd(ca) * dot_vectors(ab, cb) / d
+    C = length_vector_sqrd(ba) * dot_vectors(ac, bc) / d
+    Aa = scale_vector(a, A)
+    Bb = scale_vector(b, B)
+    Cc = scale_vector(c, C)
     center = add_vectorlist([Aa, Bb, Cc])
     radius = distance_point_point(center, a)
     return center, normal, radius
@@ -195,45 +192,12 @@ def vector_component(u, v):
         >>> vector_component([1, 2, 3], [1, 0, 0])
         [1, 0, 0]
     """
-    x = dot(u, v) / length_vector_sqrd(v)
-    return x * v[0], x * v[1], x * v[2]
-
-
-def vector_component_2d(u, v):
-    x = dot_2d(u, v) / length_vector_sqrd_2d(v)
-    return x * v[0], x * v[1]
-
-
-def normalize_vector(vector):
-    """normalizes a vector
-
-    Parameters:
-        v1 (tuple, list, Vector): The vector.
-
-    Returns:
-        Tuple: normalized vector
-    """
-    l = float(length_vector(vector))
-    if l == 0.0:
-        return vector
-    return vector[0] / l, vector[1] / l, vector[2] / l
-
-
-def normalize_vectors(vectors):
-    return [normalize_vector(vector) for vector in vectors]
+    x = dot_vectors(u, v) / length_vector_sqrd(v)
+    return scale_vector(v, x)
 
 
 # ------------------------------------------------------------------------------
 # operations
-#
-# add_vectors
-# dot_vectors
-# dot_matrix_vector
-# dot_matrices
-# cross_vectors
-# subtract_vectors
-# normalize_vectors
-# scale_vectors
 # ------------------------------------------------------------------------------
 
 
@@ -277,8 +241,52 @@ def subtract_vectors(u, v):
     return u[0] - v[0], u[1] - v[1], u[2] - v[2]
 
 
-def scale_vector(vector, scale):
-    return [vector[0] * scale, vector[1] * scale, vector[2] * scale]
+def scale_vector(vector, f):
+    """Scales vector by factor
+
+    Parameters:
+        vector (sequence of float): The vector.
+        f (float): The scale factor.
+
+    Returns:
+        list: the scaled vector.
+
+    """
+    f = float(f)
+    return [vector[0] * f, vector[1] * f, vector[2] * f]
+
+
+def scale_vectors(vectors, f):
+    """Scale a list of vectors by a factor.
+
+    Parameters:
+        vectors (sequence of sequence of float): XYZ coordinates of the vectors.
+        f (float): the scaling factor.
+
+    Returns:
+        list: the scaled vectors.
+
+    """
+    return [scale_vector(vector, f) for vector in vectors]
+
+
+def normalize_vector(vector):
+    """normalizes a vector
+
+    Parameters:
+        v1 (tuple, list, Vector): The vector.
+
+    Returns:
+        Tuple: normalized vector
+    """
+    l = float(length_vector(vector))
+    if l == 0.0:
+        return vector
+    return vector[0] / l, vector[1] / l, vector[2] / l
+
+
+def normalize_vectors(vectors):
+    return [normalize_vector(vector) for vector in vectors]
 
 
 def dot_vectors(u, v):
@@ -292,7 +300,7 @@ def dot_vectors(u, v):
         float: The dot product of the two vectors.
 
     Examples:
-        >>> dot([1.0, 0, 0], [2.0, 0, 0])
+        >>> dot_vectors([1.0, 0, 0], [2.0, 0, 0])
         2
 
     See Also:
@@ -300,96 +308,6 @@ def dot_vectors(u, v):
 
     """
     return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
-
-
-dot = dot_vectors
-
-
-def dot_vectors_2d(u, v):
-    """Compute the dot product of the XY componets of two vectors."""
-    return u[0] * v[0] + u[1] * v[1]
-
-
-dot_2d = dot_vectors_2d
-
-
-def dot_matrices(A, B):
-    r"""Mutliply a matrix with a matrix.
-
-    This is a pure Python version of the following linear algebra procedure:
-
-    .. math::
-
-        \mathbf{A} \cdot \mathbf{B} = \mathbf{C}
-
-    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{B}` a *n* by *o*
-    matrix, and :math:`\mathbf{C}` a *m* by *o* matrix.
-
-    Parameters:
-        A (sequence of sequence of float): The first matrix.
-        B (sequence of sequence of float): The second matrix.
-
-    Returns:
-        list of list of float: The result matrix.
-
-    Raises:
-        BRGGeometryInputError:
-        If the shapes of the matrices are not compatible.
-
-        BRGGeometryInputError:
-        If the row length of B is inconsistent.
-
-    Examples:
-        >>> A = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
-        >>> B = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
-        >>> dot_matrices(A, B)
-        [[4.0, 0.0, 0.0], [0.0, 4.0, 0.0], [0.0, 0.0, 4.0]]
-
-    """
-    n = len(B)  # number of rows in B
-    o = len(B[0])  # number of cols in B
-    if not all([len(row) == o for row in B]):
-        raise BRGGeometryInputError('Row length in matrix B is inconsistent.')
-    if not all([len(row) == n for row in A]):
-        raise BRGGeometryInputError('Matrix shapes are not compatible.')
-    B = zip(*B)
-    return [[sum(x * y for x, y in zip(row, col)) for col in B] for row in A]
-
-
-def dot_matrix_vector(matrix, vector):
-    r"""Multiply a matrix with a vector.
-
-    This is a Python version of the following linear algebra procedure:
-
-    .. math::
-
-        \mathbf{A} \cdot \mathbf{x} = \mathbf{b}
-
-    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{x}` a vector of
-    length *n*, and :math:`\mathbf{b}` a vector of length *m*.
-
-    Parameters:
-        matrix (list of list): The matrix.
-        vector (list): The vector.
-
-    Returns:
-        list: The resulting vector
-
-    Raises:
-        BRGGeometryInputError:
-        If not all rows of the matrix have the same length as the vector.
-
-    Examples:
-        >>> matrix = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
-        >>> vector = [1.0, 2.0, 3.0]
-        >>> dot_matrix_vector(matrix, vector)
-        [2.0, 4.0, 6.0]
-
-    """
-    v = len(vector)
-    if not all([len(row) == v for row in matrix]):
-        raise BRGGeometryInputError('Matrix shape is not compatible with vector length.')
-    return [sum(x * y for x, y in zip(row, vector)) for row in matrix]
 
 
 def cross_vectors(u, v):
@@ -428,7 +346,7 @@ def cross_vectors(u, v):
         \end{bmatrix}
 
     Exmaples:
-        >>> cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+        >>> cross_vectors([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
         [0.0, 0.0, 1.0]
 
     See Also:
@@ -438,22 +356,6 @@ def cross_vectors(u, v):
     return [u[1] * v[2] - u[2] * v[1],
             u[2] * v[0] - u[0] * v[2],
             u[0] * v[1] - u[1] * v[0]]
-
-
-cross = cross_vectors
-
-
-def cross_vectors_2d(u, v):
-    """Compute the cross product of the XY components of two vectors.
-
-    Note:
-        The resulting vector is always parallel to the Z-axis, i.e. its X and Y
-        components are zero.
-    """
-    return [0.0, 0.0, u[0] * v[1] - u[1] * v[0]]
-
-
-cross_2d = cross_vectors_2d
 
 
 # ------------------------------------------------------------------------------
@@ -478,12 +380,7 @@ def length_vector(v):
         :func:`length_2d`
 
     """
-    return sqrt(dot(v, v))
-
-
-def length_vector_2d(v):
-    """Compute the length of the XY components of a vector."""
-    return sqrt(dot_2d(v, v))
+    return sqrt(dot_vectors(v, v))
 
 
 def length_vector_sqrd(v):
@@ -503,12 +400,7 @@ def length_vector_sqrd(v):
         :func:`length_sqrd_2d`
 
     """
-    return dot(v, v)
-
-
-def length_vector_sqrd_2d(v):
-    """Compute the squared length of the XY components of a vector."""
-    return dot_2d(v, v)
+    return dot_vectors(v, v)
 
 
 # ------------------------------------------------------------------------------
@@ -534,13 +426,8 @@ def distance_point_point(a, b):
         :func:`distance_point_point_2d`
 
     """
-    v = b[0] - a[0], b[1] - a[1], b[2] - a[2]
-    return length_vector(v)
-
-
-def distance_point_point_2d(a, b):
-    v = b[0] - a[0], b[1] - a[1]
-    return length_vector_2d(v)
+    ab = subtract_vectors(b, a)
+    return length_vector(ab)
 
 
 def distance_point_point_sqrd(a, b):
@@ -561,13 +448,8 @@ def distance_point_point_sqrd(a, b):
         :func:`distance_point_point_sqrd_2d`
 
     """
-    v = b[0] - a[0], b[1] - a[1], b[2] - a[2]
-    return length_vector_sqrd(v)
-
-
-def distance_point_point_sqrd_2d(a, b):
-    v = b[0] - a[0], b[1] - a[1]
-    return length_vector_sqrd_2d(v)
+    ab = subtract_vectors(b, a)
+    return length_vector_sqrd(ab)
 
 
 def distance_point_line(point, line):
@@ -592,19 +474,8 @@ def distance_point_line(point, line):
     ab   = subtract_vectors(b, a)
     pa   = subtract_vectors(a, point)
     pb   = subtract_vectors(b, point)
-    l    = length_vector(cross(pa, pb))
+    l    = length_vector(cross_vectors(pa, pb))
     l_ab = length_vector(ab)
-    return l / l_ab
-
-
-def distance_point_line_2d(point, line):
-    """Compute the distance in the XY plane between a point and a line."""
-    a, b = line
-    ab   = b[0] - a[0], b[1] - a[1]
-    pa   = a[0] - point[0], a[1] - point[1]
-    pb   = b[0] - point[0], b[1] - point[1]
-    l    = length_vector_2d(cross_2d(pa, pb))
-    l_ab = length_vector_2d(ab)
     return l / l_ab
 
 
@@ -614,18 +485,7 @@ def distance_point_line_sqrd(point, line):
     ab   = subtract_vectors(b, a)
     pa   = subtract_vectors(a, point)
     pb   = subtract_vectors(b, point)
-    l    = length_vector_sqrd(cross(pa, pb))
-    l_ab = length_vector_sqrd(ab)
-    return l / l_ab
-
-
-def distance_point_line_sqrd_2d(point, line):
-    """Compute the squared distance in the XY plane between a point and a line."""
-    a, b = line
-    ab   = b[0] - a[0], b[1] - a[1]
-    pa   = a[0] - point[0], a[1] - point[1]
-    pb   = b[0] - point[0], b[1] - point[1]
-    l    = length_vector_sqrd(cross(pa, pb))
+    l    = length_vector_sqrd(cross_vectors(pa, pb))
     l_ab = length_vector_sqrd(ab)
     return l / l_ab
 
@@ -672,7 +532,7 @@ def distance_point_plane(point, plane):
     """
     base, normal = plane
     vector = subtract_vectors(point, base)
-    return fabs(dot(vector, normal))
+    return fabs(dot_vectors(vector, normal))
 
 
 def distance_line_line(l1, l2, tol=0.0):
@@ -704,12 +564,12 @@ def distance_line_line(l1, l2, tol=0.0):
     ab = subtract_vectors(b, a)
     cd = subtract_vectors(d, c)
     ac = subtract_vectors(c, a)
-    n = cross(ab, cd)
+    n = cross_vectors(ab, cd)
     l = length_vector(n)
     if l <= tol:
         raise Exception('The lines are not skew.')
     n = scale_vector(n, 1.0 / l)
-    return fabs(dot(n, ac))
+    return fabs(dot_vectors(n, ac))
 
 
 # ------------------------------------------------------------------------------
@@ -731,23 +591,6 @@ def angles_vectors(u, v):
 
     """
     a = angle_smallest_vectors(u, v)
-    return a, 360 - a
-
-
-def angles_vectors_2d(u, v):
-    """Compute the angles between the XY components of two vectors.
-
-    Parameters:
-        u (sequence of float) : XY(Z) components of the first vector.
-        v (sequence of float) : XY(Z) components of the second vector.
-
-    Returns:
-        tuple: The two angles.
-
-        The smallest angle is returned first.
-
-    """
-    a = angle_smallest_vectors_2d(u, v)
     return a, 360 - a
 
 
@@ -780,33 +623,6 @@ def angles_points(a, b, c):
     return angles_vectors(u, v)
 
 
-def angles_points_2d(a, b, c):
-    """Compute the angles defined by the XY components of three points.
-
-    Parameters:
-        a (sequence of float): XY(Z) coordinates.
-        b (sequence of float): XY(Z) coordinates.
-        c (sequence of float): XY(Z) coordinates.
-
-    Returns:
-        tuple: The two angles.
-
-        The smallest angle is returned first.
-
-    Notes:
-        The vectors are defined in the following way
-
-        .. math::
-
-            \mathbf{u} = \mathbf{b} - \mathbf{a} \\
-            \mathbf{v} = \mathbf{c} - \mathbf{a}
-
-        Z components may be provided, but are simply ignored.
-
-    """
-    raise NotImplementedError
-
-
 def angle_smallest_vectors(u, v):
     """Compute the smallest angle between two vectors.
 
@@ -824,35 +640,7 @@ def angle_smallest_vectors(u, v):
         90
 
     """
-    a = dot(u, v) / (length_vector(u) * length_vector(v))
-    a = max(min(a, 1), -1)
-    return 180. * acos(a) / pi
-
-
-def angle_smallest_vectors_2d(u, v):
-    """Compute the smallest angle between the XY components of two vectors.
-
-    Parameters:
-        u (sequence of float): XY(Z) components of the first vector.
-        v (sequence of float): XY(Z) components of the second vector.
-
-    Returns:
-        float: The smallest angle.
-
-        The angle is always positive.
-
-    Notes:
-        The vectors are defined in the following way
-
-        .. math::
-
-            \mathbf{u} = \mathbf{b} - \mathbf{a} \\
-            \mathbf{v} = \mathbf{c} - \mathbf{a}
-
-        Z components may be provided, but are simply ignored.
-
-    """
-    a = dot_2d(u, v) / (length_vector_2d(u) * length_vector_2d(v))
+    a = dot_vectors(u, v) / (length_vector(u) * length_vector(v))
     a = max(min(a, 1), -1)
     return 180. * acos(a) / pi
 
@@ -886,33 +674,6 @@ def angle_smallest_points(a, b, c):
     return angle_smallest_points(u, v)
 
 
-def angle_smallest_points_2d(a, b, c):
-    """Compute the smallest angle between vectors formed by the XY components of three points.
-
-    Parameters:
-        a (sequence of float): XY(Z) coordinates.
-        b (sequence of float): XY(Z) coordinates.
-        c (sequence of float): XY(Z) coordinates.
-
-    Returns:
-        float: The smallest angle.
-
-        The angle is always positive.
-
-    Note:
-        The vectors are defined in the following way
-
-        .. math::
-
-            \mathbf{u} = \mathbf{b} - \mathbf{a} \\
-            \mathbf{v} = \mathbf{c} - \mathbf{a}
-
-        Z components may be provided, but are simply ignored.
-
-    """
-    raise NotImplementedError
-
-
 # ------------------------------------------------------------------------------
 # average
 # ------------------------------------------------------------------------------
@@ -934,13 +695,9 @@ def centroid_points(points):
     Examples:
         >>> centroid()
     """
-    p = len(points)
-    return [axis / p for axis in map(sum, zip(*points))]
-
-
-def centroid_points_2d(points):
-    p = len(points)
-    return [axis / p for axis in map(sum, zip(*points))]
+    p = float(len(points))
+    x, y, z = zip(*points)
+    return sum(x) / p, sum(y) / p, sum(z) / p
 
 
 def midpoint_line(a, b):
@@ -956,11 +713,7 @@ def midpoint_line(a, b):
     Examples:
         >>> midpoint()
     """
-    return 0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.5 * (a[2] + b[2])
-
-
-def midpoint_line_2d(a, b):
-    return 0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1])
+    return scale_vector(add_vectors(a, b), 0.5)
 
 
 def center_of_mass_polygon(polygon):
@@ -1001,23 +754,6 @@ def center_of_mass_polygon(polygon):
     return cx, cy, cz
 
 
-def center_of_mass_polygon_2d(polygon):
-    L  = 0
-    cx = 0
-    cy = 0
-    p  = len(polygon)
-    for i in range(-1, p - 1):
-        p1  = polygon[i]
-        p2  = polygon[i + 1]
-        d   = distance_point_point(p1, p2)
-        cx += 0.5 * d * (p1[0] + p2[0])
-        cy += 0.5 * d * (p1[1] + p2[1])
-        L  += d
-    cx = cx / L
-    cy = cy / L
-    return cx, cy
-
-
 def center_of_mass_polyhedron():
     """Compute the center of mass of a polyhedron"""
     raise NotImplementedError
@@ -1044,23 +780,11 @@ def area_polygon(polygon):
     o = centroid_points(polygon)
     u = subtract_vectors(polygon[-1], o)
     v = subtract_vectors(polygon[0], o)
-    a = 0.5 * length_vector(cross(u, v))
+    a = 0.5 * length_vector(cross_vectors(u, v))
     for i in range(0, len(polygon) - 1):
         u = v
         v = subtract_vectors(polygon[i + 1], o)
-        a += 0.5 * length_vector(cross(u, v))
-    return a
-
-
-def area_polygon_2d(polygon):
-    o = centroid_points_2d(polygon)
-    u = polygon[-1][0] - o[0], polygon[-1][1] - o[1]
-    v = polygon[0][0] - o[0], polygon[0][1] - o[1]
-    a = 0.5 * length_vector_2d(cross_2d(u, v))
-    for i in range(0, len(polygon) - 1):
-        u = v
-        v = polygon[i + 1][0] - o[0], polygon[i + 1][1] - o[1]
-        a += 0.5 * length_vector_2d(cross_2d(u, v))
+        a += 0.5 * length_vector(cross_vectors(u, v))
     return a
 
 
@@ -1068,12 +792,6 @@ def area_triangle(triangle):
     """Compute the area of a triangle defined by three points.
     """
     return 0.5 * length_vector(normal_triangle(triangle, False))
-
-
-def area_triangle_2d(triangle):
-    """Compute the area of the XY projection of a triangle defined by three points.
-    """
-    raise NotImplementedError
 
 
 def volume_polyhedron(polyhedron):
@@ -1114,8 +832,8 @@ def volume_polyhedron(polyhedron):
             c  = polyhedron.vertex_coordinates(face[2])
             ab = subtract_vectors(b, a)
             ac = subtract_vectors(c, a)
-            n  = cross(ab, ac)
-            V += dot(a, n)
+            n  = cross_vectors(ab, ac)
+            V += dot_vectors(a, n)
     return V / 6.
 
 
@@ -1151,7 +869,7 @@ def normal_polygon(points, unitized=True):
         p3  = points[i + 1]
         v1  = subtract_vectors(p1, p2)
         v2  = subtract_vectors(p3, p2)
-        n   = cross(v1, v2)
+        n   = cross_vectors(v1, v2)
         nx += n[0]
         ny += n[1]
         nz += n[2]
@@ -1170,7 +888,7 @@ def normal_triangle(triangle, unitized=True):
     a, b, c = triangle
     ab = subtract_vectors(b, a)
     ac = subtract_vectors(c, a)
-    n  = cross(ab, ac)
+    n  = cross_vectors(ab, ac)
     if not unitized:
         return n
     lvec = length_vector(n)
@@ -1200,18 +918,6 @@ def bounding_box(points):
             (max_x, min_y, max_z),
             (max_x, max_y, max_z),
             (min_x, max_y, max_z)]
-
-
-def bounding_box_2d(points):
-    x, y = zip(*points)
-    min_x = min(x)
-    max_x = max(x)
-    min_y = min(y)
-    max_y = max(y)
-    return [(min_x, min_y),
-            (max_x, min_y),
-            (max_x, max_y),
-            (min_x, max_y)]
 
 
 # ------------------------------------------------------------------------------
@@ -1339,7 +1045,7 @@ def closest_point_on_plane(point, plane):
     k = (a * x1 + b * y1 + c * z1 - d) / (a**2 + b**2 + c**2)
     return [x1 - k * a,
             y1 - k * b,
-            z1 - k * c, ]
+            z1 - k * c]
 
 
 # ------------------------------------------------------------------------------
@@ -1386,17 +1092,17 @@ def is_coplanar(points, tol=0.01):
         v01 = subtract_vectors(points[1], points[0])
         v02 = subtract_vectors(points[2], points[0])
         v23 = subtract_vectors(points[3], points[0])
-        res = dot(v02, cross(v01, v23))
+        res = dot_vectors(v02, cross_vectors(v01, v23))
         return res**2 < tol2
     # len(points) > 4
     # compare length of cross product vector to tolerance
     u = subtract_vectors(points[1], points[0])
     v = subtract_vectors(points[2], points[1])
-    w = cross(u, v)
+    w = cross_vectors(u, v)
     for i in range(1, len(points) - 2):
         u = v
         v = subtract_vectors(points[i + 2], points[i + 1])
-        wuv = cross(w, cross(u, v))
+        wuv = cross_vectors(w, cross_vectors(u, v))
         if wuv[0]**2 > tol2 or wuv[1]**2 > tol2 or wuv[2]**2 > tol2:
             return False
     return True
@@ -1426,8 +1132,8 @@ def is_polygon_convex(polygon):
         v0 = subtract_vectors(c, p0)
         v1 = subtract_vectors(p1, p0)
         v2 = subtract_vectors(p2, p0)
-        a1, _ = angles_vectors(v1, v0)
-        a2, _ = angles_vectors(v0, v2)
+        a1 = angle_smallest_vectors(v1, v0)
+        a2 = angle_smallest_vectors(v0, v2)
         if a1 + a2 > 180:
             return False
     return True
@@ -1552,9 +1258,9 @@ def is_point_in_triangle(point, triangle):
     def is_on_same_side(p1, p2, segment):
         a, b = segment
         v = vector_from_points(a, b)
-        c1 = cross(v, vector_from_points(a, p1))
-        c2 = cross(v, vector_from_points(a, p2))
-        if dot(c1, c2) >= 0:
+        c1 = cross_vectors(v, vector_from_points(a, p1))
+        c2 = cross_vectors(v, vector_from_points(a, p2))
+        if dot_vectors(c1, c2) >= 0:
             return True
         else:
             return False
@@ -1573,27 +1279,358 @@ def is_point_in_circle(point, circle):
     return False
 
 
-# def is_line_line_intersection_2d(p1, v1, p2, v2, points=False):
-#     """Verify if two lines intersect in 2d on the xy plane.
+def is_intersection_ray_triangle(p1, v1, a, b, c):
+    """
+    Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)
+    based on the Moeller Trumbore intersection algorithm
 
-#     Parameters:
-#         p1, v1 (tuples): 3d point and 3d vector of line A
-#         p2, v2 (tuples): 3d point and 3d vector of line B
-#         points (bool): if True v1,v2 will be interpreted as end points of the lines
-#     Returns:
-#         (bool): True if there is a intersection, False otherwise.
+    Parameters:
+        p1, v1 (tuples): 3d point and 3d vector of line
+        a,b,c (list of 3-tuples): 3d points of triangle
 
-#     """
-#     if points:
-#         p1b = v1
-#         p2b = v2
-#     else:
-#         p1b = add_vectors(p1, v1)
-#         p2b = add_vectors(p2, v2)
-#     d = (p2b[1] - p2[1]) * (p1b[0] - p1[0]) - (p2b[0] - p2[0]) * (p1b[1] - p1[1])
-#     if d == 0:
-#         return False
-#     return True
+    Returns:
+        t if the ray intersects with the triangle, False otherwise.
+        The intersection point can be computed using t multiplied by v1 added to p1.
+
+    """
+    EPSILON = 0.000000001
+    # Find vectors for two edges sharing V1
+    e1 = subtract_vectors(b, a)
+    e2 = subtract_vectors(c, a)
+    # Begin calculating determinant - also used to calculate u parameter
+    p = cross_vectors(v1, e2)
+    # if determinant is near zero, ray lies in plane of triangle
+    det = dot_vectors(e1, p)
+    # NOT CULLING
+    if(det > - EPSILON and det < EPSILON):
+        return False
+    inv_det = 1.0 / det
+    # calculate distance from V1 to ray origin
+    t = subtract_vectors(p1, a)
+    # Calculate u parameter and make_blocks bound
+    u = dot_vectors(t, p) * inv_det
+    # The intersection lies outside of the triangle
+    if(u < 0.0 or u > 1.0):
+        return False
+    # Prepare to make_blocks v parameter
+    q = cross_vectors(t, e1)
+    # Calculate V parameter and make_blocks bound
+    v = dot_vectors(v1, q) * inv_det
+    # The intersection lies outside of the triangle
+    if(v < 0.0 or u + v  > 1.0):
+        return False
+    t = dot_vectors(e2, q) * inv_det
+    if t > EPSILON:
+        return t
+    # No hit
+    return False
+
+
+def is_intersection_box_box(box_1, box_2):
+    """Checks if two boxes are intersecting in 3D.
+
+    Parameters:
+        box_1 (list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
+        box_2 (list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
+
+    Returns:
+        bool: True if the boxes intersect, False otherwise.
+
+    Examples:
+
+        .. code-block:: python
+
+            x, y, z = 1, 1, 1
+            box_a = [
+                (0.0, 0.0, 0.0),
+                (x,   0.0, 0.0),
+                (x,   y,   0.0),
+                (0.0, y,   0.0),
+                (0.0, 0.0, z),
+                (x,   0.0, z),
+                (x,   y,   z),
+                (0.0, y,   z)
+            ]
+            box_b = [
+                (0.5, 0.5, 0.0),
+                (1.5, 0.5, 0.0),
+                (1.5, 1.5, 0.0),
+                (0.5, 1.5, 0.0),
+                (0.5, 0.5, 1.0),
+                (1.5, 0.5, 1.0),
+                (1.5, 1.5, 1.0),
+                (0.5, 1.5, 1.0)
+            ]
+            if is_box_intersecting_box(box_a, box_b):
+                print "intersection found"
+            else:
+                print "no intersection found"
+
+    Warning:
+        Does not check if one box is completely enclosed by the other.
+
+    """
+    # all edges of box one
+    edges = [
+        (box_1[0], box_1[1]),
+        (box_1[1], box_1[2]),
+        (box_1[2], box_1[3]),
+        (box_1[3], box_1[0])
+    ]
+    edges += [
+        (box_1[4], box_1[5]),
+        (box_1[5], box_1[6]),
+        (box_1[6], box_1[7]),
+        (box_1[7], box_1[4])
+    ]
+    edges += [
+        (box_1[0], box_1[4]),
+        (box_1[1], box_1[5]),
+        (box_1[2], box_1[6]),
+        (box_1[3], box_1[7])
+    ]
+    # triangulation of box two
+    tris = [
+        (box_2[0], box_2[1], box_2[2]),
+        (box_2[0], box_2[2], box_2[3])
+    ]  # bottom
+    tris += [
+        (box_2[4], box_2[5], box_2[6]),
+        (box_2[4], box_2[6], box_2[7])
+    ]  # top
+    tris += [
+        (box_2[0], box_2[4], box_2[7]),
+        (box_2[0], box_2[7], box_2[3])
+    ]  # side 1
+    tris += [
+        (box_2[0], box_2[1], box_2[5]),
+        (box_2[0], box_2[5], box_2[4])
+    ]  # side 2
+    tris += [
+        (box_2[1], box_2[2], box_2[6]),
+        (box_2[1], box_2[6], box_2[5])
+    ]  # side 3
+    tris += [
+        (box_2[2], box_2[3], box_2[7]),
+        (box_2[2], box_2[7], box_2[6])
+    ]  # side 4
+    # checks for edge triangle intersections
+    intx = False
+    for pt1, pt2 in edges:
+        for a, b, c in tris:
+            for p1, p2 in [(pt1, pt2), (pt2, pt1)]:
+                v1 = subtract_vectors(p2, p1)
+                t = is_intersection_ray_triangle(p1, v1, a, b, c)
+                if t:
+                    v1 = scale_vector(v1, t)
+                    test_pt = add_vectors(v1, p1)
+                    if is_point_on_segment(test_pt, (p1, p2)):
+                        # intersection found
+                        intx = True
+                        break
+            else:
+                continue
+            break
+        else:
+            continue
+        break
+    return intx
+
+
+# ==============================================================================
+# intersections
+# ==============================================================================
+
+
+def intersection_line_line():
+    raise NotImplementedError
+
+
+def intersection_lines():
+    raise NotImplementedError
+
+
+def intersection_circle_circle():
+    raise NotImplementedError
+
+
+# ==============================================================================
+# transformations
+# ==============================================================================
+
+
+def translate_points(points, vector):
+    return [add_vectors(point, vector) for point in points]
+
+
+def translate_lines(lines, vector):
+    sps, eps = zip(*lines)
+    sps = translate_points(sps, vector)
+    eps = translate_points(eps, vector)
+    return zip(sps, eps)
+
+
+# ------------------------------------------------------------------------------
+# rotate
+# ------------------------------------------------------------------------------
+
+
+def rotate_points(points, axis, angle, origin=None):
+    """Rotates points around an arbitrary axis in 3D.
+
+    Parameters:
+        points (sequence of sequence of float): XYZ coordinates of the points.
+        axis (sequence of float): The rotation axis.
+        angle (float): the angle of rotation in radians.
+        origin (sequence of float): Optional. The origin of the rotation axis.
+            Default is ``[0.0, 0.0, 0.0]``.
+
+    Returns:
+        list: the rotated points
+
+    References:
+        https://en.wikipedia.org/wiki/Rotation_matrix
+
+    """
+    if not origin:
+        origin = [0.0, 0.0, 0.0]
+    # rotation matrix
+    x, y, z = normalize_vector(axis)
+    c = cos(angle)
+    t = (1 - cos(angle))
+    s = sin(angle)
+    R = [
+        [t * x * x + c    , t * x * y - s * z, t * x * z + s * y],
+        [t * x * y + s * z, t * y * y + c    , t * y * z - s * x],
+        [t * x * z - s * y, t * y * z + s * x, t * z * z + c]
+    ]
+    # translate points
+    points = translate_points(points, scale_vector(origin, -1.0))
+    # rotate points
+    points = [multiply_matrix_vector(R, point) for point in points]
+    # translate points back
+    points = translate_points(points, origin)
+    return points
+
+
+# ------------------------------------------------------------------------------
+# mirror
+# ------------------------------------------------------------------------------
+
+
+def mirror_point_point(point, mirror):
+    """Mirror a point about a point.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates of the point to mirror.
+        mirror (sequence of float): XYZ coordinates of the mirror point.
+
+    """
+    return add_vectors(mirror, subtract_vectors(mirror, point))
+
+
+def mirror_points_point(points, mirror):
+    """Mirror multiple points about a point."""
+    return [mirror_point_point(point, mirror) for point in points]
+
+
+def mirror_point_line(point, line):
+    pass
+
+
+def mirror_points_line(points, line):
+    pass
+
+
+def mirror_point_plane(point, plane):
+    pass
+
+
+def mirror_points_plane(points, plane):
+    pass
+
+
+# ------------------------------------------------------------------------------
+# project (not the same as pull) => projection direction is required
+# ------------------------------------------------------------------------------
+
+
+def project_point_plane(point, plane):
+    """Project a point onto a plane.
+
+    The projection is in the direction perpendicular to the plane.
+    The projercted point is thus the closest point on the plane to the original
+    point.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates of the original point.
+        plane (tuple): Base point and normal vector defining the plane.
+
+    Returns:
+        list: XYZ coordinates of the projected point.
+
+    Examples:
+
+        >>> from brg.geometry.transformations import project_point_plane
+        >>> point = [3.0, 3.0, 3.0]
+        >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
+        >>> project_point_plane(point, plane)
+        [3.0, 3.0, 3.0]
+
+
+    References:
+        http://stackoverflow.com/questions/8942950/how-do-i-find-the-orthogonal-projection-of-a-point-onto-a-plane
+        http://math.stackexchange.com/questions/444968/project-a-point-in-3d-on-a-given-plane
+
+    """
+    base, normal = plane
+    normal = normalize_vector(normal)
+    vector = subtract_vectors(point, base)
+    snormal = scale_vector(normal, dot_vectors(vector, normal))
+    return subtract_vectors(point, snormal)
+
+
+def project_points_plane(points, plane):
+    """Project multiple points onto a plane.
+
+    Parameters:
+        points (sequence of sequence of float): Cloud of XYZ coordinates.
+        plane (tuple): Base point and normal vector defining the projection plane.
+
+    Returns:
+        list of list: The XYZ coordinates of the projected points.
+
+    See Also:
+        :func:`project_point_plane`
+
+    """
+    return [project_point_plane(point, plane) for point in points]
+
+
+def project_point_line(point, line):
+    """Project a point onto a line.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        line (tuple): Two points defining a line.
+
+    Returns:
+        list: XYZ coordinates of the projected point.
+
+    References:
+        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line
+
+    """
+    a, b = line
+    ab = subtract_vectors(b, a)
+    ap = subtract_vectors(point, a)
+    c = vector_component(ap, ab)
+    return add_vectors(a, c)
+
+
+def project_points_line(points, line):
+    """Project multiple points onto a line."""
+    return [project_point_line(point, line) for point in points]
 
 
 # ==============================================================================

@@ -6,14 +6,13 @@ Python intro
 
 .. contents::
 
-* lists and dicts
-* sets
-* comprehensions, reduction, mapping
-* sorting (using key functions)
-* default values
-* flow control
-* decorators, descriptors
-* profiling, timing
+.. * lists and dicts
+.. * sets
+.. * comprehensions, reduction, mapping
+.. * sorting (using key functions)
+.. * default values
+.. * decorators, descriptors
+.. * profiling, timing
 
 .. give examples of where these things are used in the framework
 

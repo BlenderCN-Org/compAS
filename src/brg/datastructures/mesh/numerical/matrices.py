@@ -1,6 +1,6 @@
-from brg.geometry import dot
+from brg.geometry import dot_vectors
 from brg.geometry import length_vector
-from brg.geometry import cross
+from brg.geometry import cross_vectors
 
 from brg.numerical.matrices import adjacency_matrix
 from brg.numerical.matrices import connectivity_matrix
@@ -54,7 +54,7 @@ def trimesh_edge_cotangent(mesh, u, v):
         w = mesh.face[fkey][v]  # self.vertex_descendent(v, fkey)
         wu = mesh.edge_vector(w, u)
         wv = mesh.edge_vector(w, v)
-        cotangent = dot(wu, wv) / length_vector(cross(wu, wv))
+        cotangent = dot_vectors(wu, wv) / length_vector(cross_vectors(wu, wv))
     return cotangent
 
 

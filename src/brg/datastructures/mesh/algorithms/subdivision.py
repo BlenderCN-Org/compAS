@@ -3,7 +3,8 @@ from math import pi
 
 from brg.datastructures.mesh.operations import split_edge_mesh
 
-from brg.exceptions import MeshError
+from brg.exceptions import BRGMeshError
+from brg.exceptions import BRGMeshAlgorithmError
 
 
 __author__     = 'Tom Van Mele'
@@ -97,7 +98,7 @@ def subdivide_mesh_corner(mesh):
                 start = key
                 break
         if not start:
-            raise MeshError
+            raise BRGMeshError
         face = []
         while True:
             a = key
@@ -458,7 +459,7 @@ def subdivide_quadmesh_quad(mesh, k=1):
         for fkey in mesh.face:
             vertices = mesh.face_vertices(fkey, ordered=True)
             if len(vertices) != 4:
-                raise MeshAlgorithmError
+                raise BRGMeshAlgorithmError
             o1 = old_xyz[vertices[0]]
             o2 = old_xyz[vertices[1]]
             o3 = old_xyz[vertices[2]]
@@ -477,7 +478,7 @@ def subdivide_quadmesh_quad(mesh, k=1):
             fkey_old_new[fkey][vertices[3]] = d
         for fkey in mesh.face:
             if len(vertices) != 4:
-                raise MeshAlgorithmError
+                raise BRGMeshAlgorithmError
             vertices = mesh.face_vertices(fkey, ordered=True)
             old_new = fkey_old_new[fkey]
             subd.add_face([old_new[old] for old in vertices])

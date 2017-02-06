@@ -3,22 +3,17 @@ from brg.geometry.elements.vector import Vector
 from brg.geometry.elements.line import Line
 
 from brg.geometry import area_polygon
-from brg.geometry import cross
+from brg.geometry import cross_vectors
 from brg.geometry import centroid_points
 from brg.geometry import center_of_mass_polygon
 from brg.geometry import is_coplanar
-
-from brg.geometry.planar import is_polygon_convex
+from brg.geometry import is_polygon_convex
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
-
-
-class PolygonException(Exception):
-    pass
 
 
 class Polygon(object):
@@ -101,7 +96,7 @@ class Polygon(object):
             p2  = points[i + 1]
             u   = [p1[_] - o[_] for _ in range(3)]
             v   = [p2[_] - o[_] for _ in range(3)]
-            w   = cross(u, v)
+            w   = cross_vectors(u, v)
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)
         n = [sum(axis) / a2 for axis in zip(*normals)]

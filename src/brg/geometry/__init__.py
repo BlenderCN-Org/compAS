@@ -30,12 +30,12 @@ In general the following is assumed.
 * polyhedron: vertices and faces.
 
 
-basics
+spatial
 ======================================
 
-.. currentmodule:: brg.geometry.basics
+.. currentmodule:: brg.geometry.spatial
 
-:mod:`brg.geometry.basics`
+:mod:`brg.geometry.spatial`
 
 constructors
 ------------
@@ -54,9 +54,6 @@ miscellaneous
     :toctree: generated/
 
     vector_component
-    vector_component_2d
-    normalize_vector
-    normalize_vectors
 
 operations
 ----------
@@ -67,16 +64,10 @@ operations
     add_vectors
     subtract_vectors
     scale_vector
+    normalize_vector
+    normalize_vectors
     dot_vectors
-    dot_matrices
-    dot_matrix_vector
-    dot_vectors_2d
     cross_vectors
-    cross_vectors_2d
-    dot
-    dot_2d
-    cross
-    cross_2d
 
 length and distance
 -------------------
@@ -85,17 +76,11 @@ length and distance
     :toctree: generated/
 
     length_vector
-    length_vector_2d
     length_vector_sqrd
-    length_vector_sqrd_2d
     distance_point_point
-    distance_point_point_2d
     distance_point_point_sqrd
-    distance_point_point_sqrd_2d
     distance_point_line
-    distance_point_line_2d
     distance_point_line_sqrd
-    distance_point_line_sqrd_2d
     distance_point_plane
     distance_line_line
 
@@ -106,13 +91,9 @@ angles
     :toctree: generated/
 
     angles_points
-    angles_points_2d
     angles_vectors
-    angles_vectors_2d
     angle_smallest_points
-    angle_smallest_points_2d
     angle_smallest_vectors
-    angle_smallest_vectors_2d
 
 average
 -------
@@ -121,12 +102,9 @@ average
     :toctree: generated/
 
     centroid_points
-    centroid_points_2d
     center_of_mass_polygon
-    center_of_mass_polygon_2d
     center_of_mass_polyhedron
     midpoint_line
-    midpoint_line_2d
 
 area and volume
 ---------------
@@ -135,12 +113,9 @@ area and volume
     :toctree: generated/
 
     area_polygon
-    area_polygon_2d
     area_triangle
-    area_triangle_2d
     volume_polyhedron
     bounding_box
-    bounding_box_2d
 
 proximity
 ---------
@@ -180,6 +155,32 @@ queries
     is_point_in_triangle
     is_point_in_circle
 
+intersections
+-------------
+
+.. autosummary::
+    :toctree: generated/
+
+    intersection_line_line
+    intersection_lines
+    intersection_circle_circle
+
+transformations
+---------------
+
+.. autosummary::
+    :toctree: generated/
+
+    translate_points
+    translate_lines
+    rotate_points
+    mirror_points_line
+    mirror_points_plane
+    project_point_plane
+    project_points_plane
+    project_point_line
+    project_points_line
+
 
 planar
 ======================================
@@ -191,55 +192,6 @@ planar
 .. autosummary::
     :toctree: generated/
 
-    is_ccw
-    is_polygon_convex
-    are_segments_intersecting
-    is_polyline_selfintersecting
-    is_point_in_triangle
-    is_point_in_polygon
-    is_point_in_circle
-    closest_part_of_triangle
-
-
-intersections
-=============================================
-
-.. currentmodule:: brg.geometry.intersections
-
-:mod:`brg.geometry.brg.geometry.intersections`
-
-.. autosummary::
-    :toctree: generated/
-
-    intersection_line_line
-    intersection_line_line_2d
-    intersection_lines
-    intersection_lines_2d
-    intersection_circle_circle
-    intersection_circle_circle_2d
-
-
-transformations
-===============================================
-
-.. currentmodule:: brg.geometry.transformations
-
-:mod:`brg.geometry.transformations`
-
-.. autosummary::
-    :toctree: generated/
-
-    translate_points
-    translate_lines
-    rotate_points
-    scale_vector
-    scale_vectors
-    mirror_points_line
-    mirror_points_plane
-    project_point_plane
-    project_points_plane
-    project_point_line
-    project_points_line
 
 
 elements
@@ -267,4 +219,4 @@ of the functionality in the geometry package.
 
 """
 
-from .basics import *
+from .spatial import *

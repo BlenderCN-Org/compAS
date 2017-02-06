@@ -1,21 +1,17 @@
 from brg.geometry.elements.vector import Vector
 
-from brg.geometry.basics import distance_point_point
-from brg.geometry.basics import distance_point_line
-from brg.geometry.basics import distance_point_plane
+from brg.geometry import distance_point_point
+from brg.geometry import distance_point_line
+from brg.geometry import distance_point_plane
 
-from brg.geometry.transformations import project_point_plane
-from brg.geometry.transformations import project_point_line
+from brg.geometry import project_point_plane
+from brg.geometry import project_point_line
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'GNU - General Public License'
 __email__      = 'vanmelet@ethz.ch'
-
-
-class PointException(Exception):
-    pass
 
 
 class PointList(object):

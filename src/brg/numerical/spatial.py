@@ -14,7 +14,7 @@ from scipy.spatial import distance_matrix
 
 from scipy.interpolate import griddata
 
-from brg.geometry import cross
+from brg.geometry import cross_vectors
 from brg.geometry import normalize_vector
 
 
@@ -253,8 +253,8 @@ def bounding_box_3d(points):
 def _compute_local_axes(a, b, c):
     u = b - a
     v = c - a
-    w = cross(u, v)
-    v = cross(w, u)
+    w = cross_vectors(u, v)
+    v = cross_vectors(w, u)
     return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 

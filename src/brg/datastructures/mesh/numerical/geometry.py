@@ -44,7 +44,7 @@ def mesh_contours(mesh, N=50):
             print mesh_contours(mesh)
 
     See Also:
-        :func:`brg.numerical.geometry.scalarfield_contours
+        :func:`brg.numerical.geometry.scalarfield_contours`
 
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh]

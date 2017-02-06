@@ -7,10 +7,6 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-class LineException(Exception):
-    pass
-
-
 class Line(object):
     r"""A ``Line`` object is defined by two points in three-dimensional space.
 

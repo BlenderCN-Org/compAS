@@ -1,4 +1,4 @@
-from brg.utilities.maps import geometric_key
+from brg.utilities import geometric_key
 
 import brg_rhino.utilities as rhino
 

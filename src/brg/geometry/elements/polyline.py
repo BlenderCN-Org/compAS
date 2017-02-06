@@ -1,6 +1,5 @@
 from brg.geometry.elements.point import Point
 from brg.geometry.elements.line import Line
-from brg.geometry.planar import is_polyline_selfintersecting
 
 
 __author__     = ['Tom Van Mele', ]
@@ -38,10 +37,6 @@ def align_polylines(pointsets, tol=0.001):
 
 def join_polylines(pointsets):
     return [point for points in pointsets for point in points]
-
-
-class PolylineException(Exception):
-    pass
 
 
 class Polyline(object):
@@ -132,7 +127,7 @@ class Polyline(object):
     def is_selfintersecting(self):
         """Return True if the polyline is `self-intersecting`, False otherwise.
         """
-        return is_polyline_selfintersecting(self.points)
+        raise NotImplementedError
 
     def is_closed(self):
         """Verify if the polyline is closed. The polyline is closed if the first

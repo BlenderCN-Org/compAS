@@ -1,5 +1,5 @@
 from brg.geometry.elements import Line
-from brg.exceptions import MeshError
+from brg.exceptions import BRGMeshError
 
 
 __author__     = ['Tom Van Mele', ]
@@ -81,7 +81,7 @@ def collapse_edge_mesh(mesh, u, v, t=0.5):
     # switch between UV face sizes
     # note: in a trimesh this is not necessary!
     if f < 3:
-        raise MeshError(fkey)
+        raise BRGMeshError(fkey)
     if f == 3:
         # delete UV
         o = face[v]
@@ -105,7 +105,7 @@ def collapse_edge_mesh(mesh, u, v, t=0.5):
     # switch between VU face sizes
     # note: in a trimesh this is not necessary!
     if f < 3:
-        raise MeshError(fkey)
+        raise BRGMeshError(fkey)
     if f == 3:
         # delete UV
         o = face[u]

@@ -1,12 +1,10 @@
-""""""
-
 import json
 
 from brg.files.obj import OBJ
 
 from brg.geometry import centroid_points
 from brg.geometry import center_of_mass_polygon
-from brg.geometry import cross
+from brg.geometry import cross_vectors
 from brg.geometry import length_vector
 from brg.geometry import area_polygon
 
@@ -681,12 +679,12 @@ name: {0}
             if fkey in fkey_centroid:
                 p2 = fkey_centroid[fkey]
                 v02 = [p2[i] - p0[i] for i in range(3)]
-                area += 0.25 * length_vector(cross(v01, v02))
+                area += 0.25 * length_vector(cross_vectors(v01, v02))
             fkey = self.halfedge[nbr][key]
             if fkey in fkey_centroid:
                 p3 = fkey_centroid[fkey]
                 v03 = [p3[i] - p0[i] for i in range(3)]
-                area += 0.25 * length_vector(cross(v01, v03))
+                area += 0.25 * length_vector(cross_vectors(v01, v03))
         return area
 
     # --------------------------------------------------------------------------

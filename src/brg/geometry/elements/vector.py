@@ -2,8 +2,8 @@ from math import sin
 from math import cos
 from math import sqrt
 
-from brg.geometry import dot
-from brg.geometry import cross
+from brg.geometry import dot_vectors
+from brg.geometry import cross_vectors
 
 
 __author__     = ['Tom Van Mele', ]
@@ -172,7 +172,7 @@ class Vector(object):
         Returns:
             float: The dot product.
         """
-        return dot(self, other)
+        return dot_vectors(self, other)
 
     def cross(self, other):
         """The cross product of this ``Vector`` and another ``Vector``.
@@ -183,7 +183,7 @@ class Vector(object):
         Returns:
             Vector: The cross product.
         """
-        return Vector(cross(self, other))
+        return Vector(cross_vectors(self, other))
 
     def normalize(self):
         l = self.length
@@ -214,7 +214,7 @@ class Vector(object):
         cosa = cos(angle)
         kxu  = self.cross(axis) * -1
         v    = [sina * x for x in kxu]
-        w    = [x * (1 - cosa) for x in cross(axis, kxu)]
+        w    = [x * (1 - cosa) for x in cross_vectors(axis, kxu)]
         return [self[_] + v[_] + w[_] + origin[_] for _ in range(3)]
 
     def rotated(self, angle, axis=None, origin=None):
@@ -241,7 +241,6 @@ class Vector(object):
 
 if __name__ == '__main__':
 
-    import timeit
     import time
     import pyximport
 
@@ -260,10 +259,3 @@ if __name__ == '__main__':
         u = CVector([1.0, 0.0, 0.0])
     toc = time.time()
     print(toc - tic)
-
-    # t0 = timeit.timeit('[[1.0, 0.0, 0.0] for i in range(100000)]', setup='from vector import Vector', number=1)
-    # t1 = timeit.timeit('[Vector([1.0, 0.0, 0.0]) for i in range(100000)]', setup='from vector import Vector', number=1)
-
-    # print t0
-    # print t1
-    # print 'instantiation of a vector is {0} times slower than instantiation of a list'.format(t1 / t0)

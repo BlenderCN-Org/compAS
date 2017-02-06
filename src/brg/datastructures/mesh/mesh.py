@@ -7,15 +7,15 @@ from copy import deepcopy
 
 from brg.files.obj import OBJ
 
-from brg.geometry.basics import length_vector
-from brg.geometry.basics import distance_point_point
-from brg.geometry.basics import cross
-from brg.geometry.basics import normal_polygon
-from brg.geometry.basics import centroid_points
-from brg.geometry.basics import center_of_mass_polygon
-from brg.geometry.basics import area_polygon
+from brg.geometry import length_vector
+from brg.geometry import distance_point_point
+from brg.geometry import cross_vectors
+from brg.geometry import normal_polygon
+from brg.geometry import centroid_points
+from brg.geometry import center_of_mass_polygon
+from brg.geometry import area_polygon
 
-from brg.geometry.elements.line import Line
+from brg.geometry.elements import Line
 
 from brg.datastructures.network.algorithms import network_bfs
 from brg.datastructures.network.algorithms import network_bfs2
@@ -1506,7 +1506,7 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
 
-    def vertex_area(self, key, length=length_vector, cross=cross):
+    def vertex_area(self, key, length=length_vector, cross=cross_vectors):
         a  = 0
         p0 = self.vertex_coordinates(key)
         for nbr in self.halfedge[key]:

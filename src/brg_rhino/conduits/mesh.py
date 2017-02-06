@@ -2,7 +2,7 @@ from brg_rhino.conduits import Conduit
 from brg_rhino.ui.mouse import Mouse
 
 from brg.geometry import length_vector
-from brg.geometry import cross
+from brg.geometry import cross_vectors
 
 try:
     from Rhino.Geometry import Point3d
@@ -69,13 +69,13 @@ class MeshVertexInspector(Conduit):
         p1  = self.mouse.p1
         p2  = self.mouse.p2
         v12 = [p2[i] - p1[i] for i in range(3)]
-        l12 = length(v12)
+        l12 = length_vector(v12)
         for key, attr in self.mesh.vertices_iter(True):
             p0   = attr['x'], attr['y'], attr['z']
             text = str(i)
             v01  = [p1[i] - p0[i] for i in range(3)]
             v02  = [p2[i] - p0[i] for i in range(3)]
-            l    = length(cross(v01, v02))
+            l    = length_vector(cross_vectors(v01, v02))
             if l12 == 0.0 or (l / l12) < self.tol:
                 point = Point3d(*p0)
                 e.Display.DrawDot(point, text, self.dotcolor, self.textcolor)

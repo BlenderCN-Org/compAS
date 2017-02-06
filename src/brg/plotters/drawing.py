@@ -11,10 +11,10 @@ from matplotlib.collections import PatchCollection
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 from mpl_toolkits.mplot3d.art3d import Patch3DCollection
 
-from brg.geometry import centroid_points
+from brg.geometry.planar import centroid_points_2d
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
                   'Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -395,7 +395,7 @@ def draw_xpolygons_2d(polygons, axes):
         edgecolors.append(attr['edgecolor'])
         patches.append(Polygon(points))
         if text:
-            c = centroid_points(points)
+            c = centroid_points_2d(points)
             axes.text(
                 c[0],
                 c[1],

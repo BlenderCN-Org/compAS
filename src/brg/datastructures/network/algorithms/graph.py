@@ -2,23 +2,7 @@ from math import cos
 from math import sin
 
 from brg.geometry import angle_smallest_vectors
-from brg.geometry.planar import are_segments_intersecting
-
-try:
-    import planarity
-except ImportError as e:
-    print """Planarity is not installed.
-Some functionality of this module will not be available.
-Get Planarity at https://github.com/hagberg/planarity.
-"""
-
-try:
-    import networkx as nx
-except ImportError:
-    print """NetworkX is not installed.
-Some functionality of this module will not be available.
-Get NetworkX at https://networkx.github.io/.
-"""
+from brg.geometry.planar import is_intersection_segment_segment_2d
 
 
 __author__     = 'Tom Van Mele'
@@ -51,7 +35,7 @@ def is_network_crossed(network):
                 b = network.vertex[v1]['x'], network.vertex[v1]['y']
                 c = network.vertex[u2]['x'], network.vertex[u2]['y']
                 d = network.vertex[v2]['x'], network.vertex[v2]['y']
-                if are_segments_intersecting(a, b, c, d):
+                if is_intersection_segment_segment_2d((a, b), (c, d)):
                     return True
     return False
 
@@ -66,7 +50,7 @@ def are_network_edges_crossed(edges, vertices):
                 b = vertices[v1]
                 c = vertices[u2]
                 d = vertices[v2]
-                if are_segments_intersecting(a, b, c, d):
+                if is_intersection_segment_segment_2d((a, b), (c, d)):
                     return True
     return False
 
@@ -82,7 +66,7 @@ def count_network_crossings(network):
                 b = network.vertex[v1]['x'], network.vertex[v1]['y']
                 c = network.vertex[u2]['x'], network.vertex[u2]['y']
                 d = network.vertex[v2]['x'], network.vertex[v2]['y']
-                if are_segments_intersecting(a, b, c, d):
+                if is_intersection_segment_segment_2d((a, b), (c, d)):
                     count += 1
     return count
 
@@ -102,6 +86,13 @@ def is_network_2d(network):
 # - an embedding of the network in the plane exists
 # - a planar straight-line embedding of the network in the plane exists
 def is_network_planar(network):
+    try:
+        import planarity
+    except ImportError:
+        print """Planarity is not installed.
+Some functionality of this module will not be available.
+Get Planarity at https://github.com/hagberg/planarity."""
+        raise
     return planarity.is_planar(network.edges())
 
 
@@ -125,6 +116,13 @@ def is_network_planar_embedding(network):
 
 
 def embed_network_in_plane(network, fix=None, straightline=True):
+    try:
+        import networkx as nx
+    except ImportError:
+        print """NetworkX is not installed.
+    Some functionality of this module will not be available.
+    Get NetworkX at https://networkx.github.io/."""
+        raise
     count = 100
     is_embedded = False
     edges = network.edges()
