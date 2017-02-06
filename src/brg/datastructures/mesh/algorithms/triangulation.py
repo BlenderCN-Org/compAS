@@ -1,5 +1,10 @@
-from numpy import asarray
-from scipy.spatial import Delaunay
+
+#just a hack. Should be moved to numerical
+try:
+    from numpy import asarray
+    from scipy.spatial import Delaunay
+except:
+    pass
 
 from brg.datastructures.mesh import Mesh
 
@@ -15,6 +20,9 @@ __all__ = [
     'delaunay_from_points',
     'delaunay_from_boundary',
 ]
+
+
+
 
 
 def delaunay_from_mesh(mesh):

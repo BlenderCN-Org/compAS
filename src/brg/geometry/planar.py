@@ -114,13 +114,13 @@ def plane_from_points_2d(a, b, c):
     return a, n
 
 
-def circle_from_points_2d(a, b, c):
+def circle_from_points_2d(p1, p2, p3):
     """Create a circle from three points.
 
     Parameters:
-        a (sequence of float): XY coordinates.
-        a (sequence of float): XY coordinates.
-        a (sequence of float): XY coordinates.
+        p1 (sequence of float): XY coordinates.
+        p2 (sequence of float): XY coordinates.
+        p3 (sequence of float): XY coordinates.
 
     Returns:
         tuple: XY coordinates of center and normal, and radius of the circle.
@@ -129,24 +129,40 @@ def circle_from_points_2d(a, b, c):
         https://en.wikipedia.org/wiki/Circumscribed_circle
 
     """
-    ab = subtract_vectors_2d(b, a)
-    cb = subtract_vectors_2d(b, c)
-    ba = subtract_vectors_2d(a, b)
-    ca = subtract_vectors_2d(a, c)
-    ac = subtract_vectors_2d(c, a)
-    bc = subtract_vectors_2d(c, b)
-    normal = normalize_vector_2d(cross_vectors_2d(ab, ac))
-    d = 2 * length_vector_sqrd_2d(cross_vectors_2d(ba, cb))
-    A = length_vector_sqrd_2d(cb) * dot_vectors_2d(ba, ca) / d
-    B = length_vector_sqrd_2d(ca) * dot_vectors_2d(ab, cb) / d
-    C = length_vector_sqrd_2d(ba) * dot_vectors_2d(ac, bc) / d
-    Aa = scale_vector_2d(a, A)
-    Bb = scale_vector_2d(b, B)
-    Cc = scale_vector_2d(c, C)
-    center = reduce(add_vectors_2d, [Aa, Bb, Cc])
-    radius = distance_point_point_2d(center, a)
-    return center, normal, radius
+#     ab = subtract_vectors_2d(b, a)
+#     cb = subtract_vectors_2d(b, c)
+#     ba = subtract_vectors_2d(a, b)
+#     ca = subtract_vectors_2d(a, c)
+#     ac = subtract_vectors_2d(c, a)
+#     bc = subtract_vectors_2d(c, b)
+#     normal = normalize_vector_2d(cross_vectors_2d(ab, ac))
+#     d = 2 * length_vector_sqrd_2d(cross_vectors_2d(ba, cb))
+#     A = length_vector_sqrd_2d(cb) * dot_vectors_2d(ba, ca) / d
+#     B = length_vector_sqrd_2d(ca) * dot_vectors_2d(ab, cb) / d
+#     C = length_vector_sqrd_2d(ba) * dot_vectors_2d(ac, bc) / d
+#     Aa = scale_vector_2d(a, A)
+#     Bb = scale_vector_2d(b, B)
+#     Cc = scale_vector_2d(c, C)
+#     center = reduce(add_vectors_2d, [Aa, Bb, Cc])
+#     radius = distance_point_point_2d(center, a)
+#     return center, normal, radius
 
+    ax, ay = p1[0],p1[1]
+    bx, by = p2[0],p2[1]
+    cx, cy = p3[0],p3[1]
+    a = bx - ax
+    b = by - ay
+    c = cx - ax
+    d = cy - ay
+
+    e = a * (ax + bx) + b * (ay + by)
+    f = c * (ax + cx) + d * (ay + cy)
+    g = 2 * (a * (cy - by) - b * (cx - bx))
+    if g == 0: return None
+    centerx = (d * e - b * f)/g
+    centery = (a * f - c * e)/g 
+    r = sqrt((ax - centerx)**2 + (ay - centery)**2)
+    return (centerx, centery), r
 
 # ------------------------------------------------------------------------------
 # misc
@@ -816,7 +832,9 @@ def is_point_in_triangle_2d(p, triangle):
 
 
 def is_point_in_circle_2d(point, circle):
-    raise NotImplementedError
+    dis = distance_point_point_2d(point, circle[0])
+    if dis <= circle[1]: return True
+    return False
 
 
 def is_intersection_line_line_2d(l1, l2):

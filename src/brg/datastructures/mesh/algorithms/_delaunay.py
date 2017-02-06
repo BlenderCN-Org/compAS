@@ -7,6 +7,7 @@ from brg.geometry import bounding_box
 
 from brg.geometry.planar import is_point_in_polygon_2d
 from brg.geometry.planar import is_point_in_circle_2d
+from brg.geometry.planar import circle_from_points_2d
 
 
 class DelaunayMesh(Mesh):
@@ -134,7 +135,7 @@ def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
             dictc = mesh.vertex[keyc]
             c = [dictc['x'], dictc['y']]
             pt_2d = (pt[0], pt[1])
-            if is_point_in_polygon_2d([a, b, c], pt_2d):
+            if is_point_in_polygon_2d(pt_2d,[a, b, c]):
                 # generate 3 new triangles (faces) and delete surrounding triangle
                 newtris = mesh.insert_vertex(fkey, key, xyz=pt)
                 break
@@ -165,7 +166,9 @@ def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
                 dictc = mesh.vertex[keyc]
                 c = [dictc['x'], dictc['y']]
 
-                if is_point_in_circle_2d(a, b, c, pt):
+                circle = circle_from_points_2d(a, b, c)
+
+                if is_point_in_circle_2d(pt,circle):
                     # mesh.swap_edge(u, v)
                     fkey, fkey_op = swap_edge(mesh, u, v)
                     # print "swaped: "+ u +" - " + v
@@ -202,3 +205,18 @@ def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
                     mesh.delete_face(fkey)
 
     return [mesh.face_vertices(fkey, True) for fkey in mesh.faces()]
+
+if __name__ == "__main__":
+    
+    import rhinoscriptsyntax as rs
+    from brg.datastructures.mesh.algorithms._delaunay import delaunay
+    from brg_rhino.helpers.mesh import draw_mesh
+    
+    objs = rs.GetObjects("Select Points",1)
+    
+    pts = [rs.PointCoordinates(obj) for obj in objs]
+    
+    faces = delaunay(pts)
+    faces = [[int(face[0]),int(face[1]),int(face[2]),int(face[2])] for face in faces]
+    print faces
+    rs.AddMesh(pts,faces)
