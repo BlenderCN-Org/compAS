@@ -96,6 +96,7 @@ __all__ = [
     'mirror_points_line',
     'mirror_point_plane',
     'mirror_points_plane',
+    'mirror_vector_vector',
 
     'project_point_plane',
     'project_points_plane',
@@ -1279,20 +1280,21 @@ def is_point_in_circle(point, circle):
     return False
 
 
-def is_intersection_ray_triangle(p1, v1, a, b, c):
+def is_intersection_line_triangle(line,triangle):
+    
     """
-    Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)
+    Computes the intersection of a line (ray) and a triangle
     based on the Moeller Trumbore intersection algorithm
 
     Parameters:
-        p1, v1 (tuples): 3d point and 3d vector of line
-        a,b,c (list of 3-tuples): 3d points of triangle
+        line (tuple): Two points defining the line.
+        triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.
 
     Returns:
-        t if the ray intersects with the triangle, False otherwise.
-        The intersection point can be computed using t multiplied by v1 added to p1.
+        True if the ray intersects with the triangle, False otherwise.
 
     """
+    a,b,c = triangle
     EPSILON = 0.000000001
     # Find vectors for two edges sharing V1
     e1 = subtract_vectors(b, a)
@@ -1549,7 +1551,17 @@ def mirror_point_plane(point, plane):
 def mirror_points_plane(points, plane):
     pass
 
+def mirror_vector_vector(v1,v2):
+    """Mirrors vector about vector.
 
+    Parameters:
+        v1 (tuple, list, Vector): The vector.
+        v2 (tuple, list, Vector): The normalized vector as mirror axis
+
+    Returns:
+        Tuple: mirrored vector
+    """  
+    return subtract_vectors(v1, scale_vector(v2,2*dot_vectors(v1,v2)))
 # ------------------------------------------------------------------------------
 # project (not the same as pull) => projection direction is required
 # ------------------------------------------------------------------------------
