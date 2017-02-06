@@ -13,8 +13,6 @@ syntax: glob
 
 __temp
 
-data
-
 docs/build
 docs/source/pages/reference
 
