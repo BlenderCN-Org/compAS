@@ -278,7 +278,7 @@ def subtract_vectors(u, v):
 
 
 def scale_vector(vector, scale):
-    return [vector[i] * scale for i in range(3)]
+    return [vector[0] * scale, vector[1] * scale, vector[2] * scale]
 
 
 def dot_vectors(u, v):
@@ -600,9 +600,9 @@ def distance_point_line(point, line):
 def distance_point_line_2d(point, line):
     """Compute the distance in the XY plane between a point and a line."""
     a, b = line
-    ab   = [b[i] - a[i] for i in range(2)]
-    pa   = [a[i] - point[i] for i in range(2)]
-    pb   = [b[i] - point[i] for i in range(2)]
+    ab   = b[0] - a[0], b[1] - a[1]
+    pa   = a[0] - point[0], a[1] - point[1]
+    pb   = b[0] - point[0], b[1] - point[1]
     l    = length_vector_2d(cross_2d(pa, pb))
     l_ab = length_vector_2d(ab)
     return l / l_ab
@@ -622,9 +622,9 @@ def distance_point_line_sqrd(point, line):
 def distance_point_line_sqrd_2d(point, line):
     """Compute the squared distance in the XY plane between a point and a line."""
     a, b = line
-    ab   = [b[i] - a[i] for i in range(2)]
-    pa   = [a[i] - point[i] for i in range(2)]
-    pb   = [b[i] - point[i] for i in range(2)]
+    ab   = b[0] - a[0], b[1] - a[1]
+    pa   = a[0] - point[0], a[1] - point[1]
+    pb   = b[0] - point[0], b[1] - point[1]
     l    = length_vector_sqrd(cross(pa, pb))
     l_ab = length_vector_sqrd(ab)
     return l / l_ab
@@ -671,7 +671,7 @@ def distance_point_plane(point, plane):
 
     """
     base, normal = plane
-    vector = [point[i] - base[i] for i in range(3)]
+    vector = subtract_vectors(point, base)
     return fabs(dot(vector, normal))
 
 
@@ -775,8 +775,8 @@ def angles_points(a, b, c):
         Z components may be provided, but are simply ignored.
 
     """
-    u = [b[i] - a[i] for i in range(3)]
-    v = [c[i] - a[i] for i in range(3)]
+    u = subtract_vectors(b, a)
+    v = subtract_vectors(c, a)
     return angles_vectors(u, v)
 
 
@@ -881,8 +881,8 @@ def angle_smallest_points(a, b, c):
         Z components may be provided, but are simply ignored.
 
     """
-    u = [b[i] - a[i] for i in range(3)]
-    v = [c[i] - a[i] for i in range(3)]
+    u = subtract_vectors(b, a)
+    v = subtract_vectors(c, a)
     return angle_smallest_points(u, v)
 
 
@@ -1042,24 +1042,24 @@ def area_polygon(polygon):
 
     """
     o = centroid_points(polygon)
-    u = [polygon[-1][j] - o[j] for j in range(3)]
-    v = [polygon[0][j] - o[j] for j in range(3)]
+    u = subtract_vectors(polygon[-1], o)
+    v = subtract_vectors(polygon[0], o)
     a = 0.5 * length_vector(cross(u, v))
     for i in range(0, len(polygon) - 1):
         u = v
-        v = [polygon[i + 1][j] - o[j] for j in range(3)]
+        v = subtract_vectors(polygon[i + 1], o)
         a += 0.5 * length_vector(cross(u, v))
     return a
 
 
 def area_polygon_2d(polygon):
     o = centroid_points_2d(polygon)
-    u = [polygon[-1][j] - o[j] for j in range(2)]
-    v = [polygon[0][j] - o[j] for j in range(2)]
+    u = polygon[-1][0] - o[0], polygon[-1][1] - o[1]
+    v = polygon[0][0] - o[0], polygon[0][1] - o[1]
     a = 0.5 * length_vector_2d(cross_2d(u, v))
     for i in range(0, len(polygon) - 1):
         u = v
-        v = [polygon[i + 1][j] - o[j] for j in range(2)]
+        v = polygon[i + 1][0] - o[0], polygon[i + 1][1] - o[1]
         a += 0.5 * length_vector_2d(cross_2d(u, v))
     return a
 
@@ -1112,8 +1112,8 @@ def volume_polyhedron(polyhedron):
             a  = polyhedron.vertex_coordinates(face[0])
             b  = polyhedron.vertex_coordinates(face[1])
             c  = polyhedron.vertex_coordinates(face[2])
-            ab = [b[i] - a[i] for i in range(3)]
-            ac = [c[i] - a[i] for i in range(3)]
+            ab = subtract_vectors(b, a)
+            ac = subtract_vectors(c, a)
             n  = cross(ab, ac)
             V += dot(a, n)
     return V / 6.
@@ -1149,8 +1149,8 @@ def normal_polygon(points, unitized=True):
         p1  = points[i - 1]
         p2  = points[i]
         p3  = points[i + 1]
-        v1  = [p1[axis] - p2[axis] for axis in range(3)]
-        v2  = [p3[axis] - p2[axis] for axis in range(3)]
+        v1  = subtract_vectors(p1, p2)
+        v2  = subtract_vectors(p3, p2)
         n   = cross(v1, v2)
         nx += n[0]
         ny += n[1]
@@ -1168,8 +1168,8 @@ def normal_triangle(triangle, unitized=True):
     """
     assert len(triangle) == 3, "Three points are required."
     a, b, c = triangle
-    ab = [b[i] - a[i] for i in range(3)]
-    ac = [c[i] - a[i] for i in range(3)]
+    ab = subtract_vectors(b, a)
+    ac = subtract_vectors(c, a)
     n  = cross(ab, ac)
     if not unitized:
         return n
@@ -1276,10 +1276,10 @@ def closest_point_on_line(point, line):
 
     """
     a, b = line
-    ab = [b[i] - a[i] for i in range(3)]
-    ap = [point[i] - a[i] for i in range(3)]
+    ab = subtract_vectors(b, a)
+    ap = subtract_vectors(point, a)
     c = vector_component(ap, ab)
-    return [a[i] + c[i] for i in range(3)]
+    return add_vectors(a, c)
 
 
 def closest_point_on_segment(point, segment):
@@ -1383,19 +1383,19 @@ def is_coplanar(points, tol=0.01):
     """
     tol2 = tol ** 2
     if len(points) == 4:
-        v01 = (points[1][0] - points[0][0], points[1][1] - points[0][1], points[1][2] - points[0][2],)
-        v02 = (points[2][0] - points[0][0], points[2][1] - points[0][1], points[2][2] - points[0][2],)
-        v23 = (points[3][0] - points[2][0], points[3][1] - points[2][1], points[3][2] - points[2][2],)
+        v01 = subtract_vectors(points[1], points[0])
+        v02 = subtract_vectors(points[2], points[0])
+        v23 = subtract_vectors(points[3], points[0])
         res = dot(v02, cross(v01, v23))
         return res**2 < tol2
     # len(points) > 4
     # compare length of cross product vector to tolerance
-    u = [points[1][i] - points[0][i] for i in range(3)]
-    v = [points[2][i] - points[1][i] for i in range(3)]
+    u = subtract_vectors(points[1], points[0])
+    v = subtract_vectors(points[2], points[1])
     w = cross(u, v)
     for i in range(1, len(points) - 2):
         u = v
-        v = [points[i + 2][j] - points[i + 1][j] for j in range(3)]
+        v = subtract_vectors(points[i + 2], points[i + 1])
         wuv = cross(w, cross(u, v))
         if wuv[0]**2 > tol2 or wuv[1]**2 > tol2 or wuv[2]**2 > tol2:
             return False
@@ -1423,9 +1423,9 @@ def is_polygon_convex(polygon):
         p0 = polygon[i]
         p1 = polygon[i - 1]
         p2 = polygon[i + 1]
-        v0 = (c[0] - p0[0], c[1] - p0[1], c[2] - p0[2])
-        v1 = (p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2])
-        v2 = (p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2])
+        v0 = subtract_vectors(c, p0)
+        v1 = subtract_vectors(p1, p0)
+        v2 = subtract_vectors(p2, p0)
         a1, _ = angles_vectors(v1, v0)
         a2, _ = angles_vectors(v0, v2)
         if a1 + a2 > 180:
@@ -1495,7 +1495,7 @@ def is_closest_point_on_segment(point, segment, tol=0.0, return_point=False):
 
     """
     a, b = segment
-    v = [b[i] - a[i] for i in range(3)]
+    v = subtract_vectors(b, a)
     d_ab = distance_point_point_sqrd(a, b)
     if d_ab == 0:
         return

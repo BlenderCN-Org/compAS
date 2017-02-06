@@ -1,6 +1,8 @@
 from brg.geometry.basics import dot
 from brg.geometry.basics import vector_component
 from brg.geometry.basics import normalize_vector
+from brg.geometry.basics import subtract_vectors
+from brg.geometry.basics import add_vectors
 
 from brg.geometry.basics import dot_matrix_vector
 
@@ -36,7 +38,7 @@ __all__ = [
 
 
 def translate_points(points, vector):
-    return [[point[axis] + vector[axis] for axis in (0, 1, 2)] for point in points]
+    return [add_vectors(point, vector) for point in points]
 
 
 def translate_lines(lines, vector):
@@ -136,8 +138,7 @@ def mirror_point_point(point, mirror):
         mirror (sequence of float): XYZ coordinates of the mirror point.
 
     """
-    ab = [mirror[i] - point[i] for i in range(3)]
-    return [mirror[i] + ab[i] for i in range(3)]
+    return add_vectors(mirror, subtract_vectors(mirror, point))
 
 
 def mirror_points_point(points, mirror):
@@ -197,9 +198,9 @@ def project_point_plane(point, plane):
     """
     base, normal = plane
     normal = normalize_vector(normal)
-    vector = [point[i] - base[i] for i in range(3)]
+    vector = subtract_vectors(point, base)
     snormal = scale_vector(normal, dot(vector, normal))
-    return [point[i] - snormal[i] for i in range(3)]
+    return subtract_vectors(point, snormal)
 
 
 def project_points_plane(points, plane):
@@ -234,10 +235,10 @@ def project_point_line(point, line):
 
     """
     a, b = line
-    ab = [b[i] - a[i] for i in range(3)]
-    ap = [point[i] - a[i] for i in range(3)]
+    ab = subtract_vectors(b, a)
+    ap = subtract_vectors(point, a)
     c = vector_component(ap, ab)
-    return [a[i] + c[i] for i in range(3)]
+    return add_vectors(a, c)
 
 
 def project_points_line(points, line):
