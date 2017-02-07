@@ -9,9 +9,11 @@ Examples
 .. toctree::
    :maxdepth: 1
 
-   examples/datastructures
+   examples/python
    examples/datastructures
    examples/geometry
    examples/numerical
+   examples/miscellaneous
+   examples/integration
    examples/applications
 

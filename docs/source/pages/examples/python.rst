@@ -1,90 +1,239 @@
 .. _python:
 
 ********************************************************************************
-Python intro
+Python
 ********************************************************************************
 
 .. contents::
 
-.. * lists and dicts
-.. * sets
-.. * comprehensions, reduction, mapping
-.. * sorting (using key functions)
-.. * default values
-.. * decorators, descriptors
-.. * profiling, timing
+.. magic methods
 
-.. give examples of where these things are used in the framework
 
 Lists and Dicts
 ===============
 
-Differences related to definition and processing of faces?
+.. code-block:: python
+
+    import random
+
+    facelist = [0, 1, 2, 3]
+    facedict = {0: 1, 1: 2, 2: 3, 3: 0}
 
 
 .. code-block:: python
 
-	face = [0, 1, 2, 3]
+    # edges of the face
 
-	# edges of the face
+    # facelist
 
-	for i in range(-1, len(face) - 1):
-		u = face[i]
-		v = face[i + 1]
-		print u, v
+    for i in range(-1, len(facelist) - 1):
+        u = facelist[i]
+        v = facelist[i + 1]
+        print u, v
 
-	# descendant of a vertex
+    # facedict
 
-	from random import randint
+    start = u = facedict.iterkeys().next()
 
-	u = randint(0, 3)  # what if u = 3?
-	v = face[face.index(u) + 1]
+    while True:
+        v = facedict[u]
+        print u, v
+        if v == start:
+            break
+        u = v
 
-	# ancestor of a vertex
 
-	v = randint(0, 3)
-	u = face[face.index(v) - 1]
+.. code-block:: python
+  
+    # descendant of a vertex
+
+    # facelist
+
+    u = random.choice(facelist)
+    i = facelist.index(u) + 1
+    v = facelist[i]
+
+    # what if u == 3?
+
+    n = len(facelist)
+    i = facelist.index(u) + 1
+    v = facelist[i % n]
+
+    # facedict
+
+    u = random.choice(facedict)
+    v = facedict[u]
 
 
 .. code-block:: python
 
-	face = {0: 1, 1: 2, 2: 3, 3: 0}
+    # ancestor of a vertex
 
-	# edges of the face
+    # facelist
 
-	start = u = 0
+    v = random.choice(facelist)
+    i = facelist.index(v) - 1
+    u = facelist[i]
 
-	while True:
-		v = face[u]
-		print u, v
-		if v == start:
-			break
-		u = v
+    # facedict
 
-	# descendant of a vertex
+    rfacedict = {v: u for u, v in facedict.iteritems()}
 
-	from random import randint
+    v = random.choice(facedict)
+    u = rfacedict[v]
 
-	u = randint(0, 3)
-	v = face[u]
 
-	# ancestor of a vertex
+.. code-block:: python
 
-	rface = dict((v, u) for u, v in face.iteritems())
+    # path from one vertex to another
 
-	v = randint(0, 3)
-	u = rface[v]
+    # facelist
+
+    u = random.choice(facelist)
+    v = random.choice(facelist)
+
+    i = face.index(u)
+    j = face.index(v)
+
+    if j > i:
+        path = face[i:j + 1]
+    else:
+        path = face[i:] + face[:j + 1]
+
+    # facedict
+
+    u = random.choice(facedict)
+    v = random.choice(facedict)
+
+    path = [u]
+
+    while True:
+        u = facedict[u]
+        path.append(u)
+        if u == v:
+            break
 
 
 Sets
 ====
 
-Member checking, unique elements, intersections, ...
+.. code-block:: python
+
+    import random
+
+    items = random.sample(xrange(1000000), 10000)
+    exclude = random.sample(xrange(1000000), 10000)
+
+    result = [item for item in items if item not in exclude]
 
 
 .. code-block:: python
 
-	from random import randint
+    exclude = set(exclude)
 
-	items = [randint(0, 3) for i in range(10)]
+    result = [item for item in items if item not in exclude]
+
+
+.. code-block:: python
+  
+    items = set(items)
+    exclude = set(exclude)
+
+    result = list(items - exclude)
+
+
+Sorting
+=======
+
+.. code-block:: python
+  
+    import random
+
+    items = random.sample(xrange(20), 20)
+
+    print sorted(items)
+
+    items = [str(item) for item in items]
+
+    print sorted(items)
+    print sorted(items, key=int)
+
+
+.. code-block:: python
+
+    keys = random.sample(xrange(20), 20)
+    values = random.sample(xrange(20, 40), 20)
+
+    d = dict(zip(keys, values))
+
+    print d
+    print sorted(d)
+
+    result = sorted(d.items(), key=lambda item: item[1])
+
+    print result
+    print zip(*result)
+
+
+Defaults
+========
+
+.. code-block:: python
+
+    def func(a, b, c=1):
+        pass
+
+
+.. code-block:: python
+
+    def func(a, b, c=None):
+        if not c:
+            c = 1
+
+
+.. code-block:: python
+
+    def func(a, b, c=None):
+        c = c or 1
+
+
+.. code-block:: python
+
+    def func(a, b, **kwargs):
+        c = kwargs.get('c', 1)
+        print c
+
+    func(a, b)
+    func(a, b, c=None)
+
+
+.. code-block:: python
+
+    def func(a, b, **kwargs):
+        c = kwargs.get('c') or 1
+        print c
+
+    func(a, b, c=None)
+
+
+Descriptors
+===========
+
+.. seealso::
+
+    :class:`brg.datastructures.mesh.Mesh`
+    :class:`brg.datastructures.network.Network`
+    :class:`brg.datastructures.volmesh.VolMesh`
+
+
+Decorators
+==========
+
+.. seealso::
+
+    :func:`brg.utilities.profiling.print_profile`
+
+
+Profiling
+=========
 

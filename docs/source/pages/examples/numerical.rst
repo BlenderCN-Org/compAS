@@ -1,7 +1,7 @@
-.. _the-numerical-package:
+.. _numerical:
 
 ********************************************************************************
-The Numerical Package
+Numerical
 ********************************************************************************
 
 .. contents::
@@ -12,8 +12,8 @@ NumPy & SciPy
 
 .. code-block:: python
 
-	import numpy as np
-	import scipy as sp
+    import numpy as np
+    import scipy as sp
 
 
 Working with indexed data
@@ -32,117 +32,119 @@ two data formats, using key-index maps.
 
 
 .. code-block:: python
-	
-	import brg
-	from brg.datastructures.network.network import Network
-	from brg.numerical.matrices import connectivity_matrix
 
-	network = Network.from_obj(brg.get_data('lines.obj'))
+    import brg
+    from brg.datastructures.network import Network
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+    key_index = dict((k, i) for i, k in network.vertices_enum())
+
+    xyz   = [network.vertex_coordinates(key) for key in network]
+    edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
+
+    for i, j in edges:
+        print xyz[i]
+        print xyz[j]
 
 
-.. code-block:: python
-	
-	key_index = dict((k, i) for i, k in network.vertices_enum())
+.. plot::
 
-	xyz = [network.vertex_coordinates(key) for key in network]
+    import brg
+    from brg.datastructures.network import Network
+    
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
-	edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
-
-	for i, j in edges:
-		print xyz[i]
-		print xyz[j]
+    network.plot()
 
 
 Matrices
 ========
 
 The numerical package has several convenience functions for the construction of 
-matrices that are commonly used in calculations related to ...
+matrices that are commonly used in calculations related to architectural and
+structural geometry.
 
 
 Adjacency matrix
 ----------------
 
 .. code-block:: python
-	
-	from brg.numerical.matrices import adjacency_matrix
 
-	adjacency = [[key_index[nbr] for nbr in network.neighbours(key)] for key in network]
+    from brg.numerical.matrices import adjacency_matrix
 
-	A = adjacency_matrix(adjacency)
+    adjacency = [[key_index[nbr] for nbr in network.neighbours(key)] for key in network]
+
+    A = adjacency_matrix(adjacency)
 
 
 Degree matrix
 -------------
 
 .. code-block:: python
-	
-	from brg.numerical.matrices import degree_matrix
 
-	adjacency = [[key_index[nbr] for nbr in network.neighbours(key)] for key in network]
+    from brg.numerical.matrices import degree_matrix
 
-	D = degree_matrix(adjacency)
+    adjacency = [[key_index[nbr] for nbr in network.neighbours(key)] for key in network]
+
+    D = degree_matrix(adjacency)
 
 
 Connectivity matrix
 -------------------
 
 .. code-block:: python
-	
-	from brg.numerical.matrices import connectivity_matrix
 
-	edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
+    from brg.numerical.matrices import connectivity_matrix
 
-	C = connectivity_matrix(edges)
+    edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
+
+    C = connectivity_matrix(edges)
 
 
 Laplacian matrix
 ----------------
 
 .. code-block:: python
-	
-	from brg.numerical.matrices import laplacian_matrix
 
-	edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
+    from brg.numerical.matrices import laplacian_matrix
 
-	L = laplacian_matrix(edges)
+    edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
+
+    L = laplacian_matrix(edges)
 
 
 Datastructure-specific implementations
 --------------------------------------
 
 .. code-block:: python
-	
-	from brg.datastructures.network.numerical.matrices import adjacency_matrix
-	from brg.datastructures.network.numerical.matrices import degree_matrix
-	from brg.datastructures.network.numerical.matrices import connectivity_matrix
-	from brg.datastructures.network.numerical.matrices import laplacian_matrix
+    
+    from brg.datastructures.network.numerical.matrices import network_adjacency_matrix
+    from brg.datastructures.network.numerical.matrices import network_degree_matrix
+    from brg.datastructures.network.numerical.matrices import network_connectivity_matrix
+    from brg.datastructures.network.numerical.matrices import network_laplacian_matrix
 
-	A = adjacency_matrix(network)
-	D = degree_matrix(network)
-	C = connectivity_matrix(network)
-	L = laplacian_matrix(network)
+    A = network_adjacency_matrix(network)
+    D = network_degree_matrix(network)
+    C = network_connectivity_matrix(network)
+    L = network_laplacian_matrix(network)
 
 
-Examples
---------
+Comparison
+----------
 
 .. code-block:: python
 
-	from brg.geometry.functions import centroid
+    xyz = np.array(xyz)
 
-	xyz = np.array(xyz)
+    c1 = [network.vertex_neighbourhood_centroid(key) for key in network]
+    c1 = np.array(c1)
 
-    centroids1 = [centroid([network.vertex_coordinates(nbr) for nbr in network.neighbours(key)])
-                  for key in network.vertices_iter()]
+    c2 = xyz - L.dot(xyz)
+    c3 = A.dot(xyz) / D.diagonal().reshape((-1, 1))
 
-    centroids1 = np.array(centroids1)
-
-    centroids2 = xyz - L.dot(xyz)
-    centroids3 = A.dot(xyz) / D.diagonal().reshape((-1, 1))
-
-    print np.allclose(centroids1, centroids2)
-    print np.allclose(centroids1, centroids3)
+    print np.allclose(c1, c2)
+    print np.allclose(c1, c3)
 
 
 Linear Algebra
@@ -150,11 +152,92 @@ Linear Algebra
 
 .. code-block:: python
 
-	# compute the length 
-	
-	from brg.numerical.linalg import normrow
+    # compute edge lengths
+    
+    from brg.numerical.linalg import normrow
 
-	uvw = C.dot(xyz)
+    uvw = C.dot(xyz)
+    l   = normrow(uvw)
 
-	l = normrow(uvw)
+    network.plotter.elabel = {(u, v): '{0:.1f}'.format(l[index, 0]) for index, u, v in network.edges_enum()}
+    network.plot()
+
+
+.. plot::
+
+    import brg
+    from numpy import array
+    from brg.datastructures.network import Network
+    from brg.numerical.linalg import normrow
+    from brg.datastructures.network.numerical.matrices import network_connectivity_matrix
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+    xyz = array([network.vertex_coordinates(key) for key in network])
+    C   = network_connectivity_matrix(network)
+    uvw = C.dot(xyz)
+    l   = normrow(uvw)
+
+    network.plotter.elabel = {(u, v): '{0:.1f}'.format(l[index, 0]) for index, u, v in network.edges_enum()}
+    network.plot()
+
+
+.. code-block:: python
+
+    # centroidal smoothing
+    # i.e. laplacian smoothing with *umbrella* weights
+
+    fixed = [key_index[key] for key in network.leaves()]
+    free = list(set(range(len(network))) - set(fixed))
+
+    for k in range(10):
+        xyz[free] -= 0.1 * L.dot(xyz)[free]
+
+    for key, attr in network.vertices_iter(True):
+        index = key_index[key]
+
+        attr['x'] = xyz[index, 0]
+        attr['y'] = xyz[index, 1]
+        attr['z'] = xyz[index, 2]
+
+    network.plotter.vcolor = {key: (255, 0, 0) for key in network.leaves()}
+    network.plot()
+
+
+.. plot::
+
+    import brg
+    from numpy import array
+    from brg.datastructures.network import Network
+    from brg.datastructures.network.numerical.matrices import network_laplacian_matrix
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+    key_index = {key: index for index, key in network.vertices_enum()}
+
+    L     = network_laplacian_matrix(network)
+    xyz   = array([network.vertex_coordinates(key) for key in network])
+    fixed = [key_index[key] for key in network.leaves()]
+    free  = list(set(range(len(network))) - set(fixed))
+
+    for k in range(10):
+        xyz[free] -= 0.1 * L.dot(xyz)[free]
+
+    for key, attr in network.vertices_iter(True):
+        index = key_index[key]
+
+        attr['x'] = xyz[index, 0]
+        attr['y'] = xyz[index, 1]
+        attr['z'] = xyz[index, 2]
+
+    network.plotter.vcolor = {key: (255, 0, 0) for key in network.leaves()}
+    network.plot()
+
+
+Other stuff
+===========
+
+.. bounding boxes
+.. principal components
+.. contours
 
