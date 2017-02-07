@@ -52,8 +52,8 @@ __all__ = [
 
 
 def draw_network(network, name=None, layer=None, vertex_color=None, edge_color=None, **kwargs):
-    name = name or network.attributes['name']
-    layer = layer or network.attributes['layer']
+    name = name or network.attributes.get('name') or 'Network'
+    layer = layer or network.attributes.get('layer')
     # vertex color
     vcolor = dict((key, network.attributes['color.vertex']) for key in network)
     if isinstance(vertex_color, dict):
