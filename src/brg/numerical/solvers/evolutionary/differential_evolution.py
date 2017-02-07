@@ -165,16 +165,15 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=1,
             'end_gen': ts,
             'num_gen': iterations,
             'start_from_gen': 0}
-        fnm = '{0}parameters.json'.format(results)
-        with open(fnm, 'w+') as fp:
+        filename = '{0}parameters.json'.format(results)
+        with open(filename, 'w+') as fp:
             json.dump(parameters, fp)
         vis = GA_VIS()
         vis.input_path = results
         vis.output_path = vis.input_path
-        filename = 'parameters.json'
         vis.conversion_function = None
         vis.start_from_gen = 0
-        vis.draw_ga_evolution(filename)
+        # vis.draw_ga_evolution(filename)  # need it to take absolute path
 
     return fopt, xopt
 

@@ -78,12 +78,13 @@ __all__ = [
     'is_point_on_polyline',
     'is_point_in_triangle',
 
-    'is_intersection_ray_triangle',
+    'is_intersection_line_triangle',
     'is_intersection_box_box',
 
     'intersection_line_line',
     'intersection_lines',
     'intersection_circle_circle',
+    'intersection_line_triangle',
 
     'translate_points',
     'translate_lines',
@@ -96,6 +97,7 @@ __all__ = [
     'mirror_points_line',
     'mirror_point_plane',
     'mirror_points_plane',
+    'mirror_vector_vector',
 
     'project_point_plane',
     'project_points_plane',
@@ -140,7 +142,7 @@ def circle_from_points(a, b, c):
         a (sequence of float): XYZ coordinates.
 
     Returns:
-        tuple: center, normal, radius of the circle.
+        tuple: center, radius, normal  of the circle.
 
     References:
         https://en.wikipedia.org/wiki/Circumscribed_circle
@@ -162,7 +164,7 @@ def circle_from_points(a, b, c):
     Cc = scale_vector(c, C)
     center = add_vectorlist([Aa, Bb, Cc])
     radius = distance_point_point(center, a)
-    return center, normal, radius
+    return center, radius, normal
 
 
 # ------------------------------------------------------------------------------
@@ -1273,26 +1275,31 @@ def is_point_in_triangle(point, triangle):
 
 
 def is_point_in_circle(point, circle):
-    center, normal, radius = circle
+    center, radius, normal = circle
     if is_point_on_plane(point, (center, normal)):
         return distance_point_point(point, center) <= radius
     return False
 
 
-def is_intersection_ray_triangle(p1, v1, a, b, c):
+def is_intersection_line_triangle(line,triangle):
+    
     """
-    Computes the intersection of a ray (p1,v1) and a triangle (a,b,c)
+    Verifies if a line (ray) intersects with a triangle
     based on the Moeller Trumbore intersection algorithm
 
     Parameters:
-        p1, v1 (tuples): 3d point and 3d vector of line
-        a,b,c (list of 3-tuples): 3d points of triangle
+        line (tuple): Two points defining the line.
+        triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.
 
     Returns:
-        t if the ray intersects with the triangle, False otherwise.
-        The intersection point can be computed using t multiplied by v1 added to p1.
+        True if the line (ray) intersects with the triangle, False otherwise.
 
+    Note:
+        The line is treated as continues, directed ray and not as line segment with a start and end point
     """
+    a,b,c = triangle
+    v1 = subtract_vectors(line[1], line[0])
+    p1 = line[0]
     EPSILON = 0.000000001
     # Find vectors for two edges sharing V1
     e1 = subtract_vectors(b, a)
@@ -1321,7 +1328,7 @@ def is_intersection_ray_triangle(p1, v1, a, b, c):
         return False
     t = dot_vectors(e2, q) * inv_det
     if t > EPSILON:
-        return t
+        return True
     # No hit
     return False
 
@@ -1453,7 +1460,56 @@ def intersection_lines():
 def intersection_circle_circle():
     raise NotImplementedError
 
+def intersection_line_triangle(line,triangle):
+    
+    """
+    Computes the intersection point of a line (ray) and a triangle
+    based on the Moeller Trumbore intersection algorithm
 
+    Parameters:
+        line (tuple): Two points defining the line.
+        triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.
+
+    Returns:
+        point (tuple) if the line (ray) intersects with the triangle, None otherwise.
+
+    Note:
+        The line is treated as continues, directed ray and not as line segment with a start and end point
+    """
+    a,b,c = triangle
+    v1 = subtract_vectors(line[1], line[0])
+    p1 = line[0]
+    EPSILON = 0.000000001
+    # Find vectors for two edges sharing V1
+    e1 = subtract_vectors(b, a)
+    e2 = subtract_vectors(c, a)
+    # Begin calculating determinant - also used to calculate u parameter
+    p = cross_vectors(v1, e2)
+    # if determinant is near zero, ray lies in plane of triangle
+    det = dot_vectors(e1, p)
+    # NOT CULLING
+    if(det > - EPSILON and det < EPSILON):
+        return None
+    inv_det = 1.0 / det
+    # calculate distance from V1 to ray origin
+    t = subtract_vectors(p1, a)
+    # Calculate u parameter and make_blocks bound
+    u = dot_vectors(t, p) * inv_det
+    # The intersection lies outside of the triangle
+    if(u < 0.0 or u > 1.0):
+        return None
+    # Prepare to make_blocks v parameter
+    q = cross_vectors(t, e1)
+    # Calculate V parameter and make_blocks bound
+    v = dot_vectors(v1, q) * inv_det
+    # The intersection lies outside of the triangle
+    if(v < 0.0 or u + v  > 1.0):
+        return None
+    t = dot_vectors(e2, q) * inv_det
+    if t > EPSILON:
+        return add_vectors(p1,scale_vector(v1,t))
+    # No hit
+    return False
 # ==============================================================================
 # transformations
 # ==============================================================================
@@ -1549,7 +1605,17 @@ def mirror_point_plane(point, plane):
 def mirror_points_plane(points, plane):
     pass
 
+def mirror_vector_vector(v1,v2):
+    """Mirrors vector about vector.
 
+    Parameters:
+        v1 (tuple, list, Vector): The vector.
+        v2 (tuple, list, Vector): The normalized vector as mirror axis
+
+    Returns:
+        Tuple: mirrored vector
+    """  
+    return subtract_vectors(v1, scale_vector(v2,2*dot_vectors(v1,v2)))
 # ------------------------------------------------------------------------------
 # project (not the same as pull) => projection direction is required
 # ------------------------------------------------------------------------------

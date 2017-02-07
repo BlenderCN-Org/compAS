@@ -7,6 +7,7 @@ from brg.geometry import bounding_box
 
 from brg.geometry.planar import is_point_in_polygon_2d
 from brg.geometry.planar import is_point_in_circle_2d
+from brg.geometry.planar import circle_from_points_2d
 
 
 class DelaunayMesh(Mesh):
@@ -36,7 +37,7 @@ class DelaunayMesh(Mesh):
         return fkeys
 
 
-# replace and import from framework once fkey are returned
+# replace and import from framework once fkeys are returned
 def swap_edge(mesh, u, v):
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.
@@ -93,15 +94,13 @@ def super_triangle(coords):
     v1 = (0 * dis, 2 * dis, 0)
     v2 = (1.73205 * dis, -1.0000000000001 * dis, 0)  # due to numerical issues
     v3 = (-1.73205 * dis, -1 * dis, 0)
-
     pt1 = add_vectors(centpt, v1)
     pt2 = add_vectors(centpt, v2)
     pt3 = add_vectors(centpt, v3)
-
     return pt1, pt2, pt3
 
 
-def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
+def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
     mesh = DelaunayMesh()
     points = [(point[0], point[1], 0.0) for point in points3d]
 
@@ -134,7 +133,7 @@ def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
             dictc = mesh.vertex[keyc]
             c = [dictc['x'], dictc['y']]
             pt_2d = (pt[0], pt[1])
-            if is_point_in_polygon_2d([a, b, c], pt_2d):
+            if is_point_in_polygon_2d(pt_2d,[a, b, c]):
                 # generate 3 new triangles (faces) and delete surrounding triangle
                 newtris = mesh.insert_vertex(fkey, key, xyz=pt)
                 break
@@ -165,7 +164,9 @@ def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
                 dictc = mesh.vertex[keyc]
                 c = [dictc['x'], dictc['y']]
 
-                if is_point_in_circle_2d(a, b, c, pt):
+                circle = circle_from_points_2d(a, b, c)
+
+                if is_point_in_circle_2d(pt,circle):
                     # mesh.swap_edge(u, v)
                     fkey, fkey_op = swap_edge(mesh, u, v)
                     # print "swaped: "+ u +" - " + v
@@ -201,4 +202,19 @@ def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
                 if is_point_in_polygon_2d(poly, cent):
                     mesh.delete_face(fkey)
 
-    return [mesh.face_vertices(fkey, True) for fkey in mesh.faces()]
+    return [[int(key) for key in mesh.face_vertices(fkey, True)] for fkey in mesh.faces()]
+
+if __name__ == "__main__":
+    
+    import rhinoscriptsyntax as rs
+    from brg.datastructures.mesh.algorithms._delaunay import delaunay
+    from brg_rhino.helpers.mesh import draw_mesh
+    
+    objs = rs.GetObjects("Select Points",1)
+    
+    pts = [rs.PointCoordinates(obj) for obj in objs]
+    
+    faces = delaunay(pts)
+    faces = [[int(face[0]),int(face[1]),int(face[2]),int(face[2])] for face in faces]
+    print faces
+    rs.AddMesh(pts,faces)
