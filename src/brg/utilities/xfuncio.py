@@ -4,6 +4,8 @@ import json
 from subprocess import Popen
 from subprocess import PIPE
 
+from functools import wraps
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -85,6 +87,18 @@ with open(opath, 'wb+') as fp:
 
 encoder.FLOAT_REPR = e_frepr
 """
+
+
+def run_as_xfunc(basedir, tmpdir):
+    def decorator(func):
+        @wraps
+        def wrapper(*args, **kwargs):
+            # stuff before
+            res = func()
+            # stuff after
+            return res
+        return wrapper
+    return decorator
 
 
 def xecuteio(funcname, basedir, tmpdir, *args, **kwargs):
