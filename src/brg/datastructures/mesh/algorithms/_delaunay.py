@@ -37,7 +37,7 @@ class DelaunayMesh(Mesh):
         return fkeys
 
 
-# replace and import from framework once fkey are returned
+# replace and import from framework once fkeys are returned
 def swap_edge(mesh, u, v):
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.
@@ -94,15 +94,13 @@ def super_triangle(coords):
     v1 = (0 * dis, 2 * dis, 0)
     v2 = (1.73205 * dis, -1.0000000000001 * dis, 0)  # due to numerical issues
     v3 = (-1.73205 * dis, -1 * dis, 0)
-
     pt1 = add_vectors(centpt, v1)
     pt2 = add_vectors(centpt, v2)
     pt3 = add_vectors(centpt, v3)
-
     return pt1, pt2, pt3
 
 
-def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
+def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
     mesh = DelaunayMesh()
     points = [(point[0], point[1], 0.0) for point in points3d]
 
@@ -204,7 +202,7 @@ def delaunay(points3d, outbound_keys=None, inbounds_keys=None):
                 if is_point_in_polygon_2d(poly, cent):
                     mesh.delete_face(fkey)
 
-    return [mesh.face_vertices(fkey, True) for fkey in mesh.faces()]
+    return [[int(key) for key in mesh.face_vertices(fkey, True)] for fkey in mesh.faces()]
 
 if __name__ == "__main__":
     
