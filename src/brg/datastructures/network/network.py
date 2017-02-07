@@ -7,6 +7,7 @@ from brg.geometry import center_of_mass_polygon
 from brg.geometry import cross_vectors
 from brg.geometry import length_vector
 from brg.geometry import area_polygon
+from brg.geometry import subtract_vectors
 
 from brg.utilities import geometric_key
 
@@ -38,6 +39,7 @@ class Network(object):
     """
 
     def __init__(self):
+        self._plotter     = None
         self.vertex       = {}
         self.edge         = {}
         self.halfedge     = {}
@@ -189,6 +191,13 @@ name: {0}
         self.vertex_count = vcount
         self.face_count = fcount
 
+    @property
+    def plotter(self):
+        if not self._plotter:
+            from brg.datastructures.network.plotter import NetworkPlotter2D
+            self._plotter = NetworkPlotter2D(self)
+        return self._plotter
+
     # --------------------------------------------------------------------------
     # constructors
     # --------------------------------------------------------------------------
@@ -295,10 +304,15 @@ name: {0}
         attr.update(attr_dict)
         if key is None:
             key = self.vertex_count
+            self.vertex_count += 1
         else:
-            if int(key) > self.vertex_count:
-                self.vertex_count = int(key)
-        self.vertex_count += 1
+            try:
+                int(key)
+            except ValueError:
+                pass
+            else:
+                if int(key) > self.vertex_count:
+                    self.vertex_count = int(key) + 1
         key = str(key)
         if key not in self.vertex:
             self.vertex[key] = {}
@@ -687,6 +701,14 @@ name: {0}
                 area += 0.25 * length_vector(cross_vectors(v01, v03))
         return area
 
+    def vertex_laplacian(self, key):
+        centroid = centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+        point = self.vertex_coordinates(key)
+        return subtract_vectors(centroid, point)
+
+    def vertex_neighbourhood_centroid(self, key):
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
@@ -813,38 +835,43 @@ name: {0}
 
     def plot(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, flabel=None):
         import matplotlib.pyplot as plt
-        from brg.datastructures.network.plotter import NetworkPlotter2D
         from brg.plotters.drawing import create_axes_2d
         # the network plotter should take care of axes, bounds, autoscale, show, ...
-        # set attributes differently
         # only necessary import should be the plotter
         axes = create_axes_2d()
-        plotter = NetworkPlotter2D(self)
-        plotter.vcolor = vcolor
-        plotter.vlabel = vlabel
-        plotter.vsize = vsize
-        plotter.ecolor = ecolor
-        plotter.elabel = elabel
-        plotter.ewidth = ewidth
-        plotter.flabel = flabel
+        plotter = self.plotter
+        if vcolor:
+            plotter.vcolor = vcolor
+        if vlabel:
+            plotter.vlabel = vlabel
+        if vsize:
+            plotter.vsize = vsize
+        if ecolor:
+            plotter.ecolor = ecolor
+        if elabel:
+            plotter.elabel = elabel
+        if ewidth:
+            plotter.ewidth = ewidth
+        if flabel:
+            plotter.flabel = flabel
         plotter.plot(axes)
         axes.autoscale()
         plt.show()
 
-    def plot3(self, vcolor=None):
-        import matplotlib.pyplot as plt
-        from brg.plotters.helpers import Bounds
-        from brg.datastructures.network.plotter import NetworkPlotter3D
-        from brg.plotters.drawing import create_axes_3d
-        # the network plotter should take care of axes, bounds, autoscale, show, ...
-        # set attributes differently
-        # only necessary import should be the plotter
-        axes = create_axes_3d()
-        plotter = NetworkPlotter3D(self)
-        bounds = Bounds([self.vertex_coordinates(key) for key in self])
-        bounds.plot(axes)
-        plotter.plot(axes)
-        plt.show()
+    # def plot3(self, vcolor=None):
+    #     import matplotlib.pyplot as plt
+    #     from brg.plotters.helpers import Bounds
+    #     from brg.datastructures.network.plotter import NetworkPlotter3D
+    #     from brg.plotters.drawing import create_axes_3d
+    #     # the network plotter should take care of axes, bounds, autoscale, show, ...
+    #     # set attributes differently
+    #     # only necessary import should be the plotter
+    #     axes = create_axes_3d()
+    #     plotter = NetworkPlotter3D(self)
+    #     bounds = Bounds([self.vertex_coordinates(key) for key in self])
+    #     bounds.plot(axes)
+    #     plotter.plot(axes)
+    #     plt.show()
 
 
 # ==============================================================================
@@ -857,4 +884,7 @@ if __name__ == '__main__':
 
     network = Network.from_obj(brg.get_data('lines.obj'))
 
-    network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)
+    network.plotter.vlabel = dict((key, key) for key in network)
+    network.plotter.vsize = 0.2
+
+    network.plot()

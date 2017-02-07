@@ -25,11 +25,13 @@ class MeshPlotter2D(object):
         self.mesh = mesh
         self.vertices_on = True
         self.faces_on = True
+        self.edges_on = False
         self.vcolor = None
         self.fcolor = None
         self.vlabel = None
         self.flabel = None
         self.vsize = None
+        self.points = None
         # defaults
         self.default_text_color = '#000000'
         self.default_vertex_color = '#ffffff'
@@ -73,6 +75,22 @@ class MeshPlotter2D(object):
                     'edgecolor' : self.default_edge_color,
                 })
             draw_xpolygons_2d(polygons, axes)
+        # edges
+        if self.edges_on:
+            pass
+        # points
+        if self.points:
+            points = []
+            for point in self.points:
+                points.append({
+                    'pos'       : point['pos'],
+                    'text'      : point.get('text', ''),
+                    'radius'    : point.get('size', vsize),
+                    'textcolor' : point.get('textcolor', self.default_text_color),
+                    'facecolor' : point.get('facecolor', self.default_vertex_color),
+                    'edgecolor' : point.get('edgecolor', self.default_edge_color),
+                })
+            draw_xpoints_2d(points, axes)
 
 
 # ==============================================================================
@@ -91,6 +109,9 @@ if __name__ == "__main__":
     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
     plotter = MeshPlotter2D(mesh)
+
+    plotter.points = [{'pos': mesh.face_centroid(fkey), 'text': fkey} for fkey in mesh.face]
+
     plotter.plot(axes)
 
     axes.autoscale()

@@ -57,6 +57,8 @@ class NetworkPlotter2D(object):
         self.ewidth = None
         self.flabel = None
         self.vsize = None
+        # additional
+        self.points = None
         # defaults
         self.default_text_color = '#000000'
         self.default_vertex_color = '#ffffff'
@@ -144,6 +146,19 @@ class NetworkPlotter2D(object):
                     va='center',
                     color=self.default_text_color
                 )
+        # points
+        if self.points:
+            points = []
+            for point in self.points:
+                points.append({
+                    'pos'       : point['pos'],
+                    'text'      : point.get('text', ''),
+                    'radius'    : point.get('size', vsize),
+                    'textcolor' : point.get('textcolor', self.default_text_color),
+                    'facecolor' : point.get('facecolor', self.default_vertex_color),
+                    'edgecolor' : point.get('edgecolor', self.default_edge_color),
+                })
+            draw_xpoints_2d(points, axes)
 
 
 class NetworkPlotter3D(object):

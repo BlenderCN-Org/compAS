@@ -20,13 +20,14 @@ from brg.geometry.elements import Line
 from brg.datastructures.network.algorithms import network_bfs
 from brg.datastructures.network.algorithms import network_bfs2
 
-from brg.datastructures.tree import KDTree
-
 
 __author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
+
+
+# @todo: implement faces as lists!
 
 
 class Mesh(object):
@@ -126,6 +127,7 @@ class Mesh(object):
     def __init__(self):
         self._fkey = 0
         self._vkey = 0
+        self._plotter = None
         self.vertex   = {}
         self.face     = {}
         self.halfedge = {}
@@ -318,32 +320,12 @@ mesh summary
     def name(self, value):
         self.attributes['name'] = value
 
-    # # remove?
-    # # replace by actual function?
-    # # current implementation/usage is not very transparent...
-    # @property
-    # def color(self):
-    #     """:obj:`dict` : The color specification of the mesh.
-
-    #     Only key-value pairs can be assigned to this property, with the key specifying
-    #     the element type, and the value the color as an rgb tuple. For example::
-
-    #         >>> mesh.color = ('vertex', (255, 0, 0))
-    #     """
-    #     return dict(
-    #         (key[6:], self.attributes[key])
-    #         for key in self.attributes if key.startswith('color.')
-    #     )
-
-    # @color.setter
-    # def color(self, value):
-    #     try:
-    #         value[0]
-    #         value[1]
-    #         value[1][2]
-    #     except Exception:
-    #         return
-    #     self.attributes['color.{0}'.format(value[0])] = value[1]
+    @property
+    def plotter(self):
+        if not self._plotter:
+            from brg.datastructures.mesh.plotter import MeshPlotter2D
+            self._plotter = MeshPlotter2D(self)
+        return self._plotter
 
     @property
     def xyz(self):
@@ -1654,17 +1636,21 @@ mesh summary
     def plot(self, axes=None, vcolor=None, vlabel=None, vsize=None, fcolor=None, flabel=None):
         import matplotlib.pyplot as plt
         from brg.plotters.drawing import create_axes_2d
-        from brg.datastructures.mesh.plotter import MeshPlotter2D
         local_axes = False
         if not axes:
             axes = create_axes_2d()
             local_axes = True
-        plotter = MeshPlotter2D(self)
-        plotter.vcolor = vcolor
-        plotter.vlabel = vlabel
-        plotter.vsize = vsize
-        plotter.fcolor = fcolor
-        plotter.flabel = flabel
+        plotter = self.plotter
+        if vcolor:
+            plotter.vcolor = vcolor
+        if vlabel:
+            plotter.vlabel = vlabel
+        if vsize:
+            plotter.vsize = vsize
+        if fcolor:
+            plotter.fcolor = fcolor
+        if flabel:
+            plotter.flabel = flabel
         plotter.plot(axes)
         if local_axes:
             axes.autoscale()
@@ -1693,7 +1679,9 @@ if __name__ == '__main__':
 
     print(mesh)
 
-    mesh.plot(vlabel={key: key for key in mesh})
+    mesh.plotter.vlabel = {key: '{0:.1f}'.format(mesh.vertex_area(key)) for key in mesh}
+
+    mesh.plot()
 
     # flabel = dict((fkey, fkey) for fkey in mesh.face)
 

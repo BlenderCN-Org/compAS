@@ -204,7 +204,7 @@ def draw_xpoints_2d(points, axes):
         fcolor = point.get('facecolor') or '#ffffff'
         ecolor = point.get('edgecolor') or '#000000'
         lwidth = point.get('linewidth') or 1.0
-        textcolor = point.get('textcolor') or '000000'
+        textcolor = point.get('textcolor') or '#000000'
         fontsize = point.get('fontsize') or 6
         circles.append(Circle(pos, radius=radius))
         facecolor.append(fcolor)
