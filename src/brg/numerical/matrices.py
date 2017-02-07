@@ -58,7 +58,7 @@ def degree_matrix(adjacency, rtype='array'):
 
 
 def connectivity_matrix(edges, rtype='array'):
-    """Creates a connectivity matrix from a list of vertex index pairs.
+    r"""Creates a connectivity matrix from a list of vertex index pairs.
 
     The connectivity matrix encodes how edges in a network are connected
     together. Each row represents an edge and has 1 and -1 inserted into the
@@ -102,7 +102,7 @@ def connectivity_matrix(edges, rtype='array'):
 
 
 def laplacian_matrix(edges, rtype='array'):
-    """Creates a laplacian matrix from a list of edge topologies.
+    r"""Creates a laplacian matrix from a list of edge topologies.
 
     The laplacian matrix is defined as
 
@@ -111,7 +111,7 @@ def laplacian_matrix(edges, rtype='array'):
         \mathbf{L} = \mathbf{C} ^ \mathrm{T} \mathbf{C}
 
     Note:
-        The current implementation only supports umbrella weights, 
+        The current implementation only supports umbrella weights,
         as other weighting schemes are not generally applicable.
 
     See also:
@@ -143,7 +143,7 @@ def laplacian_matrix(edges, rtype='array'):
 
 def face_matrix(face_vertices, rtype='array'):
     """Creates a face-vertex adjacency matrix.
-    
+
     Parameters:
         face_vertices (list of list) : List of vertices per face.
         rtype (str) : The return type.
@@ -155,7 +155,7 @@ def face_matrix(face_vertices, rtype='array'):
 
 
 def mass_matrix(Ct, E, A, l, f=0, c=1, tiled=True):
-    """Creates a network's nodal mass matrix.
+    r"""Creates a network's nodal mass matrix.
 
     The mass matrix is defined as the sum of the member axial stiffnesses
     (inline) of the elements connected to each node, plus the force density.
@@ -191,7 +191,7 @@ def stiffness_matrix():
 
 
 def equilibrium_matrix(C, xyz, free, rtype='array'):
-    """Construct the equilibrium matrix of a structural system.
+    r"""Construct the equilibrium matrix of a structural system.
 
     Note:
         The matrix of vertex coordinates is vectorised to speed up the
@@ -216,12 +216,12 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
         \mathbf{E}
         =
         \left[
-            \\begin{array}{c}
-                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{U} \\\[0.3em]
-                \hline \\\[-0.7em]
+            \begin{array}{c}
+                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{U} \\[0.3em]
+                \hline \\[-0.7em]
                 \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{V}
             \end{array}
-        \\right].
+        \right].
 
 
     Examples:

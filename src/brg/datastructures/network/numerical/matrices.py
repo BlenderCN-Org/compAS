@@ -139,7 +139,7 @@ if __name__ == '__main__':
     import brg
 
     from brg.datastructures.network import Network
-    from brg.geometry import centroid_points
+    from brg.geometry.planar import centroid_points_2d
 
     from numpy import allclose
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     xyz = [network.vertex_coordinates(key, 'xy') for key in network.vertices_iter()]
     xyz = array(xyz, dtype=float).reshape((-1, 2))
 
-    centroids1 = [centroid_points([network.vertex_coordinates(nbr, 'xy') for nbr in network.neighbours(key)])
+    centroids1 = [centroid_points_2d([network.vertex_coordinates(nbr, 'xy') for nbr in network.neighbours(key)])
                   for key in network.vertices_iter()]
 
     centroids1 = array(centroids1, dtype=float)
