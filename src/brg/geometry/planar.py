@@ -789,7 +789,7 @@ def is_point_on_polyline_2d():
     raise NotImplementedError
 
 
-def is_point_in_polygon_2d(point, points):
+def is_point_in_convex_polygon_2d(point, points):
     ccw = None
     for i in range(-1, len(points) - 1):
         a = points[i]
@@ -800,6 +800,42 @@ def is_point_in_polygon_2d(point, points):
             if ccw != is_ccw_2d(a, b, point, True):
                 return False
     return True
+
+
+def is_point_in_polygon_2d(tp, points):
+    """Verify if a point is in the interior of a polygon.
+
+    Note:
+        This only makes sense in the x/y plane
+
+    Parameters:
+        points (Polygon): list of ordered points.
+        tp (3-tuple): 3d make_blocks point
+
+        not implemented:
+            include_boundary (bool): Should the boundary be included in the make_blocks? Defaults to False.
+            A tolerance value would be nice too... float errors are problematic
+            points which are located on the boundary are not always uniquely defines as inside/outside
+
+    Returns:
+        bool: True if the point is in the polygon, False otherwise.
+    """
+    x, y = tp[0], tp[1]
+    points = [(pt[0], pt[1]) for pt in points]  # make 2D
+    n = len(points)
+    inside = False
+    p1x, p1y = points[0]
+    for i in range(n + 1):
+        p2x, p2y = points[i % n]
+        if y > min(p1y, p2y):
+            if y <= max(p1y, p2y):
+                if x <= max(p1x, p2x):
+                    if p1y != p2y:
+                        xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                    if p1x == p2x or x <= xinters:
+                        inside = not inside
+        p1x, p1y = p2x, p2y
+    return inside
 
 
 def is_point_in_triangle_2d(p, triangle):

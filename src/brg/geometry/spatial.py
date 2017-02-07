@@ -1460,6 +1460,7 @@ def intersection_lines():
 def intersection_circle_circle():
     raise NotImplementedError
 
+
 def intersection_line_triangle(line,triangle):
     
     """
@@ -1510,6 +1511,8 @@ def intersection_line_triangle(line,triangle):
         return add_vectors(p1,scale_vector(v1,t))
     # No hit
     return False
+
+
 # ==============================================================================
 # transformations
 # ==============================================================================
@@ -1605,7 +1608,8 @@ def mirror_point_plane(point, plane):
 def mirror_points_plane(points, plane):
     pass
 
-def mirror_vector_vector(v1,v2):
+
+def mirror_vector_vector(v1, v2):
     """Mirrors vector about vector.
 
     Parameters:
@@ -1614,8 +1618,10 @@ def mirror_vector_vector(v1,v2):
 
     Returns:
         Tuple: mirrored vector
-    """  
-    return subtract_vectors(v1, scale_vector(v2,2*dot_vectors(v1,v2)))
+    """
+    return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
+
+
 # ------------------------------------------------------------------------------
 # project (not the same as pull) => projection direction is required
 # ------------------------------------------------------------------------------

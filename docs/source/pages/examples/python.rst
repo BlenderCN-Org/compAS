@@ -7,6 +7,7 @@ Python
 .. contents::
 
 .. magic methods
+.. integrate andrew's comments
 
 
 Lists and Dicts
@@ -175,55 +176,125 @@ Sorting
     print zip(*result)
 
 
-Defaults
-========
+.. Defaults
+.. ========
 
-.. code-block:: python
+.. .. code-block:: python
 
-    def func(a, b, c=1):
-        pass
-
-
-.. code-block:: python
-
-    def func(a, b, c=None):
-        if not c:
-            c = 1
+..     def func(a, b, c=1):
+..         pass
 
 
-.. code-block:: python
+.. .. code-block:: python
 
-    def func(a, b, c=None):
-        c = c or 1
-
-
-.. code-block:: python
-
-    def func(a, b, **kwargs):
-        c = kwargs.get('c', 1)
-        print c
-
-    func(a, b)
-    func(a, b, c=None)
+..     def func(a, b, c=None):
+..         if not c:
+..             c = 1
 
 
-.. code-block:: python
+.. .. code-block:: python
 
-    def func(a, b, **kwargs):
-        c = kwargs.get('c') or 1
-        print c
+..     def func(a, b, c=None):
+..         c = c or 1
 
-    func(a, b, c=None)
+
+.. .. code-block:: python
+
+..     def func(a, b, **kwargs):
+..         c = kwargs.get('c', 1)
+..         print c
+
+..     func(a, b)
+..     func(a, b, c=None)
+
+
+.. .. code-block:: python
+
+..     def func(a, b, **kwargs):
+..         c = kwargs.get('c') or 1
+..         print c
+
+..     func(a, b, c=None)
 
 
 Descriptors
 ===========
 
+.. code-block:: python
+
+    class Vector(object):
+
+        def __init__(self, x, y, z):
+            self.x = x
+            self.y = y
+            self.z = z
+
+        @property
+        def x(self):
+            return self._x
+
+        @x.setter
+        def x(self, value):
+            self._x = float(value)
+
+
+.. code-block:: python
+
+    class Vector(object):
+
+        def __init__(self, x, y, z):
+            self.x = x
+            self.y = y
+            self.z = z
+
+        @property
+        def x(self):
+            return self._x
+
+        @x.setter
+        def x(self, value):
+            self._x = float(value)
+
+        ...
+
+        @property
+        def z(self):
+            return self._z
+
+        @z.setter
+        def z(self, value):
+            self._z = float(value)
+
+
+.. code-block:: python
+
+    class Vector(object):
+
+        def __init__(self, x, y, z):
+            self.x = x
+            self.y = y
+            self.z = z
+
+        ...
+
+        @property
+        def xyz(self):
+            return self._x, self._y, self._z
+
+        @property
+        def length(self):
+            return (self._x ** 2 + self._y ** 2 + self._z ** 2) ** 0.5
+
+
 .. seealso::
 
-    :class:`brg.datastructures.mesh.Mesh`
-    :class:`brg.datastructures.network.Network`
-    :class:`brg.datastructures.volmesh.VolMesh`
+    https://docs.python.org/2/reference/datamodel.html#descriptors
+
+    * :mod:`brg.geometry.elements`
+
+    * :class:`brg.datastructures.mesh.Mesh`
+    * :class:`brg.datastructures.network.Network`
+    * :class:`brg.datastructures.volmesh.VolMesh`
 
 
 Decorators
