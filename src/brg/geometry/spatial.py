@@ -142,7 +142,7 @@ def circle_from_points(a, b, c):
         a (sequence of float): XYZ coordinates.
 
     Returns:
-        tuple: center, normal, radius of the circle.
+        tuple: center, radius, normal  of the circle.
 
     References:
         https://en.wikipedia.org/wiki/Circumscribed_circle
@@ -164,7 +164,7 @@ def circle_from_points(a, b, c):
     Cc = scale_vector(c, C)
     center = add_vectorlist([Aa, Bb, Cc])
     radius = distance_point_point(center, a)
-    return center, normal, radius
+    return center, radius, normal
 
 
 # ------------------------------------------------------------------------------
@@ -1275,7 +1275,7 @@ def is_point_in_triangle(point, triangle):
 
 
 def is_point_in_circle(point, circle):
-    center, normal, radius = circle
+    center, radius, normal = circle
     if is_point_on_plane(point, (center, normal)):
         return distance_point_point(point, center) <= radius
     return False

@@ -129,24 +129,6 @@ def circle_from_points_2d(p1, p2, p3):
         https://en.wikipedia.org/wiki/Circumscribed_circle
 
     """
-#     ab = subtract_vectors_2d(b, a)
-#     cb = subtract_vectors_2d(b, c)
-#     ba = subtract_vectors_2d(a, b)
-#     ca = subtract_vectors_2d(a, c)
-#     ac = subtract_vectors_2d(c, a)
-#     bc = subtract_vectors_2d(c, b)
-#     normal = normalize_vector_2d(cross_vectors_2d(ab, ac))
-#     d = 2 * length_vector_sqrd_2d(cross_vectors_2d(ba, cb))
-#     A = length_vector_sqrd_2d(cb) * dot_vectors_2d(ba, ca) / d
-#     B = length_vector_sqrd_2d(ca) * dot_vectors_2d(ab, cb) / d
-#     C = length_vector_sqrd_2d(ba) * dot_vectors_2d(ac, bc) / d
-#     Aa = scale_vector_2d(a, A)
-#     Bb = scale_vector_2d(b, B)
-#     Cc = scale_vector_2d(c, C)
-#     center = reduce(add_vectors_2d, [Aa, Bb, Cc])
-#     radius = distance_point_point_2d(center, a)
-#     return center, normal, radius
-
     ax, ay = p1[0],p1[1]
     bx, by = p2[0],p2[1]
     cx, cy = p3[0],p3[1]
@@ -154,7 +136,6 @@ def circle_from_points_2d(p1, p2, p3):
     b = by - ay
     c = cx - ax
     d = cy - ay
-
     e = a * (ax + bx) + b * (ay + by)
     f = c * (ax + cx) + d * (ay + cy)
     g = 2 * (a * (cy - by) - b * (cx - bx))
@@ -832,6 +813,16 @@ def is_point_in_triangle_2d(p, triangle):
 
 
 def is_point_in_circle_2d(point, circle):
+    """Verify if a point lies a circle in 2d on the xy plane.
+
+    Parameters:
+        point (sequence of float): XY coordinates.
+        circle (tuple): center, radius of the circle in the xy plane.
+
+    Returns:
+        (bool): True if there is a intersection, False otherwise.
+
+    """
     dis = distance_point_point_2d(point, circle[0])
     if dis <= circle[1]: return True
     return False
@@ -910,20 +901,20 @@ def intersection_lines_2d():
     raise NotImplementedError
 
 
-def intersection_circle_circle_2d(p1, r1, p2, r2):
+def intersection_circle_circle_2d(circle1,circle2):
     """Calculates the intersection points of two circles in 2d on the xy plane.
 
     Parameters:
-        p1 (tuples): 3d point of circle A
-        r1 (float): radius of circle A
-        p2 (tuples): 3d point of circle B
-        r2 (float): radius of circle B
+        circle1 (tuple): center, radius of the first circle in the xy plane.
+        circle2 (tuple): center, radius of the second circle in the xy plane.
 
     Returns:
         points (list of tuples): the intersection points if there are any
         None: if there are no intersection points
 
     """
+    p1,r1 = circle1[0],circle1[1] 
+    p2,r2 = circle2[0],circle2[1] 
     d = distance_point_point_2d(p1, p2)
     if d > r1 + r2:
         return None
