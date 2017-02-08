@@ -10,6 +10,10 @@ Numerical
 NumPy & SciPy
 =============
 
+Most (if not all) numerical calculations in the core library are based on NumPy
+and SciPy. For all the code snippets on this page, we will assume that both packages
+have been imported as seen here:
+
 .. code-block:: python
 
     import numpy as np
@@ -43,17 +47,28 @@ two data formats, using key-index maps.
     xyz   = [network.vertex_coordinates(key) for key in network]
     edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
 
-    for i, j in edges:
-        print xyz[i]
-        print xyz[j]
+    network.plotter.vsize = 0.2
+    network.plotter.vlabel = key_index
+    network.plotter.elabel = {(u, v): '{0}-{1}'.format(key_index[u], key_index[v]) for u, v in network.edges()}
+
+    network.plot()
 
 
 .. plot::
 
     import brg
     from brg.datastructures.network import Network
-    
+
     network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+    key_index = dict((k, i) for i, k in network.vertices_enum())
+
+    xyz   = [network.vertex_coordinates(key) for key in network]
+    edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
+
+    network.plotter.vsize = 0.2
+    network.plotter.vlabel = key_index
+    network.plotter.elabel = {(u, v): '{0}-{1}'.format(key_index[u], key_index[v]) for u, v in network.edges()}
 
     network.plot()
 
@@ -62,8 +77,7 @@ Matrices
 ========
 
 The numerical package has several convenience functions for the construction of 
-matrices that are commonly used in calculations related to architectural and
-structural geometry.
+matrices that are commonly used in architectural and structural geometry calculations.
 
 
 Adjacency matrix
@@ -134,6 +148,8 @@ Comparison
 ----------
 
 .. code-block:: python
+    
+    L = L / D.diagonal().reshape((-1, 1))
 
     xyz = np.array(xyz)
 
@@ -145,6 +161,9 @@ Comparison
 
     print np.allclose(c1, c2)
     print np.allclose(c1, c3)
+
+    # True
+    # True
 
 
 Linear Algebra
@@ -178,6 +197,7 @@ Linear Algebra
     uvw = C.dot(xyz)
     l   = normrow(uvw)
 
+    network.plotter.vsize = 0.1
     network.plotter.elabel = {(u, v): '{0:.1f}'.format(l[index, 0]) for index, u, v in network.edges_enum()}
     network.plot()
 
