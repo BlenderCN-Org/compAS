@@ -60,8 +60,8 @@ from brg.numerical.solvers.evolutionary.genetic.visualization.ga_visualization i
 vis = GA_VIS()
 vis.input_path = GA.output_path
 vis.output_path = vis.input_path 
-filename = GA.fit_name+'.json'
+#filename = GA.fit_name+'.json'
 vis.conversion_function = None
 vis.start_from_gen = 0
 
-vis.draw_ga_evolution(filename)
+vis.draw_ga_evolution(make_pdf=False,show_plot = True)

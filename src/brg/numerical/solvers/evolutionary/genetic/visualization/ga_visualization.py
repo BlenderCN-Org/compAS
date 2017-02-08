@@ -1,4 +1,4 @@
-import matplotlib,re,json,math
+import matplotlib,re,json,math,os
 import matplotlib.pyplot as plt
 import pylab as p
 from matplotlib.backends.backend_pdf import PdfPages
@@ -77,7 +77,14 @@ class GA_VIS:
         self.y_caps = {'y_min':float('-inf'),'y_max':float('inf')}
 
 
-    def get_ga_input_from_file(self,filename):
+    def get_ga_input_from_file(self):
+        files = os.listdir(input_path)
+        for f in files:
+            if os.path.splitext(f)[1] == '.json':
+                filename = f
+                break
+        print filename
+
         with open(self.input_path+filename, 'rb') as fh:
             ga = json.load(fh)
 
@@ -98,7 +105,7 @@ class GA_VIS:
     def get_pop_from_pop_file(self):
         file_pop  = {'binary':{},'decoded':{},'scaled':{},'fit_value':{},
                      'pf':{}}
-        filename  = 'generation_'+ "%04d" % self.generation + '_population'+ ".pop"
+        filename  = 'generation_'+ "%05d" % self.generation + '_population'+ ".pop"
         filename = self.input_path+filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
@@ -143,10 +150,9 @@ class GA_VIS:
         self.xticks = int(round(size/5.0,10))
         # print('self.xticks',self.xticks)
 
-    def draw_ga_evolution(self,filename):
+    def draw_ga_evolution(self,make_pdf=True,show_plot=False):
 
-        self.get_ga_input_from_file(filename)
-
+        self.get_ga_input_from_file()
         min_list = []
         max_list = []
         avg_list = []
@@ -220,20 +226,35 @@ class GA_VIS:
         plt.xticks(x, labels)
         plt.grid(True)
         plt.legend(loc=loc)
-        plt.savefig(self.output_path+self.fit_name+'_evolution.pdf')
+        if make_pdf:
+            plt.savefig(self.output_path+self.fit_name+'_evolution.pdf')
+        if show_plot:
+            plt.show()
+
 
         print('done')
 
-if __name__ == '__main__':
-
+def visualize_evolution(input_path,output_path, make_pdf=True,show_plot=False,
+    start_from_gen = 0, conversion_function = None):
     vis = GA_VIS()
-    vis.input_path = '../_scripts/out/'
-    vis.output_path = vis.input_path
-    filename = 'fitness1.json'
-    vis.conversion_function = None
+    vis.input_path = input_path
+    vis.output_path = output_path
+    vis.conversion_function = conversion_function
     vis.start_from_gen = 0
+    vis.draw_ga_evolution(make_pdf=make_pdf,show_plot=show_plot)
 
-    vis.draw_ga_evolution(filename)
+if __name__ == '__main__':
+    input_path = '../_scripts/out/'
+    output_path = input_path
+    visualize_evolution(input_path,output_path, make_pdf=True,show_plot=True,
+    start_from_gen = 0, conversion_function = None)
+
+
+
+
+
+
+
 
 
 
