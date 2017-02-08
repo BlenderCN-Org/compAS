@@ -88,9 +88,9 @@ if __name__ == "__main__":
 
     from brg.numerical.xforms import rotation_matrix
 
-    from brg.plotters.axes import Axes3
-    from brg.plotters.cloud import Cloud3
-    from brg.plotters.bounds import Bounds
+    from brg.plotters.helpers import Axes3D
+    from brg.plotters.helpers import Cloud3D
+    from brg.plotters.helpers import Bounds
     from brg.plotters.drawing import create_axes_3d
 
     data = random.rand(300, 3)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     axes = create_axes_3d()
 
     Bounds(data).plot(axes)
-    Cloud3(data).plot(axes)
-    Axes3(average, vectors).plot(axes)
+    Cloud3D(data).plot(axes)
+    Axes3D(average, vectors).plot(axes)
 
     plt.show()
