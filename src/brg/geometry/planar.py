@@ -55,7 +55,7 @@ __all__ = [
 
     'closest_point_on_line_2d',
     'closest_point_on_segment_2d',
-    'closest_point_on_polyline_2d',
+    'closest_point_on_polygon_2d',
     'closest_part_of_triangle',
 
     'is_ccw_2d',
@@ -63,7 +63,7 @@ __all__ = [
     'is_polygon_convex_2d',
     'is_point_on_line_2d',
     'is_point_on_segment_2d',
-    'is_point_on_polyline_2d',
+    'is_point_on_polygon_2d',
     'is_point_in_triangle_2d',
     'is_point_in_polygon_2d',
     'is_intersection_line_line_2d',
@@ -664,7 +664,7 @@ def closest_point_on_segment_2d(point, segment):
     return p
 
 
-def closest_point_on_polyline_2d(point, polyline):
+def closest_point_on_polygon_2d(point, polygon):
     raise NotImplementedError
 
 
@@ -785,7 +785,7 @@ def is_point_on_segment_2d():
     raise NotImplementedError
 
 
-def is_point_on_polyline_2d():
+def is_point_on_polygon_2d():
     raise NotImplementedError
 
 
