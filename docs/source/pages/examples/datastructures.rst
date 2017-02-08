@@ -8,6 +8,14 @@ Datastructures
 
 .. color.vertex should be the default vertex color if it is defined
 .. color.edge should be the default edge color if it is defined
+.. remove color.xxx!
+.. add references to the docs throughout
+.. rename to dijkstra_path
+.. add find_faces and dual drawing (combined plot)
+.. combine adjacency stuff into plot
+.. add intro and mesh equivalence
+.. subdivision algorithm for meshes
+.. remesh mesh
 
 
 Create a network
@@ -81,31 +89,6 @@ Create a network
     #
     # - vertex degree min: 1
     # - vertex degree max: 4
-
-
-.. code-block:: python
-    
-    network.plot()
-
-
-.. plot::
-
-    from brg.datastructures.network import Network
-
-    network = Network()
-
-    a = network.add_vertex()
-    b = network.add_vertex()
-    c = network.add_vertex()
-    d = network.add_vertex()
-    e = network.add_vertex()
-
-    network.add_edge(a, b)
-    network.add_edge(a, c)
-    network.add_edge(a, d)
-    network.add_edge(a, e)
-
-    network.plot()
 
 
 .. code-block:: python
@@ -381,6 +364,9 @@ See geometry examples?
 Customisation
 =============
 
+.. give cablenet as example
+.. copy-paste from nesthilo
+
 .. code-block:: python
    
     class CustomNetwork(Network):
@@ -392,6 +378,11 @@ Customisation
                 'cx': None,
                 'cy': None
             })
+
+
+.. seealso::
+    
+    :mod:`brg_ags.diagrams`
 
 
 Export
@@ -418,4 +409,73 @@ Algorithms (Extras)
 .. network: paths
 .. mesh: subdivision
 .. network & mesh: smoothing
+
+.. code-block:: python
+
+    import brg
+
+    from brg.datastructures.network import Network
+    from brg.datastructures.network.algorithms import network_shortest_path_dijkstra
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+    weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
+    weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+
+    start = '21'
+    end = '22'
+
+    path = network_shortest_path_dijkstra(network.adjacency, weight, start, end)
+
+    edges = []
+    for i in range(len(path) - 1):
+        u = path[i]
+        v = path[i + 1]
+        if v not in network.edge[u]:
+            u, v = v, u
+        edges.append([u, v])
+
+    network.plot(
+        vlabel={key: key for key in (start, end)},
+        vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
+        vsize=0.15,
+        ecolor={(u, v): (255, 0, 0) for u, v in edges},
+        ewidth={(u, v): 2.0 for u, v in edges},
+        elabel={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
+    )
+
+
+.. plot::
+
+    import brg
+
+    from brg.datastructures.network import Network
+    from brg.datastructures.network.algorithms import network_shortest_path_dijkstra
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+    weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
+    weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+
+    start = '21'
+    end = '22'
+
+    path = network_shortest_path_dijkstra(network.adjacency, weight, start, end)
+
+    edges = []
+    for i in range(len(path) - 1):
+        u = path[i]
+        v = path[i + 1]
+        if v not in network.edge[u]:
+            u, v = v, u
+        edges.append([u, v])
+
+    network.plot(
+        vlabel={key: key for key in (start, end)},
+        vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
+        vsize=0.15,
+        ecolor={(u, v): (255, 0, 0) for u, v in edges},
+        ewidth={(u, v): 2.0 for u, v in edges},
+        elabel={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
+    )
 

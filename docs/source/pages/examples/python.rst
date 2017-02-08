@@ -176,47 +176,6 @@ Sorting
     print zip(*result)
 
 
-.. Defaults
-.. ========
-
-.. .. code-block:: python
-
-..     def func(a, b, c=1):
-..         pass
-
-
-.. .. code-block:: python
-
-..     def func(a, b, c=None):
-..         if not c:
-..             c = 1
-
-
-.. .. code-block:: python
-
-..     def func(a, b, c=None):
-..         c = c or 1
-
-
-.. .. code-block:: python
-
-..     def func(a, b, **kwargs):
-..         c = kwargs.get('c', 1)
-..         print c
-
-..     func(a, b)
-..     func(a, b, c=None)
-
-
-.. .. code-block:: python
-
-..     def func(a, b, **kwargs):
-..         c = kwargs.get('c') or 1
-..         print c
-
-..     func(a, b, c=None)
-
-
 Descriptors
 ===========
 
@@ -224,10 +183,9 @@ Descriptors
 
     class Vector(object):
 
-        def __init__(self, x, y, z):
+        def __init__(self, x, y):
             self.x = x
             self.y = y
-            self.z = z
 
         @property
         def x(self):
@@ -237,53 +195,56 @@ Descriptors
         def x(self, value):
             self._x = float(value)
 
+        @property
+        def y(self):
+            return self._y
+
+        @y.setter
+        def y(self, value):
+            self._y = float(value)
+
 
 .. code-block:: python
 
     class Vector(object):
 
-        def __init__(self, x, y, z):
-            self.x = x
-            self.y = y
-            self.z = z
+        def __init__(self, x, y):
+            self._x = float(x)
+            self._y = float(y)
 
         @property
         def x(self):
             return self._x
 
-        @x.setter
-        def x(self, value):
-            self._x = float(value)
-
-        ...
-
         @property
-        def z(self):
-            return self._z
-
-        @z.setter
-        def z(self, value):
-            self._z = float(value)
+        def y(self):
+            return self._y
 
 
 .. code-block:: python
 
     class Vector(object):
 
-        def __init__(self, x, y, z):
-            self.x = x
-            self.y = y
-            self.z = z
-
         ...
 
         @property
-        def xyz(self):
-            return self._x, self._y, self._z
+        def xy(self):
+            return self.x, self.y
 
         @property
         def length(self):
-            return (self._x ** 2 + self._y ** 2 + self._z ** 2) ** 0.5
+            return (self.x ** 2 + self.y ** 2) ** 0.5
+
+
+.. code-block:: python
+
+    vector = Vector(0, 2)
+
+    print vector.xy
+    # 0.0 2.0
+
+    print vector.length
+    # 2.0    
 
 
 .. seealso::
@@ -297,14 +258,65 @@ Descriptors
     * :class:`brg.datastructures.volmesh.VolMesh`
 
 
+Profiling
+=========
+
+.. code-block:: python
+
+    import cProfile
+    import pstats
+
+    profile = cProfile.Profile()
+    profile.enable()
+
+    for i in range(10):
+        print i
+
+    profile.disable()
+
+    stats  = pstats.Stats(profile)
+    stats.strip_dirs()
+    stats.sort_stats(1)
+    stats.print_stats(20)
+
+
 Decorators
 ==========
+
+.. rename profiling to code(analysis)
+
+.. code-block:: python
+
+    import cProfile
+    import pstats
+
+    from functools import wraps
+
+    def print_profile(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            profile = cProfile.Profile()
+            profile.enable()
+            #
+            res = func(*args, **kwargs)
+            #
+            profile.disable()
+            stats = pstats.Stats(profile)
+            stats.strip_dirs()
+            stats.sort_stats(1)
+            stats.print_stats(20)
+            return res
+        return wrapper
+
+    @print_profile
+    def silly():
+        for i in range(10):
+            print i
+
+    silly()
+
 
 .. seealso::
 
     :func:`brg.utilities.profiling.print_profile`
-
-
-Profiling
-=========
 

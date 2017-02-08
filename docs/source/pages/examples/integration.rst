@@ -7,3 +7,5 @@ Integration
 .. rhino
 .. grasshopper
 .. blender
+
+.. focus on rhino for now

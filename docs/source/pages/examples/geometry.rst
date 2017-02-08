@@ -11,6 +11,10 @@ Geometry
 
 .. pull to mesh (i.e. to closest point on mesh)
 
+.. refer back to equivalent functions in datastructure part
+
+.. iter versions at back
+
 
 .. code-block:: python
 
@@ -29,6 +33,9 @@ Edge length
 
 .. code-block:: python
 
+    # lengths = [network.edge_length(u, v) for u, v in network.edges()]
+
+
     from brg.geometry import subtract_vectors
     from brg.geometry import length_vector
     from brg.geometry import distance_point_point
@@ -38,13 +45,16 @@ Edge length
     for u, v in network.edges():
         a = network.vertex_coordinates(u)
         b = network.vertex_coordinates(v)
-        l = length_vector(subtract_vectors(b, a))
+        ab = subtract_vectors(b, a)
+        l = length_vector(ab)
         # l = distance_point_point(a, b)
         lengths.append(l)
 
     print lengths
-    print [network.edge_length(u, v) for ]
     
+
+.. code-block:: python
+
     network.plotter.elabel = {(u, v): network.edge_length(u, v) for u, v in network.edges_iter()}
     network.plot()
 
@@ -65,6 +75,9 @@ Edge midpoint
 
 .. code-block:: python
 
+    # midpoints [network.edge_midpoint(u, v) for u, v in network.edges()]
+
+
     from brg.geometry import centroid_points
     from brg.geometry import midpoint_line
 
@@ -78,7 +91,9 @@ Edge midpoint
         midpoints.append(m)
 
     print midpoints
-    print [network.edge_midpoint(u, v) for u, v in network.edges_iter()]
+
+
+.. code-block:: python
 
     network.plotter.points = [{'pos': network.edge_midpoint(u, v), 'text': index} for index, u, v in network.edges_enum()]
     network.plot()
@@ -167,6 +182,7 @@ Vertex area
         areas.append(area)
 
     print areas
+
 
 .. code-block:: python
 
