@@ -5,9 +5,9 @@ from brg_blender.utilities.layers import layer_mask
 from brg_blender.utilities.objects import delete_objects
 from brg_blender.utilities.objects import object_layer
 
-from brg.geometry.basics import centroid_points
-from brg.geometry.basics import subtract_vectors
-from brg.geometry.basics import length_vector
+from brg.geometry.spatial import centroid_points
+from brg.geometry.spatial import subtract_vectors
+from brg.geometry.spatial import length_vector
 
 from mathutils import Vector
 from math import atan2
