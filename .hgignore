@@ -23,3 +23,6 @@ threejs/**
 
 syntax: regexp
 ^examples/objects_to_mesh_in_rhino/toolbar\.rui$
+
+syntax: regexp
+^examples/objects_to_mesh_in_rhino/toolbar\.rui$

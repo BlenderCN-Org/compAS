@@ -1631,7 +1631,7 @@ def project_point_plane(point, plane):
     """Project a point onto a plane.
 
     The projection is in the direction perpendicular to the plane.
-    The projercted point is thus the closest point on the plane to the original
+    The projected point is thus the closest point on the plane to the original
     point.
 
     Parameters:

@@ -9,6 +9,9 @@ from brg.geometry.planar import is_point_in_polygon_2d
 from brg.geometry.planar import is_point_in_circle_2d
 from brg.geometry.planar import circle_from_points_2d
 
+import random 
+
+import rhinoscriptsyntax as rs
 
 class DelaunayMesh(Mesh):
     """"""
@@ -100,9 +103,23 @@ def super_triangle(coords):
     return pt1, pt2, pt3
 
 
-def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
+def delaunay_from_points(points, outbound_keys=None, inbounds_keys=None):
+    """Computes the delaunay triangulation for a list of points.
+
+    Parameters:
+        points (sequence of tuple): XYZ coordinates of the original points.
+        outbound_keys (sequence of ): 
+
+    Returns:
+        list of lists: list of faces (face = list of vertex indices as integers)
+
+    References:
+        Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane 
+
+    """
     mesh = DelaunayMesh()
-    points = [(point[0], point[1], 0.0) for point in points3d]
+    tiny = 1e-8 # to avoid numerical issues for perfectly structured point sets
+    pts = [(point[0]+random.uniform(-tiny,tiny), point[1]+random.uniform(-tiny,tiny), 0.0) for point in points]
 
     # create super triangle
     pt1, pt2, pt3 = super_triangle(points)
@@ -115,7 +132,7 @@ def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
     mesh.add_face(super_keys)
 
     # iterate over points
-    for i, pt in enumerate(points):
+    for i, pt in enumerate(pts):
         # if key not in superkeys:
         # insert point
         key = str(i)
@@ -133,7 +150,7 @@ def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
             dictc = mesh.vertex[keyc]
             c = [dictc['x'], dictc['y']]
             pt_2d = (pt[0], pt[1])
-            if is_point_in_polygon_2d(pt_2d,[a, b, c]):
+            if is_point_in_triangle_2d(pt, [a, b, c]):
                 # generate 3 new triangles (faces) and delete surrounding triangle
                 newtris = mesh.insert_vertex(fkey, key, xyz=pt)
                 break
@@ -158,7 +175,7 @@ def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
                 # This is faster:
                 keya, keyb, keyc = mesh.face_vertices(fkey_op)
                 dicta = mesh.vertex[keya]
-                a = [dicta['x'] + 0.000000001, dicta['y'] - 0.000000001]  # avoid numerical issues for points on a line
+                a = [dicta['x'], dicta['y']]  
                 dictb = mesh.vertex[keyb]
                 b = [dictb['x'], dictb['y']]
                 dictc = mesh.vertex[keyc]
@@ -185,9 +202,13 @@ def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
         poly.append(mesh.vertex_coordinates(outbound_keys[-1]))  # make it a closed poly
         for key in outbound_keys:
             poly.append(mesh.vertex_coordinates(key))
+        
         for fkey in mesh.faces():
             cent = mesh.face_centroid(fkey)
-            if not is_point_in_polygon_2d(poly, cent):
+            
+            if not is_point_in_polygon_2d(cent,poly):
+                rs.AddPoint(cent)
+                print fkey
                 mesh.delete_face(fkey)
 
     # Delete faces inside of inside boundaries
@@ -199,7 +220,7 @@ def delaunay_from_points(points3d, outbound_keys=None, inbounds_keys=None):
                 poly.append(mesh.vertex_coordinates(key))
             for fkey in mesh.faces():
                 cent = mesh.face_centroid(fkey)
-                if is_point_in_polygon_2d(poly, cent):
+                if is_point_in_polygon_2d(cent,poly):
                     mesh.delete_face(fkey)
 
     return [[int(key) for key in mesh.face_vertices(fkey, True)] for fkey in mesh.faces()]
