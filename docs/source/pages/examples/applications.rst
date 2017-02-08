@@ -25,3 +25,6 @@ All Rhino examples are based on the following Rhino model :download:`geometry.3d
 
     faces = delaunay_from_points(pts)
     rs.AddMesh(pts,faces)
+
+
+.. image:: /_images/imagetest.*
