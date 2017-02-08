@@ -12,7 +12,7 @@ Applications
 .. brg_ags as scripts?
 
 
-All Rhino examples are based on the following Rhino model :download:`</rhino/geometry_tests.3dm>`.
+All Rhino examples are based on the following Rhino model :download:`geometry.3dm </_downloads/geometry_tests.3dm>`.
 
 
 .. code-block:: python
