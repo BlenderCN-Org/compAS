@@ -493,6 +493,15 @@ name: {0}
             return keys
         return [key_index[key] for key in keys]
 
+    def connected_edges(self, key):
+        edges = []
+        for nbr in self.neighbours(key):
+            if nbr in self.edge[key]:
+                edges.append((key, nbr))
+            else:
+                edges.append((nbr, key))
+        return edges
+
     # --------------------------------------------------------------------------
     # vertex topology
     # --------------------------------------------------------------------------

@@ -62,7 +62,7 @@ algorithms
     network_bfs_paths
     network_shortest_path
     network_dijkstra_distances
-    network_shortest_path_dijkstra
+    network_dijkstra_path
 
 
 numerical

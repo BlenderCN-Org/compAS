@@ -9,6 +9,7 @@ from brg.plotters.drawing import create_axes_2d
 
 from brg.plotters.drawing import draw_xpoints_2d
 from brg.plotters.drawing import draw_xlines_2d
+from brg.plotters.drawing import draw_xarrows_2d
 
 from brg.plotters.drawing import draw_points_3d
 from brg.plotters.drawing import draw_lines_3d
@@ -59,6 +60,7 @@ class NetworkPlotter2D(object):
         self.vsize = None
         # additional
         self.points = None
+        self.lines = None
         # defaults
         self.default_text_color = '#000000'
         self.default_vertex_color = '#ffffff'
@@ -159,6 +161,17 @@ class NetworkPlotter2D(object):
                     'edgecolor' : point.get('edgecolor', self.default_edge_color),
                 })
             draw_xpoints_2d(points, axes)
+        # lines
+        if self.lines:
+            lines = []
+            for line in self.lines:
+                lines.append({
+                    'start': line['start'],
+                    'end': line['end'],
+                    'color': line.get('color', '#00ff00'),
+                    'width': line.get('width', 2.0),
+                })
+            draw_xarrows_2d(lines, axes)
 
 
 class NetworkPlotter3D(object):

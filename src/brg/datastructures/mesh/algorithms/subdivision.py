@@ -519,22 +519,34 @@ def subdivide_quadmesh_quad(mesh, k=1):
 
 if __name__ == "__main__":
 
+    import brg
     from brg.datastructures.mesh import Mesh
-    from brg.geometry.elements.polyhedron import Polyhedron
-    from brg.datastructures.mesh.viewer import SubdMeshViewer
 
-    cube = Polyhedron.generate(6)
+    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    subd = mesh.copy()
 
-    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+    subdivide_mesh_catmullclark(subd, k=2)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+    subd.plotter.vsize = 0.05
+    subd.plotter.vcolor = {key: (255, 0, 0) for key in mesh}
 
-    viewer.axes.x_color = (0.1, 0.1, 0.1)
-    viewer.axes.y_color = (0.1, 0.1, 0.1)
-    viewer.axes.z_color = (0.1, 0.1, 0.1)
+    subd.plot()
 
-    viewer.axes_on = False
-    viewer.grid_on = False
+    # from brg.geometry.elements.polyhedron import Polyhedron
+    # from brg.datastructures.mesh.viewer import SubdMeshViewer
 
-    viewer.setup()
-    viewer.show()
+    # cube = Polyhedron.generate(6)
+
+    # mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+
+    # viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+
+    # viewer.axes.x_color = (0.1, 0.1, 0.1)
+    # viewer.axes.y_color = (0.1, 0.1, 0.1)
+    # viewer.axes.z_color = (0.1, 0.1, 0.1)
+
+    # viewer.axes_on = False
+    # viewer.grid_on = False
+
+    # viewer.setup()
+    # viewer.show()

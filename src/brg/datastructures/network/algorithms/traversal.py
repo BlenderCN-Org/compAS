@@ -15,7 +15,7 @@ __all__ = [
     'network_bfs_paths',
     'network_shortest_path',
     'network_dijkstra_distances',
-    'network_shortest_path_dijkstra'
+    'network_dijkstra_path'
 ]
 
 
@@ -275,7 +275,7 @@ def network_dijkstra_distances(adjacency, weight, target):
     return dist
 
 
-def network_shortest_path_dijkstra(adjacency, weight, source, target):
+def network_dijkstra_path(adjacency, weight, source, target):
     """Find the shortest path between two vertices if the edge weights are not
     all one.
 
@@ -300,14 +300,14 @@ def network_shortest_path_dijkstra(adjacency, weight, source, target):
 
             import brg
             from brg.datastructures.network import Network
-            from brg.datastructures.network.algorithms import network_shortest_path_dijkstra
+            from brg.datastructures.network.algorithms import network_dijkstra_path
 
             network = Network.from_obj(brg.get_data('lines.obj'))
 
             weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges_iter())
             weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-            path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
+            path = network_dijkstra_path(network.adjacency, weight, '0', '26')
             print path  # ['0', '30', '11', '15', '26']
 
             edges = []
@@ -331,11 +331,11 @@ def network_shortest_path_dijkstra(adjacency, weight, source, target):
 
             import brg
             from brg.datastructures.network import Network
-            from brg.datastructures.network.algorithms import network_shortest_path_dijkstra
+            from brg.datastructures.network.algorithms import network_dijkstra_path
             network = Network.from_obj(brg.get_data('lines.obj'))
             weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
             weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-            path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
+            path = network_dijkstra_path(network.adjacency, weight, '0', '26')
             edges = []
             for i in range(len(path) - 1):
                 u = path[i]
@@ -372,12 +372,10 @@ if __name__ == '__main__':
 
     network = Network.from_obj(brg.get_data('lines.obj'))
 
-    # path = network_shortest_path(network.adjacency, '0', '26')
-
     weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
     weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-    path = network_shortest_path_dijkstra(network.adjacency, weight, '0', '26')
+    path = network_dijkstra_path(network.adjacency, weight, '0', '26')
 
     print path
 

@@ -6,27 +6,6 @@ Geometry
 
 .. contents::
 
-.. normals => 3D plotting
-.. crossing edges
-
-.. pull to mesh (i.e. to closest point on mesh)
-
-.. refer back to equivalent functions in datastructure part
-
-.. iter versions at back
-
-
-.. code-block:: python
-
-    import brg
-
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.network import Network
-
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-
-    network = Network.from_obj(brg.get_data('lines.obj'))
-
 
 Edge length
 ===========
@@ -35,27 +14,25 @@ Edge length
 
     # lengths = [network.edge_length(u, v) for u, v in network.edges()]
 
-
-    from brg.geometry import subtract_vectors
-    from brg.geometry import length_vector
+    import brg
+    from brg.datastructures.network import Network
     from brg.geometry import distance_point_point
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
     lengths = []
 
     for u, v in network.edges():
         a = network.vertex_coordinates(u)
         b = network.vertex_coordinates(v)
-        ab = subtract_vectors(b, a)
-        l = length_vector(ab)
-        # l = distance_point_point(a, b)
+        l = distance_point_point(a, b)
         lengths.append(l)
 
-    print lengths
-    
 
 .. code-block:: python
 
-    network.plotter.elabel = {(u, v): network.edge_length(u, v) for u, v in network.edges_iter()}
+    network.plotter.vsize = 0.05
+    network.plotter.elabel = {(u, v): '%.1f' % network.edge_length(u, v) for u, v in network.edges_iter()}
     network.plot()
 
 
@@ -64,9 +41,10 @@ Edge length
     import brg
     from brg.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
-    network.plotter.elabel = {(u, v): network.edge_length(u, v) for u, v in network.edges_iter()}
+    network.plotter.vsize = 0.05
+    network.plotter.elabel = {(u, v): '%.1f' % network.edge_length(u, v) for u, v in network.edges_iter()}
     network.plot()
 
 
@@ -77,25 +55,26 @@ Edge midpoint
 
     # midpoints [network.edge_midpoint(u, v) for u, v in network.edges()]
 
-
-    from brg.geometry import centroid_points
+    import brg
+    from brg.datastructures.network import Network
     from brg.geometry import midpoint_line
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
     midpoints = []
 
     for u, v in network.edges():
         a = network.vertex_coordinates(u)
         b = network.vertex_coordinates(v)
-        # m = centroid_points([a, b])        
         m = midpoint_line(a, b)
         midpoints.append(m)
 
-    print midpoints
-
 
 .. code-block:: python
-
-    network.plotter.points = [{'pos': network.edge_midpoint(u, v), 'text': index} for index, u, v in network.edges_enum()]
+    
+    network.plotter.vsize = 0.05
+    network.plotter.vertices_on = True
+    network.plotter.points = [{'pos': network.edge_midpoint(u, v), 'text': str(index), 'size': 0.2, 'facecolor': '#eeeeee'} for index, u, v in network.edges_enum()]
     network.plot()
 
 
@@ -104,10 +83,11 @@ Edge midpoint
     import brg
     from brg.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
-    network.plotter.vertices_on = False
-    network.plotter.points = [{'pos': network.edge_midpoint(u, v), 'text': index} for index, u, v in network.edges_enum()]
+    network.plotter.vsize = 0.05
+    network.plotter.vertices_on = True
+    network.plotter.points = [{'pos': network.edge_midpoint(u, v), 'text': str(index), 'size': 0.2, 'facecolor': '#eeeeee'} for index, u, v in network.edges_enum()]
     network.plot()
 
 
@@ -116,21 +96,27 @@ Face centroid
 
 .. code-block:: python
 
+    # centroids = [mesh.face_centroid(fkey) for fkey in mesh.face]
+
+    import brg
+    from brg.datastructures.mesh import Mesh
     from brg.geometry import centroid_points
+
+    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
     centroids = []
 
     for fkey in mesh.face:
         vertices = mesh.faces_vertices(fkey)
         points = [mesh.vertex_coordinates(key) for key in vertices]
-        centroid = centroid_points(points)
-        centroids.append(centroid)
+        c = centroid_points(points)
+        centroids.append(c)
 
-    print centroids
-    print [mesh.face_centroid(fkey) for fkey in mesh.face]
 
-    mesh.plotter.vertices_on = False
-    mesh.plotter.points = [{'pos': mesh.face_centroid(fkey), 'text': fkey} for fkey in mesh.face]
+.. code-block:: python
+
+    mesh.plotter.vsize = 0.05
+    mesh.plotter.points = [{'pos': mesh.face_centroid(fkey), 'text': fkey, 'size': 0.2} for fkey in mesh.face]
     mesh.plot()
 
 
@@ -141,7 +127,8 @@ Face centroid
 
     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
-    mesh.plotter.points = [{'pos': mesh.face_centroid(fkey), 'text': fkey} for fkey in mesh.face]
+    mesh.plotter.vsize = 0.05
+    mesh.plotter.points = [{'pos': mesh.face_centroid(fkey), 'text': fkey, 'size': 0.2} for fkey in mesh.face]
     mesh.plot()
 
 
@@ -150,12 +137,15 @@ Vertex area
 
 .. code-block:: python
 
+    # areas = [mesh.vertex_area(key) for key in mesh.vertex]
+
     from brg.geometry import centroid_points
     from brg.geometry import cross_vectors
     from brg.geometry import length_vector
 
-    areas = []
     fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.face}
+
+    areas = []
 
     for key in mesh.vertex:
         area = 0
@@ -181,17 +171,11 @@ Vertex area
 
         areas.append(area)
 
-    print areas
-
 
 .. code-block:: python
-
-    print [mesh.vertex_area(key) for key in mesh.vertex]
-
-
-.. code-block:: python
-
-    mesh.plotter.vlabel = {key: '{0:.1f}'.format(mesh.vertex_area(key)) for key in mesh}
+    
+    mesh.plotter.vsize = 0.2
+    mesh.plotter.vlabel = {key: '%.1f' % mesh.vertex_area(key) for key in mesh}
     mesh.plot()
 
 
@@ -202,13 +186,7 @@ Vertex area
 
     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
+    mesh.plotter.vsize = 0.2
     mesh.plotter.vlabel = {key: '{0:.1f}'.format(mesh.vertex_area(key)) for key in mesh}
     mesh.plot()
 
-
-Crossing edges
-==============
-
-.. code-block:: python
-
-    # prrt

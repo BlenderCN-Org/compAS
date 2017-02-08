@@ -46,14 +46,14 @@ def _return_matrix(M, rtype):
 def adjacency_matrix(adjacency, rtype='array'):
     a = [(1, i, j) for i in range(len(adjacency)) for j in adjacency[i]]
     data, rows, cols = zip(*a)
-    A = coo_matrix((data, (rows, cols)))
+    A = coo_matrix((data, (rows, cols))).asfptype()
     return _return_matrix(A, rtype)
 
 
 def degree_matrix(adjacency, rtype='array'):
     d = [(len(adjacency[i]), i, i) for i in range(len(adjacency))]
     data, rows, cols = zip(*d)
-    D = coo_matrix((data, (rows, cols)))
+    D = coo_matrix((data, (rows, cols))).asfptype()
     return _return_matrix(D, rtype)
 
 
@@ -95,9 +95,9 @@ def connectivity_matrix(edges, rtype='array'):
     """
     m    = len(edges)
     data = array([-1] * m + [1] * m)
-    rows = array(list(range(m)) + list(range(m)))
+    rows = array(range(m) + range(m))
     cols = array([edge[0] for edge in edges] + [edge[1] for edge in edges])
-    C    = coo_matrix((data, (rows, cols)))
+    C    = coo_matrix((data, (rows, cols))).asfptype()
     return _return_matrix(C, rtype)
 
 
@@ -150,7 +150,7 @@ def face_matrix(face_vertices, rtype='array'):
 
     """
     f = array([(i, j, 1) for i, vertices in enumerate(face_vertices) for j in vertices])
-    F = coo_matrix((f[:, 2], (f[:, 0], f[:, 1])))
+    F = coo_matrix((f[:, 2], (f[:, 0], f[:, 1]))).asfptype()
     return _return_matrix(F, rtype)
 
 
@@ -164,7 +164,9 @@ def mass_matrix(Ct, E, A, l, f=0, c=1, tiled=True):
 
     .. math::
 
-        \mathbf{m} = |\mathbf{C}^\mathrm{T}| (\mathbf{E} \circ \mathbf{A} \oslash \mathbf{l} + \mathbf{f} \oslash \mathbf{l})
+        \mathbf{m} =
+        |\mathbf{C}^\mathrm{T}|
+        (\mathbf{E} \circ \mathbf{A} \oslash \mathbf{l} + \mathbf{f} \oslash \mathbf{l})
 
     Parameters:
         Ct (sparse): Sparse transpose of the connectivity matrix (n x m).
@@ -249,8 +251,6 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    from operator import itemgetter
 
     import brg
     from brg.datastructures.network import Network

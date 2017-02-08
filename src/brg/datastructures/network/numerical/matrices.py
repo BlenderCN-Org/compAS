@@ -1,6 +1,12 @@
 from numpy import array
 from scipy.sparse import coo_matrix
 
+from brg.numerical.matrices import adjacency_matrix
+from brg.numerical.matrices import degree_matrix
+from brg.numerical.matrices import connectivity_matrix
+from brg.numerical.matrices import laplacian_matrix
+from brg.numerical.matrices import face_matrix
+
 
 __author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -33,29 +39,20 @@ def _return_matrix(M, rtype):
 
 def network_adjacency_matrix(network, rtype='array'):
     k_i = dict((key, index) for index, key in network.vertices_enum())
-    temp = [(1, k_i[key], k_i[nbr]) for key in network.vertices_iter() for nbr in network.neighbours(key)]
-    data, rows, cols = zip(*temp)
-    A = coo_matrix((data, (rows, cols)))
-    return _return_matrix(A, rtype)
+    adjacency = [[k_i[nbr] for nbr in network.neighbours(key)] for key in network.vertices_iter()]
+    return adjacency_matrix(adjacency, rtype=rtype)
 
 
 def network_degree_matrix(network, rtype='array'):
-    d = [(network.degree(key), index, index) for index, key in network.vertices_enum()]
-    d = zip(*d)
-    D = coo_matrix((d[0], (d[1], d[2])))
-    return _return_matrix(D, rtype)
+    k_i = dict((key, index) for index, key in network.vertices_enum())
+    adjacency = [[k_i[nbr] for nbr in network.neighbours(key)] for key in network.vertices_iter()]
+    return degree_matrix(adjacency, rtype=rtype)
 
 
 def network_connectivity_matrix(network, rtype='array'):
-    """"""
     k_i   = dict((key, index) for index, key in network.vertices_enum())
     edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
-    m     = len(edges)
-    data  = array([-1] * m + [1] * m)
-    rows  = array(range(m) + range(m))
-    cols  = array(edges).reshape((-1, 1), order='F').squeeze()
-    C     = coo_matrix((data, (rows, cols)))
-    return _return_matrix(C, rtype)
+    return connectivity_matrix(edges, rtype=rtype)
 
 
 def network_laplacian_matrix(network, rtype='array'):
@@ -82,9 +79,9 @@ def network_laplacian_matrix(network, rtype='array'):
     >>> c = x - d
 
     """
-    C = network_connectivity_matrix(network, rtype='csr')
-    L = C.transpose().dot(C)
-    return _return_matrix(L, rtype)
+    k_i   = dict((key, index) for index, key in network.vertices_enum())
+    edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
+    return laplacian_matrix(edges, rtype=rtype)
 
 
 def network_face_matrix(network, rtype='csr'):
@@ -124,9 +121,8 @@ def network_face_matrix(network, rtype='csr'):
 
     """
     k_i = dict((key, index) for index, key in network.vertices_enum())
-    ijk = array([(i, k_i[k], 1) for i, fkey in enumerate(network.face) for k in network.face_vertices(fkey)])
-    F   = coo_matrix((ijk[:, 2], (ijk[:, 0], ijk[:, 1]))).tocsr()
-    return _return_matrix(F, rtype)
+    face_vertices = [[k_i[key] for key in network.face_vertices(fkey)] for fkey in network.faces()]
+    return face_matrix(face_vertices, rtype=rtype)
 
 
 # ==============================================================================
@@ -145,7 +141,9 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    network = Network.from_obj(brg.find_resource('lines.obj'))
+    network = Network.from_obj(brg.find_resource('grid_irregular.obj'))
+
+    key_index = dict((key, index) for index, key in network.vertices_enum())
 
     A = network_adjacency_matrix(network)
     C = network_connectivity_matrix(network)
@@ -165,12 +163,25 @@ if __name__ == '__main__':
     # by changing the signs in the laplacian
     # the dsiplacement vectors could be used in a more natural way
     # c = xyz + d
-    centroids2 = xyz - L.dot(xyz)
+
+    L = L / D.diagonal().reshape((-1, 1))
+
+    d = L.dot(xyz)
+
+    centroids2 = xyz - d
     centroids3 = A.dot(xyz) / D.diagonal().reshape((-1, 1))
 
     print allclose(centroids1, centroids2)
+    print allclose(centroids2, centroids3)
     print allclose(centroids1, centroids3)
+
+    for row in L.tolist():
+        print row
 
     t1 = time.time()
 
     print t1 - t0
+
+    network.plotter.vlabel = {key: index for index, key in network.vertices_enum()}
+    network.plotter.lines = [{'start': xyz[key_index[key]], 'end': xyz[key_index[key]] - d[key_index[key]]} for key in network]
+    network.plot()
