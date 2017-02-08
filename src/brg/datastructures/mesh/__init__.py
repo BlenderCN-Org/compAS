@@ -64,9 +64,7 @@ algorithms
     subdivide_mesh_catmullclark
     subdivide_mesh_doosabin
     subdivide_trimesh_loop
-    delaunay_from_mesh
     delaunay_from_points
-    delaunay_from_boundary
     optimise_trimesh_topology
 
 

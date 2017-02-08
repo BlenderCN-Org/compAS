@@ -306,6 +306,9 @@ name: {0}
             key = self.vertex_count
             self.vertex_count += 1
         else:
+            # if key is int
+            # increase the count
+            # because the count is used to replace None
             try:
                 int(key)
             except ValueError:
@@ -313,6 +316,8 @@ name: {0}
             else:
                 if int(key) > self.vertex_count:
                     self.vertex_count = int(key) + 1
+        # remove this
+        # potentially check for hashable
         key = str(key)
         if key not in self.vertex:
             self.vertex[key] = {}
@@ -351,9 +356,14 @@ name: {0}
         if fkey is None:
             fkey = self.face_count
         else:
+            # use the same try-except as with vertex keys
+            # only increase count if key is int
+            # because count is used to replace None
             if int(fkey) > self.face_count:
                 self.face_count = int(fkey)
         self.face_count += 1
+        # remove this
+        # potentially check if hashable
         fkey = str(fkey)
         self.face[fkey] = vertices
         for i in range(0, len(vertices) - 1):

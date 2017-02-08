@@ -1,19 +1,22 @@
-__author__    = 'Tom Van Mele'
-__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__   = 'MIT license'
-__email__     = 'vanmelet@ethz.ch'
-
+import random
 
 from brg.datastructures.mesh.mesh import Mesh
+
 from brg.geometry import centroid_points
 from brg.geometry import distance_point_point
 from brg.geometry import add_vectors
 from brg.geometry import bounding_box
+
 from brg.geometry.planar import is_point_in_polygon_2d
 from brg.geometry.planar import is_point_in_triangle_2d
 from brg.geometry.planar import is_point_in_circle_2d
 from brg.geometry.planar import circle_from_points_2d
-import random 
+
+
+__author__    = 'Tom Van Mele'
+__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
+__license__   = 'MIT license'
+__email__     = 'vanmelet@ethz.ch'
 
 
 class DelaunayMesh(Mesh):
@@ -118,11 +121,11 @@ def delaunay_from_points(points, polygon=None, polygons=None):
         list of lists: list of faces (face = list of vertex indices as integers)
 
     References:
-        Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane 
+        Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane
     """
     mesh = DelaunayMesh()
-    tiny = 1e-8 # to avoid numerical issues for perfectly structured point sets
-    pts = [(point[0]+random.uniform(-tiny,tiny), point[1]+random.uniform(-tiny,tiny), 0.0) for point in points]
+    tiny = 1e-8  # to avoid numerical issues for perfectly structured point sets
+    pts = [(point[0] + random.uniform(-tiny, tiny), point[1] + random.uniform(-tiny, tiny), 0.0) for point in points]
 
     # create super triangle
     pt1, pt2, pt3 = super_triangle(points)
@@ -152,7 +155,6 @@ def delaunay_from_points(points, polygon=None, polygons=None):
             b = [dictb['x'], dictb['y']]
             dictc = mesh.vertex[keyc]
             c = [dictc['x'], dictc['y']]
-            pt_2d = (pt[0], pt[1])
             if is_point_in_triangle_2d(pt, [a, b, c]):
                 # generate 3 new triangles (faces) and delete surrounding triangle
                 newtris = mesh.insert_vertex(fkey, key, xyz=pt)
@@ -178,7 +180,7 @@ def delaunay_from_points(points, polygon=None, polygons=None):
                 # This is faster:
                 keya, keyb, keyc = mesh.face_vertices(fkey_op)
                 dicta = mesh.vertex[keya]
-                a = [dicta['x'], dicta['y']]  
+                a = [dicta['x'], dicta['y']]
                 dictb = mesh.vertex[keyb]
                 b = [dictb['x'], dictb['y']]
                 dictc = mesh.vertex[keyc]
@@ -186,7 +188,7 @@ def delaunay_from_points(points, polygon=None, polygons=None):
 
                 circle = circle_from_points_2d(a, b, c)
 
-                if is_point_in_circle_2d(pt,circle):
+                if is_point_in_circle_2d(pt, circle):
                     # mesh.swap_edge(u, v)
                     fkey, fkey_op = swap_edge(mesh, u, v)
                     # print "swaped: "+ u +" - " + v
@@ -203,7 +205,7 @@ def delaunay_from_points(points, polygon=None, polygons=None):
     if polygon:
         for fkey in mesh.faces():
             cent = mesh.face_centroid(fkey)
-            if not is_point_in_polygon_2d(cent,polygon):
+            if not is_point_in_polygon_2d(cent, polygon):
                 mesh.delete_face(fkey)
 
     # Delete faces inside of inside boundaries
@@ -211,93 +213,94 @@ def delaunay_from_points(points, polygon=None, polygons=None):
         for polygon in polygons:
             for fkey in mesh.faces():
                 cent = mesh.face_centroid(fkey)
-                if is_point_in_polygon_2d(cent,polygon):
+                if is_point_in_polygon_2d(cent, polygon):
                     mesh.delete_face(fkey)
 
     return [[int(key) for key in mesh.face_vertices(fkey, True)] for fkey in mesh.faces()]
 
 
-
 # **************************************************************************
 # **************************************************************************
 # **************************************************************************
 # **************************************************************************
 # **************************************************************************
-#just a hack. Should be moved to numerical 
+# just a hack. Should be moved to numerical
 # try:
 #     from numpy import asarray
 #     from scipy.spatial import Delaunay
 # except:
 #     pass
-# 
+#
 # from brg.datastructures.mesh import Mesh
-# 
-# 
+#
+#
 # __author__    = 'Tom Van Mele'
 # __copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
 # __license__   = 'MIT license'
 # __email__     = 'vanmelet@ethz.ch'
-# 
-# 
+#
+#
 # __all__ = [
 #     'delaunay_from_mesh',
 #     'delaunay_from_points',
 #     'delaunay_from_boundary',
 # ]
-# 
-# 
-# 
-# 
-# 
+#
+#
+#
+#
+#
 # def delaunay_from_mesh(mesh):
 #     """Return a Delaunay triangulation from a given mesh.
-# 
+#
 #     Parameters:
 #         mesh (brg.datastructures.mesh.Mesh) :
 #             The original mesh.
-# 
+#
 #     Returns:
 #         mesh :
 #             ...
-# 
+#
 #     >>> ...
-# 
+#
 #     """
 #     d = Delaunay(mesh.xy)
 #     return Mesh.from_vertices_and_faces(mesh.xyz, d.simplices)
-# 
-# 
+#
+#
 # def delaunay_from_points(points):
 #     """"""
 #     xyz = asarray(points)
 #     assert 2 <= xyz.shape[1], "At least xy xoordinates required."
 #     d = Delaunay(xyz[:, 0:2])
 #     return Mesh.from_vertices_and_faces(points, d.simplices)
-# 
-# 
+#
+#
 # # @see: _scripts
 # def delaunay_from_boundary(boundary):
 #     """"""
 #     raise NotImplementedError
-# 
-# 
-# # ==============================================================================
-# # Debugging
-# # ==============================================================================
-# 
-# if __name__ == "__main__":
-# 
-#     import brg
-# 
-#     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-# 
-#     dmesh = delaunay_from_mesh(mesh)
-# 
-#     vlabel = dict((key, key) for key in dmesh)
-#     flabel = dict((fkey, fkey) for fkey in dmesh.face)
-# 
-#     dmesh.plot(
-#         vlabel=vlabel,
-#         flabel=flabel,
-#         vsize=None
-#     )
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    pass
+
+    # import brg
+
+    # mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+    # dmesh = delaunay_from_mesh(mesh)
+
+    # vlabel = dict((key, key) for key in dmesh)
+    # flabel = dict((fkey, fkey) for fkey in dmesh.face)
+
+    # dmesh.plot(
+    #     vlabel=vlabel,
+    #     flabel=flabel,
+    #     vsize=None
+    # )

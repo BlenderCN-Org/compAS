@@ -278,59 +278,66 @@ def _compute_global_coords(o, uvw, rst):
 
 if __name__ == "__main__":
 
-    # for i in range(8):
-    #     a = randint(1, high=8) * 10 * 3.14159 / 180
-    #     d = [1, 1, 1]
-    #     cloud = rand(100, 3)
-    #     if i in (1, 2, 5, 6):
-    #         cloud[:, 0] *= - 10.0
-    #         cloud[:, 0] -= 3.0
-    #         d[0] = -1
-    #     else:
-    #         cloud[:, 0] *= 10.0
-    #         cloud[:, 0] += 3.0
-    #     if i in (2, 3, 6, 7):
-    #         cloud[:, 1] *= - 3.0
-    #         cloud[:, 1] -= 3.0
-    #         d[1] = -1
-    #     else:
-    #         cloud[:, 1] *= 3.0
-    #         cloud[:, 1] += 3.0
-    #     if i in (4, 5, 6, 7):
-    #         cloud[:, 2] *= - 6.0
-    #         cloud[:, 2] -= 3.0
-    #         d[2] = -1
-    #     else:
-    #         cloud[:, 2] *= 6.0
-    #         cloud[:, 2] += 3.0
-    #     R = rotation_matrix(a, d)
-    #     cloud[:] = cloud.dot(R)
-
-    import json
+    from numpy.random import randint
+    from numpy.random import rand
 
     import matplotlib.pyplot as plt
 
-    import brg
+    from brg.plotters.helpers import Bounds
+    from brg.plotters.helpers import Cloud3D
+    from brg.plotters.helpers import Box
 
-    from brg.plotters.bounds import Bounds
-    from brg.plotters.cloud import Cloud3
-    from brg.plotters.box import Box
+    from brg.numerical.xforms import rotation_matrix
 
     from brg.plotters.drawing import create_axes_3d
 
-    with open(brg.find_resource('cloud.json'), 'rb') as fp:
-        clouds = json.load(fp)
+    clouds = []
+
+    for i in range(8):
+        a = randint(1, high=8) * 10 * 3.14159 / 180
+        d = [1, 1, 1]
+
+        cloud = rand(100, 3)
+
+        if i in (1, 2, 5, 6):
+            cloud[:, 0] *= - 10.0
+            cloud[:, 0] -= 3.0
+            d[0] = -1
+        else:
+            cloud[:, 0] *= 10.0
+            cloud[:, 0] += 3.0
+
+        if i in (2, 3, 6, 7):
+            cloud[:, 1] *= - 3.0
+            cloud[:, 1] -= 3.0
+            d[1] = -1
+        else:
+            cloud[:, 1] *= 3.0
+            cloud[:, 1] += 3.0
+
+        if i in (4, 5, 6, 7):
+            cloud[:, 2] *= - 6.0
+            cloud[:, 2] -= 3.0
+            d[2] = -1
+        else:
+            cloud[:, 2] *= 6.0
+            cloud[:, 2] += 3.0
+
+        R = rotation_matrix(a, d)
+        cloud[:] = cloud.dot(R)
+
+        clouds.append(cloud.tolist())
 
     axes = create_axes_3d()
 
-    bounds = Bounds(array([[-15, -15, -15], [15, 15, 15]]))
+    bounds = Bounds([point for points in clouds for point in points])
     bounds.plot(axes)
 
     for cloud in clouds:
         cloud = asarray(cloud)
         bbox  = bounding_box_3d(cloud)
 
-        Cloud3(cloud).plot(axes)
+        Cloud3D(cloud).plot(axes)
         Box(bbox[1]).plot(axes)
 
     plt.show()

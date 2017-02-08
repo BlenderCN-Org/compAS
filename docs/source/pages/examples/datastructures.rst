@@ -8,13 +8,7 @@ Datastructures
 
 .. remove color.xxx!
 .. add references to the docs throughout
-.. rename to dijkstra_path
-.. add find_faces and dual drawing (combined plot)
-.. combine adjacency stuff into plot
-.. add mesh equivalence
-.. subdivision algorithm for meshes
 .. remesh mesh
-.. cycle through vertices and edges
 
 
 Mesh, Network, VolMesh
@@ -39,7 +33,7 @@ i.e. 3-manifold, polygonal geometry.
 These three types of data structures have very similar interfaces. They differ
 mainly in the types of algorithms they provide and are compatible with. This
 document focusses on networks, because they are the most general. However, an
-introduction to the available data structures base don the ``Mesh`` or ``VolMesh``
+introduction to the available data structures based on the ``Mesh`` or ``VolMesh``
 would be very similar. Some of the similarities and differences are discussed
 at the bottom of the page.
 
@@ -168,6 +162,30 @@ Create a network
     network.plotter.vlabel = {key: key for key in network}
     network.plotter.elabel = {(u, v): '{0}-{1}'.format(u, v) for u, v in network.edges()}
     network.plot()
+
+
+.. important::
+
+    The vertex keys do not necessarily form a continuous sequence. There can be
+    gaps as the result of the user intentionally skipping certain values, or
+    as a result of vertices being removed. For example, several algorithms and
+    operations add and remove keys as part of their internal procedure.
+    Gaps are not filled up, unless this is done manually by the user. The
+    automatic assignment of keys simply continues to increment the next available
+    value.
+
+    In general, unless for good reason, the assignment of keys should be left to
+    the ``add_xxx`` functions and the constructors. In almost all cases it is
+    irrelevant what the keys actually are. An exception to this rule is, for
+    example, the creation of a dual. In which case, ideally, the faces of the one
+    correspond to the vertices of the other, and vice versa.
+
+
+.. warning::
+
+    Currently, all keys are converted to their string representation before they
+    are added to the respective dictionaries. This will change in future version,
+    whwere all hashable types will be accepted.
 
 
 Constructors
@@ -620,24 +638,6 @@ Customisation
 
         def draw(self):
             rhino.draw_network(self)
-
-
-.. Export
-.. ======
-
-.. .. code-block:: python
-   
-..     # data
-
-..     network = Network.from_obj('lines.obj')
-
-..     # do stuff
-
-..     data = network.to_data()
-..     data = network.to_json()
-..     data = network.to_csv()
-
-..     other = Network.from_data(data)
 
 
 Algorithms

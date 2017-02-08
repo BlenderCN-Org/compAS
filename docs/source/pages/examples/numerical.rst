@@ -10,6 +10,10 @@ Numerical
 NumPy & SciPy
 =============
 
+http://www.numpy.org/
+
+https://www.scipy.org/
+
 Most (if not all) numerical calculations in the core library are based on NumPy
 and SciPy. For all the code snippets on this page, we will assume that both packages
 have been imported as seen here:
@@ -207,11 +211,28 @@ Linear Algebra
     # centroidal smoothing
     # i.e. laplacian smoothing with *umbrella* weights
 
+    import brg
+    from numpy import array
+    from brg.datastructures.network import Network
+    from brg.datastructures.network.numerical.matrices import network_laplacian_matrix
+    from brg.datastructures.network.numerical.matrices import network_degree_matrix
+
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+    key_index = {key: index for index, key in network.vertices_enum()}
+
+    L = network_laplacian_matrix(network)
+    D = network_degree_matrix(network)
+
+    L = L / D.diagonal().reshape((-1, 1))
+
+    xyz = array([network.vertex_coordinates(key) for key in network])
+
     fixed = [key_index[key] for key in network.leaves()]
     free = list(set(range(len(network))) - set(fixed))
 
     for k in range(10):
-        xyz[free] -= 0.1 * L.dot(xyz)[free]
+        xyz[free] -= L.dot(xyz)[free]
 
     for key, attr in network.vertices_iter(True):
         index = key_index[key]
@@ -230,18 +251,24 @@ Linear Algebra
     from numpy import array
     from brg.datastructures.network import Network
     from brg.datastructures.network.numerical.matrices import network_laplacian_matrix
+    from brg.datastructures.network.numerical.matrices import network_degree_matrix
 
     network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
     key_index = {key: index for index, key in network.vertices_enum()}
 
-    L     = network_laplacian_matrix(network)
-    xyz   = array([network.vertex_coordinates(key) for key in network])
+    L = network_laplacian_matrix(network)
+    D = network_degree_matrix(network)
+
+    L = L / D.diagonal().reshape((-1, 1))
+
+    xyz = array([network.vertex_coordinates(key) for key in network])
+
     fixed = [key_index[key] for key in network.leaves()]
-    free  = list(set(range(len(network))) - set(fixed))
+    free = list(set(range(len(network))) - set(fixed))
 
     for k in range(10):
-        xyz[free] -= 0.1 * L.dot(xyz)[free]
+        xyz[free] -= L.dot(xyz)[free]
 
     for key, attr in network.vertices_iter(True):
         index = key_index[key]
@@ -257,7 +284,238 @@ Linear Algebra
 Other stuff
 ===========
 
-.. bounding boxes
-.. principal components
-.. contours
+Object-aligned bounding box
+---------------------------
+
+.. code-block:: python
+
+    # generate randomly oriented clusters of points
+
+    from numpy.random import randint
+    from numpy.random import rand
+
+    from brg.numerical.xforms import rotation_matrix
+
+    clouds = []
+
+    for i in range(8):
+        a = randint(1, high=8) * 10 * 3.14159 / 180
+        d = [1, 1, 1]
+
+        cloud = rand(100, 3)
+
+        if i in (1, 2, 5, 6):
+            cloud[:, 0] *= - 10.0
+            cloud[:, 0] -= 3.0
+            d[0] = -1
+        else:
+            cloud[:, 0] *= 10.0
+            cloud[:, 0] += 3.0
+
+        if i in (2, 3, 6, 7):
+            cloud[:, 1] *= - 3.0
+            cloud[:, 1] -= 3.0
+            d[1] = -1
+        else:
+            cloud[:, 1] *= 3.0
+            cloud[:, 1] += 3.0
+
+        if i in (4, 5, 6, 7):
+            cloud[:, 2] *= - 6.0
+            cloud[:, 2] -= 3.0
+            d[2] = -1
+        else:
+            cloud[:, 2] *= 6.0
+            cloud[:, 2] += 3.0
+
+        R = rotation_matrix(a, d)
+        cloud[:] = cloud.dot(R)
+
+        clouds.append(cloud.tolist())
+
+
+.. code-block:: python
+
+    # compute object-aligned bounding boxes
+
+    import matplotlib.pyplot as plt
+
+    from brg.plotters.helpers import Bounds
+    from brg.plotters.helpers import Cloud3D
+    from brg.plotters.helpers import Box
+
+    from brg.plotters.drawing import create_axes_3d
+
+    axes = create_axes_3d()
+
+    bounds = Bounds([point for points in clouds for point in points])
+    bounds.plot(axes)
+
+    for cloud in clouds:
+        bbox = bounding_box_3d(cloud)
+
+        Cloud3D(cloud).plot(axes)
+        Box(bbox[1]).plot(axes)
+
+    plt.show()
+
+
+.. plot::
+    
+    from numpy.random import randint
+    from numpy.random import rand
+
+    import matplotlib.pyplot as plt
+
+    from brg.plotters.helpers import Bounds
+    from brg.plotters.helpers import Cloud3D
+    from brg.plotters.helpers import Box
+
+    from brg.numerical.xforms import rotation_matrix
+
+    from brg.plotters.drawing import create_axes_3d
+
+    from brg.numerical.spatial import bounding_box_3d
+
+    clouds = []
+
+    for i in range(8):
+        a = randint(1, high=8) * 10 * 3.14159 / 180
+        d = [1, 1, 1]
+
+        cloud = rand(100, 3)
+
+        if i in (1, 2, 5, 6):
+            cloud[:, 0] *= - 10.0
+            cloud[:, 0] -= 3.0
+            d[0] = -1
+        else:
+            cloud[:, 0] *= 10.0
+            cloud[:, 0] += 3.0
+
+        if i in (2, 3, 6, 7):
+            cloud[:, 1] *= - 3.0
+            cloud[:, 1] -= 3.0
+            d[1] = -1
+        else:
+            cloud[:, 1] *= 3.0
+            cloud[:, 1] += 3.0
+
+        if i in (4, 5, 6, 7):
+            cloud[:, 2] *= - 6.0
+            cloud[:, 2] -= 3.0
+            d[2] = -1
+        else:
+            cloud[:, 2] *= 6.0
+            cloud[:, 2] += 3.0
+
+        R = rotation_matrix(a, d)
+        cloud[:] = cloud.dot(R)
+
+        clouds.append(cloud.tolist())
+
+    axes = create_axes_3d()
+
+    bounds = Bounds([point for points in clouds for point in points])
+    bounds.plot(axes)
+
+    for cloud in clouds:
+        bbox = bounding_box_3d(cloud)
+
+        Cloud3D(cloud).plot(axes)
+        Box(bbox[1]).plot(axes)
+
+    plt.show()
+
+
+Principal component analysis
+----------------------------
+
+.. code-block:: python
+
+    # generate data for principal component analysis
+
+    from numpy import random
+
+    from brg.numerical.xforms import rotation_matrix
+
+    data = random.rand(300, 3)
+    data[:, 0] *= 10.0
+    data[:, 1] *= 1.0
+    data[:, 2] *= 4.0
+
+    a = 3.14159 * 30.0 / 180
+    Ry = rotation_matrix(a, [0, 1.0, 0.0])
+
+    a = -3.14159 * 45.0 / 180
+    Rz = rotation_matrix(a, [0, 0, 1.0])
+
+    data[:] = data.dot(Ry).dot(Rz)
+
+
+.. code-block:: python
+
+    # compute principal components
+
+    import matplotlib.pyplot as plt
+
+    from brg.plotters.helpers import Axes3D
+    from brg.plotters.helpers import Cloud3D
+    from brg.plotters.helpers import Bounds
+    from brg.plotters.drawing import create_axes_3d
+
+    average, vectors, values = principal_components(data)
+
+    axes = create_axes_3d()
+
+    Bounds(data).plot(axes)
+    Cloud3D(data).plot(axes)
+    Axes3D(average, vectors).plot(axes)
+
+    plt.show()
+
+
+.. plot::
+
+    from numpy import random
+
+    import matplotlib.pyplot as plt
+
+    from brg.numerical.xforms import rotation_matrix
+
+    from brg.plotters.helpers import Axes3D
+    from brg.plotters.helpers import Cloud3D
+    from brg.plotters.helpers import Bounds
+    from brg.plotters.drawing import create_axes_3d
+
+    from brg.numerical.statistics import principal_components
+
+    data = random.rand(300, 3)
+    data[:, 0] *= 10.0
+    data[:, 1] *= 1.0
+    data[:, 2] *= 4.0
+
+    a = 3.14159 * 30.0 / 180
+    Ry = rotation_matrix(a, [0, 1.0, 0.0])
+
+    a = -3.14159 * 45.0 / 180
+    Rz = rotation_matrix(a, [0, 0, 1.0])
+
+    data[:] = data.dot(Ry).dot(Rz)
+
+    average, vectors, values = principal_components(data)
+
+    axes = create_axes_3d()
+
+    Bounds(data).plot(axes)
+    Cloud3D(data).plot(axes)
+    Axes3D(average, vectors).plot(axes)
+
+    plt.show()
+
+
+Contours
+--------
+
+...
 
