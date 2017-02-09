@@ -1,0 +1,433 @@
+.. _applications:
+
+********************************************************************************
+Applications Rhino
+********************************************************************************
+
+.. contents::
+
+
+Equilibrium of a cablenet
+=========================
+
+.. code-block:: python
+
+    import os
+
+    import brg
+    from brg.datastructures.network import network
+    from brg.utilities import ScriptServer
+    from brg.utilities import XFuncIO
+
+    import brg_rhino as rhino
+
+    # script server
+
+    here    = os.path.dirname(__file__)
+    tempdir = os.path.join(here, '../_temp')
+    basedir = os.path.join(here, '..')
+    xfunc   = XFuncIO(basedir, tempdir, mode=1)
+
+    # declarations
+
+    layers = {'Cablenet': {}}
+    dva    = {'px': 0.0, 'py': 0.0, 'pz': 0.0, 'is_fixed': False}
+    dea    = {'q': 0.0, 'f': 0.0, 'l': 0.0}
+
+    # create layers
+
+    rhino.create_layers(layers)
+
+    # make a network
+
+    network = Network.from_obj(brg.get_data('lines.obj'))
+
+    # set default attributes
+
+    network.set_dva(dva)
+    network.set_dea(dea)
+
+    rhino.draw_network(
+        network,
+        layer='Cablenet',
+        vertexcolor={k: '#ff0000' for k, a in network.vertices_iter(True) if a['is_fixed']},
+        edgecolor='#666666'
+    )
+
+    # update vertex attributes
+
+    while True:
+        keys = rhino.select_network_vertices(network)
+
+        if not keys:
+            break
+
+        if rhino.update_network_vertex_attributes(network, keys):
+            rhino.draw_network(network)
+        else:
+            break
+
+    # update edge attributes
+
+    while True:
+        keys = rhino.select_network_edges(network)
+
+        if not keys:
+            break
+
+        if not rhino.update_network_edge_attributes(network, keys, names=['q']):
+            break
+
+    # compute equilibrium
+
+    xfunc('brg.numerical.methods.fd_xfunc', vertices, edges, fixed, q, loads)
+
+    if not xfunc.error:
+        # update and draw
+        pass
+    else:
+        print xfunc.error
+
+    # display forces
+
+
+
+Mesh modeling in Rhino
+======================
+
+The following examples show various meshing, smoothing and remeshing functions. 
+All examples in this section are based on the following Rhino model
+:download:`geometry.3dm </_downloads/geometry_tests.3dm>`.
+
+
+Delaunay Triangulation A
+------------------------
+
+.. code-block:: python
+
+    # **************************************************************************
+    # computes the delaunay triangulation for given set of points in rhino
+    # **************************************************************************
+
+    import rhinoscriptsyntax as rs
+    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+
+    objs = rs.GetObjects("Select Points",1)
+    pts = [rs.PointCoordinates(obj) for obj in objs]
+
+    faces = delaunay_from_points(pts)
+    rs.AddMesh(pts,faces)
+
+.. image:: /_images/delaunay_01.*
+
+
+Delaunay Triangulation B
+------------------------
+
+A plain delaunay triangulation will always form a convex boundary and a continuous 
+mesh without 'holes'. The following code shows how to include specific boundaries. 
+
+.. code-block:: python
+
+    # **************************************************************************
+    # computes the delaunay triangulation for given set of points and
+    # polygons to define boundaries in rhino
+    # **************************************************************************
+
+    import rhinoscriptsyntax as rs
+    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+    from brg.datastructures.mesh import Mesh
+    import brg_rhino
+    
+    objs = rs.GetObjects("Select Points",1)
+    pts = [rs.PointCoordinates(obj) for obj in objs]
+    
+    poly = rs.GetObject("Select polygon bondary",4)
+    boundary_polyline = []
+    if poly:
+        boundary_polyline = rs.CurveEditPoints(poly)
+    
+    polys = rs.GetObjects("Select polygon holes",4)
+    holes_polylines = []
+    if polys:
+        for poly in polys:
+            holes_polylines.append(rs.CurveEditPoints(poly))
+    faces = delaunay_from_points(pts,boundary_polyline,holes_polylines)
+    
+    mesh = Mesh()
+    mesh = mesh.from_vertices_and_faces(pts,faces)
+    brg_rhino.draw_mesh(mesh)
+ 
+.. image:: /_images/delaunay_02.*
+
+.. seealso::
+
+    * :mod:`brg.datastructures.mesh.algorithms.triangulation`
+    * Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane
+    
+    
+Mesh Smoothing A
+----------------
+    
+.. code-block:: python
+
+    # **************************************************************************
+    # smoothening (relaxation) with fixed boundary points of a 
+    # given input mesh in rhino
+    # **************************************************************************
+    
+    import rhinoscriptsyntax as rs
+
+    from brg.datastructures.mesh import Mesh
+    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from brg.datastructures.mesh.algorithms import smooth_mesh_area
+
+    import brg_rhino
+
+    
+    obj = rs.GetObject("Select Mesh",32)
+    mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+    
+    # get all indices of fixed points along the boundaries
+    fixed = mesh.vertices_on_boundary()
+    
+    smooth_mesh_area(mesh,fixed,kmax=100)
+    #smooth_mesh_centroid(mesh,fixed,kmax=100)
+    brg_rhino.draw_mesh(mesh)   
+    
+
+.. image:: /_images/smoothing_01.*
+
+
+.. code-block:: python
+
+    # **************************************************************************
+    # smoothening (relaxation) with fixed boundary points of a 
+    # given input mesh in rhino
+    # **************************************************************************
+    
+    import rhinoscriptsyntax as rs
+
+    from brg.datastructures.mesh import Mesh
+    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from brg.datastructures.mesh.algorithms import smooth_mesh_area
+
+    import brg_rhino
+
+    
+    obj = rs.GetObject("Select Mesh",32)
+    mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+    
+    # get all indices of fixed points along the boundaries
+    fixed = mesh.vertices_on_boundary()
+    
+    smooth_mesh_area(mesh,fixed,kmax=100)
+    #smooth_mesh_centroid(mesh,fixed,kmax=100)
+    brg_rhino.draw_mesh(mesh)   
+    
+
+.. image:: /_images/smoothing_02.*
+
+
+Mesh Smoothing B
+----------------
+
+.. code-block:: python
+
+    # **************************************************************************
+    # smoothening (relaxation) with fixed boundary points of a 
+    # given input mesh in rhino
+    # using a user function (ufunc) and MeshConduit for visualization
+    # **************************************************************************
+    
+    import rhinoscriptsyntax as rs
+
+    from brg.datastructures.mesh import Mesh
+    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from brg.datastructures.mesh.algorithms import smooth_mesh_area
+
+    import brg_rhino
+    from brg_rhino.conduits.mesh import MeshConduit
+    
+
+    def wrapper(conduit, vis):
+        def ufunc(mesh,i):
+            if i%vis==0:
+                rs.Prompt("Iteration {0}".format(i))
+                conduit.redraw()
+        return ufunc
+
+    
+    obj = rs.GetObject("Select Mesh",32)
+    mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+    
+    # get all indices of fixed points along the boundaries
+    fixed = mesh.vertices_on_boundary()
+    
+    conduit = MeshConduit(mesh)
+    conduit.Enabled = True
+    ufunc = wrapper(conduit, vis=2)
+    
+    keys = ['161','256']
+    for key in keys:
+        mesh.vertex[key]['z'] -= 20
+        fixed.add(key)  
+    
+    try:
+        smooth_mesh_area(mesh, fixed, kmax=100, ufunc=ufunc)
+        #smooth_mesh_centroid(mesh, fixed, kmax=150, ufunc=ufunc)
+    except Exception as e:
+        print e
+    else:
+        brg_rhino.draw_mesh(mesh)
+    
+    finally:
+        conduit.Enabled = False
+        del conduit
+
+
+.. image:: /_images/smoothing_03.*
+
+
+Mesh Smoothing C
+----------------
+    
+.. code-block:: python  
+
+    # **************************************************************************
+    # smoothening (relaxation) of a given input mesh in rhino on a target 
+    # surface with fixed boundary points
+    # using a user function (ufunc) to constrain the points to the target 
+    # surface and MeshConduit for visualization
+    # **************************************************************************
+    
+    import rhinoscriptsyntax as rs
+
+    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+    from brg.datastructures.mesh import Mesh
+    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from brg.datastructures.mesh.algorithms import smooth_mesh_area
+
+    import brg_rhino
+    from brg_rhino.conduits.mesh import MeshConduit
+    
+
+    def wrapper(conduit, vis):
+        def ufunc(mesh,i):
+            for key, a in mesh.vertices_iter(True):
+               if a['guide_srf']:
+                   pt = (a['x'], a['y'], a['z'])
+                   point = rs.coerce3dpoint(pt)
+                   pt = a['guide_srf'].ClosestPoint(point)
+                   mesh.vertex[key]['x'] = pt[0]
+                   mesh.vertex[key]['y'] = pt[1]
+                   mesh.vertex[key]['z'] = pt[2] 
+            if i%vis==0:
+                rs.Prompt("Iteration {0}".format(i))
+                conduit.redraw()
+        return ufunc
+    
+
+    obj = rs.GetObject("Select Mesh",32)
+    
+    mesh = brg_rhino.mesh_from_guid(Mesh, obj)
+    mesh.set_dva({'guide_srf': None})
+    
+    fixed = mesh.vertices_on_boundary()
+    
+    srf = rs.GetObject("Select Guide Surface",8)
+    srf_id = rs.coerceguid(srf, True)
+    brep = rs.coercebrep(srf_id, False)
+    
+    for key in mesh.vertices():
+        if key not in fixed:
+            mesh.vertex[key]['guide_srf'] = brep
+        
+    conduit = MeshConduit(mesh)
+    conduit.Enabled = True
+    ufunc = wrapper(conduit, vis=1)
+    
+    try:
+        #smooth_mesh_area(mesh, fixed, kmax=100, ufunc=ufunc)
+        smooth_mesh_centroid(mesh,fixed, kmax=100, ufunc=ufunc)
+    except Exception as e:
+        print e
+    else:
+        brg_rhino.draw_mesh(mesh)
+    
+    finally:
+        conduit.Enabled = False
+        del conduit
+    
+
+.. image:: /_images/mesh_from_boundary.*
+    
+
+.. seealso::
+
+    * :mod:`brg.datastructures.mesh.algorithms`
+    * :mod:`brg_rhino.conduits.mesh`
+    
+
+Mesh from Boundary
+------------------
+
+.. code-block:: python  
+
+    # **************************************************************************
+    # creates a triangulated mesh from a given boundary curve and a edge 
+    # target length
+    # **************************************************************************
+    
+    import rhinoscriptsyntax as rs
+
+    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+    from brg.datastructures.mesh import Mesh
+    from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
+
+    import brg_rhino
+    from brg_rhino.conduits.mesh import MeshConduit
+    
+    
+    def wrapper(conduit, vis):
+        def ufunc(mesh,i):
+            if i%vis==0:
+                rs.Prompt("Iteration {0}".format(i))
+                conduit.redraw()
+        return ufunc
+    
+
+    crv = rs.GetObject("Select Boundary Curve",4)
+    trg = rs.GetReal("Select Edge Target Length",2.5)
+    
+    pts = rs.DivideCurve(crv,rs.CurveLength(crv)/trg)
+    
+    faces = delaunay_from_points(pts,pts)
+    mesh = Mesh()
+    mesh = mesh.from_vertices_and_faces(pts,faces)
+    
+    conduit = MeshConduit(mesh)
+    conduit.Enabled = True
+    ufunc = wrapper(conduit, vis=1)
+    
+    try:
+        optimise_trimesh_topology(mesh,trg,kmax=250,ufunc=ufunc)
+    except Exception as e:
+        print e
+    else:
+        brg_rhino.draw_mesh(mesh)
+    
+    finally:
+        conduit.Enabled = False
+        del conduit
+    
+
+.. seealso::
+
+    * :func:`brg.datastructures.mesh.algorithms.optimise_trimesh_topology`
+
+    
+Algebraic Graph Statics
+=======================
+
+*under* *construction*
