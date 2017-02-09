@@ -157,7 +157,7 @@ def xecuteio(funcname, basedir, tmpdir, *args, **kwargs):
 
 
 class XFuncIO(object):
-    def __init__(self, basedir, tmpdir, mode=0):
+    def __init__(self, basedir='.', tmpdir='.', mode=0):
         self._basedir   = None
         self._tmpdir    = None
         self.basedir    = basedir

@@ -1,4 +1,4 @@
-from numpy import array
+from numpy import asarray
 
 from scipy.sparse import diags
 from scipy.sparse.linalg import spsolve
@@ -13,12 +13,12 @@ __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
 
-def fd(vertices, edges, fixed, q, loads):
+def fd(vertices, edges, fixed, q, loads, rtype='list'):
     num_v     = len(vertices)
     free      = list(set(range(num_v)) - set(fixed))
-    xyz       = array(vertices, dtype=float).reshape((-1, 3))
-    q         = array(q, dtype=float).reshape((-1, 1))
-    p         = array(loads, dtype=float).reshape((-1, 3))
+    xyz       = asarray(vertices, dtype=float).reshape((-1, 3))
+    q         = asarray(q, dtype=float).reshape((-1, 1))
+    p         = asarray(loads, dtype=float).reshape((-1, 3))
     C         = connectivity_matrix(edges, 'csr')
     Ci        = C[:, free]
     Cf        = C[:, fixed]
@@ -31,18 +31,19 @@ def fd(vertices, edges, fixed, q, loads):
     l         = normrow(C.dot(xyz))
     f         = q * l
     r         = p - Ct.dot(Q).dot(C).dot(xyz)
+    if rtype == 'list':
+        return [xyz.tolist(),
+                q.ravel().tolist(),
+                f.ravel().tolist(),
+                l.ravel().tolist(),
+                r.tolist()]
+    if rtype == 'dict':
+        return {'xyz': xyz.tolist(),
+                'q'  : q.ravel().tolist(),
+                'f'  : f.ravel().tolist(),
+                'l'  : l.ravel().tolist(),
+                'r'  : r.tolist()}
     return xyz, q, f, l, r
-
-
-def fd_xfunc(vertices, edges, fixed, q, loads):
-    xyz, q, f, l, r = fd(vertices, edges, fixed, q, loads)
-    return {
-        'xyz': xyz.tolist(),
-        'q'  : q.ravel().tolist(),
-        'f'  : f.ravel().tolist(),
-        'l'  : l.ravel().tolist(),
-        'r'  : r.tolist()
-    }
 
 
 # ==============================================================================
@@ -71,7 +72,7 @@ if __name__ == '__main__':
     fixed = [k_i[k] for k in network if network.vertex[k]['is_anchor']]
     edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
 
-    xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads)
+    xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')
 
     for key in network:
         index = k_i[key]
@@ -79,33 +80,4 @@ if __name__ == '__main__':
         network.vertex[key]['y'] = xyz[index][1]
         network.vertex[key]['z'] = xyz[index][2]
 
-    # from brg.datastructures.mesh.mesh import Mesh
-
-    # mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-
-    # mesh.set_dva({'is_anchor': False})
-    # mesh.set_dea({'q': 1.0})
-
-    # for key in mesh:
-    #     mesh.vertex[key]['is_anchor'] = mesh.vertex_degree(key) == 2
-
-    # # for index, (u, v, attr) in mesh.edges_enum(True):
-    # #     mesh.edge[u][v]['q'] = float(index)
-
-    # k_i   = dict((k, i) for i, k in mesh.vertices_enum())
-    # xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    # loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), 0.0)
-    # fixed = [k_i[key] for key in mesh if mesh.vertex[key]['is_anchor']]
-    # edges = [(k_i[u], k_i[v]) for u, v in mesh.edges_iter()]
-    # q     = mesh.get_edges_attribute('q')
-    # xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads)
-
-    # for key in mesh:
-    #     index = k_i[key]
-    #     mesh.vertex[key]['x'] = xyz[index][0]
-    #     mesh.vertex[key]['y'] = xyz[index][1]
-    #     mesh.vertex[key]['z'] = xyz[index][2]
-
-    # mesh.plot(
-    #     vcolor={key: '#ff0000' for key in mesh if mesh.vertex[key]['is_anchor']}
-    # )
+    network.plot()

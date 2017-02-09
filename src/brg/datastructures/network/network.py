@@ -119,26 +119,12 @@ network: {0}
     def name(self):
         return self.attributes['name']
 
-    @name.setter
-    def name(self, name):
-        self.attributes['name'] = name
-
     @property
     def color(self):
         return dict(
             (key[6:], self.attributes[key])
             for key in self.attributes if key.startswith('color.')
         )
-
-    @color.setter
-    def color(self, value):
-        try:
-            value[0]
-            value[1]
-            value[1][2]
-        except Exception:
-            return
-        self.attributes['color.{0}'.format(value[0])] = value[1]
 
     # include dualdata for data of faces
 

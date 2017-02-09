@@ -517,5 +517,51 @@ Principal component analysis
 Contours
 --------
 
-*under* *construction*
+.. code-block:: python
 
+    # plot the isolines of a distance field
+    # the distance field is defined by the distance of every vertex
+    # from the 2D centroid of the mesh
+
+    import brg
+
+    from brg.datastructures.mesh import Mesh
+
+    from brg.geometry import centroid_points
+    from brg.geometry import distance_point_point
+
+    from brg.datastructures.mesh.numerical import plot_mesh_isolines
+
+    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+    points = [mesh.vertex_coordinates(key) for key in mesh]
+    centroid = centroid_points(points)
+
+    for key, attr in mesh.vertices_iter(True):
+        xyz = mesh.vertex_coordinates(key)
+        attr['d'] = distance_point_point(xyz, centroid)
+
+    plot_mesh_isolines(mesh, 'd')
+
+
+.. plot::
+
+    import brg
+
+    from brg.datastructures.mesh import Mesh
+
+    from brg.geometry import centroid_points
+    from brg.geometry import distance_point_point
+
+    from brg.datastructures.mesh.numerical import plot_mesh_isolines
+
+    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+    points = [mesh.vertex_coordinates(key) for key in mesh]
+    centroid = centroid_points(points)
+
+    for key, attr in mesh.vertices_iter(True):
+        xyz = mesh.vertex_coordinates(key)
+        attr['d'] = distance_point_point(xyz, centroid)
+
+    plot_mesh_isolines(mesh, 'd')

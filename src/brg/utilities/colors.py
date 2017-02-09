@@ -95,18 +95,25 @@ def hex_to_rgb(value):
     return HEX_DEC[0:2], HEX_DEC[2:4], HEX_DEC[4:6]
 
 
-def color_to_colordict(color, dictkeys, defcolor=None):
-    color = color or defcolor
+def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=False):
+    color = color or default
     if isinstance(color, basestring):
-        return dict((key, color) for key in dictkeys)
+        if colorformat == 'rgb':
+            color = hex_to_rgb(color)
+        return dict((key, color) for key in keys)
     if isinstance(color, (tuple, list)) and len(color) == 3:
-        color = rgb_to_hex(color)
-        return dict((key, color) for key in dictkeys)
+        if colorformat == 'hex':
+            color = rgb_to_hex(color)
+        return dict((key, color) for key in keys)
     if isinstance(color, dict):
         for k, c in color.items():
+            if isinstance(c, basestring):
+                if colorformat == 'rgb':
+                    color = hex_to_rgb(color)
             if isinstance(c, (tuple, list)) and len(c) == 3:
-                color[k] = rgb_to_hex(c)
-        return dict((key, defcolor if key not in color else color[key]) for key in dictkeys)
+                if colorformat == 'hex':
+                    color[k] = rgb_to_hex(c)
+        return dict((key, default if key not in color else color[key]) for key in keys)
     raise Exception('This is not a valid color format: {0}'.format(type(color)))
 
 

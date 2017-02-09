@@ -1,5 +1,7 @@
 import ast
 
+from brg.utilities.colors import color_to_colordict
+
 import brg_rhino.utilities as rhino
 
 try:
@@ -38,6 +40,10 @@ __all__ = [
     'display_network_face_labels',
     'move_network',
     'move_network_vertex',
+    'display_network_axial_forces',
+    'display_network_reaction_forces',
+    'display_network_residual_forces',
+    'display_network_selfweight',
 ]
 
 
@@ -50,34 +56,63 @@ __all__ = [
 # ==============================================================================
 
 
-def draw_network(network, name='Network', layer=None, vertexcolor=None, edgecolor=None, **kwargs):
+def draw_network(network,
+                 layer=None,
+                 vertexcolor=None,
+                 edgecolor=None,
+                 clear_layer=False):
+    """Draw the network data structure in Rhino.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        layer (str): Optional. The layer to draw in. Default is ``None``. If
+            ``None`` the currenlt layer is used.
+        vertexcolor (list, tuple, str, dict): Optional. The color specification
+            for the vertices. Default is ``None``.
+
+                * list, tuple: rgb colors
+                * str: hex colors
+                * dict: dictionary of hex or rgb colors.
+
+        edgecolor (list, tuple, str, dict): Optional. The color specification
+            for the edges. Default is ``None``.
+
+                * list, tuple: rgb colors
+                * str: hex colors
+                * dict: dictionary of hex or rgb colors.
+
+        clear_layer (bool): Optional. Clear the layer if ``True``. Default is ``False``.
+
+    Note:
+        Color specifications are automatically converted to color dicts.
+
+    See Also:
+        * :func:`brg.datastructures.network.Network.plot`
+
+    Warning:
+        Currently, in the (2d, matplotlib-based) plot function, the name of the kwarg
+        corresponding to ``vertex_color`` is ``vcolor``, and ``edge_color`` is ``ecolor``.
+
+    """
     # vertex color
-    vcolor = dict((key, network.attributes['color.vertex']) for key in network)
-    if isinstance(vertexcolor, dict):
-        vcolor.update(vertexcolor)
-    elif isinstance(vertexcolor, basestring):
-        pass
-    elif isinstance(vertexcolor, (tuple, list)):
-        vcolor = dict((key, vertexcolor) for key in network)
-    else:
-        pass
+    vertexcolor = color_to_colordict(vertexcolor,
+                                     network.vertices(),
+                                     default=network.attributes['color.vertex'],
+                                     colorformat='rgb',
+                                     normalize=False)
     # edge color
-    ecolor = dict(((u, v), network.attributes['color.edge']) for u, v in network.edges_iter())
-    if isinstance(edgecolor, dict):
-        ecolor.update(edgecolor)
-    elif isinstance(edgecolor, basestring):
-        pass
-    elif isinstance(edgecolor, (tuple, list)):
-        ecolor = dict(((u, v), edgecolor) for u, v in network.edges_iter())
-    else:
-        pass
+    edgecolor = color_to_colordict(edgecolor,
+                                   network.edges(),
+                                   default=network.attributes['color.edge'],
+                                   colorformat='rgb',
+                                   normalize=False)
     # points
     points = []
     for key, attr in network.vertices_iter(True):
         points.append({
             'pos': network.vertex_coordinates(key),
-            'name': '{0}.vertex.{1}'.format(name, key),
-            'color': vcolor[key]
+            'name': '{0}.vertex.{1}'.format(network.attributes['name'], key),
+            'color': vertexcolor[key]
         })
     # lines
     lines = []
@@ -85,14 +120,17 @@ def draw_network(network, name='Network', layer=None, vertexcolor=None, edgecolo
         lines.append({
             'start': network.vertex_coordinates(u),
             'end': network.vertex_coordinates(v),
-            'name': '{0}.edge.{1}-{2}'.format(name, u, v),
-            'color': ecolor[(u, v)]
+            'name': '{0}.edge.{1}-{2}'.format(network.attributes['name'], u, v),
+            'color': edgecolor[(u, v)]
         })
+    # delete existing network
+    guids = rhino.get_objects(name='{0}.*'.format(network.attributes['name']))
+    rhino.delete_objects(guids)
     # drawing
     rhino.xdraw_points(
         points,
         layer=layer,
-        clear=True,
+        clear=clear_layer,
         redraw=False
     )
     rhino.xdraw_lines(
@@ -109,6 +147,39 @@ def draw_network(network, name='Network', layer=None, vertexcolor=None, edgecolo
 
 
 def select_network_vertices(network, message="Select network vertices"):
+    """Select vertices of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+
+    Returns:
+        list: The keys of the selected vertices.
+
+    Note:
+        Selection is based on naming conventions.
+        When a network is drawn using the :func:`draw_network` function,
+        the point objects representing the vertices get assigned a name that
+        has the following pattern ``'{0}.vertex.{1}'.format(name, key)``, with
+        name the name of the network, and key the key of the current vertex.
+        The name of the network is stored as ``network.attributes['name']``.
+
+    Example:
+
+        .. code-block:: python
+
+            from brg.datastructures.network import Network
+            import brg_rhino as rhino
+
+            guids = rhino.select_objects()
+            lines = rhino.select_line_coordinates(guids)
+
+            network = Network.from_lines(lines)
+
+            keys = rhino.select_network_vertices(network)
+
+            print keys
+
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
     if guids:
@@ -506,131 +577,131 @@ def move_network_vertex(network, key, constraint=None, allow_off=None):
 # ==============================================================================
 
 
-# def display_axial_forces(self,
-#                          display=True,
-#                          layer=None,
-#                          scale=1.0,
-#                          color_tension=None,
-#                          color_compression=None):
-#     tol = rhino.get_tolerance()
-#     objects = rhino.get_objects(name='{0}.force:axial.*'.format(self.name))
-#     rhino.delete_objects(objects)
-#     if not display:
-#         return
-#     lines = []
-#     layer = layer or self.layer
-#     color_tension = color_tension or self.color['force:tension']
-#     color_compression = color_compression or self.color['force:compression']
-#     for u, v, attr in self.edges_iter(True):
-#         sp     = self.vertex_coordinates(u)
-#         ep     = self.vertex_coordinates(v)
-#         force  = attr['f']
-#         color  = color_tension if force > 0.0 else color_compression
-#         radius = scale * ((force ** 2) ** 0.5 / 3.14159) ** 0.5
-#         name   = '{0}.force:axial.{1}-{2}'.format(self.name, u, v)
-#         if radius < tol:
-#             continue
-#         lines.append({
-#             'start'  : sp,
-#             'end'    : ep,
-#             'name'   : name,
-#             'color'  : color,
-#             'radius' : radius,
-#         })
-#     rhino.xdraw_cylinders(lines, layer=layer, clear=False, redraw=True)
+def display_network_axial_forces(network,
+                                 display=True,
+                                 layer=None,
+                                 clear_layer=False,
+                                 scale=1.0,
+                                 color_tension=None,
+                                 color_compression=None):
+    tol = rhino.get_tolerance()
+    objects = rhino.get_objects(name='{0}.force:axial.*'.format(network.name))
+    rhino.delete_objects(objects)
+    if not display:
+        return
+    lines = []
+    color_tension = color_tension or (255, 0, 0)
+    color_compression = color_compression or (0, 0, 255)
+    for u, v, attr in network.edges_iter(True):
+        sp     = network.vertex_coordinates(u)
+        ep     = network.vertex_coordinates(v)
+        force  = attr['f']
+        color  = color_tension if force > 0.0 else color_compression
+        radius = scale * ((force ** 2) ** 0.5 / 3.14159) ** 0.5
+        name   = '{0}.force:axial.{1}-{2}'.format(network.name, u, v)
+        if radius < tol:
+            continue
+        lines.append({
+            'start'  : sp,
+            'end'    : ep,
+            'name'   : name,
+            'color'  : color,
+            'radius' : radius,
+        })
+    rhino.xdraw_cylinders(lines, layer=layer, clear=clear_layer)
 
 
-# def display_reaction_forces(self,
-#                             display=True,
-#                             layer=None,
-#                             scale=1.0,
-#                             color=None):
-#     tol = rhino.get_tolerance()
-#     objects = rhino.get_objects(name='{0}.force:reaction.*'.format(self.name))
-#     rhino.delete_objects(objects)
-#     if not display:
-#         return
-#     lines = []
-#     layer = layer or self.layer
-#     color = color or self.color['force:reaction']
-#     for key, attr in self.vertices_iter(True):
-#         if not attr['is_support']:
-#             continue
-#         r     = attr['rx'], attr['ry'], attr['rz']
-#         sp    = self.vertex_coordinates(key)
-#         ep    = [sp[i] + scale * r[i] for i in range(3)]
-#         l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
-#         arrow = 'start'
-#         name  = '{0}.force:reaction.{1}'.format(self.name, key)
-#         if l < tol:
-#             continue
-#         lines.append({
-#             'start' : sp,
-#             'end'   : ep,
-#             'name'  : name,
-#             'color' : color,
-#             'arrow' : arrow,
-#         })
-#     rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
+def display_network_reaction_forces(network,
+                                    display=True,
+                                    layer=None,
+                                    clear_layer=False,
+                                    scale=1.0,
+                                    color=None):
+    tol = rhino.get_tolerance()
+    objects = rhino.get_objects(name='{0}.force:reaction.*'.format(network.name))
+    rhino.delete_objects(objects)
+    if not display:
+        return
+    lines = []
+    color = color or (0, 255, 0)
+    for key, attr in network.vertices_iter(True):
+        if not attr['is_fixed']:
+            continue
+        r     = attr['rx'], attr['ry'], attr['rz']
+        sp    = network.vertex_coordinates(key)
+        ep    = [sp[i] + scale * r[i] for i in range(3)]
+        l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
+        arrow = 'start'
+        name  = '{0}.force:reaction.{1}'.format(network.name, key)
+        if l < tol:
+            continue
+        lines.append({
+            'start' : sp,
+            'end'   : ep,
+            'name'  : name,
+            'color' : color,
+            'arrow' : arrow,
+        })
+    rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
-# def display_residual_forces(self,
-#                             display=True,
-#                             layer=None,
-#                             scale=1.0,
-#                             color=None):
-#     tol = rhino.get_tolerance()
-#     objects = rhino.get_objects(name='{0}.force:residual.*'.format(self.name))
-#     rhino.delete_objects(objects)
-#     if not display:
-#         return
-#     lines = []
-#     layer = layer or self.layer
-#     color = color or self.color['force:residual']
-#     for key, attr in self.vertices_iter(True):
-#         if attr['is_support']:
-#             continue
-#         r     = attr['rx'], attr['ry'], attr['rz']
-#         sp    = self.vertex_coordinates(key)
-#         ep    = [sp[i] + scale * r[i] for i in range(3)]
-#         l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
-#         arrow = 'end'
-#         name  = '{0}.force:residual.{1}'.format(self.name, key)
-#         if l < tol:
-#             continue
-#         lines.append({'start' : sp,
-#                       'end'   : ep,
-#                       'name'  : name,
-#                       'color' : color,
-#                       'arrow' : arrow, })
-#     rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
+def display_network_residual_forces(network,
+                                    display=True,
+                                    layer=None,
+                                    clear_layer=False,
+                                    scale=1.0,
+                                    color=None):
+    tol = rhino.get_tolerance()
+    objects = rhino.get_objects(name='{0}.force:residual.*'.format(network.name))
+    rhino.delete_objects(objects)
+    if not display:
+        return
+    lines = []
+    color = color or (0, 255, 255)
+    for key, attr in network.vertices_iter(True):
+        if attr['is_support']:
+            continue
+        r     = attr['rx'], attr['ry'], attr['rz']
+        sp    = network.vertex_coordinates(key)
+        ep    = [sp[i] + scale * r[i] for i in range(3)]
+        l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
+        arrow = 'end'
+        name  = '{0}.force:residual.{1}'.format(network.name, key)
+        if l < tol:
+            continue
+        lines.append({'start' : sp,
+                      'end'   : ep,
+                      'name'  : name,
+                      'color' : color,
+                      'arrow' : arrow, })
+    rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
-# def display_selfweight(self,
-#                        display=True,
-#                        layer=None,
-#                        scale=None,
-#                        color=None):
-#     objects = rhino.get_objects(name='{0}.force:selfweight.*'.format(self.name))
-#     rhino.delete_objects(objects)
-#     if not display:
-#         return
-#     lines = []
-#     layer = layer or self.layer
-#     color = color or self.color['force:selfweight']
-#     scale = scale or self.scale['force:selfweight']
-#     for key, attr in self.vertices_iter(True):
-#         load  = 0, 0, attr['sw']
-#         start = self.vertex_coordinates(key)
-#         end   = [start[i] + scale * load[i] for i in range(3)]
-#         name  = '{0}.force:selfweight.{1}'.format(self.name, key)
-#         arrow = 'start'
-#         lines.append({'start': start,
-#                       'end'  : end,
-#                       'name' : name,
-#                       'color': color,
-#                       'arrow': arrow, })
-#     rhino.xdraw_lines(lines, layer=layer, clear=False)
+def display_network_selfweight(network,
+                               display=True,
+                               layer=None,
+                               clear_layer=False,
+                               scale=None,
+                               color=None):
+    objects = rhino.get_objects(name='{0}.force:selfweight.*'.format(network.name))
+    rhino.delete_objects(objects)
+    if not display:
+        return
+    lines = []
+    color = color or (0, 255, 0)
+    scale = scale or 1.0
+    for key, attr in network.vertices_iter(True):
+        load  = 0, 0, network.vertex_area(key)
+        start = network.vertex_coordinates(key)
+        end   = [start[i] - scale * load[i] for i in range(3)]
+        name  = '{0}.force:selfweight.{1}'.format(network.name, key)
+        arrow = 'end'
+        lines.append({'start': start,
+                      'end'  : end,
+                      'name' : name,
+                      'color': color,
+                      'arrow': arrow, })
+    rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
 # def display_resultant(self,
