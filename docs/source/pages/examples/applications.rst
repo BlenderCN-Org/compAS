@@ -101,6 +101,10 @@ Delaunay Triangulation A
 
 .. image:: /_images/delaunay_01.*
 
+.. important::
+    
+    This delaunay triangulation algorithm works in the xy-plane. However, the 
+    input can be 3d points resulting in a 2.5d heightfield mesh.
 
 Delaunay Triangulation B
 ------------------------
@@ -143,7 +147,7 @@ mesh without 'holes'. The following code shows how to include specific boundarie
 
 .. seealso::
 
-    * :mod:`brg.datastructures.mesh.algorithms.triangulation`
+    * :func:`brg.datastructures.mesh.algorithms.triangulation.delaunay_from_points`
     * Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane
     
     
@@ -346,9 +350,12 @@ Mesh Smoothing C
 
 .. seealso::
 
-    * :mod:`brg.datastructures.mesh.algorithms`
-    * :mod:`brg_rhino.conduits.mesh`
-    
+    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_centroid`
+    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_centerofmass`
+    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_length`
+    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_area` 
+    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_angle` 
+    * :mod:`brg_rhino.conduits.mesh`    
 
 Mesh from Boundary
 ------------------
@@ -406,6 +413,7 @@ Mesh from Boundary
 .. seealso::
 
     * :func:`brg.datastructures.mesh.algorithms.optimise_trimesh_topology`
+    * Botsch M. and Kobbelt L. (2004) A Remeshing Approach to Multiresolution Modeling
 
     
 Algebraic Graph Statics
