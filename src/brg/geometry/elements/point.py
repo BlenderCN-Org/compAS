@@ -228,16 +228,21 @@ if __name__ == '__main__':
     # p2.translate(v1)
     # print p2
 
-    from brg.geometry.elements import Plane
-    plane = Plane.from_points_and_vector([0., 0., 0.], [1., 0., 0.], [0., 0., 1.])
+    # from brg.geometry.elements import Plane
+    # plane = Plane.from_points_and_vector([0., 0., 0.], [1., 0., 0.], [0., 0., 1.])
 
-    point = Point([0., 1., 1.])
-    projection = point.project_to_plane(plane)
+    # point = Point([0., 1., 1.])
+    # projection = point.project_to_plane(plane)
 
-    print(projection)
+    # print(projection)
 
+    import timeit
 
+    t0 = timeit.timeit('points = [Point([i, i, i]) for i in xrange(100000)]', 'from __main__ import Point', number=100)
 
+    t1 = timeit.timeit('points = [[i, i, i] for i in xrange(100000)]', 'from __main__ import Point', number=100)
+
+    print t0 / t1
 
 
 

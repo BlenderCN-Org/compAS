@@ -104,8 +104,11 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
 # ==============================================================================
 
 
+# change clear to clearlayer
+# remove redraw?
+# process color spec into color dict
+
 def draw_mesh(mesh,
-              name=None,
               layer=None,
               clear=True,
               redraw=True,
@@ -123,20 +126,13 @@ def draw_mesh(mesh,
         edge_color = {}
     if not isinstance(face_color, dict):
         face_color = {}
-    if name:
-        mesh.attributes['name'] = name
-    name = mesh.attributes.setdefault('name', name)
-    if layer:
-        mesh.attributes['layer'] = layer
-    layer = mesh.attributes.setdefault('layer', layer)
     # delete all relevant objects by name
-    objects  = rhino.get_objects(name='{0}.mesh'.format(name))
-    objects += rhino.get_objects(name='{0}.vertex.*'.format(name))
-    objects += rhino.get_objects(name='{0}.edge.*'.format(name))
+    name = mesh.attributes['name']
+    objects = rhino.get_objects(name='{0}.*'.format(name))
     rhino.delete_objects(objects)
     # clear the relevant layers
     if clear:
-        rhino.clear_layers([layer])
+        rhino.clear_layers((layer, ))
     # draw the requested components
     if show_faces:
         key_index = dict((key, index) for index, key in mesh.vertices_enum())
@@ -154,6 +150,8 @@ def draw_mesh(mesh,
             elif v == 4:
                 faces.append([key_index[k] for k in face])
             else:
+                # a polygonal face
+                # => triangulate
                 c = len(xyz)
                 xyz.append(mesh.face_center(fkey))
                 for i in range(-1, len(face) - 1):
