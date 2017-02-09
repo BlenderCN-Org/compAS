@@ -184,36 +184,6 @@ Mesh Smoothing A
 .. image:: /_images/smoothing_01.*
 
 
-.. code-block:: python
-
-    # **************************************************************************
-    # smoothening (relaxation) with fixed boundary points of a 
-    # given input mesh in rhino
-    # **************************************************************************
-    
-    import rhinoscriptsyntax as rs
-
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
-    from brg.datastructures.mesh.algorithms import smooth_mesh_area
-
-    import brg_rhino
-
-    
-    obj = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,obj)
-    
-    # get all indices of fixed points along the boundaries
-    fixed = mesh.vertices_on_boundary()
-    
-    smooth_mesh_area(mesh,fixed,kmax=100)
-    #smooth_mesh_centroid(mesh,fixed,kmax=100)
-    brg_rhino.draw_mesh(mesh)   
-    
-
-.. image:: /_images/smoothing_02.*
-
-
 Mesh Smoothing B
 ----------------
 
@@ -271,7 +241,7 @@ Mesh Smoothing B
         del conduit
 
 
-.. image:: /_images/smoothing_03.*
+.. image:: /_images/smoothing_02.*
 
 
 Mesh Smoothing C
@@ -345,7 +315,7 @@ Mesh Smoothing C
         del conduit
     
 
-.. image:: /_images/mesh_from_boundary.*
+.. image:: /_images/smoothing_02.*
     
 
 .. seealso::
@@ -409,6 +379,9 @@ Mesh from Boundary
         conduit.Enabled = False
         del conduit
     
+    
+.. image:: /_images/mesh_from_boundary.*
+
 
 .. seealso::
 
