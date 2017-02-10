@@ -361,7 +361,7 @@ Solution: Smoothing Exercise
 	#print "The maximum edge length is {0}".format(max(edge_lengths))
 	#print color_e
 	if mesh.is_trimesh():
-	    brg_rhino.draw_mesh(mesh,show_faces=False,show_vertices=False)
+	    brg_rhino.draw_mesh(mesh,show_faces=False,show_vertices=False,edge_color=color_e)
 
 Mesh from Boundary
 ------------------
