@@ -347,10 +347,12 @@ Mesh from Boundary
 Remeshing Exercise
 -------------------
 
-Let the user select edges to be swapped (optional: collapsed) in a triangular mesh. 
+Let the user select a vertex in a triangular mesh and swap every second adjacent edges 
+edge. Only allow this to work on vertices with a valency/degree of six. 
  
 
 .. seealso::
 
+	* :mod:`brg.datastructures.mesh.mesh` 
     * :mod:`brg.datastructures.mesh.operations` 
 
