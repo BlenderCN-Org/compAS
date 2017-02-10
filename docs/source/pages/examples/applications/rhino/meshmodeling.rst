@@ -70,8 +70,7 @@ mesh without 'holes'. The following code shows how to include specific boundarie
             holes_polylines.append(rs.CurveEditPoints(poly))
     faces = delaunay_from_points(pts,boundary_polyline,holes_polylines)
     
-    mesh = Mesh()
-    mesh = mesh.from_vertices_and_faces(pts,faces)
+    mesh = Mesh.from_vertices_and_faces(pts,faces)
     brg_rhino.draw_mesh(mesh)
  
 .. image:: /_images/delaunay_02.*
@@ -91,6 +90,55 @@ Create a Voronoi mesh based on the given Delaunay mesh.
     * :func:`brg.geometry.planar.circle_from_points_2d`
     * :func:`brg.datastructures.algorithms.construct_dual_mesh`
     
+Solution: Delaunay Triangulation Exercise
+............................................
+
+.. code-block:: python 
+
+	import rhinoscriptsyntax as rs
+
+	from brg.datastructures.mesh import Mesh
+	from brg.datastructures.mesh.algorithms.duality import construct_dual_mesh
+	from brg.geometry.planar import circle_from_points_2d
+	
+	import brg_rhino
+	
+	def construct_voronoi_mesh(mesh, cls=None):
+	    """Construct the voronoi dual of a mesh."""
+	    def circumference(vkeys):
+	        pts = [mesh.vertex_coordinates(vkey) for vkey in vkeys]
+	        a,b,c = pts
+	        pt,rad = circle_from_points_2d(a,b,c)
+	        return pt[0],pt[1],0.0
+	    
+	    if not cls:
+	        cls = type(mesh)
+	    fkey_center = dict((fkey, circumference(mesh.face_vertices(fkey))) for fkey in mesh.face)
+	    boundary = mesh.vertices_on_boundary()
+	    inner = list(set(mesh.vertex) - set(boundary))
+	    vertices = {}
+	    faces = {}
+	    for key in inner:
+	        fkeys = mesh.vertex_faces(key, ordered=True)
+	        for fkey in fkeys:
+	            if fkey not in vertices:
+	                vertices[fkey] = fkey_center[fkey]
+	        faces[key] = fkeys
+	    dual = cls()
+	    for key, (x, y, z) in vertices.items():
+	        dual.add_vertex(key, x=x, y=y, z=z)
+	    for fkey, vertices in faces.items():
+	        dual.add_face(vertices, fkey)
+	    return dual
+	
+	
+	obj = rs.GetObject("Select Mesh",32)
+	mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+	
+	if mesh.is_trimesh():
+	    voronoi = construct_voronoi_mesh(mesh)
+	    brg_rhino.draw_mesh(voronoi, show_faces=False)
+                  
 
     
 Mesh Smoothing A
@@ -282,6 +330,38 @@ algorithms.
 
     * :mod:`brg.utilities.colors` 
 
+Solution: Smoothing Exercise
+..............................
+
+.. code-block:: python 
+
+	import rhinoscriptsyntax as rs
+	
+	from brg.datastructures.mesh import Mesh
+	from brg.utilities import i_to_rgb
+	
+	import brg_rhino
+	
+	
+	obj = rs.GetObject("Select Mesh",32)
+	mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+	
+	edge_lengths = {(u,v) : mesh.edge_length(u,v,) for u, v in mesh.edges()}
+	
+	max_val = max(edge_lengths.values())
+	print "The maximum edge length is {0}".format(max_val)
+	min_val = min(edge_lengths.values())
+	print "The minimum edge length is {0}".format(min_val)
+	length_norm = {}
+	for u,v in mesh.edges():
+	    length_norm[(u,v)] = (edge_lengths[u,v] - min_val)  / (max_val - min_val)
+	
+	color_e = {(u, v): i_to_rgb(length_norm[(u,v)]) for u, v in mesh.edges()}
+	
+	#print "The maximum edge length is {0}".format(max(edge_lengths))
+	#print color_e
+	if mesh.is_trimesh():
+	    brg_rhino.draw_mesh(mesh,show_faces=False,show_vertices=False)
 
 Mesh from Boundary
 ------------------
@@ -356,3 +436,31 @@ edge. Only allow this to work on vertices with a valency/degree of six.
 	* :mod:`brg.datastructures.mesh.mesh` 
     * :mod:`brg.datastructures.mesh.operations` 
 
+Solution: Remeshing Exercise
+............................................
+
+.. code-block:: python 
+
+	import rhinoscriptsyntax as rs
+	
+	from brg.datastructures.mesh import Mesh
+	from brg.datastructures.mesh.operations import swap_edge_trimesh
+	
+	import brg_rhino
+	
+	obj = rs.GetObject("Select Mesh",32)
+	mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+	rs.DeleteObject(obj)
+	
+	while True:
+	    brg_rhino.draw_mesh(mesh,show_faces=False)
+	    rs.EnableRedraw()
+	    pt_obj = rs.GetObject("Select Vertex",1)
+	    if not pt_obj: break
+	    key = rs.ObjectName(pt_obj).split('.')[-1]
+	    if mesh.vertex_degree(key) != 6:
+	        print("Vertex has not a degree of 6!")
+	        continue
+	    nbrs = mesh.vertex_neighbours(key, ordered=True)
+	    for nbr in nbrs[::2]:
+	        swap_edge_trimesh(mesh,key, nbr)

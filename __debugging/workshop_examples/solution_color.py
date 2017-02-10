@@ -2,6 +2,7 @@ import rhinoscriptsyntax as rs
 
 from brg.datastructures.mesh import Mesh
 from brg.utilities import i_to_rgb
+
 import brg_rhino
 
 
@@ -23,14 +24,4 @@ color_e = {(u, v): i_to_rgb(length_norm[(u,v)]) for u, v in mesh.edges()}
 #print "The maximum edge length is {0}".format(max(edge_lengths))
 #print color_e
 if mesh.is_trimesh():
-    brg_rhino.draw_mesh(mesh,
-                  name='mesh',
-                  layer=None,
-                  clear=True,
-                  redraw=True,
-                  show_faces=False,
-                  show_vertices=True,
-                  show_edges=True,
-                  vertex_color=None,
-                  edge_color=color_e,
-                  face_color=None)
+    brg_rhino.draw_mesh(mesh,show_faces=False,show_vertices=False,)
