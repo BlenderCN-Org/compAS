@@ -1,4 +1,6 @@
 from brg.utilities import geometric_key
+from brg.utilities.colors import color_to_colordict
+
 from brg_rhino.geometry.surface import RhinoSurface
 
 import brg_rhino.utilities as rhino
@@ -110,29 +112,66 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
 
 def draw_mesh(mesh,
               layer=None,
-              clear=True,
-              redraw=True,
-              show_faces=True,
+              clear_layer=False,
+              show_faces=False,
               show_vertices=True,
               show_edges=True,
-              vertex_color=None,
-              edge_color=None,
-              face_color=None):
-    """"""
+              vertexcolor=None,
+              edgecolor=None,
+              facecolor=None,
+              redraw=True):
+    """
+    Draw a mesh object in Rhino.
+
+    Parameters:
+        mesh (brg.datastructures.mesh.Mesh): The mesh object.
+        layer (str): Optional. The layer to draw in. Default is ``None``.
+        clear_layer (bool): Optional. Clear the drawing layer. Default is ``True``.
+        show_faces (bool): Optional. Show the faces. Default is ``True``.
+        show_vertices (bool): Optional. Show the vertices. Default is ``True``.
+        show_edges (bool): Optional. Show the edges. Default is ``True``.
+        vertexcolor (str, tuple, list, dict): Optional. The vertex color specification. Default is ``None``.
+        edgecolor (str, tuple, list, dict): Optional. The edge color specification. Default is ``None``.
+        facecolor (str, tuple, list, dict): Optional. The face color specification. Default is ``None``.
+        redraw (bool): Optional. Redraw instructions. Default is ``True``.
+
+    Note:
+        Colors can be specifiedin different ways:
+
+        * str: A hexadecimal color that will be applied to all elements subject to the specification.
+        * tuple, list: RGB color that will be applied to all elements subject to the specification.
+        * dict: RGB or hex color dict with a specification for some or all of the related elements.
+
+    Important:
+        RGB colors should specify color values between 0 and 255.
+
+    """
     # set default options
-    if not isinstance(vertex_color, dict):
-        vertex_color = {}
-    if not isinstance(edge_color, dict):
-        edge_color = {}
-    if not isinstance(face_color, dict):
-        face_color = {}
+    vertexcolor = color_to_colordict(vertexcolor,
+                                     mesh.vertices(),
+                                     default=mesh.attributes['color.vertex'],
+                                     colorformat='rgb',
+                                     normalize=False)
+    edgecolor = color_to_colordict(edgecolor,
+                                   mesh.edges(),
+                                   default=mesh.attributes['color.edge'],
+                                   colorformat='rgb',
+                                   normalize=False)
+    facecolor = color_to_colordict(facecolor,
+                                   mesh.faces(),
+                                   default=mesh.attributes['color.face'],
+                                   colorformat='rgb',
+                                   normalize=False)
     # delete all relevant objects by name
     name = mesh.attributes['name']
     objects = rhino.get_objects(name='{0}.*'.format(name))
     rhino.delete_objects(objects)
     # clear the relevant layers
-    if clear:
-        rhino.clear_layers((layer, ))
+    if clear_layer:
+        if not layer:
+            rhino.clear_current_layer()
+        else:
+            rhino.clear_layers((layer, ))
     # draw the requested components
     if show_faces:
         key_index = dict((key, index) for index, key in mesh.vertices_enum())
@@ -168,7 +207,7 @@ def draw_mesh(mesh,
                 'start': mesh.vertex_coordinates(u),
                 'end'  : mesh.vertex_coordinates(v),
                 'name' : '{0}.edge.{1}-{2}'.format(name, u, v),
-                'color': edge_color.get((u, v), color),
+                'color': edgecolor.get((u, v), color),
             })
         rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
     if show_vertices:
@@ -178,7 +217,7 @@ def draw_mesh(mesh,
             points.append({
                 'pos'  : mesh.vertex_coordinates(key),
                 'name' : '{0}.vertex.{1}'.format(name, key),
-                'color': vertex_color.get(key, color),
+                'color': vertexcolor.get(key, color),
             })
         rhino.xdraw_points(points, layer=layer, clear=False, redraw=False)
     # redraw the views if so requested

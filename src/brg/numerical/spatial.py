@@ -278,10 +278,22 @@ def _compute_global_coords(o, uvw, rst):
 
 if __name__ == "__main__":
 
+    from numpy import asarray
+
+    from itertools import groupby
+
     from numpy.random import randint
     from numpy.random import rand
 
+    from scipy.cluster.vq import kmeans
+    from scipy.cluster.vq import whiten
+    from scipy.cluster.vq import vq
+
+    from scipy.cluster.hierarchy import fclusterdata
+
     import matplotlib.pyplot as plt
+
+    from brg.geometry import centroid_points
 
     from brg.plotters.helpers import Bounds
     from brg.plotters.helpers import Cloud3D
@@ -294,15 +306,15 @@ if __name__ == "__main__":
     clouds = []
 
     for i in range(8):
-        a = randint(1, high=8) * 10 * 3.14159 / 180
-        d = [1, 1, 1]
+        angle = randint(1, high=8) * 10 * 3.14159 / 180
+        axis = [1, 1, 1]
 
         cloud = rand(100, 3)
 
         if i in (1, 2, 5, 6):
             cloud[:, 0] *= - 10.0
             cloud[:, 0] -= 3.0
-            d[0] = -1
+            axis[0] = -1
         else:
             cloud[:, 0] *= 10.0
             cloud[:, 0] += 3.0
@@ -310,7 +322,7 @@ if __name__ == "__main__":
         if i in (2, 3, 6, 7):
             cloud[:, 1] *= - 3.0
             cloud[:, 1] -= 3.0
-            d[1] = -1
+            axis[1] = -1
         else:
             cloud[:, 1] *= 3.0
             cloud[:, 1] += 3.0
@@ -318,17 +330,45 @@ if __name__ == "__main__":
         if i in (4, 5, 6, 7):
             cloud[:, 2] *= - 6.0
             cloud[:, 2] -= 3.0
-            d[2] = -1
+            axis[2] = -1
         else:
             cloud[:, 2] *= 6.0
             cloud[:, 2] += 3.0
 
-        R = rotation_matrix(a, d)
+        R = rotation_matrix(angle, axis)
         cloud[:] = cloud.dot(R)
 
         clouds.append(cloud.tolist())
 
+    cloud = [point for points in clouds for point in points]
+
+    centroids, _ = kmeans(cloud, 8)
+    idx, _ = vq(cloud, centroids)
+
+    print idx
+
+    for i, point in zip(idx, cloud):
+        print i, point
+
+    # T = fclusterdata(asarray(cloud), .0, criterion='distance')
+
+    # clusters = {}
+
+    # for i in range(len(cloud)):
+    #     if i not in clusters:
+    #         clusters[i] = []
+    #     clusters[i].append(cloud[i])
+
+    # for key in sorted(clusters):
+    #     print key, clusters[key]
+
     axes = create_axes_3d()
+
+    x = centroids[:, 0]
+    y = centroids[:, 1]
+    z = centroids[:, 2]
+
+    axes.plot(x, y, z, 'o', color=(0.0, 1.0, 0.0))
 
     bounds = Bounds([point for points in clouds for point in points])
     bounds.plot(axes)
@@ -337,7 +377,7 @@ if __name__ == "__main__":
         cloud = asarray(cloud)
         bbox  = bounding_box_3d(cloud)
 
-        Cloud3D(cloud).plot(axes)
+        # Cloud3D(cloud).plot(axes)
         Box(bbox[1]).plot(axes)
 
     plt.show()
