@@ -40,27 +40,5 @@ mesh = brg_rhino.mesh_from_guid(Mesh,obj)
 
 if mesh.is_trimesh():
     voronoi = construct_voronoi_mesh(mesh)
-    brg_rhino.draw_mesh(voronoi,
-                  name='voronoi',
-                  layer=None,
-                  clear=True,
-                  redraw=True,
-                  show_faces=False,
-                  show_vertices=True,
-                  show_edges=True,
-                  vertex_color=None,
-                  edge_color=None,
-                  face_color=None)
+    brg_rhino.draw_mesh(voronoi, show_faces=False)
                   
-#    dual = construct_dual_mesh(mesh)
-#    brg_rhino.draw_mesh(dual,
-#                  name='dual',
-#                  layer=None,
-#                  clear=True,
-#                  redraw=True,
-#                  show_faces=False,
-#                  show_vertices=True,
-#                  show_edges=True,
-#                  vertex_color=None,
-#                  edge_color=None,
-#                  face_color=None)
