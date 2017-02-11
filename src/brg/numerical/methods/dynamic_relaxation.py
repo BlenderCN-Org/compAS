@@ -22,6 +22,13 @@ from brg.numerical.matrices import connectivity_matrix
 from brg.numerical.matrices import mass_matrix
 from brg.numerical.linalg import normrow
 
+from time import time
+
+try:
+    import bpy
+except:
+    pass
+
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
                   'Andrew Liew <liew@arch.ethz.ch>']
@@ -302,7 +309,8 @@ def residual(Ct, uvw, BC, S, P, Pn, q, f0=0, rtype='force'):
 
 
 def run(vertices, edges, l0, A, E, BC, P=None, s0=None, beams=None,
-        rtype='force', steps=50000, tol=0.1, ct='ct', factor=1, refresh=0):
+        rtype='force', steps=50000, tol=0.1, ct='ct', factor=1, refresh=0,
+        bmesh=None):
     m = len(edges)
     n = len(vertices)
 
@@ -369,14 +377,19 @@ def run(vertices, edges, l0, A, E, BC, P=None, s0=None, beams=None,
         X += V
         if refresh and (ts % refresh == 0):
             print('ts:{0} res:{1:.3g}'.format(ts, res))
+            if bmesh:
+                for c, Xi in enumerate(X):
+                    bmesh.data.vertices[c].co = Xi
+                bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         ts += 1
 
     # Summary
-    print('-' * 50)
-    print('Iterations: {0}'.format(ts - 1))
-    print('Residual: {0:.3g}'.format(res))
-    print('Time: {0:.3g}s'.format(time() - tic))
-    print('-' * 50)
+    if refresh:
+        print('-' * 50)
+        print('Iterations: {0}'.format(ts - 1))
+        print('Residual: {0:.3g}'.format(res))
+        print('Time: {0:.3g}s'.format(time() - tic))
+        print('-' * 50)
 
     return X
 

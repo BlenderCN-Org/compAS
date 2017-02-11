@@ -1,101 +1,137 @@
 """An example of dynamic relaxation for beam elements."""
 
 from brg_blender.geometry.curve import bezier_curve_interpolate
-from brg_blender.geometry.mesh import mesh_data
-from brg_blender.geometry.mesh import mesh_edge_lengths
 
 from brg_blender.utilities.drawing import xdraw_mesh
-from brg_blender.utilities.drawing import xdraw_lines
 from brg_blender.utilities.layers import layer_clear
 from brg_blender.utilities.objects import get_objects_by_layer
 from brg_blender.utilities.objects import select_objects_none
 
 from brg.numerical.methods.dynamic_relaxation import run
-from brg.numerical.spatial import closest_points_points
 from brg.numerical.linalg import normrow
 
-from math import sin, cos, pi
+from math import pi
 
 from numpy import array
+from numpy import cos
+from numpy import hstack
+from numpy import mean
 from numpy import newaxis
+from numpy import sin
+from numpy import vstack
+from numpy import zeros
+
+from scipy.optimize import fmin_slsqp
+
+from time import time
 
 import bpy
+
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __date__       = 'Jan 28, 2017'
 
-    
+
+def fn_update(dofs, x, dx, L, edges, l0, A, E, BC, P, beams, bmesh, rtol,
+              refresh, factor):
+    ux1, uz1, ur1, ux2, uz2, ur2 = dofs
+    pts = hstack([x * (ux2 - ux1) + ux1, zeros((len(x), 1)), sin(pi * x / L)])
+    pts[0, 2] += uz1
+    pts[-1, 2] += uz2
+    pts[1, :] = [dx * cos(ur1) + pts[0, 0], 0, dx * sin(ur1) + pts[0, 2]]
+    pts[-2, :] = [dx * cos(ur2) + pts[-1, 0], 0, dx * sin(ur2) + pts[-1, 2]]
+    verts = [list(i) for i in list(pts)]
+    X = run(verts, edges, l0, A, E, BC, P, beams=beams, bmesh=bmesh,
+            rtype='magnitude_{0}'.format(rtol), tol=100, refresh=refresh,
+            factor=factor)
+    return X
+
+
+def fn_norm(dofs, *args):
+    x, dx, L, edges, l0, A, E, BC, P, beams, bmesh, rtol, refresh, factor, Xt = args
+    X = fn_update(dofs, x, dx, L, edges, l0, A, E, BC, P, beams, bmesh, rtol,
+                  refresh, factor)
+    norm = 1000 * mean(normrow(X - Xt))
+    return norm
+
+
 layer_clear(0)
 
-# Create starting mesh from lines
-ux1 = -0.1
-ux2 = 0.3
-uz1 = 0.0
-uz2 = 0.05
-ur1 = 0.5 * pi / 2
-ur2 = 1.7 * pi / 2
-ur2 = None
+# Input
 L = 1.0
-nx = 100
+nx = 50
 n = nx + 1
-dx = L / nx
-x = [i * dx for i in range(nx + 1)]
-edges = [[i, i + 1] for i in range(nx)]
-vertices = [[x[i] * (ux2 - ux1) + ux1, 0, 0.2 * sin(pi * x[i] / L)] 
-            for i in range(n)]
-vertices[0][2] += uz1
-vertices[-1][2] += uz2
-
-# Boundaries
-BC = [[[0], [0, 0, 0]],
-      [[nx], [0, 0, 0]]]
-if ur1 is not None:
-    vertices[1] = [dx * cos(ur1) + vertices[0][0], 0, 
-                   dx * sin(ur1) + vertices[0][2]]
-    BC.append([[1], [0, 0, 0]])
-if ur2 is not None:
-    vertices[-2] = [dx * cos(ur2) + vertices[-1][0], 0, 
-                    dx * sin(ur2) + vertices[-1][2]]
-    BC.append([[nx - 1], [0, 0, 0]])
-
-# Dynamic Relaxation set-up
 mr = list(range(nx))
 nr = list(range(n))
 E = [[mr, 5 * 10**9]]
 A = [[mr, 0.001]]
-EIx = [5 * 10**9 * 7.955532**(-8)] * n
-EIy = [5 * 10**9 * 7.955532**(-8)] * n
-P = [[[nr], [0, 0, 1]]]
-beams = {'beam_0': {'nodes': nr, 'EIx': EIx, 'EIy': EIy}}
+EIx = [300] * n
+EIy = [300] * n
+rtol = 10
+factor = 10
+refresh = 50
+dr = 0.02
+
+# Setup
+dx = L / nx
 l0 = [dx] * nx
-mesh = xdraw_mesh('mesh_beam', vertices=vertices, edges=edges)
+x = array([i * dx for i in range(n)])[:, newaxis]
+edges = [[i, i + 1] for i in range(nx)]
+BC = [[[0, 1, nx - 1, nx], [0, 0, 0]]]
+P = None
+beams = {'beam': {'nodes': nr, 'EIx': EIx, 'EIy': EIy}}
+vertices = [[x[i], 0, 0] for i in range(n)]
+bmesh = xdraw_mesh('mesh_beam', vertices, edges)
+
+# Target
+target = get_objects_by_layer(4)[0]
+Xt = array(bezier_curve_interpolate(target, n))
+edgesC = [[i, i + n] for i in range(n)]
+
 select_objects_none()
 
-# Analyse
-X = run(vertices, edges, l0, A, E, BC, P=P, beams=beams, rtype='magnitude_1', 
-        tol=100, refresh=100, factor=10, bmesh=None)
-for c, Xi in enumerate(X):
-    mesh.data.vertices[c].co = Xi
-dL, L = mesh_edge_lengths(mesh) 
-print(L)
+# Single run
+single = 1
+if single:
+    ux1 = -0.03
+    uz1 = -0.0
+    ur1 = 130 * pi / 180
+    ux2 = 0.03
+    uz2 = 0.0
+    ur2 = 50 * pi / 180
+    dofs = ux1, uz1, ur1, ux2, uz2, ur2
+    X = fn_update(dofs, x, dx, L, edges, l0, A, E, BC, P, beams, bmesh, rtol,
+                  refresh, factor)
+    vertsC = vstack([X, Xt])
+    mesh = xdraw_mesh('norms', vertsC, edgesC)
+    norm = 1000 * mean(normrow(X - Xt))
+    print('Norm: {0:.3g} mm'.format(norm))
 
-# Norms
-target = get_objects_by_layer(4)[0]
-points = bezier_curve_interpolate(target, nx + 1)
-indices = closest_points_points(points, X, distances=False)
-lines = []
-norms = []
-for c in range(nx + 1):
-    start = points[c]
-#    end = list(X[c, :])
-    end = list(X[indices[c], :])
-    dU = (array(end) - array(start))
-    norms.append(dU)
-    lines.append({'start': start, 'end': end, 'layer': 0, 
-                 'radius': 0.001, 'color': 'white', 'name': '{0}'.format(c)})
-    xdraw_lines(lines)
-print(array(norms))
+# Optimise
+optimise = 0
+if optimise:
+    bounds = [(Xt[0][0] - dr, Xt[0][0] + dr),
+              (Xt[0][2] - dr, Xt[0][2] + dr),
+              (150 * pi / 180, 120 * pi / 180),
+              (Xt[-1][0] - dr, Xt[-1][0] + dr),
+              (Xt[-1][2] - dr, Xt[-1][2] + dr),
+              (30 * pi / 180, 80 * pi / 180)]
+    dof0 = [Xt[0][0], Xt[0][2], bounds[2][0], 
+            Xt[-1][0], Xt[-1][2], bounds[5][0]]
+    args = x, dx, L, edges, l0, A, E, BC, P, beams, bmesh, rtol, refresh, factor, Xt
+    tic = time()
+    opt = fmin_slsqp(fn_norm, dof0, args=args, disp=1, bounds=bounds, full_output=1)
+    toc = time() - tic
+    print(toc)
+    dof_opt = opt[0]
+    norm_opt = opt[1]
+    X = fn_update(dof_opt, x, dx, L, edges, l0, A, E, BC, P, beams, bmesh, rtol,
+                  refresh, factor)
+    vertsC = vstack([X, Xt])
+    mesh = xdraw_mesh('norms', vertsC, edgesC)
+    norm = 1000 * mean(normrow(X - Xt))
+    print('Norm: {0:.3g} mm'.format(norm))
 
 print('\nSCRIPT FINISHED\n')
