@@ -132,8 +132,8 @@ Solution: Delaunay Triangulation Exercise
 	    return dual
 	
 	
-	obj = rs.GetObject("Select Mesh",32)
-	mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+	guid = rs.GetObject("Select Mesh",32)
+	mesh = brg_rhino.mesh_from_guid(Mesh,guid)
 	
 	if mesh.is_trimesh():
 	    voronoi = construct_voronoi_mesh(mesh)
@@ -160,8 +160,8 @@ Mesh Smoothing A
     import brg_rhino
 
     
-    obj = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+    guid = rs.GetObject("Select Mesh",32)
+    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
     
     # get all indices of fixed points along the boundaries
     fixed = mesh.vertices_on_boundary()
@@ -203,8 +203,8 @@ Mesh Smoothing B
         return ufunc
 
     
-    obj = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+    guid = rs.GetObject("Select Mesh",32)
+    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
     
     # get all indices of fixed points along the boundaries
     fixed = mesh.vertices_on_boundary()
@@ -273,9 +273,8 @@ Mesh Smoothing C
         return ufunc
     
 
-    obj = rs.GetObject("Select Mesh",32)
-    
-    mesh = brg_rhino.mesh_from_guid(Mesh, obj)
+    guid = rs.GetObject("Select Mesh",32)
+    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
     mesh.set_dva({'guide_srf': None})
     
     fixed = mesh.vertices_on_boundary()
@@ -343,8 +342,8 @@ Solution: Smoothing Exercise
 	import brg_rhino
 	
 	
-	obj = rs.GetObject("Select Mesh",32)
-	mesh = brg_rhino.mesh_from_guid(Mesh,obj)
+	guid = rs.GetObject("Select Mesh",32)
+	mesh = brg_rhino.mesh_from_guid(Mesh,guid)
 	
 	edge_lengths = {(u,v) : mesh.edge_length(u,v,) for u, v in mesh.edges()}
 	
@@ -448,9 +447,9 @@ Solution: Remeshing Exercise
 	
 	import brg_rhino
 	
-	obj = rs.GetObject("Select Mesh",32)
-	mesh = brg_rhino.mesh_from_guid(Mesh,obj)
-	rs.DeleteObject(obj)
+	guid = rs.GetObject("Select Mesh",32)
+	mesh = brg_rhino.mesh_from_guid(Mesh,guid)
+	rs.DeleteObject(guid)
 	
 	while True:
 	    brg_rhino.draw_mesh(mesh,show_faces=False)

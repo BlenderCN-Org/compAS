@@ -19,6 +19,7 @@ __email__      = '<vanmelet@ethz.ch>'
 __all__ = [
     'vector_from_points',
     'plane_from_points',
+    'fit_plane_from_points',
     'circle_from_points',
 
     'vector_component',
