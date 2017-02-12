@@ -125,12 +125,68 @@ def plane_from_points(a, b, c):
         c (sequence of float): XYZ coordinates.
 
     Returns:
-        tuple: base point and normal vector.
+        tuple: base point and normal vector (normalized).
     """
     ab = subtract_vectors(b, a)
     ac = subtract_vectors(c, a)
     n = normalize_vector(cross_vectors(ab, ac))
     return a, n
+
+
+def fit_plane_from_points(points):
+    """Fitting a plane to a list of points.
+
+    Parameters:
+        points (sequence): A sequence of XYZ coordinates.
+
+    Returns:
+        tuple: base point and normal vector (normalized).
+         
+    References:
+        http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
+
+    Warning:
+        This method will minimize the squares of the residuals as perpendicular 
+        to the main axis, not the residuals perpendicular to the plane. If the 
+        residuals are small (i.e. your points all lie close to the resulting plane), 
+        then this method will probably suffice. However, if your points are more 
+        spread then this method may not be the best fit.
+    """
+    
+    centroid = centroid_points(points)
+    
+    xx,xy,xz = 0.,0.,0.
+    yy,yz,zz = 0.,0.,0.
+    
+    for pt in points:
+        rx,ry,rz = subtract_vectors(pt,centroid)
+        xx += rx * rx
+        xy += rx * ry
+        xz += rx * rz
+        yy += ry * ry
+        yz += ry * rz
+        zz += rz * rz
+
+    det_x = yy*zz - yz*yz
+    det_y = xx*zz - xz*xz
+    det_z = xx*yy - xy*xy
+
+    det_max = max(det_x, det_y, det_z)
+
+    if det_max == det_x:
+        a = (xz*yz - xy*zz) / det_x
+        b = (xy*yz - xz*yy) / det_x
+        dir = (1.,a,b)
+    elif det_max == det_y:
+        a = (yz*xz - xy*zz) / det_y
+        b = (xy*xz - yz*xx) / det_y
+        dir = (a,1.,b)
+    else:
+        a = (yz*xy - xz*yy) / det_z
+        b = (xz*xy - yz*xx) / det_z
+        dir = (a,b,1.)
+        
+    return centroid, normalize_vector(dir)
 
 
 def circle_from_points(a, b, c):
