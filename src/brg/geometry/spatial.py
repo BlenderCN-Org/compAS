@@ -79,6 +79,8 @@ __all__ = [
     'is_point_on_polyline',
     'is_point_in_triangle',
 
+    'is_intersection_line_plane',
+    'is_intersection_segment_plane',
     'is_intersection_line_triangle',
     'is_intersection_box_box',
 
@@ -86,6 +88,8 @@ __all__ = [
     'intersection_lines',
     'intersection_circle_circle',
     'intersection_line_triangle',
+    'intersection_line_plane',
+    'intersection_segment_plane',
 
     'translate_points',
     'translate_lines',
@@ -1231,6 +1235,16 @@ def is_point_on_line(point, line, tol=0.0):
 
 
 def is_point_on_segment(point, segment, tol=0.0):
+    """Verify if a point lies on a given line segment.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        segment (tuple): Two points defining the line segment.
+
+    Returns:
+        (bool): True if the point is on the line segment, False otherwise.
+
+    """
     a, b = segment
     if not is_point_on_line(point, segment, tol=tol):
         return False
@@ -1337,6 +1351,57 @@ def is_point_in_circle(point, circle):
         return distance_point_point(point, center) <= radius
     return False
 
+
+def is_intersection_segment_plane(segment,plane, epsilon=1e-6):
+    """Verify if a line segment intersects with a plane.
+
+    Parameters:
+        segment (tuple): Two points defining the line segment.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        (bool): True if the line segment intersects with the plane, False otherwise.
+
+    """
+    pt1 = segment[0]
+    pt2 = segment[1]
+    p_cent = plane[0]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2,pt1)
+    dot = dot_vectors(p_norm,v1)
+
+    if abs(dot) > epsilon:
+        v2 = subtract_vectors(pt1, p_cent)
+        fac = -dot_vectors(p_norm,v2)/dot
+        if fac > 0. and fac < 1.: 
+            return True
+        return False
+    else:
+        return False
+
+def is_intersection_line_plane(line,plane, epsilon=1e-6):
+    """Verify if a line (continuous ray) intersects with a plane.
+
+    Parameters:
+        line (tuple): Two points defining the line.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        (bool): True if the line intersects with the plane, False otherwise.
+
+    """
+    pt1 = line[0]
+    pt2 = line[1]
+    p_cent = plane[0]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2,pt1)
+    dot = dot_vectors(p_norm,v1)
+
+    if abs(dot) > epsilon:
+        return True
+    else:
+        return False
+    
 
 def is_intersection_line_triangle(line,triangle):
     
@@ -1567,7 +1632,64 @@ def intersection_line_triangle(line,triangle):
     if t > EPSILON:
         return add_vectors(p1,scale_vector(v1,t))
     # No hit
-    return False
+    return None
+
+
+def intersection_line_plane(line,plane, epsilon=1e-6):
+    """Computes the intersection point of a line (ray) and a plane
+
+    Parameters:
+        line (tuple): Two points defining the line.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        point (tuple) if the line (ray) intersects with the plane, None otherwise.
+
+    """
+    pt1 = line[0]
+    pt2 = line[1]
+    p_cent = plane[0]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2,pt1)
+    dot = dot_vectors(p_norm,v1)
+
+    if abs(dot) > epsilon:
+        v2 = subtract_vectors(pt1, p_cent)
+        fac = -dot_vectors(p_norm,v2)/dot
+        v1 = scale_vector(v1,fac)
+        return add_vectors(pt1,v1)
+    else:
+        return None
+        
+        
+def intersection_segment_plane(segment,plane, epsilon=1e-6):
+    """Computes the intersection point of a line segment and a plane
+
+    Parameters:
+        segment (tuple): Two points defining the line segment.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        point (tuple) if the line segment intersects with the plane, None otherwise.
+
+    """
+    pt1 = segment[0]
+    pt2 = segment[1]
+    p_cent = plane[0]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2,pt1)
+    dot = dot_vectors(p_norm,v1)
+
+    if abs(dot) > epsilon:
+        v2 = subtract_vectors(pt1, p_cent)
+        fac = -dot_vectors(p_norm,v2)/dot
+        if fac > 0. and fac < 1.: 
+            v1 = scale_vector(v1,fac)
+            return add_vectors(pt1,v1)
+        return None
+    else:
+        return None
+
 # ==============================================================================
 # transformations
 # ==============================================================================
@@ -1688,7 +1810,7 @@ def project_point_plane(point, plane):
 
     Parameters:
         point (sequence of float): XYZ coordinates of the original point.
-        plane (tuple): Base point and normal vector defining the plane.
+        plane (tuple): Base poin.t and normal vector defining the plane
 
     Returns:
         list: XYZ coordinates of the projected point.
