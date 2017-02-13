@@ -1546,14 +1546,11 @@ def is_intersection_box_box(box_1, box_2):
     # checks for edge triangle intersections
     intx = False
     for pt1, pt2 in edges:
-        for a, b, c in tris:
-            for p1, p2 in [(pt1, pt2), (pt2, pt1)]:
-                v1 = subtract_vectors(p2, p1)
-                t = is_intersection_ray_triangle(p1, v1, a, b, c)
-                if t:
-                    v1 = scale_vector(v1, t)
-                    test_pt = add_vectors(v1, p1)
-                    if is_point_on_segment(test_pt, (p1, p2)):
+        for tri in tris:
+            for line in [(pt1, pt2), (pt2, pt1)]:
+                test_pt = intersection_line_triangle(line,tri)
+                if test_pt:
+                    if is_point_on_segment(test_pt,line):
                         # intersection found
                         intx = True
                         break
