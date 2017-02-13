@@ -93,7 +93,7 @@ __all__ = [
     'intersection_segment_plane',
     'intersection_plane_plane',
     'intersection_plane_plane_plane',
-    
+
     'translate_points',
     'translate_lines',
 
@@ -149,25 +149,25 @@ def fit_plane_from_points(points):
 
     Returns:
         tuple: base point and normal vector (normalized).
-         
+
     References:
         http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
 
     Warning:
-        This method will minimize the squares of the residuals as perpendicular 
-        to the main axis, not the residuals perpendicular to the plane. If the 
-        residuals are small (i.e. your points all lie close to the resulting plane), 
-        then this method will probably suffice. However, if your points are more 
+        This method will minimize the squares of the residuals as perpendicular
+        to the main axis, not the residuals perpendicular to the plane. If the
+        residuals are small (i.e. your points all lie close to the resulting plane),
+        then this method will probably suffice. However, if your points are more
         spread then this method may not be the best fit.
     """
-    
+
     centroid = centroid_points(points)
-    
-    xx,xy,xz = 0.,0.,0.
-    yy,yz,zz = 0.,0.,0.
-    
+
+    xx, xy, xz = 0., 0., 0.
+    yy, yz, zz = 0., 0., 0.
+
     for pt in points:
-        rx,ry,rz = subtract_vectors(pt,centroid)
+        rx, ry, rz = subtract_vectors(pt, centroid)
         xx += rx * rx
         xy += rx * ry
         xz += rx * rz
@@ -175,25 +175,25 @@ def fit_plane_from_points(points):
         yz += ry * rz
         zz += rz * rz
 
-    det_x = yy*zz - yz*yz
-    det_y = xx*zz - xz*xz
-    det_z = xx*yy - xy*xy
+    det_x = yy * zz - yz * yz
+    det_y = xx * zz - xz * xz
+    det_z = xx * yy - xy * xy
 
     det_max = max(det_x, det_y, det_z)
 
     if det_max == det_x:
-        a = (xz*yz - xy*zz) / det_x
-        b = (xy*yz - xz*yy) / det_x
-        dir = (1.,a,b)
+        a = (xz * yz - xy * zz) / det_x
+        b = (xy * yz - xz * yy) / det_x
+        dir = (1., a, b)
     elif det_max == det_y:
-        a = (yz*xz - xy*zz) / det_y
-        b = (xy*xz - yz*xx) / det_y
-        dir = (a,1.,b)
+        a = (yz * xz - xy * zz) / det_y
+        b = (xy * xz - yz * xx) / det_y
+        dir = (a, 1., b)
     else:
-        a = (yz*xy - xz*yy) / det_z
-        b = (xz*xy - yz*xx) / det_z
-        dir = (a,b,1.)
-        
+        a = (yz * xy - xz * yy) / det_z
+        b = (xz * xy - yz * xx) / det_z
+        dir = (a, b, 1.)
+
     return centroid, normalize_vector(dir)
 
 
@@ -1355,7 +1355,7 @@ def is_point_in_circle(point, circle):
     return False
 
 
-def is_intersection_segment_plane(segment,plane, epsilon=1e-6):
+def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
     """Verify if a line segment intersects with a plane.
 
     Parameters:
@@ -1370,19 +1370,20 @@ def is_intersection_segment_plane(segment,plane, epsilon=1e-6):
     p_cent = plane[0]
     p_norm = plane[1]
 
-    v1 = subtract_vectors(pt2,pt1)
-    dot = dot_vectors(p_norm,v1)
+    v1 = subtract_vectors(pt2, pt1)
+    dot = dot_vectors(p_norm, v1)
 
     if abs(dot) > epsilon:
         v2 = subtract_vectors(pt1, p_cent)
-        fac = -dot_vectors(p_norm,v2)/dot
-        if fac > 0. and fac < 1.: 
+        fac = - dot_vectors(p_norm, v2) / dot
+        if fac > 0. and fac < 1.:
             return True
         return False
     else:
         return False
 
-def is_intersection_line_plane(line,plane, epsilon=1e-6):
+
+def is_intersection_line_plane(line, plane, epsilon=1e-6):
     """Verify if a line (continuous ray) intersects with a plane.
 
     Parameters:
@@ -1397,15 +1398,16 @@ def is_intersection_line_plane(line,plane, epsilon=1e-6):
     p_cent = plane[0]
     p_norm = plane[1]
 
-    v1 = subtract_vectors(pt2,pt1)
-    dot = dot_vectors(p_norm,v1)
+    v1 = subtract_vectors(pt2, pt1)
+    dot = dot_vectors(p_norm, v1)
 
     if abs(dot) > epsilon:
         return True
     else:
         return False
-    
-def is_intersection_plane_plane(plane1,plane2, epsilon=1e-6):
+
+
+def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     """Computes the intersection of two planes
 
     Parameters:
@@ -1415,13 +1417,13 @@ def is_intersection_plane_plane(plane1,plane2, epsilon=1e-6):
         (bool): True if the planes intersect, False otherwise.
 
     """
-    #check for parallelity of planes
-    if abs(dot_vectors(plane1[1],plane2[1]))>1-epsilon:
+    # check for parallelity of planes
+    if abs(dot_vectors(plane1[1], plane2[1])) > 1 - epsilon:
         return False
     return True
 
-def is_intersection_line_triangle(line,triangle):
-    
+
+def is_intersection_line_triangle(line, triangle):
     """
     Verifies if a line (ray) intersects with a triangle
     based on the Moeller Trumbore intersection algorithm
@@ -1436,7 +1438,7 @@ def is_intersection_line_triangle(line,triangle):
     Note:
         The line is treated as continues, directed ray and not as line segment with a start and end point
     """
-    a,b,c = triangle
+    a, b, c = triangle
     v1 = subtract_vectors(line[1], line[0])
     p1 = line[0]
     EPSILON = 0.000000001
@@ -1565,9 +1567,9 @@ def is_intersection_box_box(box_1, box_2):
     for pt1, pt2 in edges:
         for tri in tris:
             for line in [(pt1, pt2), (pt2, pt1)]:
-                test_pt = intersection_line_triangle(line,tri)
+                test_pt = intersection_line_triangle(line, tri)
                 if test_pt:
-                    if is_point_on_segment(test_pt,line):
+                    if is_point_on_segment(test_pt, line):
                         # intersection found
                         intx = True
                         break
