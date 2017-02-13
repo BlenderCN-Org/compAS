@@ -16,9 +16,8 @@ In general the following is assumed.
 
 * point: the xyz coordinates as iterable of floats.
 * vector: the xyz coordinates of the end point. the start is always the origin.
-* line: a tuple with two points.
-* ray: a tuple with two points.
-* segment: a tuple with two points.
+* line: a tuple with two points representing a continuous line (ray).
+* segment: a tuple with two points representing a line segment.
 * plane: a tuple with a base point and normal vector.
 * circle: a tuple with a point,
   the normal vector of the plane of the circle, and the radius as float.
