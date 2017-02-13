@@ -24,8 +24,46 @@ __all__ = ['LinesConduit', ]
 
 
 class LinesConduit(Conduit):
-    """"""
-    def __init__(self, lines, thickness=1, color=None):
+    """A Rhino display conduit for lines.
+
+    Parameters:
+        lines (list): A list of start-end point pairs that define the lines.
+        thickness (float): Optional.
+            The thickness of the conduit lines.
+            Default is ``1.0``.
+        color (tuple): Optional.
+            RGB color spec for the conduit lines.
+            Default is ``None``.
+
+    Example:
+
+        .. code-block:: python
+
+            import random
+            import time
+
+            points = [(1.0 * random.ranint(0, 30), 1.0 * random.randint(0, 30), 0.0) for _ in range(100)]
+            lines  = [(points[i], points[i + 1]) for i in range(99)]
+
+            conduit = LinesConduit(lines)
+            conduit.enable()
+
+            try:
+                for i in range(100):
+                    points = [(1.0 * random.randint(0, 30), 1.0 * random.randint(0, 30), 0.0) for _ in range(100)]
+                    conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
+                    conduit.redraw()
+
+                    time.sleep(0.1)
+            except:
+                raise
+
+            finally:
+                conduit.disable()
+                del conduit
+
+    """
+    def __init__(self, lines, thickness=1.0, color=None):
         super(LinesConduit, self).__init__()
         self.lines = lines
         self.n = len(lines)

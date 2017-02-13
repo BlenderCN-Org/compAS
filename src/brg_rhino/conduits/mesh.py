@@ -28,7 +28,43 @@ __all__ = ['MeshConduit', 'MeshVertexInspector', ]
 
 
 class MeshConduit(Conduit):
-    """"""
+    """A Rhino display conduit for meshes.
+
+    Parameters:
+        mesh (brg.datastructures.mesh.Mesh): The mesh object.
+        color (tuple): Optional.
+            The conduit color.
+            Default is ``(255, 0, 0)``.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.mesh import Mesh
+            from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
+
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+            conduit = MeshConduit(mesh)
+            conduit.enable()
+
+            def update_conduit(mesh, k):
+                if k % 10 == 0:
+                    conduit.redraw()
+
+            try:
+                smooth_mesh_centroid(mesh, callback=update_conduit)
+            except:
+                raise
+
+            finally:
+                conduit.disable()
+                del conduit
+
+    """
     def __init__(self, mesh, color=None):
         super(MeshConduit, self).__init__()
         self.mesh = mesh
