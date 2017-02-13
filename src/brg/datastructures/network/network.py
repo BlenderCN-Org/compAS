@@ -508,11 +508,11 @@ network: {0}
         return list(self.faces_iter())
 
     def faces_iter(self, data=False):
-        if data:
-            for fkey in self.face:
+        for fkey in self.face:
+            if data:
                 yield fkey, self.facedata.setdefault(fkey, self.dfa.copy())
-        else:
-            return self.face.iterkeys()
+            else:
+                yield fkey
 
     def faces_enum(self, data=False):
         for index, fkey in enumerate(self.faces_iter()):
