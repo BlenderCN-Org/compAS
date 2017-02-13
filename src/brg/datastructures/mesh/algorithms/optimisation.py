@@ -19,6 +19,7 @@ __all__ = [
 def optimise_trimesh_topology(mesh,
                               target,
                               kmax=100,
+                              target_start=1.0,
                               kmax_start=None,
                               tol=0.1,
                               divergence=0.01,

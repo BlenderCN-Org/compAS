@@ -1,8 +1,6 @@
 from brg.geometry import angle_smallest_vectors
 from brg.geometry.planar import is_ccw_2d
 
-import warnings
-
 
 __author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -14,31 +12,6 @@ __all__ = [
     'construct_dual_network',
     'find_network_faces',
 ]
-
-
-# def construct_network_dual(network, cls, find_faces=True):
-#     warnings.warn("This function is deprecated. Use 'construct_dual_network' instead.", DeprecationWarning)
-#     if find_faces:
-#         find_network_faces(network)
-#     dual = cls()
-#     fkey_centroid = dict((fkey, network.face_centroid(fkey)) for fkey in network.face)
-#     fkey_key = {}
-#     for u, v in network.edges_iter():
-#         fkey = network.halfedge[u][v]
-#         if fkey not in fkey_key:
-#             x, y, z = fkey_centroid[fkey]
-#             dual.add_vertex(fkey, x=x, y=y, z=z)
-#             fkey_key[fkey] = 1
-#         k1 = fkey
-#         fkey = network.halfedge[v][u]
-#         if fkey not in fkey_key:
-#             x, y, z = fkey_centroid[fkey]
-#             dual.add_vertex(fkey, x=x, y=y, z=z)
-#             fkey_key[fkey] = 1
-#         k2 = fkey
-#         dual.add_edge(k1, k2, primal=(u, v))
-#         network.edge[u][v]['dual'] = (k1, k2)
-#     return dual
 
 
 def construct_dual_network(network, cls=None):
