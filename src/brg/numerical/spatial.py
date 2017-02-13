@@ -350,18 +350,6 @@ if __name__ == "__main__":
     for i, point in zip(idx, cloud):
         print i, point
 
-    # T = fclusterdata(asarray(cloud), .0, criterion='distance')
-
-    # clusters = {}
-
-    # for i in range(len(cloud)):
-    #     if i not in clusters:
-    #         clusters[i] = []
-    #     clusters[i].append(cloud[i])
-
-    # for key in sorted(clusters):
-    #     print key, clusters[key]
-
     axes = create_axes_3d()
 
     x = centroids[:, 0]
