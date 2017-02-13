@@ -55,6 +55,15 @@ class Network(object):
 
             network.plot(vlabel={key: key} for key in network}, vsize=0.2)
 
+
+        .. plot::
+
+            import brg
+            from brg.datastructures.network import Network
+            network = Network.from_obj(brg.get_data('lines.obj'))
+            network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)
+
+
         .. code-block:: python
 
             import brg
@@ -86,13 +95,6 @@ class Network(object):
 
             for fkey in network.face:
                 print fkey, network.face[fkey], network.facedata[fkey]
-
-        .. plot::
-
-            import brg
-            from brg.datastructures.network import Network
-            network = Network.from_obj(brg.get_data('lines.obj'))
-            network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)
 
     """
 
