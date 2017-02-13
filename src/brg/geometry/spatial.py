@@ -81,6 +81,7 @@ __all__ = [
 
     'is_intersection_line_plane',
     'is_intersection_segment_plane',
+    'is_intersection_plane_plane',
     'is_intersection_line_triangle',
     'is_intersection_box_box',
 
@@ -90,7 +91,9 @@ __all__ = [
     'intersection_line_triangle',
     'intersection_line_plane',
     'intersection_segment_plane',
-
+    'intersection_plane_plane',
+    'intersection_plane_plane_plane',
+    
     'translate_points',
     'translate_lines',
 
@@ -1402,6 +1405,20 @@ def is_intersection_line_plane(line,plane, epsilon=1e-6):
     else:
         return False
     
+def is_intersection_plane_plane(plane1,plane2, epsilon=1e-6):
+    """Computes the intersection of two planes
+
+    Parameters:
+        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
+        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Returns:
+        (bool): True if the planes intersect, False otherwise.
+
+    """
+    #check for parallelity of planes
+    if abs(dot_vectors(plane1[1],plane2[1]))>1-epsilon:
+        return False
+    return True
 
 def is_intersection_line_triangle(line,triangle):
     
@@ -1686,6 +1703,49 @@ def intersection_segment_plane(segment,plane, epsilon=1e-6):
         return None
     else:
         return None
+
+def intersection_plane_plane(plane1,plane2, epsilon=1e-6):
+    """Computes the intersection of two planes
+
+    Parameters:
+        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
+        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Returns:
+        line (tuple): Two points defining the intersection line. None if planes are parallel.
+
+    """
+    #check for parallelity of planes
+    if abs(dot_vectors(plane1[1],plane2[1]))>1-epsilon:
+        return None
+    origin = (0,0,0)
+    dir =  cross_vectors(plane1[1],plane2[1]) #direction of intersection line
+    p1 = project_point_plane(origin, plane1)
+    vec_inplane =  cross_vectors(dir,plane1[1])
+    p2 = subtract_vectors(p1,vec_inplane) 
+    px1 = intersection_line_plane((p1,p2), plane2)
+    px2 = add_vectors(px1,dir)
+    return (px1,px2)
+
+def intersection_plane_plane_plane(plane1,plane2,plane3, epsilon=1e-6):
+    """Computes the intersection of three planes
+
+    Parameters:
+        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
+        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Returns:
+        point (tuple): The intersection point. None if two (or all three) planes are parallel.
+
+    Note:
+        Currently this only computes the intersection point. E.g.: If two planes 
+        are parallel the intersection lines are not computed. see:  
+        http://geomalgorithms.com/Pic_3-planes.gif
+    """
+    line = intersection_plane_plane(plane1,plane2,epsilon)
+    if not line:
+        return None
+    pt = intersection_line_plane(line, plane3, epsilon)
+    if pt: return pt
+    return None
 
 # ==============================================================================
 # transformations
