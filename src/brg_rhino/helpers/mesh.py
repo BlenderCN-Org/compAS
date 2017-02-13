@@ -118,8 +118,7 @@ def draw_mesh(mesh,
               show_edges=True,
               vertexcolor=None,
               edgecolor=None,
-              facecolor=None,
-              redraw=True):
+              facecolor=None):
     """
     Draw a mesh object in Rhino.
 
@@ -162,17 +161,13 @@ def draw_mesh(mesh,
                                    default=mesh.attributes['color.face'],
                                    colorformat='rgb',
                                    normalize=False)
-    # delete all relevant objects by name
-    name = mesh.attributes['name']
-    objects = rhino.get_objects(name='{0}.*'.format(name))
-    rhino.delete_objects(objects)
-    # clear the relevant layers
+    guids = rhino.get_objects(name='{0}.*'.format(mesh.attributes['name']))
+    rhino.delete_objects(guids)
     if clear_layer:
         if not layer:
             rhino.clear_current_layer()
         else:
             rhino.clear_layers((layer, ))
-    # draw the requested components
     if show_faces:
         key_index = dict((key, index) for index, key in mesh.vertices_enum())
         xyz       = [mesh.vertex_coordinates(key) for key in mesh.vertices_iter()]
@@ -198,7 +193,13 @@ def draw_mesh(mesh,
                     nbr = face[i + 1]
                     vertices = [c, key_index[key], key_index[nbr], key_index[nbr]]
                     faces.append(vertices)
-        rhino.xdraw_mesh(xyz, faces, color, name, layer=layer, clear=False, redraw=False)
+        rhino.xdraw_mesh(xyz,
+                         faces,
+                         color,
+                         mesh.attributes['name'],
+                         layer=layer,
+                         clear=False,
+                         redraw=False)
     if show_edges:
         lines = []
         color = mesh.attributes['color.edge']
@@ -206,7 +207,7 @@ def draw_mesh(mesh,
             lines.append({
                 'start': mesh.vertex_coordinates(u),
                 'end'  : mesh.vertex_coordinates(v),
-                'name' : '{0}.edge.{1}-{2}'.format(name, u, v),
+                'name' : '{0}.edge.{1}-{2}'.format(mesh.attributes['name'], u, v),
                 'color': edgecolor.get((u, v), color),
             })
         rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
@@ -216,13 +217,82 @@ def draw_mesh(mesh,
         for key in mesh.vertices_iter():
             points.append({
                 'pos'  : mesh.vertex_coordinates(key),
-                'name' : '{0}.vertex.{1}'.format(name, key),
+                'name' : '{0}.vertex.{1}'.format(mesh.attributes['name'], key),
                 'color': vertexcolor.get(key, color),
             })
         rhino.xdraw_points(points, layer=layer, clear=False, redraw=False)
-    # redraw the views if so requested
-    if redraw:
-        rs.Redraw()
+    rs.Redraw()
+
+# ==============================================================================
+# selection
+# ==============================================================================
+
+# ==============================================================================
+# attributes
+# ==============================================================================
+
+# ==============================================================================
+# labels
+# ==============================================================================
+
+# ==============================================================================
+# geometry
+# ==============================================================================
+
+
+def display_mesh_vertex_normals(mesh,
+                                display=True,
+                                layer=None,
+                                scale=1.0,
+                                color=(0, 0, 255)):
+    guids = rhino.get_objects(name='{0}.vertex.normal.*'.format(mesh.attributes['name']))
+    rhino.delete_objects(guids)
+    if not display:
+        return
+    lines = []
+    for key in mesh.vertex:
+        nv   = mesh.vertex_normal(key)
+        sp   = mesh.vertex_coordinates(key)
+        ep   = [sp[axis] + nv[axis] for axis in range(3)]
+        name = '{0}.vertex.normal.{1}'.format(mesh.attributes['name'], key)
+        lines.append({
+            'start' : sp,
+            'end'   : ep,
+            'name'  : name,
+            'color' : color,
+            'arrow' : 'end',
+        })
+    rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
+
+
+def display_mesh_face_normals(mesh,
+                              display=True,
+                              layer=None,
+                              scale=1.0,
+                              color=(0, 0, 255)):
+    guids = rhino.get_objects(name='{0}.face.normal.*'.format(mesh.attributes['name']))
+    rhino.delete_objects(guids)
+    if not display:
+        return
+    lines = []
+    for fkey in mesh.face:
+        nv   = mesh.face_normal(fkey)
+        sp   = mesh.face_center(fkey)
+        ep   = [sp[axis] + nv[axis] for axis in range(3)]
+        name = '{0}.face.normal.{1}'.format(mesh.attributes['name'], fkey)
+        lines.append({
+            'start' : sp,
+            'end'   : ep,
+            'name'  : name,
+            'color' : color,
+            'arrow' : 'end',
+        })
+    rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
+
+
+# ==============================================================================
+# forces
+# ==============================================================================
 
 
 # ==============================================================================
