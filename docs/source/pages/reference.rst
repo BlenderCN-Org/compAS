@@ -24,7 +24,7 @@ framework with different CAD environments.
 
 	reference/brg
 	reference/brg_rhino
-	reference/brg_gh
+	reference/brg_grasshopper
 	reference/brg_blender
 
 
