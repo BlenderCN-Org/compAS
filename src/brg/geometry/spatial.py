@@ -1719,11 +1719,10 @@ def intersection_plane_plane(plane1,plane2, epsilon=1e-6):
     #check for parallelity of planes
     if abs(dot_vectors(plane1[1],plane2[1]))>1-epsilon:
         return None
-    origin = (0,0,0)
     dir =  cross_vectors(plane1[1],plane2[1]) #direction of intersection line
-    p1 = project_point_plane(origin, plane1)
+    p1 = plane1[0]
     vec_inplane =  cross_vectors(dir,plane1[1])
-    p2 = subtract_vectors(p1,vec_inplane) 
+    p2 = add_vectors(p1,vec_inplane) 
     px1 = intersection_line_plane((p1,p2), plane2)
     px2 = add_vectors(px1,dir)
     return (px1,px2)
