@@ -162,7 +162,7 @@ network: {0}
 - vertex degree min: {3}
 - vertex degree max: {4}
 
-""".format(self.name, v, e, dmin, dmax, dva, dea)
+""".format(self.attributes['name'], v, e, dmin, dmax, dva, dea)
 
     # --------------------------------------------------------------------------
     # descriptors
