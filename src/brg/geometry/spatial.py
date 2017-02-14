@@ -184,17 +184,17 @@ def fit_plane_from_points(points):
     if det_max == det_x:
         a = (xz * yz - xy * zz) / det_x
         b = (xy * yz - xz * yy) / det_x
-        dir = (1., a, b)
+        normal = (1., a, b)
     elif det_max == det_y:
         a = (yz * xz - xy * zz) / det_y
         b = (xy * xz - yz * xx) / det_y
-        dir = (a, 1., b)
+        normal = (a, 1., b)
     else:
         a = (yz * xy - xz * yy) / det_z
         b = (xz * xy - yz * xx) / det_z
-        dir = (a, b, 1.)
+        normal = (a, b, 1.)
 
-    return centroid, normalize_vector(dir)
+    return centroid, normalize_vector(normal)
 
 
 def circle_from_points(a, b, c):
@@ -737,7 +737,7 @@ def angle_smallest_points(a, b, c):
     """
     u = subtract_vectors(b, a)
     v = subtract_vectors(c, a)
-    return angle_smallest_points(u, v)
+    return angles_vectors(u, v)
 
 
 # ------------------------------------------------------------------------------
@@ -1336,10 +1336,8 @@ def is_point_in_triangle(point, triangle):
         v = vector_from_points(a, b)
         c1 = cross_vectors(v, vector_from_points(a, p1))
         c2 = cross_vectors(v, vector_from_points(a, p2))
-        if dot_vectors(c1, c2) >= 0:
-            return True
-        else:
-            return False
+        if dot_vectors(c1, c2) >= 0: return True
+        return False
     a, b, c = triangle
     if is_on_same_side(point, a, (b, c)) and \
        is_on_same_side(point, b, (a, c)) and \
@@ -1395,7 +1393,6 @@ def is_intersection_line_plane(line, plane, epsilon=1e-6):
     """
     pt1 = line[0]
     pt2 = line[1]
-    p_cent = plane[0]
     p_norm = plane[1]
 
     v1 = subtract_vectors(pt2, pt1)
@@ -1403,8 +1400,7 @@ def is_intersection_line_plane(line, plane, epsilon=1e-6):
 
     if abs(dot) > epsilon:
         return True
-    else:
-        return False
+    return False
 
 
 def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
@@ -1672,8 +1668,8 @@ def intersection_line_plane(line,plane, epsilon=1e-6):
     if abs(dot) > epsilon:
         v2 = subtract_vectors(pt1, p_cent)
         fac = -dot_vectors(p_norm,v2)/dot
-        v1 = scale_vector(v1,fac)
-        return add_vectors(pt1,v1)
+        vec = scale_vector(v1,fac)
+        return add_vectors(pt1,vec)
     else:
         return None
         
@@ -1700,8 +1696,8 @@ def intersection_segment_plane(segment,plane, epsilon=1e-6):
         v2 = subtract_vectors(pt1, p_cent)
         fac = -dot_vectors(p_norm,v2)/dot
         if fac > 0. and fac < 1.: 
-            v1 = scale_vector(v1,fac)
-            return add_vectors(pt1,v1)
+            vec = scale_vector(v1,fac)
+            return add_vectors(pt1,vec)
         return None
     else:
         return None
@@ -1719,12 +1715,12 @@ def intersection_plane_plane(plane1,plane2, epsilon=1e-6):
     #check for parallelity of planes
     if abs(dot_vectors(plane1[1],plane2[1]))>1-epsilon:
         return None
-    dir =  cross_vectors(plane1[1],plane2[1]) #direction of intersection line
+    vec =  cross_vectors(plane1[1],plane2[1]) #direction of intersection line
     p1 = plane1[0]
-    vec_inplane =  cross_vectors(dir,plane1[1])
+    vec_inplane =  cross_vectors(vec,plane1[1])
     p2 = add_vectors(p1,vec_inplane) 
     px1 = intersection_line_plane((p1,p2), plane2)
-    px2 = add_vectors(px1,dir)
+    px2 = add_vectors(px1,vec)
     return (px1,px2)
 
 def intersection_plane_plane_plane(plane1,plane2,plane3, epsilon=1e-6):
@@ -1929,6 +1925,7 @@ def project_point_line(point, line):
     ab = subtract_vectors(b, a)
     ap = subtract_vectors(point, a)
     c = vector_component(ap, ab)
+    
     return add_vectors(a, c)
 
 
