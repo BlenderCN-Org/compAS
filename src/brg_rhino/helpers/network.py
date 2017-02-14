@@ -1,4 +1,4 @@
-import ast
+_____import ast
 
 from brg.utilities.colors import color_to_colordict
 
@@ -1064,7 +1064,7 @@ def display_network_axial_forces(network,
 
     """
     tol = rhino.get_tolerance()
-    objects = rhino.get_objects(name='{0}.force:axial.*'.format(network.name))
+    objects = rhino.get_objects(name='{0}.force:axial.*'.format(network.attributes['name']))
     rhino.delete_objects(objects)
 
     if not display:
@@ -1077,7 +1077,7 @@ def display_network_axial_forces(network,
         force  = attr['f']
         color  = color_tension if force > 0.0 else color_compression
         radius = scale * ((force ** 2) ** 0.5 / 3.14159) ** 0.5
-        name   = '{0}.force:axial.{1}-{2}'.format(network.name, u, v)
+        name   = '{0}.force:axial.{1}-{2}'.format(network.attributes['name'], u, v)
 
         if radius < tol:
             continue
@@ -1100,7 +1100,7 @@ def display_network_reaction_forces(network,
                                     scale=1.0,
                                     color=(0, 255, 0)):
     tol = rhino.get_tolerance()
-    objects = rhino.get_objects(name='{0}.force:reaction.*'.format(network.name))
+    objects = rhino.get_objects(name='{0}.force:reaction.*'.format(network.attributes['name']))
     rhino.delete_objects(objects)
     if not display:
         return
@@ -1113,7 +1113,7 @@ def display_network_reaction_forces(network,
         ep    = [sp[i] - scale * r[i] for i in range(3)]
         l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
         arrow = 'end'
-        name  = '{0}.force:reaction.{1}'.format(network.name, key)
+        name  = '{0}.force:reaction.{1}'.format(network.attributes['name'], key)
         if l < tol:
             continue
         lines.append({
@@ -1133,7 +1133,7 @@ def display_network_residual_forces(network,
                                     scale=1.0,
                                     color=(0, 255, 255)):
     tol = rhino.get_tolerance()
-    guids = rhino.get_objects(name='{0}.force:residual.*'.format(network.name))
+    guids = rhino.get_objects(name='{0}.force:residual.*'.format(network.attributes['name']))
     rhino.delete_objects(guids)
     if not display:
         return
@@ -1146,7 +1146,7 @@ def display_network_residual_forces(network,
         ep    = [sp[i] + scale * r[i] for i in range(3)]
         l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
         arrow = 'end'
-        name  = '{0}.force:residual.{1}'.format(network.name, key)
+        name  = '{0}.force:residual.{1}'.format(network.attributes['name'], key)
         if l < tol:
             continue
         lines.append({'start' : sp,
@@ -1163,7 +1163,7 @@ def display_network_selfweight(network,
                                clear_layer=False,
                                scale=1.0,
                                color=(0, 255, 0)):
-    guids = rhino.get_objects(name='{0}.force:selfweight.*'.format(network.name))
+    guids = rhino.get_objects(name='{0}.force:selfweight.*'.format(network.attributes['name']))
     rhino.delete_objects(guids)
     if not display:
         return
@@ -1172,7 +1172,7 @@ def display_network_selfweight(network,
         load  = 0, 0, network.vertex_area(key)
         start = network.vertex_coordinates(key)
         end   = [start[i] - scale * load[i] for i in range(3)]
-        name  = '{0}.force:selfweight.{1}'.format(network.name, key)
+        name  = '{0}.force:selfweight.{1}'.format(network.attributes['name'], key)
         arrow = 'end'
         lines.append({'start': start,
                       'end'  : end,
