@@ -78,7 +78,6 @@ class ScriptServer(object):
             json.dump(idict, fh)
         with open(self.opath, 'wb+') as fh:
             fh.write('')
-        # args = [self.python, '-u', self.script, self.ipath, self.opath]
         p = Process()
         p.StartInfo.UseShellExecute = False
         p.StartInfo.RedirectStandardOutput = True
