@@ -1,4 +1,7 @@
-import numpy as np
+from numpy import float32
+from numpy import float64
+from numpy import complex64
+from numpy import array
 
 try:
     import pycuda
@@ -71,9 +74,9 @@ def cuda_eye(n, bit=64):
         pycuda.gpuarray.GPUArray
     """
     if bit == 32:
-        a = skcuda.linalg.eye(n, dtype=np.float32)
+        a = skcuda.linalg.eye(n, dtype=float32)
     elif bit == 64:
-        a = skcuda.linalg.eye(n, dtype=np.float64)
+        a = skcuda.linalg.eye(n, dtype=float64)
     return a
 
 
@@ -125,15 +128,15 @@ def cuda_give(a, bit=64, type='real'):
     """
     if type == 'real':
         if bit == 32:
-            b = pycuda.gpuarray.to_gpu(np.array(a).astype(np.float32))
+            b = pycuda.gpuarray.to_gpu(array(a).astype(float32))
         elif bit == 64:
-            b = pycuda.gpuarray.to_gpu(np.array(a).astype(np.float64))
+            b = pycuda.gpuarray.to_gpu(array(a).astype(float64))
     elif type == 'complex':
         if bit == 32:
             raise NotImplementedError
             # b = pycuda.gpuarray.to_gpu(array(a).astype(complex32))
         elif bit == 64:
-            b = pycuda.gpuarray.to_gpu(np.array(a).astype(np.complex64))
+            b = pycuda.gpuarray.to_gpu(array(a).astype(complex64))
     return b
 
 
@@ -156,9 +159,9 @@ def cuda_ones(shape, bit=64):
         pycuda.gpuarray.GPUArray
     """
     if bit == 32:
-        a = skcuda.misc.ones(shape, np.float32)
+        a = skcuda.misc.ones(shape, float32)
     if bit == 64:
-        a = skcuda.misc.ones(shape, np.float64)
+        a = skcuda.misc.ones(shape, float64)
     return a
 
 
@@ -180,9 +183,9 @@ def cuda_random(shape, bit=64):
 
     """
     if bit == 32:
-        a = pycuda.curandom.rand(shape, dtype=np.float32)
+        a = pycuda.curandom.rand(shape, dtype=float32)
     if bit == 64:
-        a = pycuda.curandom.rand(shape, dtype=np.float64)
+        a = pycuda.curandom.rand(shape, dtype=float64)
     return a
 
 

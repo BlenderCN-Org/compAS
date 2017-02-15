@@ -1,8 +1,8 @@
 from numpy import float64
 from numpy import ceil
 
-from brg.numerical.gpu.math import sqrt
-from brg.numerical.gpu.math import sum
+from brg.numerical.gpu.cuda._math import cuda_sqrt
+from brg.numerical.gpu.cuda._math import cuda_sum
 
 try:
     import pycuda
@@ -199,7 +199,7 @@ def cuda_normrow(a):
         >>> type(a)
         pycuda.gpuarray.GPUArray
     """
-    return sqrt(sum(a * a, axis=1))
+    return cuda_sqrt(cuda_sum(a * a, axis=1))
 
 
 def cuda_pinv(a):

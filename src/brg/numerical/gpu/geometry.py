@@ -1,4 +1,5 @@
 from numpy import asarray
+from numpy import float32
 
 import pyopencl as cl
 import pyopencl.array as cl_array
@@ -16,8 +17,8 @@ __all__ = [
 
 
 def gpu_cross(a, b):
-    a     = asarray(a, dtype=np.float32)
-    b     = asarray(b, dtype=np.float32)
+    a     = asarray(a, dtype=float32)
+    b     = asarray(b, dtype=float32)
     ctx   = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
     a_dev = cl_array.to_device(queue, a)
