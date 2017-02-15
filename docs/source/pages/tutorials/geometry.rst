@@ -7,6 +7,19 @@ Geometry
 * :mod:`brg.geometry`
 
 
+.. raytracing?
+.. polyhedral stuff?
+.. bestfit intersection
+.. bestfit plane
+.. bestfit ...?
+.. perpendicularisation
+.. jiggle?
+.. parallelisation
+.. planarisation
+.. is_convex?
+.. closest point ...
+
+
 .. contents::
 
 

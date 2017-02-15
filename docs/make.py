@@ -12,7 +12,7 @@ modules = [
     'brg.geometry',
     'brg.numerical',
     'brg.numerical.euler',
-    # 'brg.numerical.gpu',
+    'brg.numerical.gpu',
     'brg.numerical.methods',
     'brg.numerical.solvers',
     'brg.physics',

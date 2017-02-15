@@ -16,10 +16,10 @@ Contents
 
    pages/intro
    pages/gettingstarted
-   pages/examples
+   pages/python
+   pages/tutorials
    pages/applications
    pages/cookbook
-   pages/samples
    pages/reference
    pages/license
 

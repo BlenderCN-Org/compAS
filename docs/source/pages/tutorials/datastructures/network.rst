@@ -16,9 +16,41 @@ of connected nodes or vertices, both planar and non-planar. It is
 Structure of the data
 =====================
 
-.. warning::
+.. code-block:: python
 
-    This section is still under construction.
+    import brg
+    from brg.datastructures.network import Network
+
+    network = Network.from_obj(brg.get_data('lines.obj'))
+
+    # structure of the vertex dict
+
+    for key in network.vertex:
+        print key, network.vertex[key]
+
+    # structure of the edge dict
+
+    for u in network.edge:
+        for v in network.edge[u]:
+            print u, v, network.edge[u][v]
+
+    # structure of the halfedge dict
+
+    for u in network.halfedge:
+        for v in network.halfedge[u]:
+            f1 = network.halfedge[u][v]
+            f2 = network.halfedge[v][u]
+            if f1 is not None:
+                print network.face[f1]
+            if f2 is not None:
+                print network.face[f2]
+
+    # structure of the face dict
+
+    for fkey in network.face:
+        print fkey, network.face[fkey]
+
+    # structure of the facedata dict
 
 
 Create a network
