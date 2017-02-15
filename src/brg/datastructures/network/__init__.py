@@ -55,7 +55,6 @@ algorithms
     smooth_network_area
     smooth_network_mass
     smooth_network_length
-    smooth_network_angle
     network_dfs
     network_bfs
     network_dfs_paths

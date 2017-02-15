@@ -61,6 +61,7 @@ class NetworkPlotter2D(object):
         # additional
         self.points = None
         self.lines = None
+        self.arrows = None
         # defaults
         self.default_text_color = '#000000'
         self.default_vertex_color = '#ffffff'
@@ -167,11 +168,22 @@ class NetworkPlotter2D(object):
             for line in self.lines:
                 lines.append({
                     'start': line['start'],
-                    'end': line['end'],
+                    'end'  : line['end'],
                     'color': line.get('color', '#00ff00'),
                     'width': line.get('width', 2.0),
                 })
-            draw_xarrows_2d(lines, axes)
+            draw_xlines_2d(lines, axes)
+        # arrows
+        if self.arrows:
+            arrows = []
+            for arrow in self.arrows:
+                arrows.append({
+                    'start': arrow['start'],
+                    'end'  : arrow['end'],
+                    'color': arrow.get('color', '#00ff00'),
+                    'width': arrow.get('width', 2.0),
+                })
+            draw_xarrows_2d(arrows, axes)
 
 
 class NetworkPlotter3D(object):

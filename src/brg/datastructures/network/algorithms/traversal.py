@@ -296,7 +296,8 @@ def network_dijkstra_path(adjacency, weight, source, target):
 
     Examples:
 
-        .. code-block:: python
+        .. plot::
+            :include-source:
 
             import brg
             from brg.datastructures.network import Network
@@ -307,8 +308,8 @@ def network_dijkstra_path(adjacency, weight, source, target):
             weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges_iter())
             weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-            path = network_dijkstra_path(network.adjacency, weight, '0', '26')
-            print path  # ['0', '30', '11', '15', '26']
+            path = network_dijkstra_path(network.adjacency, weight, 0, 26)
+            print path  # [0, 30, 11, 15, 26]
 
             edges = []
             for i in range(len(path) - 1):
@@ -318,31 +319,6 @@ def network_dijkstra_path(adjacency, weight, source, target):
                     u, v = v, u
                 edges.append([u, v])
 
-            network.plot(
-                vlabel={key: key for key in network},
-                vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
-                vsize=0.15,
-                ecolor={(u, v): (255, 0, 0) for u, v in edges},
-                ewidth={(u, v): 2.0 for u, v in edges}
-            )
-
-
-        .. plot::
-
-            import brg
-            from brg.datastructures.network import Network
-            from brg.datastructures.network.algorithms import network_dijkstra_path
-            network = Network.from_obj(brg.get_data('lines.obj'))
-            weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
-            weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-            path = network_dijkstra_path(network.adjacency, weight, '0', '26')
-            edges = []
-            for i in range(len(path) - 1):
-                u = path[i]
-                v = path[i + 1]
-                if v not in network.edge[u]:
-                    u, v = v, u
-                edges.append([u, v])
             network.plot(
                 vlabel={key: key for key in network},
                 vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
@@ -375,7 +351,7 @@ if __name__ == '__main__':
     weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
     weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-    path = network_dijkstra_path(network.adjacency, weight, '0', '26')
+    path = network_dijkstra_path(network.adjacency, weight, 0, 26)
 
     print path
 
@@ -388,9 +364,9 @@ if __name__ == '__main__':
         edges.append([u, v])
 
     network.plot(
+        vsize=0.15,
         vlabel={key: key for key in network},
         vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
-        vsize=0.15,
         ecolor={(u, v): (255, 0, 0) for u, v in edges},
         ewidth={(u, v): 2.0 for u, v in edges}
     )

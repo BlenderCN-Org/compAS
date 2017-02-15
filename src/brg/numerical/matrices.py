@@ -101,7 +101,7 @@ def connectivity_matrix(edges, rtype='array'):
     return _return_matrix(C, rtype)
 
 
-def laplacian_matrix(edges, rtype='array'):
+def laplacian_matrix(edges, normalize=False, rtype='array'):
     r"""Creates a laplacian matrix from a list of edge topologies.
 
     The laplacian matrix is defined as
@@ -138,6 +138,9 @@ def laplacian_matrix(edges, rtype='array'):
     """
     C = connectivity_matrix(edges, rtype='csr')
     L = C.transpose().dot(C)
+    if normalize:
+        L = L / L.diagonal().reshape((-1, 1))
+        L = csr_matrix(L)
     return _return_matrix(L, rtype)
 
 

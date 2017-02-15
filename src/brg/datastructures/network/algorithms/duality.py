@@ -29,10 +29,8 @@ def construct_dual_network(network, cls=None):
 
 
 def find_network_faces(network, breakpoints):
-    del network.face
-    network.face = {}
-    network.face_count = 0
-    del network.halfedge
+    network.clear_facedict()
+    network.clear_halfedgedict()
     network.halfedge = dict((key, {}) for key in network.vertex)
     for u, v in network.edges_iter():
         network.halfedge[u][v] = None
@@ -42,13 +40,13 @@ def find_network_faces(network, breakpoints):
     if leaves:
         u = sorted([(key, network.vertex[key]) for key in leaves], key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
     else:
-        u = sorted(network.vertices_iter(data=True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        u = sorted(network.vertices_iter(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
     v = _find_first_neighbour(u, network)
     _find_edge_face(u, v, network)
     for u, v in network.edges_iter():
-        if not network.halfedge[u][v]:
+        if network.halfedge[u][v] is None:
             _find_edge_face(u, v, network)
-        if not network.halfedge[v][u]:
+        if network.halfedge[v][u] is None:
             _find_edge_face(v, u, network)
     _break_faces(network, breakpoints)
     return network.face
@@ -57,6 +55,8 @@ def find_network_faces(network, breakpoints):
 def _find_first_neighbour(key, network):
     angles = []
     nbrs = network.halfedge[key].keys()
+    if len(nbrs) == 1:
+        return nbrs[0]
     vu = [-1, -1, 0]
     for nbr in nbrs:
         w = [network.vertex[nbr][_] for _ in 'xyz']
@@ -68,7 +68,7 @@ def _find_first_neighbour(key, network):
 
 def _sort_neighbours(network, ccw=True):
     sorted_neighbours = {}
-    xyz = dict((key, [attr[_] for _ in 'xyz']) for key, attr in network.vertices_iter(True))
+    xyz = dict((key, network.vertex_coordinates(key)) for key in network.vertices_iter())
     for key in network.vertex:
         nbrs = network.halfedge[key].keys()
         if len(nbrs) == 1:
@@ -163,4 +163,4 @@ if __name__ == '__main__':
 
     print t1 - t0
 
-    dual.plot()
+    dual.plot(vlabel={key: key for key in dual})
