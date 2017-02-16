@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 
 from brg.files.obj import OBJ
 
@@ -201,31 +202,33 @@ network: {0}
         * fcount
 
         """
-        return {'attributes' : self.attributes,
-                'dva'        : self.default_vertex_attributes,
-                'dea'        : self.default_edge_attributes,
-                'dfa'        : self.default_face_attributes,
-                'vertex'     : self.vertex,
-                'edge'       : self.edge,
-                'halfedge'   : self.halfedge,
-                'face'       : self.face,
-                'facedata'   : self.facedata,
-                'vcount'     : self.vertex_count,
-                'fcount'     : self.face_count}
+        return {'attributes'  : self.attributes,
+                'dva'         : self.default_vertex_attributes,
+                'dea'         : self.default_edge_attributes,
+                'dfa'         : self.default_face_attributes,
+                'vertex'      : self.vertex,
+                'edge'        : self.edge,
+                'halfedge'    : self.halfedge,
+                'face'        : self.face,
+                'facedata'    : self.facedata,
+                'max_int_key' : self._max_int_key,
+                'max_int_fkey': self._max_int_fkey}
 
     @data.setter
     def data(self, data):
-        attributes = data.get('attributes') or {}
-        dva        = data.get('dva') or {}
-        dea        = data.get('dea') or {}
-        dfa        = data.get('dfa') or {}
-        vertex     = data.get('vertex') or {}
-        edge       = data.get('edge') or {}
-        halfedge   = data.get('halfedge') or {}
-        face       = data.get('face') or {}
-        facedata   = data.get('facedata') or {}
-        vcount     = data.get('vcount') or 0
-        fcount     = data.get('fcount') or 0
+        attributes   = data.get('attributes') or {}
+        dva          = data.get('dva') or {}
+        dea          = data.get('dea') or {}
+        dfa          = data.get('dfa') or {}
+        vertex       = data.get('vertex') or {}
+        edge         = data.get('edge') or {}
+        halfedge     = data.get('halfedge') or {}
+        face         = data.get('face') or {}
+        facedata     = data.get('facedata') or {}
+        vcount       = data.get('vcount') or 0
+        fcount       = data.get('fcount') or 0
+        max_int_key  = data.get('max_int_key') or vcount - 1
+        max_int_fkey = data.get('max_int_fkey') or fcount - 1
 
         if not vertex or not edge or not halfedge:
             return
@@ -267,10 +270,10 @@ network: {0}
                 self.halfedge[key][nbr] = fkey
         for fkey, vertices in face.iteritems():
             self.face[fkey] = vertices
-        for fkey, attr in facedata.itertems():
+        for fkey, attr in facedata.iteritems():
             self.facedata[fkey] = attr
-        self.vertex_count = vcount
-        self.face_count = fcount
+        self._max_int_key = max_int_key
+        self._max_int_fkey = max_int_fkey
 
     @property
     def plotter(self):
@@ -995,6 +998,11 @@ network: {0}
             return self.attributes.get('color.vertex')
         return self.attributes.get('color.vertex')
 
+    def copy(self):
+        cls  = type(self)
+        data = deepcopy(self.data)
+        return cls.from_data(data)
+
     # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
@@ -1008,6 +1016,8 @@ network: {0}
     # --------------------------------------------------------------------------
 
     def plot(self,
+             vertices_on=True,
+             edges_on=True,
              vcolor=None,
              vlabel=None,
              vsize=None,
@@ -1024,6 +1034,8 @@ network: {0}
         # only necessary import should be the plotter
         axes = create_axes_2d()
         plotter = self.plotter
+        plotter.vertices_on = vertices_on
+        plotter.edges_on = edges_on
         if vcolor:
             plotter.vcolor = vcolor
         if vlabel:
