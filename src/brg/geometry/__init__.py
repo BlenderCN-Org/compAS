@@ -44,6 +44,7 @@ constructors
 
     vector_from_points
     plane_from_points
+    bestfit_plane_from_points
     circle_from_points
 
 miscellaneous
@@ -153,6 +154,12 @@ queries
     is_point_on_polyline
     is_point_in_triangle
     is_point_in_circle
+    is_intersection_line_line
+    is_intersection_line_plane
+    is_intersection_segment_plane
+    is_intersection_plane_plane
+    is_intersection_line_triangle
+    is_intersection_box_box
 
 intersections
 -------------
@@ -161,8 +168,14 @@ intersections
     :toctree: generated/
 
     intersection_line_line
-    intersection_lines
     intersection_circle_circle
+    intersection_line_triangle
+    intersection_line_plane
+    intersection_segment_plane
+    intersection_plane_plane
+    intersection_plane_plane_plane
+    intersection_lines
+    intersection_planes
 
 transformations
 ---------------
@@ -173,7 +186,11 @@ transformations
     translate_points
     translate_lines
     rotate_points
+    mirror_point_point
+    mirror_points_point
+    mirror_point_line
     mirror_points_line
+    mirror_point_plane
     mirror_points_plane
     project_point_plane
     project_points_plane

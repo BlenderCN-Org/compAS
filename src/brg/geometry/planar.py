@@ -16,21 +16,24 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'vector_from_points_2d',
-    'circle_from_points_2d',
-
-    'vector_component_2d',
-
     'add_vectors_2d',
-    'subtract_vectors_2d',
-    'scale_vector_2d',
-    'normalize_vector_2d',
-    'normalize_vectors_2d',
-    'dot_vectors_2d',
-    'cross_vectors_2d',
+    'angles_points_2d',
+    'angles_vectors_2d',
+    'angle_smallest_points_2d',
+    'angle_smallest_vectors_2d',
+    'area_polygon_2d',
+    'area_triangle_2d',
 
-    'length_vector_2d',
-    'length_vector_sqrd_2d',
+    'bounding_box_2d',
+
+    'center_of_mass_polygon_2d',
+    'centroid_points_2d',
+    'circle_from_points_2d',
+    'closest_point_on_line_2d',
+    'closest_point_on_segment_2d',
+    'closest_point_on_polygon_2d',
+    'closest_part_of_triangle',
+    'cross_vectors_2d',
 
     'distance_point_point_2d',
     'distance_point_point_sqrd_2d',
@@ -38,26 +41,14 @@ __all__ = [
     'distance_point_line_sqrd_2d',
     'distance_line_line_2d',
     'distance_line_line_sqrd_2d',
+    'dot_vectors_2d',
 
-    'angles_points_2d',
-    'angles_vectors_2d',
-    'angle_smallest_points_2d',
-    'angle_smallest_vectors_2d',
+    'length_vector_2d',
+    'length_vector_sqrd_2d',
 
-    'midpoint_line_2d',
-    'centroid_points_2d',
-    'center_of_mass_polygon_2d',
-
-    'area_polygon_2d',
-    'area_triangle_2d',
-
-    'bounding_box_2d',
-
-    'closest_point_on_line_2d',
-    'closest_point_on_segment_2d',
-    'closest_point_on_polygon_2d',
-    'closest_part_of_triangle',
-
+    'intersection_line_line_2d',
+    'intersection_lines_2d',
+    'intersection_circle_circle_2d',
     'is_ccw_2d',
     'is_colinear_2d',
     'is_polygon_convex_2d',
@@ -69,22 +60,28 @@ __all__ = [
     'is_intersection_line_line_2d',
     'is_intersection_segment_segment_2d',
 
-    'intersection_line_line_2d',
-    'intersection_lines_2d',
-    'intersection_circle_circle_2d',
-
-    'translate_points_2d',
-    'translate_lines_2d',
-
-    'rotate_points_2d',
-
+    'midpoint_line_2d',
     'mirror_point_point_2d',
     'mirror_points_point_2d',
     'mirror_point_line_2d',
     'mirror_points_line_2d',
 
+    'normalize_vector_2d',
+    'normalize_vectors_2d',
+
     'project_point_line_2d',
     'project_points_line_2d',
+
+    'rotate_points_2d',
+
+    'subtract_vectors_2d',
+    'scale_vector_2d',
+
+    'translate_points_2d',
+    'translate_lines_2d',
+
+    'vector_from_points_2d',
+    'vector_component_2d',
 ]
 
 
@@ -97,6 +94,7 @@ def vector_from_points_2d(a, b):
     return b[0] - a[0], b[1] - a[1]
 
 
+# this function is completely pointless
 def plane_from_points_2d(a, b, c):
     """Create a plane from three points.
 
@@ -129,9 +127,9 @@ def circle_from_points_2d(p1, p2, p3):
         https://en.wikipedia.org/wiki/Circumscribed_circle
 
     """
-    ax, ay = p1[0],p1[1]
-    bx, by = p2[0],p2[1]
-    cx, cy = p3[0],p3[1]
+    ax, ay = p1[0], p1[1]
+    bx, by = p2[0], p2[1]
+    cx, cy = p3[0], p3[1]
     a = bx - ax
     b = by - ay
     c = cx - ax
@@ -139,10 +137,11 @@ def circle_from_points_2d(p1, p2, p3):
     e = a * (ax + bx) + b * (ay + by)
     f = c * (ax + cx) + d * (ay + cy)
     g = 2 * (a * (cy - by) - b * (cx - bx))
-    if g == 0: return None
-    centerx = (d * e - b * f)/g
-    centery = (a * f - c * e)/g 
-    r = sqrt((ax - centerx)**2 + (ay - centery)**2)
+    if g == 0:
+        return None
+    centerx = (d * e - b * f) / g
+    centery = (a * f - c * e) / g
+    r = sqrt((ax - centerx) ** 2 + (ay - centery) ** 2)
     return (centerx, centery), r
 
 # ------------------------------------------------------------------------------
@@ -676,35 +675,26 @@ def closest_part_of_triangle(p, triangle):
     # closest to edge ab?
     ab_ = cross_vectors_2d(ab, [0, 0, 1])
     ba_ = add_vectors_2d(ab, ab_)
-    if not is_ccw_2d(a, b, p) and \
-       not is_ccw_2d(b, ba_, p) and \
-       is_ccw_2d(a, ab_, p):
+    if not is_ccw_2d(a, b, p) and not is_ccw_2d(b, ba_, p) and is_ccw_2d(a, ab_, p):
         return a, b
     # closest to edge bc?
     bc_ = cross_vectors_2d(bc, [0, 0, 1])
     cb_ = add_vectors_2d(bc, bc_)
-    if not is_ccw_2d(b, c, p) and \
-       not is_ccw_2d(c, cb_, p) and \
-       is_ccw_2d(b, bc_, p):
+    if not is_ccw_2d(b, c, p) and not is_ccw_2d(c, cb_, p) and is_ccw_2d(b, bc_, p):
         return b, c
     # closest to edge ac?
     ca_ = cross_vectors_2d(ca, [0, 0, 1])
     ac_ = add_vectors_2d(ca, ca_)
-    if not is_ccw_2d(c, a, p) and \
-       not is_ccw_2d(a, ac_, p) and \
-       is_ccw_2d(c, ca_, p):
+    if not is_ccw_2d(c, a, p) and not is_ccw_2d(a, ac_, p) and is_ccw_2d(c, ca_, p):
         return c, a
     # closest to a?
-    if not is_ccw_2d(a, ab_, p) and \
-       is_ccw_2d(a, ac_, p):
+    if not is_ccw_2d(a, ab_, p) and is_ccw_2d(a, ac_, p):
         return a
     # closest to b?
-    if not is_ccw_2d(b, bc_, p) and \
-       is_ccw_2d(b, ba_, p):
+    if not is_ccw_2d(b, bc_, p) and is_ccw_2d(b, ba_, p):
         return b
     # closest to c?
-    if not is_ccw_2d(c, ca_, p) and \
-       is_ccw_2d(c, cb_, p):
+    if not is_ccw_2d(c, ca_, p) and is_ccw_2d(c, cb_, p):
         return c
 
 
@@ -789,11 +779,11 @@ def is_point_on_polygon_2d():
     raise NotImplementedError
 
 
-def is_point_in_convex_polygon_2d(point, points):
+def is_point_in_convex_polygon_2d(point, polygon):
     ccw = None
-    for i in range(-1, len(points) - 1):
-        a = points[i]
-        b = points[i + 1]
+    for i in range(-1, len(polygon) - 1):
+        a = polygon[i]
+        b = polygon[i + 1]
         if ccw is None:
             ccw = is_ccw_2d(a, b, point, True)
         else:
@@ -802,39 +792,35 @@ def is_point_in_convex_polygon_2d(point, points):
     return True
 
 
-def is_point_in_polygon_2d(tp, points):
+def is_point_in_polygon_2d(point, polygon):
     """Verify if a point is in the interior of a polygon.
 
-    Note:
-        This only makes sense in the x/y plane
-
     Parameters:
-        points (Polygon): list of ordered points.
-        tp (3-tuple): 3d make_blocks point
+        point (sequence of float): 3d make_blocks point
+        polygon (Polygon): list of ordered points.
+        include_boundary (bool): Optional.
+            Include the boundary? Default is ``False``.
 
-        not implemented:
-            include_boundary (bool): Should the boundary be included in the make_blocks? Defaults to False.
-            A tolerance value would be nice too... float errors are problematic
-            points which are located on the boundary are not always uniquely defines as inside/outside
+    Warning:
+        A boundary check is not yet implemented.
+        This should include a tolerance value.
 
     Returns:
         bool: True if the point is in the polygon, False otherwise.
     """
-    x, y = tp[0], tp[1]
-    points = [(pt[0], pt[1]) for pt in points]  # make 2D
-    n = len(points)
+    x, y = point[0], point[1]
+    polygon = [(p[0], p[1]) for p in polygon]  # make 2D
     inside = False
-    p1x, p1y = points[0]
-    for i in range(n + 1):
-        p2x, p2y = points[i % n]
-        if y > min(p1y, p2y):
-            if y <= max(p1y, p2y):
-                if x <= max(p1x, p2x):
-                    if p1y != p2y:
-                        xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
-                    if p1x == p2x or x <= xinters:
+    for i in range(-1, len(polygon) - 1):
+        x1, y1 = polygon[i]
+        x2, y2 = polygon[i + 1]
+        if y > min(y1, y2):
+            if y <= max(y1, y2):
+                if x <= max(x1, x2):
+                    if y1 != y2:
+                        xinters = (y - y1) * (x2 - x1) / (y2 - y1) + x1
+                    if x1 == x2 or x <= xinters:
                         inside = not inside
-        p1x, p1y = p2x, p2y
     return inside
 
 
@@ -860,7 +846,8 @@ def is_point_in_circle_2d(point, circle):
 
     """
     dis = distance_point_point_2d(point, circle[0])
-    if dis <= circle[1]: return True
+    if dis <= circle[1]:
+        return True
     return False
 
 
@@ -937,7 +924,7 @@ def intersection_lines_2d():
     raise NotImplementedError
 
 
-def intersection_circle_circle_2d(circle1,circle2):
+def intersection_circle_circle_2d(circle1, circle2):
     """Calculates the intersection points of two circles in 2d on the xy plane.
 
     Parameters:
@@ -949,8 +936,8 @@ def intersection_circle_circle_2d(circle1,circle2):
         None: if there are no intersection points
 
     """
-    p1,r1 = circle1[0],circle1[1] 
-    p2,r2 = circle2[0],circle2[1] 
+    p1, r1 = circle1[0], circle1[1]
+    p2, r2 = circle2[0], circle2[1]
     d = distance_point_point_2d(p1, p2)
     if d > r1 + r2:
         return None
