@@ -71,6 +71,22 @@ def count_network_crossings(network):
     return count
 
 
+def find_network_crossings(network):
+    crossings = []
+    for u1, v1 in network.edges_iter():
+        for u2, v2 in network.edges_iter():
+            if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
+                continue
+            else:
+                a = network.vertex_coordinates(u1, 'xy')
+                b = network.vertex_coordinates(v1, 'xy')
+                c = network.vertex_coordinates(u2, 'xy')
+                d = network.vertex_coordinates(v2, 'xy')
+                if is_intersection_segment_segment_2d((a, b), (c, d)):
+                    crossings.append(((u1, v1), (u2, v2)))
+    return crossings
+
+
 def is_network_2d(network):
     z = None
     for key in network:
@@ -82,10 +98,50 @@ def is_network_2d(network):
     return True
 
 
-# if the graph of a network is planar
-# - an embedding of the network in the plane exists
-# - a planar straight-line embedding of the network in the plane exists
 def is_network_planar(network):
+    """Check if the network is planar.
+
+    A network is planar if it can be drawn in the plane without crossing edges.
+    If a network is planar, it can be shown that an embedding of the network in
+    the plane exists, and, furthermore, that straight-line embedding in the plane
+    exists.
+
+    Warning:
+        This function uses the python binding of the *edge addition planarity suite*
+        in the background. The package is available on GitHub: https://github.com/hagberg/planarity.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+
+    Returns:
+        bool: ``True`` if the network is planar. ``False`` otherwise.
+
+    Raises:
+        ImportError: If the planarity package is not installed.
+
+    Example:
+
+        .. plot::
+            :include-source:
+
+            import brg
+
+            from brg.datastructures.network.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            network.add_edge(21, 29)
+            network.add_edge(17, 28)
+
+            if not is_network_planar(network):
+                crossings = find_network_crossings(network)
+
+            network.plot(
+                vlabel={key: key for key in network},
+                ecolor={edge: (255, 0, 0) for edges in crossings for edge in edges}
+            )
+
+    """
     try:
         import planarity
     except ImportError:
@@ -171,25 +227,19 @@ def embed_network_in_plane(network, fix=None, straightline=True):
 
 if __name__ == '__main__':
 
-    import time
-
     import brg
 
     from brg.datastructures.network.network import Network
-
-    t0 = time.time()
 
     network = Network.from_obj(brg.get_data('lines.obj'))
 
     network.add_edge(21, 29)
     network.add_edge(17, 28)
 
-    print is_network_crossed(network)
-    print count_network_crossings(network)
-    print is_network_planar(network)
+    if not is_network_planar(network):
+        crossings = find_network_crossings(network)
 
-    t1 = time.time()
-
-    print t1 - t0
-
-    network.plot(vlabel={key: key for key in network})
+    network.plot(
+        vlabel={key: key for key in network},
+        ecolor={edge: (255, 0, 0) for edges in crossings for edge in edges}
+    )
