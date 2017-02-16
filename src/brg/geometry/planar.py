@@ -95,6 +95,7 @@ def vector_from_points_2d(a, b):
 
 
 # this function is completely pointless
+#indeed, in 2D this is completely pointless ;) -> delete
 def plane_from_points_2d(a, b, c):
     """Create a plane from three points.
 
