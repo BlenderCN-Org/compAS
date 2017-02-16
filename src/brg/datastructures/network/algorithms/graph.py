@@ -176,11 +176,13 @@ if __name__ == '__main__':
     import brg
 
     from brg.datastructures.network.network import Network
-    from brg.datastructures.network.utilities.drawing import draw_network
 
     t0 = time.time()
 
     network = Network.from_obj(brg.get_data('lines.obj'))
+
+    network.add_edge(21, 29)
+    network.add_edge(17, 28)
 
     print is_network_crossed(network)
     print count_network_crossings(network)
@@ -190,4 +192,4 @@ if __name__ == '__main__':
 
     print t1 - t0
 
-    draw_network(network, vsize=0.1)
+    network.plot(vlabel={key: key for key in network})
