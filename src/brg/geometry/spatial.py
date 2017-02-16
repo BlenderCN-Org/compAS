@@ -1855,6 +1855,9 @@ def mirror_points_plane(points, plane):
 
 
 # not sure what the point of this is?!
+# usually used for bouncing back a ray on a plane see:
+#https://www.edplace.com/userfiles/image/Mirrors%20and%20Reflection.jpg
+# maybe a it should more be a function like: reflect line on plane? 
 def mirror_vector_vector(v1, v2):
     """Mirrors vector about vector.
 
