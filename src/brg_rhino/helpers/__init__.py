@@ -10,10 +10,6 @@ helpers
 
 Helpers make it easier to work with datastructures in Rhino.
 
-.. seealso::
-
-    :mod:`brg_rhino.mixins`
-
 
 mesh
 ====
