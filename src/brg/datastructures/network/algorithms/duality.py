@@ -94,6 +94,91 @@ def construct_dual_network(network, cls=None):
 
 
 def find_network_faces(network, breakpoints=None):
+    """Find the faces of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        breakpoints (list): Optional.
+            The vertices at which to break the found faces.
+            Default is ``None``.
+
+    Note:
+        ``breakpoints`` are primarily used to break up the outside face in between
+        specific vertices. For example, in structural applications involving dual
+        diagrams, any vertices where external forces are applied (loads or reactions)
+        should be input as breakpoints.
+
+
+    Warning:
+        This algorithms is essentially a wall follower (a type of maze-solving algorithm).
+        It relies on the geometry of the network to be repesented as a planar,
+        straight-line embedding. It determines an ordering of the neighbouring vertices
+        around each vertex, and then follows the *walls* of the network, always
+        taking turns in the same direction.
+
+    Example:
+
+        Compare the faces on the plots of the same network, with and without
+        breakpoints at the leaves.
+
+        Note that with the breakpoints, face ``0`` (the outside face) no longer exists.
+        Breaking up the face at the breakpoints happens after all faces have been
+        found. Therefore, numbering of the faces replacing the outside face starts
+        from the highest number of the faces found initially.
+
+
+        .. plot::
+            :include-source:
+
+            # no breakpoints
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import find_network_faces
+
+            network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+            find_network_faces(network)
+
+            points = [{
+                'pos': network.face_centroid(0)[0:2],
+                'facecolor': '#ff0000',
+                'textcolor': '#ffffff',
+                'size': 0.2,
+                'text': '0'
+            }]
+
+            network.plot(
+                vertices_on=True,
+                vsize=0.075,
+                vcolor={key: '#cccccc' for key in network.leaves()},
+                ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+                flabel={fkey: fkey for fkey in network.face if fkey != 0},
+                points=points
+            )
+
+        .. plot::
+            :include-source:
+
+            # leaves as breakpoints
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import find_network_faces
+
+            network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+            find_network_faces(network, breakpoints=network.leaves())
+
+            network.plot(
+                vertices_on=True,
+                vsize=0.075,
+                vcolor={key: '#ff0000' for key in network.leaves()},
+                ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+                flabel={fkey: fkey for fkey in network.face}
+            )
+
+    """
     if not breakpoints:
         breakpoints = []
     network.clear_facedict()
@@ -220,15 +305,13 @@ if __name__ == '__main__':
 
     network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
-    find_network_faces(network, breakpoints=network.leaves())
-
-    dual = construct_dual_network(network, Network)
+    find_network_faces(network)
 
     network.plot(
         vertices_on=True,
         vsize=0.075,
-        vcolor={key: '#ff0000' for key in network.leaves()},
+        vcolor={key: '#cccccc' for key in network.leaves()},
         ecolor={(u, v): '#cccccc' for u, v in network.edges()},
-        points=[{'pos': dual.vertex_coordinates(key, 'xy'), 'facecolor': '#ffffff', 'edgecolor': '#444444', 'textcolor': '#000000', 'size': 0.15, 'text': key} for key in dual],
-        lines=[{'start': dual.vertex_coordinates(u, 'xy'), 'end': dual.vertex_coordinates(v, 'xy'), 'color': '#000000'} for u, v in dual.edges()]
+        flabel={fkey: fkey for fkey in network.face if fkey != 0},
+        points=[{'pos': network.face_centroid(0)[0:2], 'facecolor': '#ff0000', 'textcolor': '#ffffff', 'size': 0.2, 'text': '0'}]
     )

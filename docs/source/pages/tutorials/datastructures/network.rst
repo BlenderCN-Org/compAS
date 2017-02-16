@@ -270,13 +270,13 @@ Topology
 
     network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
-    vertices = network.neighbours('0') + ['0']
+    vertices = network.neighbours(0) + [0]
 
     network.plot(
         vsize=0.2,
         vlabel={key: key for key in vertices},
         vcolor={key: (255, 0, 0) for key in vertices},
-        ecolor={(u, v): (0, 255, 0) for u, v in network.connected_edges('0')}
+        ecolor={(u, v): (0, 255, 0) for u, v in network.connected_edges(0)}
     )
 
 
