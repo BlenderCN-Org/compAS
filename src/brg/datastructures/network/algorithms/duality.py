@@ -28,7 +28,9 @@ def construct_dual_network(network, cls=None):
     return dual
 
 
-def find_network_faces(network, breakpoints):
+def find_network_faces(network, breakpoints=None):
+    if not breakpoints:
+        breakpoints = []
     network.clear_facedict()
     network.clear_halfedgedict()
     network.halfedge = dict((key, {}) for key in network.vertex)
