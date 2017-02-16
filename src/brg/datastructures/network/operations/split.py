@@ -92,14 +92,14 @@ if __name__ == "__main__":
 
     find_network_faces(network, breakpoints=network.leaves())
 
-    a = split_edge_network(network, '0', '22')
-    b = split_edge_network(network, '2', '30')
+    a = split_edge_network(network, 0, 22)
+    b = split_edge_network(network, 2, 30)
 
-    print network.halfedge['0'][a]
-    print network.halfedge[a]['22']
+    print network.halfedge[0][a]
+    print network.halfedge[a][22]
 
-    print network.halfedge[a]['0']
-    print network.halfedge['22'][a]
+    print network.halfedge[a][0]
+    print network.halfedge[22][a]
 
     network.plot(
         vlabel=dict((key, key) for key in network),
