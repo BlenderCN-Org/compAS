@@ -51,15 +51,41 @@ def smooth_network_mixed(network, smoothers, lmin=None, lmax=None, fixed=None, k
             from brg.datastructures.network.algorithms import find_network_faces
 
             network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+            smooth = network.copy()
 
-            find_network_faces(network, network.leaves())
+            find_network_faces(smooth, breakpoints=smooth.leaves())
 
-            smooth_network_mixed(network,
+            smooth_network_mixed(smooth,
                                  [('centroid', 0.5), ('area', 0.5)],
-                                 fixed=network.leaves(),
+                                 fixed=smooth.leaves(),
                                  kmax=10)
 
-            network.plot()
+            points = []
+            for key, attr in smooth.vertices_iter(True):
+                points.append({
+                    'pos'      : smooth.vertex_coordinates(key, 'xy'),
+                    'text'     : str(key),
+                    'textcolor': '#000000',
+                    'facecolor': '#ffffff',
+                    'edgecolor': '#000000',
+                    'size'     : 0.15
+                })
+
+            lines = []
+            for u, v, attr in smooth.edges_iter(True):
+                lines.append({
+                    'start': smooth.vertex_coordinates(u, 'xy'),
+                    'end'  : smooth.vertex_coordinates(v, 'xy'),
+                    'color': '#000000',
+                    'width': 1.0
+                })
+
+            network.plot(
+                ecolor='#cccccc',
+                vertices_on=False,
+                lines=lines,
+                points=points
+            )
 
     """
     w = sum(weight for smoother, weight in smoothers)
@@ -365,15 +391,19 @@ def smooth_network_length(network, lmin, lmax, fixed=None, kmax=1, d=0.5, callba
 if __name__ == '__main__':
 
     import brg
-
     from brg.datastructures.network import Network
+    from brg.datastructures.network.algorithms import smooth_network_mixed
     from brg.datastructures.network.algorithms import find_network_faces
 
     network = Network.from_obj(brg.get_data('grid_irregular.obj'))
     smooth = network.copy()
 
-    find_network_faces(smooth, smooth.leaves())
-    smooth_network_mass(smooth, fixed=smooth.leaves(), kmax=10)
+    find_network_faces(smooth, breakpoints=smooth.leaves())
+
+    smooth_network_mixed(smooth,
+                         [('centroid', 0.5), ('area', 0.5)],
+                         fixed=smooth.leaves(),
+                         kmax=10)
 
     points = []
     for key, attr in smooth.vertices_iter(True):

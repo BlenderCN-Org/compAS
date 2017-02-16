@@ -22,6 +22,7 @@ __all__ = [
     'is_network_planar',
     'is_network_planar_embedding',
     'embed_network_in_plane',
+    'find_network_crossings',
 ]
 
 
@@ -126,7 +127,9 @@ def is_network_planar(network):
 
             import brg
 
-            from brg.datastructures.network.network import Network
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import is_network_planar
+            from brg.datastructures.network.algorithms import find_network_crossings
 
             network = Network.from_obj(brg.get_data('lines.obj'))
 
@@ -137,6 +140,7 @@ def is_network_planar(network):
                 crossings = find_network_crossings(network)
 
             network.plot(
+                vsize=0.15,
                 vlabel={key: key for key in network},
                 ecolor={edge: (255, 0, 0) for edges in crossings for edge in edges}
             )
@@ -240,6 +244,7 @@ if __name__ == '__main__':
         crossings = find_network_crossings(network)
 
     network.plot(
+        vsize=0.15,
         vlabel={key: key for key in network},
         ecolor={edge: (255, 0, 0) for edges in crossings for edge in edges}
     )
