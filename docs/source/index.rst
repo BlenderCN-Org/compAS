@@ -12,7 +12,7 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    pages/intro
    pages/gettingstarted
@@ -21,6 +21,7 @@ Contents
    pages/applications
    pages/cookbook
    pages/reference
+   pages/packages
    pages/license
 
 

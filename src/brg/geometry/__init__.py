@@ -30,7 +30,7 @@ In general the following is assumed.
 
 
 spatial
-======================================
+=======
 
 .. currentmodule:: brg.geometry.spatial
 

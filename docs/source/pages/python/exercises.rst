@@ -93,52 +93,59 @@ Questions
 Answers
 =======
 
-::
+1::
 
     a = range(1, 20, 2)
     a[:] = a[::-1]
 
-::
+
+2::
 
     points = []
     lookup = dict(('{0[0]:.3f},{0[1]:.3f},{0[2]:.3f}'.format(xyz), i) for i, xyz in enumerate(points))
 
-::
+
+3::
 
     def f(arg1, arg2, arg3=None, **kwargs):
         pass
 
-::
+
+4::
 
     a = [0, 1, 2]
     item = a[5 % len(a)]
 
-::
+
+5::
 
     a = [1, 4, 7, 9, 12, 19, 13, 3, 2]
     b = range(20)
     c = list(set(b) - set(a))
 
 
-::
+6::
 
     a = set(a)
     c = [x for x in b if x not in a]
 
-::
+
+7::
 
     from random import randint
 
     a = dict((randint(1, 1000000), i) for i in range(1000))
     k, v = sorted(a.items(), key=lambda x: x[1])[-1]
 
-::
+
+8::
 
     class MyAbstractClass(object):
         def method(self):
             raise NotImplementedError
 
-::
+
+9::
 
     class MyClass(object):
         def __init__(self):
@@ -153,7 +160,7 @@ Answers
             return cls()
 
 
-::
+10::
 
     class Vector(object):
 
@@ -173,12 +180,30 @@ Answers
             self.y *= n
             self.z *= n
 
-::
 
-    def ccw_(A, B, C):
+    v1 = Vector(1, 2, 3)
+    v2 = Vector(1, 2, 3)
+    v3 = v1 + v2
+    v4 = v3 * 3
+
+    print v1, v2, v3, v4
+
+
+11::
+
+    def is_ccw(A, B, C):
         return (B[0] - A[0]) * (C[1] - A[1]) > (B[1] - A[1]) * (C[0] - A[0])
 
-::
+
+    A = [1.0, 0.0]
+    B = [1.0, 1.0]
+    C = [0.0, 1.0]
+
+    print is_ccw(A, B, C)
+    print is_ccw(A, C, B)
+
+
+12::
 
     def rfib(n, memo={}):
         if n == 0:
@@ -189,3 +214,31 @@ Answers
             memo[n] = rfib(n - 2) + rfib(n - 1)
         return memo[n]
 
+
+    print rfib(1000)
+
+
+13::
+
+    #
+
+
+14::
+
+    from random import randint
+
+
+    def bubble(a):
+        for n in range(len(a) - 1, 0, -1):
+            for i in range(n):
+                if a[i] > a[i + 1]:
+                    a[i], a[i + 1] = a[i + 1], a[i]
+
+
+    a = [randint(1, 1000) for i in range(100)]
+
+    print a
+
+    bubble(a)
+
+    print a

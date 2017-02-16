@@ -1,13 +1,14 @@
-.. _python:
+.. _python-advanced:
 
 ********************************************************************************
-Python
+Advanced
 ********************************************************************************
 
-.. toctree::
-   :maxdepth: 1
+.. comprehensions
+.. iterators
+.. generators
+.. decorators
+.. profiling and timing
 
-   python/basics
-   python/advanced
-   python/classes
-   python/exercises
+
+.. contents::

@@ -1,13 +1,6 @@
-.. _python:
+.. _tutorials-packages:
 
 ********************************************************************************
-Python
+Packages
 ********************************************************************************
 
-.. toctree::
-   :maxdepth: 1
-
-   python/basics
-   python/advanced
-   python/classes
-   python/exercises

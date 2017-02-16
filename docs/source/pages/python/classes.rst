@@ -11,11 +11,6 @@ Classes
 Class definition
 ================
 
-.. warning::
-
-    This section is still under construction.
-
-
 .. code-block:: python
 
     class Vector(object):
@@ -35,6 +30,11 @@ Class definition
 
 Descriptors
 ===========
+
+Descriptors provide a way to control how the attributes of an object are accessed.
+For example, they can be used to create read-only attributes, or to make sure that
+the value of an attribute is always of a specific type.
+
 
 .. code-block:: python
 
@@ -66,6 +66,7 @@ Magic methods
 
 Magic methods (*dunder* methods, i.e. methods with double underscores at the beginning
 and end), allow you to modify the default behaviour of an object.
+
 
 .. code-block:: python
     :emphasize-lines: 3,23,26,31,34,39,42,47,50
@@ -302,4 +303,11 @@ found in other languages.
             dx = b[0] - a[0]
             dy = b[1] - a[1]
             return cls(dx, dy)
+
+
+Meta Classes
+============
+
+*Under construction*
+
 

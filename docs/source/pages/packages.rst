@@ -1,13 +1,13 @@
-.. _python:
+.. _packages:
 
 ********************************************************************************
-Python
+Packages
 ********************************************************************************
 
 .. toctree::
-   :maxdepth: 1
+    :maxdepth: 1
 
-   python/basics
-   python/advanced
-   python/classes
-   python/exercises
+    packages/compas_fea
+    packages/compas_ags
+    packages/compas_rhinovault
+    packages/compas_bender
