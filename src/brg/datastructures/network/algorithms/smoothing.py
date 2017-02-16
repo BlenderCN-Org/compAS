@@ -370,8 +370,34 @@ if __name__ == '__main__':
     from brg.datastructures.network.algorithms import find_network_faces
 
     network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    smooth = network.copy()
 
-    find_network_faces(network, network.leaves())
-    smooth_network_mass(network, fixed=network.leaves(), kmax=10)
+    find_network_faces(smooth, smooth.leaves())
+    smooth_network_mass(smooth, fixed=smooth.leaves(), kmax=10)
 
-    network.plot()
+    points = []
+    for key, attr in smooth.vertices_iter(True):
+        points.append({
+            'pos'      : smooth.vertex_coordinates(key, 'xy'),
+            'text'     : str(key),
+            'textcolor': '#000000',
+            'facecolor': '#ffffff',
+            'edgecolor': '#000000',
+            'size'     : 0.15
+        })
+
+    lines = []
+    for u, v, attr in smooth.edges_iter(True):
+        lines.append({
+            'start': smooth.vertex_coordinates(u, 'xy'),
+            'end'  : smooth.vertex_coordinates(v, 'xy'),
+            'color': '#000000',
+            'width': 1.0
+        })
+
+    network.plot(
+        ecolor='#cccccc',
+        vertices_on=False,
+        lines=lines,
+        points=points
+    )
