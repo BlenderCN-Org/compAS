@@ -63,36 +63,41 @@ class Mesh(object):
 
     Examples:
 
-        >>> import brg
-        >>> from brg.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-
-        >>> mesh.plot()
-
         .. plot::
+            :include-source:
 
             import brg
             from brg.datastructures.mesh import Mesh
+
             mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
             mesh.plot()
 
-        >>> mesh.plot(vlabel={key: key for key in mesh})
 
         .. plot::
+            :include-source:
 
             import brg
             from brg.datastructures.mesh import Mesh
-            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-            mesh.plot(vlabel={key: key for key in mesh})
 
-        >>> mesh.plot(flabel={fkey: fkey for fkey in mesh.face})
+            mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+
+            mesh.plot(
+                vertexlabel={key: key for key in mesh}
+            )
+
 
         .. plot::
+            :include-source:
 
             import brg
             from brg.datastructures.mesh import Mesh
+
             mesh = Mesh.from_obj(brg.get_data('faces.obj'))
-            mesh.plot(flabel={fkey: fkey for fkey in mesh.face})
+            mesh.plot(
+                facelabel={fkey: fkey for fkey in mesh.face}
+            )
+
 
         >>> for key in mesh.vertex:
         ...     print key
@@ -1633,7 +1638,16 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
 
-    def plot(self, axes=None, vcolor=None, vlabel=None, vsize=None, fcolor=None, flabel=None, points=None):
+    def plot(self,
+             axes=None,
+             vertexcolor=None,
+             vertexlabel=None,
+             vertexsize=None,
+             facecolor=None,
+             facelabel=None,
+             points=None,
+             lines=None,
+             arrows=None):
         import matplotlib.pyplot as plt
         from brg.plotters.drawing import create_axes_2d
         local_axes = False
@@ -1641,18 +1655,22 @@ mesh summary
             axes = create_axes_2d()
             local_axes = True
         plotter = self.plotter
-        if vcolor:
-            plotter.vcolor = vcolor
-        if vlabel:
-            plotter.vlabel = vlabel
-        if vsize:
-            plotter.vsize = vsize
-        if fcolor:
-            plotter.fcolor = fcolor
-        if flabel:
-            plotter.flabel = flabel
+        if vertexcolor:
+            plotter.vcolor = vertexcolor
+        if vertexlabel:
+            plotter.vlabel = vertexlabel
+        if vertexsize:
+            plotter.vsize = vertexsize
+        if facecolor:
+            plotter.fcolor = facecolor
+        if facelabel:
+            plotter.flabel = facelabel
         if points:
             plotter.points = points
+        if lines:
+            plotter.lines = lines
+        if arrows:
+            plotter.arrows = arrows
         plotter.plot(axes)
         if local_axes:
             axes.autoscale()

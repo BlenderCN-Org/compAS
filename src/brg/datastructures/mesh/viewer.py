@@ -66,14 +66,50 @@ class MeshViewer(Viewer):
 
 
 class SubdMeshViewer(Viewer):
-    """"""
+    """Viewer for subdivision meshes.
+
+    Parameters:
+        mesh (brg.datastructures.mesh.Mesh): The *control* mesh object.
+        subdfunc (callable): The subdivision algorithm/scheme.
+        width (int): Optional. Width of the viewport. Default is ``1440``.
+        height (int): Optional. Height of the viewport. Default is ``900``.
+
+    Warning:
+        Not properly tested on meshes with a boundary.
+
+    Example:
+
+        .. code-block:: python
+
+            from brg.datastructures.mesh.mesh import Mesh
+            from brg.datastructures.mesh.algorithms import subdivide_mesh_doosabin
+            from brg.datastructures.mesh.viewer import SubdMeshViewer
+
+            from brg.geometry.elements.polyhedron import Polyhedron
+
+            poly = Polyhedron.generate(6)
+
+            mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
+
+            viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+
+            viewer.axes_on = False
+            viewer.grid_on = False
+
+            for i in range(10):
+                viewer.camera.zoom_in()
+
+            viewer.setup()
+            viewer.show()
+
+    """
 
     def __init__(self, mesh, subdfunc, width=1440, height=900):
         super(SubdMeshViewer, self).__init__(width=width, height=height)
         self.mesh = mesh
-        self.subd = None
         self.subdfunc = subdfunc
-        self.fcount = len(self.mesh.faces())
+        self.subd = None  # make read-only
+        self.fcount = len(self.mesh.faces())  # make protected
         self.k_i = dict((k, i) for i, k in self.mesh.vertices_enum())
 
     def display(self):
@@ -168,18 +204,22 @@ class MultiMeshViewer(Viewer):
 if __name__ == '__main__':
 
     from brg.datastructures.mesh.mesh import Mesh
-    from brg.datastructures.mesh.algorithms.subdivision import doosabin_subdivision
+    from brg.datastructures.mesh.algorithms import subdivide_mesh_doosabin
+    from brg.datastructures.mesh.viewer import SubdMeshViewer
+
     from brg.geometry.elements.polyhedron import Polyhedron
 
     poly = Polyhedron.generate(6)
 
     mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=doosabin_subdivision)
+    viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
 
-    viewer.axes.x_color = (0.1, 0.1, 0.1)
-    viewer.axes.y_color = (0.1, 0.1, 0.1)
-    viewer.axes.z_color = (0.1, 0.1, 0.1)
+    viewer.axes_on = False
+    viewer.grid_on = False
+
+    for i in range(10):
+        viewer.camera.zoom_in()
 
     viewer.setup()
     viewer.show()
