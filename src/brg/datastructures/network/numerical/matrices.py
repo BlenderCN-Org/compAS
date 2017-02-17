@@ -101,9 +101,9 @@ def network_laplacian_matrix(network, rtype='array', normalize=False):
             L  = network_laplacian_matrix(network, rtype='csr', normalize=True)
             d  = L.dot(xy)
 
-            arrows = [{'start': xy[i], 'end': xy[i] - d[i]} for i, k in network.vertices_enum()]
+            lines = [{'start': xy[i], 'end': xy[i] - d[i]} for i, k in network.vertices_enum()]
 
-            network.plot(arrows=arrows)
+            network.plot(lines=lines)
 
     """
     k_i   = dict((key, index) for index, key in network.vertices_enum())

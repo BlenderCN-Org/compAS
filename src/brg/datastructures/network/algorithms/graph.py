@@ -11,9 +11,6 @@ __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
 
 
-# TODO: "inner leaves" check!
-
-
 __all__ = [
     'is_network_crossed',
     'are_network_edges_crossed',
@@ -176,6 +173,11 @@ def is_network_planar_embedding(network):
 
 
 def embed_network_in_plane(network, fix=None, straightline=True):
+    """Embed the network in the plane.
+
+    Parameters:
+        network (brg.datastructures)
+    """
     try:
         import networkx as nx
     except ImportError:

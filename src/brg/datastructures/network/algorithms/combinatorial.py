@@ -10,7 +10,7 @@ __all__ = [
 
 
 def network_vertex_coloring(network):
-    pass
+    raise NotImplementedError
 
 
 # ==============================================================================
