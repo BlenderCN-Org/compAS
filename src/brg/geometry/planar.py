@@ -91,20 +91,21 @@ __all__ = [
 # constructors
 # ------------------------------------------------------------------------------
 
+
 def vector_from_points_2d(a, b):
     """
     Create a vector based on a start point a and end point b in the XY-plane.
-        
+
     Parameters:
         a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        
+
     Returns:
         Tuple: Resulting 3D vector in the XY-plane (Z = 0.0)
-        
+
     Notes:
         The result of this function is equal to subtract_vectors(b, a)
-        
+
     """
     return b[0] - a[0], b[1] - a[1], 0.0
 
@@ -114,7 +115,7 @@ def circle_from_points_2d(a, b, c):
 
     Parameters:
         a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).   
+        b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         c (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
 
     Returns:
@@ -141,6 +142,7 @@ def circle_from_points_2d(a, b, c):
     r = sqrt((ax - centerx) ** 2 + (ay - centery) ** 2)
     return (centerx, centery, 0.0), r
 
+
 # ------------------------------------------------------------------------------
 # misc
 # ------------------------------------------------------------------------------
@@ -148,8 +150,8 @@ def circle_from_points_2d(a, b, c):
 
 def vector_component_2d(u, v):
     """Compute the component of vector u in direction of vector v lying in the XY-plane.
-        Also described as the orthogonal projection of vector u on vector v. See: 
-        https://en.wikipedia.org/wiki/Vector_projection
+        Also described as the orthogonal projection of vector u on vector v.
+        See: https://en.wikipedia.org/wiki/Vector_projection
 
     Parameters:
         u (sequence of float): The first 2D or 3D vector (Z will be ignored).
@@ -157,7 +159,7 @@ def vector_component_2d(u, v):
 
     Returns:
         Tuple: Resulting vector in the XY-plane (Z = 0.0)
-    """   
+    """
     x = dot_vectors_2d(u, v) / length_vector_sqrd_2d(v)
     return x * v[0], x * v[1], 0.0
 
@@ -225,7 +227,7 @@ def normalize_vectors_2d(vectors):
     """Normalize a list of vectors lying in the XY-plane.
 
     Parameters:
-        vectors (a list of sequences of floats): The list of 2D or 3D vectors 
+        vectors (a list of sequences of floats): The list of 2D or 3D vectors
         (the Z components will be ignored).
 
     Returns:
@@ -245,19 +247,22 @@ def dot_vectors_2d(u, v):
         float: The dot product of the two vectors in the XY-plane (Z = 0.0)
 
     Examples:
-        dot([1.0, 0], [2.0, 0])
-        #2.0
-    
-        dot([1.0, 0, 0], [2.0, 0, 0])
-        #2.0
-        
-        dot([1.0, 0, 1], [2.0, 0, 1])
-        #2.0
+
+        .. code-block:: python
+
+            print dot_vectors_2d([1.0, 0], [2.0, 0])
+            # 2.0
+
+            print dot_vectors_2d([1.0, 0, 0], [2.0, 0, 0])
+            # 2.0
+
+            print dot_vectors_2d([1.0, 0, 1], [2.0, 0, 1])
+            # 2.0
 
     """
     return u[0] * v[0] + u[1] * v[1]
 
-# also a bit of a pointless function... I guess it is about the magnitude but still
+
 def cross_vectors_2d(u, v):
     """Compute the cross product of two vectors lying in the XY-plane.
 
@@ -271,10 +276,10 @@ def cross_vectors_2d(u, v):
     Examples:
         cross([1.0, 0.0], [0.0, 1.0])
         #[0.0, 0.0, 1.0]
-    
+
         cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
         #[0.0, 0.0, 1.0]
-        
+
         cross([1.0, 0.0, 1.0], [0.0, 1.0, 1.0])
         #[0.0, 0.0, 1.0]
 
@@ -299,15 +304,15 @@ def length_vector_2d(vector):
     Examples:
         length([2.0, 0.0])
         #2.0
-    
+
         length([2.0, 0.0, 0.0])
         #2.0
-        
+
         length([2.0, 0.0, 2.0])
         #2.0
 
     """
-    return sqrt(dot_vectors_2d(vector,vector))
+    return sqrt(dot_vectors_2d(vector, vector))
 
 
 def length_vector_sqrd_2d(vector):
@@ -322,15 +327,15 @@ def length_vector_sqrd_2d(vector):
     Examples:
         length_sqrd([2.0, 0.0])
         #4.0
-    
+
         length_sqrd([2.0, 0.0, 0.0])
         #4.0
-    
+
         length_sqrd([2.0, 0.0, 2.0])
         #4.0
 
     """
-    return dot_vectors_2d(vector,vector)
+    return dot_vectors_2d(vector, vector)
 
 
 # ------------------------------------------------------------------------------
@@ -344,17 +349,17 @@ def distance_two_points_2d(a, b):
     Parameters:
         a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    
+
     Returns:
         float: distance between a and b in the XY-plane
 
     Examples:
         distance([0.0, 0.0], [2.0, 0.0])
         #2.0
-    
+
         distance([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])
         #2.0
-        
+
         distance([0.0, 0.0, 1.0], [2.0, 0.0, 1.0])
         #2.0
 
@@ -369,19 +374,20 @@ def distance_two_points_sqrd_2d(a, b):
     Parameters:
         a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    
+
     Returns:
         float: squared distance between a and b in the XY-plane
 
     Examples:
         distance([0.0, 0.0], [2.0, 0.0])
         #4.0
-    
+
         distance([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])
         #4.0
-        
+
         distance([0.0, 0.0, 1.0], [2.0, 0.0, 1.0])
         #4.0
+
     """
     ab = subtract_vectors_2d(b, a)
     return length_vector_sqrd_2d(ab)
@@ -472,14 +478,14 @@ def angles_vectors_2d(u, v):
 
 
 def angles_points_2d(a, b, c):
-    """Compute the angles defined by the XY components of three points lying in 
+    """Compute the angles defined by the XY components of three points lying in
        the XY-plane where the angles are computed at point A in the triangle ABC
 
     Parameters:
         a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         c (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-      
+
     Returns:
         tuple: The two angles.
 
@@ -501,6 +507,7 @@ def angles_points_2d(a, b, c):
     a = angle_smallest_vectors_2d(u, v)
     return a, 360 - a
 
+
 def angle_smallest_vectors_2d(u, v):
     """Compute the smallest angle between the XY components of two vectors lying in the XY-plane.
 
@@ -520,14 +527,14 @@ def angle_smallest_vectors_2d(u, v):
 
 
 def angle_smallest_points_2d(a, b, c):
-    """Compute the smallest angle defined by the XY components of three points lying in 
+    """Compute the smallest angle defined by the XY components of three points lying in
        the XY-plane where the angle is computed at point A in the triangle ABC
 
     Parameters:
         a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         c (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-      
+
     Returns:
         float: The smallest angle between the vectors.
 
@@ -563,7 +570,7 @@ def centroid_points_2d(points):
         sequence, they should be there intentionally.
 
     Parameters:
-        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points 
+        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points
         (Z components will be ignored).
     Returns:
         list: XYZ coordinates of the centroid (Z = 0.0).
@@ -573,7 +580,6 @@ def centroid_points_2d(points):
     """
     p = float(len(points))
     x, y = zip(*points)[:2]
-    
     return sum(x) / p, sum(y) / p, 0.0
 
 
@@ -598,7 +604,7 @@ def center_of_mass_polygon_2d(polygon):
     each weighted by the length of the corresponding edge.
 
     Parameters:
-        polygon (sequence) : A sequence of XY(Z) coordinates of a 2D or 3D points 
+        polygon (sequence) : A sequence of XY(Z) coordinates of a 2D or 3D points
         (Z will be ignored) representing the locations of the corners of a polygon.
 
     Returns:
@@ -635,9 +641,9 @@ def area_polygon_2d(polygon):
     """Compute the area of a polygon lying in the XY-plane.
 
     Parameters:
-        polygon (sequence) : A sequence of XY(Z) coordinates of a 2D or 3D points 
-        (Z will be ignored) representing the locations of the corners of a polygon. 
-        The vertices are assumed to be in order. The polygon is assumed to be closed: 
+        polygon (sequence) : A sequence of XY(Z) coordinates of a 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
 
     Returns:
@@ -659,14 +665,15 @@ def area_polygon_2d(polygon):
 # triangle = (a,b,c) would be more consistent with line, segment, polygon
 def area_triangle_2d(a, b, c):
     """Compute the area of a triangle defined by three points lying in the XY-plane.
-    
+
     Parameters:
         a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         c (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-      
+
     Returns:
-        float: The area of the triangle
+        float: The area of the triangle.
+
     """
     return abs((a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1])) * 0.5)
 
@@ -681,14 +688,14 @@ def area_triangle_2d(a, b, c):
 
 def bounding_box_2d(points):
     """Compute the bounding box of a list of points lying in the XY-plane.
-    
+
     Parameters:
-        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points 
+        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points
         (Z components will be ignored).
-    
+
     Returns:
         (sequence of float): XYZ coordinates of four points defining a rectangle (Z components = 0).
-    
+
     """
     x, y = zip(*points)[:2]
     min_x = min(x)
@@ -713,7 +720,7 @@ def sort_points_2d(point, points):
 
     Parameters:
         point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points 
+        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points
         (Z components will be ignored).
 
     Returns:
@@ -733,13 +740,14 @@ def closest_point_in_cloud_2d(point, points):
 
     Parameters:
         point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points 
+        points (sequence): A sequence of XY(Z) coordinates of a 2D or 3D points
         (Z components will be ignored).
 
     Returns:
         float: min distance
         tuple: closest point
         int: closest point index
+
     """
     data = sort_points_2d(point, points)
     return data[0]
