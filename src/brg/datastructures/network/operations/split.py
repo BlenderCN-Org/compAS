@@ -37,9 +37,10 @@ def split_edge_network(network, u, v, t=0.5, allow_boundary=True):
     # don't split if edge is on boundary
     fkey_uv = network.halfedge[u][v]
     fkey_vu = network.halfedge[v][u]
-    # if not allow_boundary:
-    #     if fkey_uv is None or fkey_vu is None:
-    #         return
+    if not allow_boundary:
+        if network.face:
+            if fkey_uv is None or fkey_vu is None:
+                return
     # the split vertex
     sp = network.vertex_coordinates(u)
     ep = network.vertex_coordinates(v)
@@ -92,14 +93,14 @@ if __name__ == "__main__":
 
     find_network_faces(network, breakpoints=network.leaves())
 
-    a = split_edge_network(network, '0', '22')
-    b = split_edge_network(network, '2', '30')
+    a = split_edge_network(network, 0, 22)
+    b = split_edge_network(network, 2, 30)
 
-    print network.halfedge['0'][a]
-    print network.halfedge[a]['22']
+    print network.halfedge[0][a]
+    print network.halfedge[a][22]
 
-    print network.halfedge[a]['0']
-    print network.halfedge['22'][a]
+    print network.halfedge[a][0]
+    print network.halfedge[22][a]
 
     network.plot(
         vlabel=dict((key, key) for key in network),

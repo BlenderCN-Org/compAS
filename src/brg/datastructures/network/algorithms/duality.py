@@ -1,8 +1,6 @@
 from brg.geometry import angle_smallest_vectors
 from brg.geometry.planar import is_ccw_2d
 
-import warnings
-
 
 __author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -16,32 +14,72 @@ __all__ = [
 ]
 
 
-# def construct_network_dual(network, cls, find_faces=True):
-#     warnings.warn("This function is deprecated. Use 'construct_dual_network' instead.", DeprecationWarning)
-#     if find_faces:
-#         find_network_faces(network)
-#     dual = cls()
-#     fkey_centroid = dict((fkey, network.face_centroid(fkey)) for fkey in network.face)
-#     fkey_key = {}
-#     for u, v in network.edges_iter():
-#         fkey = network.halfedge[u][v]
-#         if fkey not in fkey_key:
-#             x, y, z = fkey_centroid[fkey]
-#             dual.add_vertex(fkey, x=x, y=y, z=z)
-#             fkey_key[fkey] = 1
-#         k1 = fkey
-#         fkey = network.halfedge[v][u]
-#         if fkey not in fkey_key:
-#             x, y, z = fkey_centroid[fkey]
-#             dual.add_vertex(fkey, x=x, y=y, z=z)
-#             fkey_key[fkey] = 1
-#         k2 = fkey
-#         dual.add_edge(k1, k2, primal=(u, v))
-#         network.edge[u][v]['dual'] = (k1, k2)
-#     return dual
-
-
 def construct_dual_network(network, cls=None):
+    """Construct the dual of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        cls (brg.datastructures.network.Network):
+            Optional.
+            The class of the dual.
+            Default is ``None``.
+            If ``None``, the cls is inferred from the type of the provided network
+            object.
+
+    Warning:
+        A network (or a graph) has a dual if, and only if, it is planar.
+        Constructing the dual relies on the information about the faces of the
+        network, or, in other words, about the ordering of neighbouring vertices
+        around a vertex. To determine the faces of the network (using :func:`find_network_faces`)
+        the network should be embedded in the plane, i.e drawn such that it is a
+        proper cell decomposition of the plane (it divides the plane in non-overlapping
+        spaces).
+
+    Example:
+
+        .. plot::
+            :include-source:
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import find_network_faces
+            from brg.datastructures.network.algorithms import construct_dual_network
+
+            network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+            find_network_faces(network, breakpoints=network.leaves())
+
+            dual = construct_dual_network(network, Network)
+
+            points = []
+            for key in dual:
+                points.append({
+                    'pos': dual.vertex_coordinates(key, 'xy'),
+                    'facecolor': '#ffffff',
+                    'edgecolor': '#444444',
+                    'textcolor': '#000000',
+                    'size': 0.15,
+                    'text': key
+                })
+
+            lines = []
+            for u, v in dual.edges():
+                lines.append({
+                    'start': dual.vertex_coordinates(u, 'xy'),
+                    'end': dual.vertex_coordinates(v, 'xy'),
+                    'color': '#000000'
+                })
+
+            network.plot(
+                vertices_on=True,
+                vsize=0.075,
+                vcolor={key: '#ff0000' for key in network.leaves()},
+                ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+                points=points,
+                lines=lines
+            )
+
+    """
     if not cls:
         cls = type(network)
     dual = cls()
@@ -55,11 +93,96 @@ def construct_dual_network(network, cls=None):
     return dual
 
 
-def find_network_faces(network, breakpoints):
-    del network.face
-    network.face = {}
-    network.face_count = 0
-    del network.halfedge
+def find_network_faces(network, breakpoints=None):
+    """Find the faces of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        breakpoints (list): Optional.
+            The vertices at which to break the found faces.
+            Default is ``None``.
+
+    Note:
+        ``breakpoints`` are primarily used to break up the outside face in between
+        specific vertices. For example, in structural applications involving dual
+        diagrams, any vertices where external forces are applied (loads or reactions)
+        should be input as breakpoints.
+
+
+    Warning:
+        This algorithms is essentially a wall follower (a type of maze-solving algorithm).
+        It relies on the geometry of the network to be repesented as a planar,
+        straight-line embedding. It determines an ordering of the neighbouring vertices
+        around each vertex, and then follows the *walls* of the network, always
+        taking turns in the same direction.
+
+    Example:
+
+        Compare the faces on the plots of the same network, with and without
+        breakpoints at the leaves.
+
+        Note that with the breakpoints, face ``0`` (the outside face) no longer exists.
+        Breaking up the face at the breakpoints happens after all faces have been
+        found. Therefore, numbering of the faces replacing the outside face starts
+        from the highest number of the faces found initially.
+
+
+        .. plot::
+            :include-source:
+
+            # no breakpoints
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import find_network_faces
+
+            network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+            find_network_faces(network)
+
+            points = [{
+                'pos': network.face_centroid(0)[0:2],
+                'facecolor': '#ff0000',
+                'textcolor': '#ffffff',
+                'size': 0.2,
+                'text': '0'
+            }]
+
+            network.plot(
+                vertices_on=True,
+                vsize=0.075,
+                vcolor={key: '#cccccc' for key in network.leaves()},
+                ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+                flabel={fkey: fkey for fkey in network.face if fkey != 0},
+                points=points
+            )
+
+        .. plot::
+            :include-source:
+
+            # leaves as breakpoints
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import find_network_faces
+
+            network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+
+            find_network_faces(network, breakpoints=network.leaves())
+
+            network.plot(
+                vertices_on=True,
+                vsize=0.075,
+                vcolor={key: '#ff0000' for key in network.leaves()},
+                ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+                flabel={fkey: fkey for fkey in network.face}
+            )
+
+    """
+    if not breakpoints:
+        breakpoints = []
+    network.clear_facedict()
+    network.clear_halfedgedict()
     network.halfedge = dict((key, {}) for key in network.vertex)
     for u, v in network.edges_iter():
         network.halfedge[u][v] = None
@@ -69,13 +192,13 @@ def find_network_faces(network, breakpoints):
     if leaves:
         u = sorted([(key, network.vertex[key]) for key in leaves], key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
     else:
-        u = sorted(network.vertices_iter(data=True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        u = sorted(network.vertices_iter(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
     v = _find_first_neighbour(u, network)
     _find_edge_face(u, v, network)
     for u, v in network.edges_iter():
-        if not network.halfedge[u][v]:
+        if network.halfedge[u][v] is None:
             _find_edge_face(u, v, network)
-        if not network.halfedge[v][u]:
+        if network.halfedge[v][u] is None:
             _find_edge_face(v, u, network)
     _break_faces(network, breakpoints)
     return network.face
@@ -84,6 +207,8 @@ def find_network_faces(network, breakpoints):
 def _find_first_neighbour(key, network):
     angles = []
     nbrs = network.halfedge[key].keys()
+    if len(nbrs) == 1:
+        return nbrs[0]
     vu = [-1, -1, 0]
     for nbr in nbrs:
         w = [network.vertex[nbr][_] for _ in 'xyz']
@@ -95,7 +220,7 @@ def _find_first_neighbour(key, network):
 
 def _sort_neighbours(network, ccw=True):
     sorted_neighbours = {}
-    xyz = dict((key, [attr[_] for _ in 'xyz']) for key, attr in network.vertices_iter(True))
+    xyz = dict((key, network.vertex_coordinates(key)) for key in network.vertices_iter())
     for key in network.vertex:
         nbrs = network.halfedge[key].keys()
         if len(nbrs) == 1:
@@ -173,21 +298,20 @@ def _break_faces(network, breakpoints):
 
 if __name__ == '__main__':
 
-    import time
-
     import brg
     from brg.datastructures.network import Network
+    from brg.datastructures.network.algorithms import find_network_faces
+    from brg.datastructures.network.algorithms import construct_dual_network
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
 
-    t0 = time.time()
+    find_network_faces(network)
 
-    find_network_faces(network, network.leaves())
-
-    dual = construct_dual_network(network, Network)
-
-    t1 = time.time()
-
-    print t1 - t0
-
-    dual.plot()
+    network.plot(
+        vertices_on=True,
+        vsize=0.075,
+        vcolor={key: '#cccccc' for key in network.leaves()},
+        ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+        flabel={fkey: fkey for fkey in network.face if fkey != 0},
+        points=[{'pos': network.face_centroid(0)[0:2], 'facecolor': '#ff0000', 'textcolor': '#ffffff', 'size': 0.2, 'text': '0'}]
+    )

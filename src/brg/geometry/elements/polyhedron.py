@@ -18,7 +18,7 @@ class Polyhedron(object):
     formulae:
 
     * tetrahedron::
-        
+
         >>> ()
 
 

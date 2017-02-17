@@ -92,7 +92,7 @@ def rgb_to_hex(rgb, g=None, b=None):
 
 def hex_to_rgb(value):
     value = value.lstrip('#').lower()
-    return HEX_DEC[0:2], HEX_DEC[2:4], HEX_DEC[4:6]
+    return HEX_DEC[value[0:2]], HEX_DEC[value[2:4]], HEX_DEC[value[4:6]]
 
 
 def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=False):

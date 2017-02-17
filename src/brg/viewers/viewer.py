@@ -88,15 +88,15 @@ class Viewer(object):
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glClearColor(*self.clear_color)
         # callback registration
-        glutDisplayFunc(self.display_callback)
-        glutReshapeFunc(self.reshape_callback)
-        glutTimerFunc(0, self.timer_callback, 0)
-        glutKeyboardFunc(self.keypress_callback)
-        glutMouseFunc(self.mouseclick_callback)
-        glutMotionFunc(self.mousemotion_callback)
-        glutPassiveMotionFunc(self.passivemousemotion_callback)
-        glutIdleFunc(self.idle_callback)
-        glutSpecialFunc(self.special_callback)
+        glutDisplayFunc(self._display_callback)
+        glutReshapeFunc(self._reshape_callback)
+        glutTimerFunc(0, self._timer_callback, 0)
+        glutKeyboardFunc(self._keypress_callback)
+        glutMouseFunc(self._mouseclick_callback)
+        glutMotionFunc(self._mousemotion_callback)
+        glutPassiveMotionFunc(self._passivemousemotion_callback)
+        glutIdleFunc(self._idle_callback)
+        glutSpecialFunc(self._special_callback)
         # settings
         glCullFace(GL_BACK)
         glShadeModel(GL_SMOOTH)
@@ -120,7 +120,7 @@ class Viewer(object):
     # Callbacks
     # ==========================================================================
 
-    def reshape_callback(self, w, h):
+    def _reshape_callback(self, w, h):
         """The reshape callback is triggered when a window is reshaped. A
         reshape callback is also triggered immediately before a window's first
         display callback after a window is created or whenever an overlay for
@@ -129,7 +129,7 @@ class Viewer(object):
         current window is set to the window that has been reshaped."""
         self.reshape(w, h)
 
-    def idle_callback(self):
+    def _idle_callback(self):
         """glutIdleFunc sets the global idle callback to be func so a GLUT
         program can perform background processing tasks or continuous animation
         when window system events are not being received. If enabled, the idle
@@ -140,7 +140,7 @@ class Viewer(object):
         current menu and not rely on its current setting."""
         self.idle()
 
-    def timer_callback(self, v):
+    def _timer_callback(self, v):
         """glutTimerFunc registers the timer callback func to be triggered in at
         least msecs milliseconds. The value parameter to the timer callback will
         be the value of the value parameter to glutTimerFunc. Multiple timer
@@ -154,9 +154,9 @@ class Viewer(object):
         glutPostRedisplay()
         # note that the value of `v` will be equal to the value of the last
         # argument of glutTimerFunc (here `0`)
-        glutTimerFunc(self._timeout, self.timer_callback, self._v)
+        glutTimerFunc(self._timeout, self._timer_callback, self._v)
 
-    def display_callback(self):
+    def _display_callback(self):
         """When GLUT determines that the normal plane for the window needs to be
         redisplayed, the display callback for the window is called. Before the
         callback, the current window is set to the window needing to be
@@ -174,7 +174,7 @@ class Viewer(object):
     # Inout callbacks
     # ==========================================================================
 
-    def keypress_callback(self, key, x, y):
+    def _keypress_callback(self, key, x, y):
         """When a user types into the window, each key press generating an ASCII
         character will generate a keyboard callback. The key callback parameter
         is the generated ASCII character. The state of modifier keys such as
@@ -188,7 +188,7 @@ class Viewer(object):
         self.keypress(key, x, y)
         glutPostRedisplay()
 
-    def special_callback(self, key, x, y):
+    def _special_callback(self, key, x, y):
         """The special keyboard callback is triggered when keyboard function or
         directional keys are pressed. The key callback parameter is a GLUT_KEY_*
         constant for the special key pressed. The x and y callback parameters
@@ -202,7 +202,7 @@ class Viewer(object):
         self.special(key, x, y)
         glutPostRedisplay()
 
-    def mouseclick_callback(self, button, state, x, y):
+    def _mouseclick_callback(self, button, state, x, y):
         """When a user presses and releases mouse buttons in the window, each
         press and each release generates a mouse callback. The button parameter
         is one of GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, or GLUT_RIGHT_BUTTON.
@@ -230,7 +230,7 @@ class Viewer(object):
             self.right_mouseclick(x, y)
         glutPostRedisplay()
 
-    def mousemotion_callback(self, x, y):
+    def _mousemotion_callback(self, x, y):
         """The motion callback for a window is called when the mouse moves
         within the window while one or more mouse buttons are pressed. The x and
         y callback parameters indicate the mouse location in window relative
@@ -242,7 +242,7 @@ class Viewer(object):
         elif self.mouse.buttons[2]:
             self.right_mousemotion(x, y)
 
-    def passivemousemotion_callback(self, x, y):
+    def _passivemousemotion_callback(self, x, y):
         self.mousemotion(x, y)
 
     # ==========================================================================
@@ -436,7 +436,7 @@ class Viewer(object):
         y = viewport[3] - y
         z = glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
         pos = gluUnProject(x, y, z, modelview, projection, viewport)
-        # print pos
+        print pos
 
 
 # ==============================================================================

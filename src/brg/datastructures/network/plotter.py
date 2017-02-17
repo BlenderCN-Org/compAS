@@ -33,18 +33,164 @@ __all__ = [
 ]
 
 
-# plot specific vertices, edges, faces
-# specify text color, per label
-# width per edge
-# arrow per edge
-# plot paths (defaults for start/end, ...)
-# alternative plot functions
-# add conversion functions to base class definition
-# defaults for everything
-
-
 class NetworkPlotter2D(object):
-    """"""
+    """Plotter for 2D networks.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+
+    Attributes:
+        network (brg.datastructures.network.Network):
+            A network object.
+
+        vertices_on (bool):
+            Display the vertices. Default is ``True``.
+
+        edges_on (bool):
+            Display the edges. Default is ``True``.
+
+        vcolor (str, tuple, dict):
+            The vertex color specification.
+            Default is ``None``.
+            Possible values are:
+
+                * str: A HEX color code.
+                  When provided, this will be applied to all vertices.
+                * tuple: A RGB color code.
+                  When provided this will be applied to all vertices.
+                * dict: A dictionary of HEX and/or RGB color codes.
+                  When provided this will be applied to all vertices included in the dict.
+
+        ecolor (str, tuple, dict):
+            The edge color specification.
+            Default is ``None``.
+            Possible values are:
+
+                * str: A HEX color code.
+                  When provided, this will be applied to all edges.
+                * tuple: A RGB color code.
+                  When provided this will be applied to all edges.
+                * dict: A dictionary of HEX and/or RGB color codes.
+                  When provided this will be applied to all edges included in the dict.
+
+        fcolor (str, tuple, dict):
+            The face color specification.
+            Default is ``None``.
+            Possible values are:
+
+                * str: A HEX color code.
+                  When provided, this will be applied to all faces.
+                * tuple: A RGB color code.
+                  When provided this will be applied to all faces.
+                * dict: A dictionary of HEX and/or RGB color codes.
+                  When provided this will be applied to all faces included in the dict.
+
+        vlabel (dict):
+            A dictionary of vertex labels.
+            Default is ``None``.
+            Labels are added to the plot for those vertices included in the dict.
+
+        elabel (dict):
+            A dictionary of edge labels.
+            Default is ``None``.
+            Labels are added to the plot for those edges included in the dict.
+
+        flabel (dict):
+            A dictionary of face labels.
+            Default is ``None``.
+            Labels are added to the plot for those faces included in the dict.
+
+        vsize (float, dict):
+            The size of vertices.
+            Default is ``None``.
+            Possible values are:
+
+                * float: A single size value.
+                  When provided, this will be applied to all vertices.
+                * dict: A dictionary of size values.
+                  When provided, this will be applied to all vertices in the dict.
+
+        ewidth (float, dict):
+            The width of the edges.
+            Default is ``None``.
+            Possible values are:
+
+                * float: A single width value.
+                  When provided, this will be applied to all edges.
+                * dict: A dictionary of width values.
+                  When provided, this will be applied to all edges in the dict.
+
+        points (list):
+            A list of additional points to be added to the plot.
+            Each point should be defined as a dict of properties.
+            The following dict structure is supported:
+
+                * pos: The XY coordinates of the point.
+                * text: An optional label. Defaults to ``None``.
+                * size: An optional point size. Defaults to ``default_vertex_size``.
+                * textcolor: Optional color specification for the label text.
+                  Defaults to ``default_text_color``.
+                * facecolor: Optional color specification for the fill color of the vertex.
+                  Defaults to ``default_face_color``.
+                * edgecolor: Optional color specification for the outline color of the vertex.
+                  Defaults to ``default_edge_color``.
+
+        lines (list):
+            A list of additional lines to be added to the plot.
+            Each line should be defined as a dict of properties.
+            The following dict structure is supported:
+
+                * start: The XY coordinates of the start point.
+                * end: The XY coordinates of the end point.
+                * text: An optional label. Defaults to ``None``.
+                * width: An optional linewidth. Defaults to ``default_edge_width``.
+                * color: Optional color specification. Defaults to ``default_edge_color``.
+                * arrow: Optional addition of arrowhead(s).
+                  Possible values are ``None``, ``'start'``, ``'end'``, ``'both'``.
+
+
+    Warning:
+        Functionality and parameters related to faces is not properly tested and
+        may be buggy.
+
+    Example:
+
+        .. plot::
+            :include-source:
+
+            import matplotlib.pyplot as plt
+
+            import brg
+
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.plotter import NetworkPlotter2D
+
+            from brg.plotters.drawing import create_axes_2d
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+            plotter = NetworkPlotter2D(network)
+
+            plotter.vsize  = 0.2
+            plotter.vcolor = {key: '#ff0000' for key in network.leaves()}
+            plotter.vlabel = {key: key for key in network}
+
+            plotter.lines = [{
+                'start': network.vertex_coordinates(u, 'xy'),
+                'end'  : network.vertex_coordinates(v, 'xy'),
+                'color': '#00ff00',
+                'width': 4.0,
+                'arrow': 'end'
+            } for u, v in network.connected_edges(28)]
+
+            axes = create_axes_2d()
+
+            plotter.plot(axes)
+
+            axes.autoscale()
+
+            plt.show()
+
+    """
 
     def __init__(self, network):
         self.network = network
@@ -55,99 +201,57 @@ class NetworkPlotter2D(object):
         self.fcolor = None
         self.vlabel = None
         self.elabel = None
-        self.ewidth = None
         self.flabel = None
-        self.vsize = None
+        self.vsize  = None
+        self.ewidth = None
         # additional
         self.points = None
-        self.lines = None
+        self.lines  = None
         # defaults
         self.default_text_color = '#000000'
         self.default_vertex_color = '#ffffff'
         self.default_edge_color = '#000000'
         self.default_face_color = '#000000'
         self.default_edge_width = 1.0
+        self.default_vertex_size = 0.1
 
     def plot(self, axes):
         assert_axes_dimension(axes, 2)
         # default values
         vcolor = color_to_colordict(self.vcolor, self.network.vertices(), self.default_vertex_color)
         ecolor = color_to_colordict(self.ecolor, self.network.edges(), self.default_edge_color)
-        fcolor = color_to_colordict(self.fcolor, self.network.faces(), self.default_face_color)
+        # fcolor = color_to_colordict(self.fcolor, self.network.faces(), self.default_face_color)
         vlabel = self.vlabel or {}
         elabel = self.elabel or {}
         flabel = self.flabel or {}
-        vsize  = self.vsize or 0.1
+        vsize  = self.vsize or self.default_vertex_size
         ewidth = width_to_dict(self.ewidth, self.network.edges(), self.default_edge_width)
         # edges
         if self.edges_on:
             lines  = []
-            colors = []
-            linewidths = []
             for u, v in self.network.edges_iter():
-                x  = self.network.vertex[u]['x'], self.network.vertex[v]['x']
-                y  = self.network.vertex[u]['y'], self.network.vertex[v]['y']
-                mp = 0.5 * (x[0] + x[1]), 0.5 * (y[0] + y[1])
-                line = (x[0], y[0]), (x[1], y[1])
-                lines.append(line)
-                colors.append(ecolor[(u, v)])
-                linewidths.append(ewidth[(u, v)])
-                if (u, v) in elabel:
-                    text = elabel[(u, v)]
-                    axes.text(
-                        mp[0],
-                        mp[1],
-                        text,
-                        fontsize=8,
-                        zorder=13,
-                        ha='center',
-                        va='center',
-                        color=self.default_text_color,
-                        backgroundcolor='#ffffff'
-                    )
-            coll = LineCollection(lines, linewidths=linewidths, colors=colors, zorder=10, alpha=1.0)
-            axes.add_collection(coll)
+                lines.append({
+                    'start': self.network.vertex_coordinates(u, 'xy'),
+                    'end'  : self.network.vertex_coordinates(v, 'xy'),
+                    'text' : None if (u, v) not in elabel else str(elabel[(u, v)]),
+                    'color': ecolor[(u, v)],
+                    'width': ewidth[(u, v)]
+                })
+            draw_xlines_2d(lines, axes)
         # vertices
         if self.vertices_on:
-            circles    = []
-            facecolors = []
-            edgecolors = []
+            points = []
             for key, attr in self.network.vertices_iter(data=True):
-                xy = attr['x'], attr['y']
-                circle = Circle(xy, radius=vsize)
-                circles.append(circle)
-                facecolors.append(vcolor[key])
-                edgecolors.append(self.default_edge_color)
-                if key in vlabel:
-                    text = vlabel[key]
-                    axes.text(
-                        xy[0],
-                        xy[1],
-                        text,
-                        fontsize=8,
-                        zorder=13,
-                        ha='center',
-                        va='center',
-                        color=self.default_text_color
-                    )
-            # make a collection
-            # add collection to axes
-            coll = PatchCollection(circles, facecolor=facecolors, edgecolor=edgecolors, lw=0.5, alpha=1.0, zorder=12)
-            axes.add_collection(coll)
+                points.append({
+                    'pos'       : (attr['x'], attr['y']),
+                    'text'      : None if key not in vlabel else str(vlabel[key]),
+                    'radius'    : vsize,
+                    'textcolor' : self.default_text_color,
+                    'facecolor' : vcolor[key],
+                    'edgecolor' : self.default_edge_color,
+                })
+            draw_xpoints_2d(points, axes)
         # faces
-        for fkey, vertices in self.network.face.items():
-            if fkey in flabel:
-                c = centroid_points_2d([[self.network.vertex[key][_] for _ in 'xy'] for key in set(vertices)])
-                axes.text(
-                    c[0],
-                    c[1],
-                    fkey,
-                    fontsize=8,
-                    zorder=13,
-                    ha='center',
-                    va='center',
-                    color=self.default_text_color
-                )
         # points
         if self.points:
             points = []
@@ -164,14 +268,27 @@ class NetworkPlotter2D(object):
         # lines
         if self.lines:
             lines = []
+            arrows = []
             for line in self.lines:
-                lines.append({
-                    'start': line['start'],
-                    'end': line['end'],
-                    'color': line.get('color', '#00ff00'),
-                    'width': line.get('width', 2.0),
-                })
-            draw_xarrows_2d(lines, axes)
+                if line.get('arrow', None):
+                    arrows.append({
+                        'start': line['start'],
+                        'end'  : line['end'],
+                        'color': line.get('color', self.default_edge_color),
+                        'width': line.get('width', self.default_edge_width),
+                        'arrow': line.get('arrow', 'end')
+                    })
+                else:
+                    lines.append({
+                        'start': line['start'],
+                        'end'  : line['end'],
+                        'color': line.get('color', self.default_edge_color),
+                        'width': line.get('width', self.default_edge_width),
+                    })
+            if lines:
+                draw_xlines_2d(lines, axes)
+            if arrows:
+                draw_xarrows_2d(arrows, axes)
 
 
 class NetworkPlotter3D(object):
@@ -196,18 +313,31 @@ class NetworkPlotter3D(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     import brg
+
     from brg.datastructures.network import Network
     from brg.plotters.drawing import create_axes_2d
 
     import matplotlib.pyplot as plt
 
+    network = Network.from_obj(brg.get_data('lines.obj'))
+    plotter = NetworkPlotter2D(network)
+
+    plotter.vsize  = 0.2
+    plotter.vcolor = {key: '#ff0000' for key in network.leaves()}
+    plotter.vlabel = {key: key for key in network}
+
+    plotter.lines = [{
+        'start': network.vertex_coordinates(u, 'xy'),
+        'end'  : network.vertex_coordinates(v, 'xy'),
+        'color': '#00ff00',
+        'width': 4.0,
+        'arrow': 'end'
+    } for u, v in network.connected_edges(28)]
+
     axes = create_axes_2d()
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
-
-    plotter = NetworkPlotter2D(network)
     plotter.plot(axes)
 
     axes.autoscale()

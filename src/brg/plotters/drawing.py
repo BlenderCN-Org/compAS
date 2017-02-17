@@ -280,15 +280,14 @@ def draw_lines_2d(lines,
 
 
 def draw_xlines_2d(lines, axes):
-    fromto = []
-    widths = []
-    colors = []
+    fromto  = []
+    widths  = []
+    colors  = []
     for line in lines:
         sp    = line['start']
         ep    = line['end']
-        width = line.get('width') or 1.0
-        color = line.get('color') or '#000000'
-        alpha = line.get('alpha') or 1.0
+        width = line.get('width', 1.0)
+        color = line.get('color', '#000000')
         fromto.append((sp, ep))
         widths.append(width)
         colors.append(color)
@@ -297,7 +296,7 @@ def draw_xlines_2d(lines, axes):
         linewidths=widths,
         colors=colors,
         linestyle='-',
-        alpha=alpha,
+        alpha=1.0,
         zorder=ZORDER_LINES
     )
     axes.add_collection(coll)

@@ -14,6 +14,8 @@ Definition of display conduits.
 .. autosummary::
     :toctree: generated/
 
+    FacesConduit
+    LabelsConduit
     LinesConduit
     MeshConduit
     MeshVertexInspector
@@ -54,6 +56,8 @@ class Conduit(DisplayConduit):
         Rhino.RhinoApp.Wait()
 
 
+from .faces import *
+from .labels import *
 from .lines import *
 from .mesh import *
 from .pointpairs import *

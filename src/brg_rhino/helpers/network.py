@@ -28,9 +28,6 @@ __all__ = [
     'select_network_edge',
     'select_network_faces',
     'select_network_face',
-    'get_network_vertices',
-    'get_network_edges',
-    'get_network_faces',
     'update_network_attributes',
     'update_network_vertex_attributes',
     'update_network_edge_attributes',
@@ -58,81 +55,94 @@ __all__ = [
 
 def draw_network(network,
                  layer=None,
+                 clear_layer=False,
                  vertexcolor=None,
-                 edgecolor=None,
-                 clear_layer=False):
-    """Draw the network data structure in Rhino.
+                 edgecolor=None):
+    """Draw a network data structure in Rhino.
 
     Parameters:
         network (brg.datastructures.network.Network): The network object.
         layer (str): Optional. The layer to draw in. Default is ``None``. If
-            ``None`` the currenlt layer is used.
+            ``None``, the currenlt layer is used.
+        clear_layer (bool): Optional. Clear the layer if ``True``. Default is ``False``.
         vertexcolor (list, tuple, str, dict): Optional. The color specification
             for the vertices. Default is ``None``.
 
-                * list, tuple: rgb colors
-                * str: hex colors
+                * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
+                * str: hex color (e.g. ``'#ff0000'``).
                 * dict: dictionary of hex or rgb colors.
 
         edgecolor (list, tuple, str, dict): Optional. The color specification
             for the edges. Default is ``None``.
 
-                * list, tuple: rgb colors
-                * str: hex colors
-                * dict: dictionary of hex or rgb colors.
-
-        clear_layer (bool): Optional. Clear the layer if ``True``. Default is ``False``.
+                * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
+                * str: hex color (e.g. ``'#ff0000'``).
+                * dict: dictionary of hex or rgb color.
 
     Note:
-        Color specifications are automatically converted to color dicts.
+        * Any network objects with the same name that are already present in the
+          model will be deleted by this function.
+        * To also clear the entire layer the network will be drawn on, for
+          example, if you have a dedicated network layer, use the ``clear_layer`` flag as well.
 
     See Also:
-        * :func:`brg.datastructures.network.Network.plot`
+        * :class:`brg.datastructures.network.Network`
+        * :func:`brg_rhino.utilities.drawing.xdraw_lines`
+        * :func:`brg_rhino.utilities.drawing.xdraw_points`
 
-    Warning:
-        Currently, in the (2d, matplotlib-based) plot function, the name of the kwarg
-        corresponding to ``vertex_color`` is ``vcolor``, and ``edge_color`` is ``ecolor``.
+    Example:
+
+        .. code-block:: python
+            :emphasize-lines: 7
+
+            import brg
+            from brg.datastructures.network import Network
+            import brg_rhino
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            brg_rhino.draw_network(network)
 
     """
-    # vertex color
     vertexcolor = color_to_colordict(vertexcolor,
                                      network.vertices(),
                                      default=network.attributes['color.vertex'],
                                      colorformat='rgb',
                                      normalize=False)
-    # edge color
+
     edgecolor = color_to_colordict(edgecolor,
                                    network.edges(),
                                    default=network.attributes['color.edge'],
                                    colorformat='rgb',
                                    normalize=False)
-    # points
+
     points = []
     for key, attr in network.vertices_iter(True):
         points.append({
-            'pos': network.vertex_coordinates(key),
-            'name': '{0}.vertex.{1}'.format(network.attributes['name'], key),
+            'pos'  : network.vertex_coordinates(key),
+            'name' : '{0}.vertex.{1}'.format(network.attributes['name'], key),
             'color': vertexcolor[key]
         })
-    # lines
+
     lines = []
     for u, v, attr in network.edges_iter(True):
         lines.append({
             'start': network.vertex_coordinates(u),
-            'end': network.vertex_coordinates(v),
-            'name': '{0}.edge.{1}-{2}'.format(network.attributes['name'], u, v),
+            'end'  : network.vertex_coordinates(v),
+            'name' : '{0}.edge.{1}-{2}'.format(network.attributes['name'], u, v),
             'color': edgecolor[(u, v)]
         })
-    # delete existing network
+
     guids = rhino.get_objects(name='{0}.*'.format(network.attributes['name']))
     rhino.delete_objects(guids)
-    # drawing
+
     rhino.xdraw_points(
         points,
         layer=layer,
         clear=clear_layer,
         redraw=False
     )
+
     rhino.xdraw_lines(
         lines,
         layer=layer,
@@ -146,26 +156,29 @@ def draw_network(network,
 # ==============================================================================
 
 
-def select_network_vertices(network, message="Select network vertices"):
+def select_network_vertices(network, message="Select network vertices."):
     """Select vertices of a network.
 
     Parameters:
         network (brg.datastructures.network.Network): The network object.
+        message (str): Optional. The message to display to the user.
+            Default is ``"Select network vertices."``
 
     Returns:
         list: The keys of the selected vertices.
 
     Note:
         Selection is based on naming conventions.
-        When a network is drawn using the :func:`draw_network` function,
+        When a network is drawn using the function :func:`draw_network`,
         the point objects representing the vertices get assigned a name that
-        has the following pattern ``'{0}.vertex.{1}'.format(name, key)``, with
-        name the name of the network, and key the key of the current vertex.
-        The name of the network is stored as ``network.attributes['name']``.
+        has the following pattern::
+
+            '{0}.vertex.{1}'.format(network.attributes['name'], key)
 
     Example:
 
         .. code-block:: python
+            :emphasize-lines: 9
 
             from brg.datastructures.network import Network
             import brg_rhino as rhino
@@ -178,6 +191,11 @@ def select_network_vertices(network, message="Select network vertices"):
             keys = rhino.select_network_vertices(network)
 
             print keys
+
+
+    See Also:
+        * :func:`select_network_edges`
+        * :func:`select_network_faces`
 
     """
     keys = []
@@ -196,6 +214,21 @@ def select_network_vertices(network, message="Select network vertices"):
 
 
 def select_network_vertex(network, message="Select a network vertex"):
+    """Select one vertex of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        message (str): Optional. The message to display to the user.
+            Default is ``"Select network vertex."``
+
+    Returns:
+        * str: The key of the selected vertex.
+        * None: If no vertex was selected.
+
+    See Also:
+        * :func:`select_network_vertices`
+
+    """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
     if guid:
         prefix = network.attributes['name']
@@ -207,6 +240,29 @@ def select_network_vertex(network, message="Select a network vertex"):
 
 
 def select_network_edges(network, message="Select network edges"):
+    """Select edges of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        message (str): Optional. The message to display to the user.
+            Default is ``"Select network edges."``
+
+    Returns:
+        list: The keys of the selected edges. Each key is a *uv* pair.
+
+    Note:
+        Selection is based on naming conventions.
+        When a network is drawn using the function :func:`draw_network`,
+        the curve objects representing the edges get assigned a name that
+        has the following pattern::
+
+            '{0}.edge.{1}-{2}'.format(network.attributes['name'], u, v)
+
+    See Also:
+        * :func:`select_network_vertices`
+        * :func:`select_network_faces`
+
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
     if guids:
@@ -224,6 +280,21 @@ def select_network_edges(network, message="Select network edges"):
 
 
 def select_network_edge(network, message="Select a network edge"):
+    """Select one edge of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        message (str): Optional. The message to display to the user.
+            Default is ``"Select network edges."``
+
+    Returns:
+        tuple: The key of the selected edge.
+        None: If no edge was selected.
+
+    See Also:
+        * :func:`select_network_edges`
+
+    """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
     if guid:
         prefix = network.attributes['name']
@@ -236,6 +307,52 @@ def select_network_edge(network, message="Select a network edge"):
 
 
 def select_network_faces(network, message='Select network faces.'):
+    """Select faces of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        message (str): Optional. The message to display to the user.
+            Default is ``"Select network edges."``
+
+    Returns:
+        list: The keys of the selected faces.
+
+    Note:
+        Selection of faces is based on naming conventions.
+        When a network is drawn using the function :func:`draw_network`,
+        the curve objects representing the edges get assigned a name that
+        has the following pattern::
+
+            '{0}.edge.{1}-{2}'.format(network.attributes['name'], u, v)
+
+    Example:
+
+        .. code-block:: python
+            :emphasize-lines: 14
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import find_network_faces
+
+            import brg_rhino as rhino
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            find_network_faces(network, network.leaves())
+
+            rhino.draw_network(network)
+            rhino.display_network_face_labels(network)
+
+            fkeys = rhino.select_network_faces(network)
+
+            print fkeys
+
+
+    See Also:
+        * :func:`select_network_vertices`
+        * :func:`select_network_edges`
+
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.textdot)
     if guids:
@@ -252,6 +369,21 @@ def select_network_faces(network, message='Select network faces.'):
 
 
 def select_network_face(network, message='Select face.'):
+    """Select one face of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        message (str): Optional. The message to display to the user.
+            Default is ``"Select network edges."``
+
+    Returns:
+        tuple: The key of the selected face.
+        None: If no face was selected.
+
+    See Also:
+        * :func:`select_network_faces`
+
+    """
     guid = rs.GetObjects(message, preselect=True, filter=rs.filter.textdot)
     if guid:
         prefix = network.attributes['name']
@@ -264,45 +396,41 @@ def select_network_face(network, message='Select face.'):
 
 
 # ==============================================================================
-# get
-# ==============================================================================
-
-
-def get_network_vertices(network, where, message='Get network vertices where'):
-    """Get netwerk vertices for which a certain condition is ``True``.
-
-    Parameters:
-        network (brg.datastructures.network.network.Network) :
-            A network data structure.
-        where (dict) : A set of conditions in the form of key-value pairs.
-            The keys should be attribute names. The values can be attribute
-            values or ranges of attribute values in the form of min/max pairs.
-
-    Returns:
-        list :
-            A list of vertex keys that satisfy the conditions.
-
-    Examples:
-        >>> keys = get_vertices(network, where={'x': 0.0})
-
-    """
-    raise NotImplementedError
-
-
-def get_network_edges(network, where, message='Get network edges where'):
-    raise NotImplementedError
-
-
-def get_network_faces(network, where, message='Get network faces where'):
-    raise NotImplementedError
-
-
-# ==============================================================================
 # attributes
 # ==============================================================================
 
 
 def update_network_attributes(network):
+    """Update the attributes of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+
+    Returns:
+        bool: ``True`` if the update was successful, and ``False`` otherwise.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            if brg_rhino.update_network_attributes(network):
+                print 'network attributes updated'
+            else:
+                print 'network attributres not updated'
+
+
+    See Also:
+        * :func:`update_network_vertex_attributes`
+        * :func:`update_network_edge_attributes`
+        * :func:`update_network_face_attributes`
+
+    """
     names  = sorted(network.attributes.keys())
     values = [str(network.attributes[name]) for name in names]
     values = rhino.update_named_values(names, values)
@@ -318,6 +446,43 @@ def update_network_attributes(network):
 
 
 def update_network_vertex_attributes(network, keys, names=None):
+    """Update the attributes of the vertices of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        keys (tuple, list): The keys of the vertices to update.
+        names (tuple, list): Optional. The names of the atrtibutes to update.
+            Defaults to ``None``. If ``None``, all attributes are included in the
+            update.
+
+    Returns:
+        bool: ``True`` if the update was successful, and ``False`` otherwise.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            keys = network.vertices()
+
+            if brg_rhino.update_network_vertex_attributes(network, keys):
+                print 'network vertex attributes updated'
+            else:
+                print 'network vertex attributes not updated'
+
+
+    See Also:
+        * :func:`update_network_attributes`
+        * :func:`update_network_edge_attributes`
+        * :func:`update_network_face_attributes`
+
+    """
     if not names:
         names = network.dva.keys()
     names = sorted(names)
@@ -344,6 +509,44 @@ def update_network_vertex_attributes(network, keys, names=None):
 
 
 def update_network_edge_attributes(network, keys, names=None):
+    """Update the attributes of the edges of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        keys (tuple, list): The keys of the edges to update. Note that the keys
+            should be pairs of vertex keys.
+        names (tuple, list): Optional. The names of the atrtibutes to update.
+            Defaults to ``None``. If ``None``, all attributes are included in the
+            update.
+
+    Returns:
+        bool: ``True`` if the update was successful, and ``False`` otherwise.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            keys = network.edges()
+
+            if brg_rhino.update_network_edge_attributes(network, keys):
+                print 'network edge attributes updated'
+            else:
+                print 'network edge attributes not updated'
+
+
+    See Also:
+        * :func:`update_network_attributes`
+        * :func:`update_network_vertex_attributes`
+        * :func:`update_network_face_attributes`
+
+    """
     if not names:
         names = network.dea.keys()
     names = sorted(names)
@@ -371,6 +574,43 @@ def update_network_edge_attributes(network, keys, names=None):
 
 
 def update_network_face_attributes(network, fkeys, names=None):
+    """Update the attributes of the faces of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        keys (tuple, list): The keys of the faces to update.
+        names (tuple, list): Optional. The names of the atrtibutes to update.
+            Defaults to ``None``. If ``None``, all attributes are included in the
+            update.
+
+    Returns:
+        bool: ``True`` if the update was successful, and ``False`` otherwise.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            keys = network.faces()
+
+            if brg_rhino.update_network_face_attributes(network, keys):
+                print 'network face attributes updated'
+            else:
+                print 'network face attributes not updated'
+
+
+    See Also:
+        * :func:`update_network_attributes`
+        * :func:`update_network_vertex_attributes`
+        * :func:`update_network_edge_attributes`
+
+    """
     if not network.dualdata:
         return
     if not names:
@@ -401,100 +641,244 @@ def update_network_face_attributes(network, fkeys, names=None):
 # ==============================================================================
 
 
-def display_network_vertex_labels(network, attr_name=None, **kwargs):
-    attr_name = attr_name or 'key'
-    color = network.attributes.get('color.vertex', (0, 0, 0))
-    name = network.attributes.get('name', 'Network')
-    float_precision = kwargs.get('float_precision', '1')
-    layer = kwargs.get('layer', network.attributes.get('layer'))
-    clear = kwargs.get('clear', False)
-    redraw = kwargs.get('redraw', True)
+def display_network_vertex_labels(network, attr_name=None, layer=None, color=None, formatter=None):
+    """Display labels for the vertices of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        attr_name (str): Optional. The name of the attribute value to display in the label.
+            Default is ``None``. If ``None``, the key of the vertex is displayed.
+        layer (str): Optional. The layer to draw in. Default is ``None``.
+        color (str, tuple, list, dict): Optional. The color specification. Default is ``None``.
+            The following values are supported:
+
+                * str: A HEX color. For example, ``'#ff0000'``.
+                * tuple, list: RGB color. For example, ``(255, 0, 0)``.
+                * dict: A dictionary of RGB and/or HEX colors.
+
+            If ``None``, the default vertex color of the network will be used.
+        formatter (callable): Optional. A formatting function. Default is ``None``.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            brg_rhino.display_network_vertex_labels(network)
+
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            def formatter(value):
+                return '{0:.3f}'.format(value)
+
+            brg_rhino.display_network_vertex_labels(network, attr_name='x' formatter=formatter)
+
+
+    See Also:
+        * :func:`display_network_edge_labels`
+        * :func:`display_network_face_labels`
+
+    """
+    if not attr_name:
+        attr_name = 'key'
+
+    colordict = color_to_colordict(color,
+                                   network.vertices(),
+                                   default=network.attributes['color.vertex'],
+                                   colorformat='rgb',
+                                   normalize=False)
+    if formatter:
+        if not callable(formatter):
+            raise Exception('The provided formatter is not callable.')
+    else:
+        formatter = str
+
     labels = []
+
     for index, key, attr in network.vertices_enum(True):
-        if attr_name == 'key':
-            text = key
-        elif attr_name == 'index':
-            text = str(index)
+        if 'key' == attr_name:
+            value = key
+        elif 'index' == attr_name:
+            value = index
         else:
             value = attr[attr_name]
-            if isinstance(value, float):
-                text = '{0:.{1}f}'.format(value, float_precision)
-            else:
-                text = str(value)
-        labels.append({
-            'pos': network.vertex_coordinates(key),
-            'text': text,
-            'name': '{0}.vertex.label.{1}'.format(name, key),
-            'color': color
-        })
+
+        labels.append({'pos'  : network.vertex_coordinates(key),
+                       'text' : formatter(value),
+                       'name' : '{0}.vertex.label.{1}'.format(network.attriutes['name'], key),
+                       'color': colordict[key], })
+
     rhino.xdraw_labels(
         labels,
         layer=layer,
-        clear=clear,
-        redraw=redraw
+        clear=False,
+        redraw=True
     )
 
 
-def display_network_edge_labels(network, attr_name, **kwargs):
-    attr_name = attr_name or 'key'
-    color = network.attributes.get('color.edge', (0, 0, 0))
-    name = network.attributes.get('name', 'Network')
-    float_precision = kwargs.get('float_precision', '1')
-    layer = kwargs.get('layer', network.attributes.get('layer'))
-    clear = kwargs.get('clear', False)
-    redraw = kwargs.get('redraw', True)
+def display_network_edge_labels(network, attr_name=None, layer=None, color=None, formatter=None):
+    """Display labels for the edges of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        attr_name (str): Optional. The name of the attribute value to display in the label.
+            Default is ``None``. If ``None``, the key of the edge is displayed.
+        layer (str): Optional. The layer to draw in. Default is ``None``.
+        color (str, tuple, list, dict): Optional. The color specification. Default is ``None``.
+            The following values are supported:
+
+                * str: A HEX color. For example, ``'#ff0000'``.
+                * tuple, list: RGB color. For example, ``(255, 0, 0)``.
+                * dict: A dictionary of RGB and/or HEX colors.
+
+            If ``None``, the default edge color of the network will be used.
+        formatter (callable): Optional. A formatting function. Default is ``None``.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            brg_rhino.display_network_edge_labels(network)
+
+
+    See Also:
+        * :func:`display_network_vertex_labels`
+        * :func:`display_network_face_labels`
+
+    """
+    if not attr_name:
+        attr_name = 'key'
+
+    colordict = color_to_colordict(color,
+                                   network.edges(),
+                                   default=network.attributes['color.vertex'],
+                                   colorformat='rgb',
+                                   normalize=False)
+    if formatter:
+        if not callable(formatter):
+            raise Exception('The provided formatter is not callable.')
+    else:
+        formatter = str
+
     labels = []
+
     for index, u, v, attr in network.edges_enum(True):
+
         if attr_name == 'key':
-            text = '{0}-{1}'.format(u, v)
+            value = '{0}-{1}'.format(u, v)
         elif attr_name == 'index':
-            text = str(index)
+            value = index
         else:
             value = attr[attr_name]
-            if isinstance(value, float):
-                text = '{0:.{1}f}'.format(value, float_precision)
-            else:
-                text = str(value)
-        labels.append({
-            'pos': network.edge_midpoint(u, v),
-            'text': text,
-            'name': '{0}.edge.label.{1}-{2}'.format(name, u, v),
-            'color': color
-        })
+
+        labels.append({'pos'  : network.edge_midpoint(u, v),
+                       'text' : formatter(value),
+                       'name' : '{0}.edge.label.{1}-{2}'.format(network.attributes['name'], u, v),
+                       'color': colordict[(u, v)], })
+
     rhino.xdraw_labels(
         labels,
         layer=layer,
-        clear=clear,
-        redraw=redraw
+        clear=False,
+        redraw=True
     )
 
 
-def display_network_face_labels(network, attr_name, **kwargs):
-    attr_name = attr_name or 'key'
-    color = network.attributes.get('color.face', (0, 0, 0))
-    name = network.attributes.get('name', 'Network')
-    layer = kwargs.get('layer', network.attributes.get('layer'))
-    clear = kwargs.get('clear', False)
-    redraw = kwargs.get('redraw', True)
+def display_network_face_labels(network, attr_name=None, layer=None, color=None, formatter=None):
+    """Display labels for the faces of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        attr_name (str): Optional. The name of the attribute value to display in the label.
+            Default is ``None``. If ``None``, the key of the face is displayed.
+        layer (str): Optional. The layer to draw in. Default is ``None``.
+        color (str, tuple, list, dict): Optional. The color specification. Default is ``None``.
+            The following values are supported:
+
+                * str: A HEX color. For example, ``'#ff0000'``.
+                * tuple, list: RGB color. For example, ``(255, 0, 0)``.
+                * dict: A dictionary of RGB and/or HEX colors.
+
+            If ``None``, the default face color of the network will be used.
+        formatter (callable): Optional. A formatting function. Default is ``None``.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            brg_rhino.display_network_face_labels(network)
+
+
+    See Also:
+        * :func:`display_network_vertex_labels`
+        * :func:`display_network_edge_labels`
+
+    """
+    if not attr_name:
+        attr_name = 'key'
+
+    colordict = color_to_colordict(color,
+                                   network.faces(),
+                                   default=network.attributes['color.face'],
+                                   colorformat='rgb',
+                                   normalize=False)
+
+    if formatter:
+        if not callable(formatter):
+            raise Exception('The provided formatter is not callable.')
+    else:
+        formatter = str
+
     labels = []
+
     for index, fkey in network.faces_enum():
         if attr_name == 'key':
-            text = '{0}'.format(fkey)
+            value = fkey
         elif attr_name == 'index':
-            text = str(index)
+            value = index
         else:
-            raise NotImplementedError
+            value = network.facedata[fkey][attr_name]
+
         labels.append({
-            'pos': network.face_centroid(fkey),
-            'text': text,
-            'name': '{0}.face.label.{1}'.format(name, fkey),
-            'color': color
+            'pos'  : network.face_centroid(fkey),
+            'text' : formatter(value),
+            'name' : '{0}.face.label.{1}'.format(network.attributes['name'], fkey),
+            'color': colordict[fkey]
         })
+
     rhino.xdraw_labels(
         labels,
         layer=layer,
-        clear=clear,
-        redraw=redraw
+        clear=False,
+        redraw=True
     )
 
 
@@ -504,6 +888,12 @@ def display_network_face_labels(network, attr_name, **kwargs):
 
 
 def move_network(network):
+    """Move the entire network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): A network object.
+
+    """
     color  = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
     origin = dict((key, network.vertex_coordinates(key)) for key in network.vertex)
     vertex = dict((key, network.vertex_coordinates(key)) for key in network.vertex)
@@ -525,7 +915,8 @@ def move_network(network):
             ep = Point3d(*ep)
             e.Display.DrawDottedLine(sp, ep, color)
 
-    rhino.delete_objects(rhino.get_objects(name='{0}.*'.format(network.attributes['name'])), False)
+    guids = rhino.get_objects(name='{0}.*'.format(network.attributes['name']))
+    rhino.delete_objects(guids, False)
 
     gp = Rhino.Input.Custom.GetPoint()
     gp.SetCommandPrompt('Point to move to?')
@@ -539,10 +930,42 @@ def move_network(network):
             attr['x'] += vec[0]
             attr['y'] += vec[1]
             attr['z'] += vec[2]
-    network.draw()
+
+    try:
+        network.draw()
+    except AttributeError:
+        # this may result in the network being drawn in a different layer then before
+        draw_network(network)
 
 
 def move_network_vertex(network, key, constraint=None, allow_off=None):
+    """Move on vertex of the network.
+
+    Parameters:
+        network (brg.datastructures.network.Network): The network object.
+        key (str): The vertex to move.
+        constraint (Rhino.Geometry): Optional. A ``Rhino.Geometry`` object to
+            constrain the movement to. Default is ``None``.
+        allow_off (bool): Optional. Allow the vertex to move off the constraint.
+            Default is ``None``.
+
+    Example:
+
+        .. code-block:: python
+
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            key = brg_rhino.select_network_vertex(network)
+
+            if key:
+                brg_rhino.move_network_vertex(network, key)
+
+    """
     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
     nbrs  = [network.vertex_coordinates(nbr) for nbr in network.halfedge[key]]
     nbrs  = [Point3d(*xyz) for xyz in nbrs]
@@ -569,7 +992,12 @@ def move_network_vertex(network, key, constraint=None, allow_off=None):
         network.vertex[key]['x'] = pos[0]
         network.vertex[key]['y'] = pos[1]
         network.vertex[key]['z'] = pos[2]
-    network.draw()
+
+    try:
+        network.draw()
+    except AttributeError:
+        # this may result in the network being drawn in a different layer then before
+        draw_network(network)
 
 
 # ==============================================================================
@@ -582,25 +1010,78 @@ def display_network_axial_forces(network,
                                  layer=None,
                                  clear_layer=False,
                                  scale=1.0,
-                                 color_tension=None,
-                                 color_compression=None):
+                                 attr_name='f',
+                                 color_tension=(255, 0, 0),
+                                 color_compression=(0, 0, 255)):
+    """Display the axial forces in the edges of a network.
+
+    Parameters:
+        network (brg.datastructures.network.Network):
+            The network object.
+        display (bool): Optional.
+            If ``True``, display the axial forces.
+            If ``False``, don't display the axial forces.
+            Default is ``True``.
+        layer (str): Optional.
+            The layer to draw in. Default is ``None``.
+        clear_layer (bool): Optional.
+            Flag for clearing the layer.
+            Default is ``False``.
+        scale (float): Optional.
+            The scale of the forces.
+            Default is ``1.0``.
+        attr_name (str): Optional.
+            The name of the edge attribute storing the force value.
+            Default is ``'f'``.
+        color_tension (tuple): Optional.
+            The color to use for tension forces.
+            Default is ``(255, 0, 0)``.
+        color_compression (tuple): Optional.
+            The color to use for compression forces.
+            Default is ``(0, 0, 255)``.
+
+    Example:
+
+        .. code-block:: python
+
+            import random
+            import brg
+            import brg_rhino
+
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            for u, v, attr in network.edges_iter(True):
+                attr['f'] = random.choice([-1.0, 1.0]) * random.randint(1, 10)
+
+            brg_rhino.display_network_axial_forces(network)
+
+    See Also:
+        * :func:`display_network_reaction_forces`
+        * :func:`display_network_residual_forces`
+        * :func:`display_network_selfweight`
+
+    """
     tol = rhino.get_tolerance()
-    objects = rhino.get_objects(name='{0}.force:axial.*'.format(network.name))
+    objects = rhino.get_objects(name='{0}.force:axial.*'.format(network.attributes['name']))
     rhino.delete_objects(objects)
+
     if not display:
         return
+
     lines = []
-    color_tension = color_tension or (255, 0, 0)
-    color_compression = color_compression or (0, 0, 255)
     for u, v, attr in network.edges_iter(True):
         sp     = network.vertex_coordinates(u)
         ep     = network.vertex_coordinates(v)
         force  = attr['f']
         color  = color_tension if force > 0.0 else color_compression
         radius = scale * ((force ** 2) ** 0.5 / 3.14159) ** 0.5
-        name   = '{0}.force:axial.{1}-{2}'.format(network.name, u, v)
+        name   = '{0}.force:axial.{1}-{2}'.format(network.attributes['name'], u, v)
+
         if radius < tol:
             continue
+
         lines.append({
             'start'  : sp,
             'end'    : ep,
@@ -608,6 +1089,7 @@ def display_network_axial_forces(network,
             'color'  : color,
             'radius' : radius,
         })
+
     rhino.xdraw_cylinders(lines, layer=layer, clear=clear_layer)
 
 
@@ -616,23 +1098,22 @@ def display_network_reaction_forces(network,
                                     layer=None,
                                     clear_layer=False,
                                     scale=1.0,
-                                    color=None):
+                                    color=(0, 255, 0)):
     tol = rhino.get_tolerance()
-    objects = rhino.get_objects(name='{0}.force:reaction.*'.format(network.name))
+    objects = rhino.get_objects(name='{0}.force:reaction.*'.format(network.attributes['name']))
     rhino.delete_objects(objects)
     if not display:
         return
     lines = []
-    color = color or (0, 255, 0)
     for key, attr in network.vertices_iter(True):
         if not attr['is_fixed']:
             continue
         r     = attr['rx'], attr['ry'], attr['rz']
         sp    = network.vertex_coordinates(key)
-        ep    = [sp[i] + scale * r[i] for i in range(3)]
+        ep    = [sp[i] - scale * r[i] for i in range(3)]
         l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
-        arrow = 'start'
-        name  = '{0}.force:reaction.{1}'.format(network.name, key)
+        arrow = 'end'
+        name  = '{0}.force:reaction.{1}'.format(network.attributes['name'], key)
         if l < tol:
             continue
         lines.append({
@@ -650,14 +1131,13 @@ def display_network_residual_forces(network,
                                     layer=None,
                                     clear_layer=False,
                                     scale=1.0,
-                                    color=None):
+                                    color=(0, 255, 255)):
     tol = rhino.get_tolerance()
-    objects = rhino.get_objects(name='{0}.force:residual.*'.format(network.name))
-    rhino.delete_objects(objects)
+    guids = rhino.get_objects(name='{0}.force:residual.*'.format(network.attributes['name']))
+    rhino.delete_objects(guids)
     if not display:
         return
     lines = []
-    color = color or (0, 255, 255)
     for key, attr in network.vertices_iter(True):
         if attr['is_support']:
             continue
@@ -666,7 +1146,7 @@ def display_network_residual_forces(network,
         ep    = [sp[i] + scale * r[i] for i in range(3)]
         l     = sum((ep[i] - sp[i]) ** 2 for i in range(3)) ** 0.5
         arrow = 'end'
-        name  = '{0}.force:residual.{1}'.format(network.name, key)
+        name  = '{0}.force:residual.{1}'.format(network.attributes['name'], key)
         if l < tol:
             continue
         lines.append({'start' : sp,
@@ -681,20 +1161,18 @@ def display_network_selfweight(network,
                                display=True,
                                layer=None,
                                clear_layer=False,
-                               scale=None,
-                               color=None):
-    objects = rhino.get_objects(name='{0}.force:selfweight.*'.format(network.name))
-    rhino.delete_objects(objects)
+                               scale=1.0,
+                               color=(0, 255, 0)):
+    guids = rhino.get_objects(name='{0}.force:selfweight.*'.format(network.attributes['name']))
+    rhino.delete_objects(guids)
     if not display:
         return
     lines = []
-    color = color or (0, 255, 0)
-    scale = scale or 1.0
     for key, attr in network.vertices_iter(True):
         load  = 0, 0, network.vertex_area(key)
         start = network.vertex_coordinates(key)
         end   = [start[i] - scale * load[i] for i in range(3)]
-        name  = '{0}.force:selfweight.{1}'.format(network.name, key)
+        name  = '{0}.force:selfweight.{1}'.format(network.attributes['name'], key)
         arrow = 'end'
         lines.append({'start': start,
                       'end'  : end,
@@ -702,48 +1180,6 @@ def display_network_selfweight(network,
                       'color': color,
                       'arrow': arrow, })
     rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
-
-
-# def display_resultant(self,
-#                       keys,
-#                       display=True,
-#                       layer=None,
-#                       scale=None,
-#                       color=None):
-#     objects = rhino.get_objects(name='{0}.force:resultant.*'.format(self.name))
-#     rhino.delete_objects(objects)
-#     if not display:
-#         return
-#     lines = []
-#     layer = layer or self.layer
-#     color = color or self.color['force:reaction']
-#     scale = scale or self.scale['force:reaction']
-#     x, y, z = 0, 0, 0
-#     rx, ry, rz = 0, 0, 0
-#     count = 0
-#     for key in keys:
-#         attr = self.vertex[key]
-#         if not attr['is_anchor'] and not attr['is_fixed']:
-#             continue
-#         x     += attr['x']
-#         y     += attr['y']
-#         rx    += attr['rx']
-#         ry    += attr['ry']
-#         rz    += attr['rz']
-#         count += 1
-#     x  = x / count
-#     y  = y / count
-#     z  = z / count
-#     start = x, y, z
-#     end   = x + scale * rx, y + scale * ry, z + scale * rz
-#     name  = '{0}.force:resultant.{1}'.format(self.name, keys)
-#     arrow = 'start'
-#     lines.append({'start': start,
-#                   'end'  : end,
-#                   'name' : name,
-#                   'color': color,
-#                   'arrow': arrow, })
-#     rhino.xdraw_lines(lines, layer=layer, clear=False)
 
 
 # ==============================================================================

@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 
 from brg.files.obj import OBJ
 
@@ -21,40 +22,98 @@ __email__      = '<vanmelet@ethz.ch>'
 
 
 class Network(object):
-    """
+    """Definition of a network object.
+
+    The ``Network`` class is implemented as a directed edge graph, with optional support
+    for face topology and face data if the network is planar.
+
+    Attributes:
+        vertex (dict): The vertex dictionary. Each key in the vertex dictionary
+            represents a vertex of the network and maps to a dictionary of
+            vertex attributes.
+        edge (dict of dict): The edge dictionary. Each key in the edge dictionary
+            corresponds to a key in the vertex dictionary, and maps to a dictionary
+            with connected vertices. In the latter, the keys are again references
+            to items in the vertex dictionary, and the values are dictionaries
+            of edge attributes.
+        halfedge (dict of dict): A half-edge dictionary, which keeps track of
+            undirected adjacencies. If the network is planar, the halfedges point
+            at entries in the face dictionary.
+        face (dict): The face dictionary. If the network is planar, this dictionary
+            is populated by a face finding algorithm. Each key represents a face
+            and points to its corresponding vertex cycle.
+        facedata (dict): Face attributes.
+        attributes (dict): A dictionary of miscellaneous information about the network.
 
     Examples:
-        >>> import brg
-        >>> from brg.datastructures.network import Network
-        >>> network = Network.from_obj(brg.get_data('lines.obj'))
-        >>> network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)
 
-    .. plot::
+        .. plot::
+            :include-source:
 
-        import brg
-        from brg.datastructures.network import Network
-        network = Network.from_obj(brg.get_data('lines.obj'))
-        network.plot(vlabel=dict((key, key) for key in network), vsize=0.2)
+            import brg
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            network.plot(
+                vlabel={key: key for key in network},
+                vsize=0.2
+            )
+
+
+        .. code-block:: python
+
+            import brg
+            from brg.datastructures.network import Network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            # structure of the vertex dict
+
+            for key in network.vertex:
+                print key, network.vertex[key]
+
+            # structure of the edge dict
+
+            for u in network.edge:
+                for v in network.edge[u]:
+                    print u, v, network.edge[u][v]
+
+            # structure of the halfedge dict
+
+            for u in network.halfedge:
+                for v in network.halfedge[u]:
+                    if network.halfedge[u][v] is not None:
+                        print network.face[network.halfedge[u][v]]
+                    if network.halfedge[v][u] is not None:
+                        print network.face[network.halfedge[v][u]]
+
+            # structure of the face dict
+
+            for fkey in network.face:
+                print fkey, network.face[fkey], network.facedata[fkey]
 
     """
 
     def __init__(self):
-        self._plotter     = None
-        self.vertex       = {}
-        self.edge         = {}
-        self.halfedge     = {}
-        self.face         = {}
-        self.dualdata     = None
-        self.vertex_count = 0
-        self.face_count   = 0
-        self.attributes   = {
+        self._key_to_str   = False
+        self._max_int_key  = -1
+        self._max_int_fkey = -1
+        self._plotter      = None
+        self.vertex        = {}
+        self.edge          = {}
+        self.halfedge      = {}
+        self.face          = {}
+        self.facedata      = {}
+        self.attributes    = {
             'name'         : 'Network',
             'color.vertex' : (0, 0, 0),
             'color.edge'   : (0, 0, 0),
+            'color.face'   : (0, 0, 0),
         }
-        self.dva = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.dea = {}
-        self.dfa = {}
+        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        self.default_edge_attributes   = {}
+        self.default_face_attributes   = {}
 
     def __contains__(self, key):
         # if key in network: ...
@@ -78,14 +137,14 @@ class Network(object):
         e = len(self.edges())
         dmin = 0 if not self.vertex else min(self.degree(key) for key in self.vertex)
         dmax = 0 if not self.vertex else max(self.degree(key) for key in self.vertex)
-        if not self.dva:
+        if not self.default_vertex_attributes:
             dva = None
         else:
-            dva = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.dva.items()])
-        if not self.dea:
+            dva = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.default_vertex_attributes.items()])
+        if not self.default_edge_attributes:
             dea = None
         else:
-            dea = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.dea.items()])
+            dea = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.default_edge_attributes.items()])
         return """
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 network: {0}
@@ -105,70 +164,93 @@ network: {0}
 - vertex degree min: {3}
 - vertex degree max: {4}
 
-""".format(self.name, v, e, dmin, dmax, dva, dea)
+""".format(self.attributes['name'], v, e, dmin, dmax, dva, dea)
 
     # --------------------------------------------------------------------------
     # descriptors
     # --------------------------------------------------------------------------
 
     @property
-    def adjacency(self):
-        return self.halfedge
-
-    @property
     def name(self):
         return self.attributes['name']
 
-    @property
-    def color(self):
-        return dict(
-            (key[6:], self.attributes[key])
-            for key in self.attributes if key.startswith('color.')
-        )
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
 
-    # include dualdata for data of faces
+    @property
+    def adjacency(self):
+        """Alias for the halfedge attribute."""
+        return self.halfedge
 
     @property
     def data(self):
-        return {'attributes' : self.attributes,
-                'dva'        : self.dva,
-                'dea'        : self.dea,
-                'dfa'        : self.dfa,
-                'vertex'     : self.vertex,
-                'edge'       : self.edge,
-                'halfedge'   : self.halfedge,
-                'face'       : self.face,
-                'vcount'     : self.vertex_count,
-                'fcount'     : self.face_count}
+        """A dictionary describing the fundamental data making up the network data structure.
+
+        The data dict contains the following keys:
+
+        * attributes
+        * default_vertex_attributes
+        * dea
+        * dfa
+        * vertex
+        * edge
+        * halfedge
+        * face
+        * facedata
+        * vcount
+        * fcount
+
+        """
+        return {'attributes'  : self.attributes,
+                'dva'         : self.default_vertex_attributes,
+                'dea'         : self.default_edge_attributes,
+                'dfa'         : self.default_face_attributes,
+                'vertex'      : self.vertex,
+                'edge'        : self.edge,
+                'halfedge'    : self.halfedge,
+                'face'        : self.face,
+                'facedata'    : self.facedata,
+                'max_int_key' : self._max_int_key,
+                'max_int_fkey': self._max_int_fkey}
 
     @data.setter
     def data(self, data):
-        attributes = data.get('attributes') or {}
-        dva        = data.get('dva') or {}
-        dea        = data.get('dea') or {}
-        dfa        = data.get('dfa') or {}
-        vertex     = data.get('vertex') or {}
-        edge       = data.get('edge') or {}
-        halfedge   = data.get('halfedge') or {}
-        face       = data.get('face') or {}
-        vcount     = data.get('vcount') or 0
-        fcount     = data.get('fcount') or 0
+        attributes   = data.get('attributes') or {}
+        dva          = data.get('dva') or {}
+        dea          = data.get('dea') or {}
+        dfa          = data.get('dfa') or {}
+        vertex       = data.get('vertex') or {}
+        edge         = data.get('edge') or {}
+        halfedge     = data.get('halfedge') or {}
+        face         = data.get('face') or {}
+        facedata     = data.get('facedata') or {}
+        vcount       = data.get('vcount') or 0
+        fcount       = data.get('fcount') or 0
+        max_int_key  = data.get('max_int_key') or vcount - 1
+        max_int_fkey = data.get('max_int_fkey') or fcount - 1
+
         if not vertex or not edge or not halfedge:
             return
+
         del self.vertex
         del self.edge
         del self.halfedge
         del self.face
+        del self.facedata
+
         self.attributes.update(attributes)
-        self.dva.update(dva)
-        self.dea.update(dea)
-        self.dfa.update(dfa)
+        self.default_vertex_attributes.update(dva)
+        self.default_edge_attributes.update(dea)
+        self.default_face_attributes.update(dfa)
         self.vertex   = {}
         self.edge     = {}
         self.halfedge = {}
         self.face     = {}
+        self.facedata = {}
+
         for key, attr in vertex.iteritems():
-            self.vertex[key] = self.dva.copy()
+            self.vertex[key] = self.default_vertex_attributes.copy()
             if attr:
                 self.vertex[key].update(attr)
         for u, nbrs in edge.iteritems():
@@ -176,7 +258,7 @@ network: {0}
                 self.edge[u] = {}
             nbrs = nbrs or {}
             for v, attr in nbrs.iteritems():
-                self.edge[u][v] = self.dea.copy()
+                self.edge[u][v] = self.default_edge_attributes.copy()
                 if attr:
                     self.edge[u][v].update(attr)
         for key, nbrs in halfedge.iteritems():
@@ -188,11 +270,14 @@ network: {0}
                 self.halfedge[key][nbr] = fkey
         for fkey, vertices in face.iteritems():
             self.face[fkey] = vertices
-        self.vertex_count = vcount
-        self.face_count = fcount
+        for fkey, attr in facedata.iteritems():
+            self.facedata[fkey] = attr
+        self._max_int_key = max_int_key
+        self._max_int_fkey = max_int_fkey
 
     @property
     def plotter(self):
+        """Provide read access to a plotter object."""
         if not self._plotter:
             from brg.datastructures.network.plotter import NetworkPlotter2D
             self._plotter = NetworkPlotter2D(self)
@@ -228,9 +313,9 @@ network: {0}
         points   = obj.parser.points
         for i, (x, y, z) in enumerate(vertices):
             if i in points:
-                network.add_vertex(i, x=x, y=y, z=z, is_anchor=True)
+                network.add_vertex(i, x=x, y=y, z=z)
             else:
-                network.add_vertex(i, x=x, y=y, z=z, is_anchor=False)
+                network.add_vertex(i, x=x, y=y, z=z)
         for u, v in edges:
             network.add_edge(u, v)
         return network
@@ -291,34 +376,45 @@ network: {0}
         return vertices, edges
 
     # --------------------------------------------------------------------------
+    # reset
+    # --------------------------------------------------------------------------
+
+    def clear_vertexdict(self):
+        del self.vertex
+        self.vertex = {}
+        self._max_int_key = -1
+
+    def clear_facedict(self):
+        del self.face
+        self.face = {}
+        self._max_int_fkey = -1
+
+    def clear_halfedgedict(self):
+        del self.halfedge
+        self.halfedge = {}
+
+    # --------------------------------------------------------------------------
     # modify
     # --------------------------------------------------------------------------
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
         """"""
-        attr = self.dva.copy()
+        attr = self.default_vertex_attributes.copy()
         if attr_dict is None:
             attr_dict = kwattr
         else:
             attr_dict.update(kwattr)
         attr.update(attr_dict)
         if key is None:
-            key = self.vertex_count
-            self.vertex_count += 1
+            key = self._max_int_key = self._max_int_key + 1
         else:
-            # if key is int
-            # increase the count
-            # because the count is used to replace None
             try:
                 int(key)
-            except ValueError:
+            except (ValueError, TypeError):
                 pass
             else:
-                if int(key) > self.vertex_count:
-                    self.vertex_count = int(key) + 1
-        # remove this
-        # potentially check for hashable
-        key = str(key)
+                if int(key) > self._max_int_key:
+                    self._max_int_key = int(key)
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
@@ -328,14 +424,12 @@ network: {0}
 
     def add_edge(self, u, v, attr_dict=None, **kwattr):
         """"""
-        attr = self.dea.copy()
+        attr = self.default_edge_attributes.copy()
         if attr_dict is None:
             attr_dict = kwattr
         else:
             attr_dict.update(kwattr)
         attr.update(attr_dict)
-        u = str(u)
-        v = str(v)
         if u not in self.vertex:
             u = self.add_vertex(u)
         if v not in self.vertex:
@@ -347,28 +441,34 @@ network: {0}
         self.halfedge[v][u] = None
         return u, v
 
-    def add_face(self, vertices, fkey=None):
-        attr = self.dfa.copy()
+    def add_face(self, vertices, fkey=None, attr_dict=None, **kwattr):
+        attr = self.default_face_attributes.copy()
+        if attr_dict is None:
+            attr_dict = kwattr
+        else:
+            attr_dict.update(kwattr)
+        attr.update(attr_dict)
+        # check if face is valid
         if vertices[-2] == vertices[-1]:
             del vertices[-1]
         if len(vertices) < 3:
             return
+        # get the correct face key
         if fkey is None:
-            fkey = self.face_count
+            fkey = self._max_int_fkey = self._max_int_fkey + 1
         else:
-            # use the same try-except as with vertex keys
-            # only increase count if key is int
-            # because count is used to replace None
-            if int(fkey) > self.face_count:
-                self.face_count = int(fkey)
-        self.face_count += 1
-        # remove this
-        # potentially check if hashable
-        fkey = str(fkey)
+            try:
+                int(fkey)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if int(fkey) > self._max_int_fkey:
+                    self._max_int_fkey = int(fkey)
         self.face[fkey] = vertices
+        self.facedata[fkey] = attr
         for i in range(0, len(vertices) - 1):
-            u = str(vertices[i])
-            v = str(vertices[i + 1])
+            u = vertices[i]
+            v = vertices[i + 1]
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None
@@ -379,14 +479,25 @@ network: {0}
             if u not in self.edge:
                 self.edge[u] = {}
             self.edge[u][v] = {}
-        # use this function to make sure dualdata exists
-        # there should be a better way to do this
-        # dualdata is really about face data
-        # dualdata => facedata
-        # dual function / attributes ?
-        for name, value in attr.items():
-            self.set_face_attribute(fkey, name, value)
         return fkey
+
+    def remove_vertex(self, key):
+        pass
+
+    def remove_edge(self, u, v):
+        raise NotImplementedError
+        if self.face:
+            # there are faces
+            f1 = self.halfedge[u][v]
+            f2 = self.halfedge[v][u]
+            if f1 is not None and f2 is not None:
+                vertices1 = self.face[f1]
+                vertices2 = self.face[f2]
+        else:
+            # there are no faces
+            del self.halfedge[u][v]
+            del self.halfedge[v][u]
+            del self.edge[u][v]
 
     # --------------------------------------------------------------------------
     # face construction
@@ -438,18 +549,24 @@ network: {0}
     # face lists and iterators
     # --------------------------------------------------------------------------
 
-    # add if data
-    def faces(self):
+    def faces(self, data=False):
+        if data:
+            return [(fkey, self.facedata.setdefault(fkey, self.default_face_attributes.copy())) for fkey in self.face]
         return list(self.faces_iter())
 
-    # add if data
-    def faces_iter(self):
-        return self.face.iterkeys()
+    def faces_iter(self, data=False):
+        for fkey in self.face:
+            if data:
+                yield fkey, self.facedata.setdefault(fkey, self.default_face_attributes.copy())
+            else:
+                yield fkey
 
-    # add if data
-    def faces_enum(self):
+    def faces_enum(self, data=False):
         for index, fkey in enumerate(self.faces_iter()):
-            yield index, fkey
+            if data:
+                yield index, fkey, self.facedata.setdefault(fkey, self.default_face_attributes.copy())
+            else:
+                yield index, fkey
 
     # --------------------------------------------------------------------------
     # topology
@@ -497,11 +614,8 @@ network: {0}
     def degree_in(self, key):
         return len(self.neighbours_in(key))
 
-    def leaves(self, key_index=None):
-        keys = [key for key, nbrs in self.halfedge.iteritems() if len(nbrs) == 1]
-        if not key_index:
-            return keys
-        return [key_index[key] for key in keys]
+    def leaves(self):
+        return [key for key, nbrs in self.halfedge.iteritems() if len(nbrs) == 1]
 
     def connected_edges(self, key):
         edges = []
@@ -572,119 +686,177 @@ network: {0}
         return tree
 
     # --------------------------------------------------------------------------
-    # attributes
+    # attributes: vertex
     # --------------------------------------------------------------------------
 
-    def set_dva(self, attr_dict=None, **kwargs):
+    def update_default_vertex_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.dva.update(attr_dict)
+        self.default_vertex_attributes.update(attr_dict)
         for key in self.vertex:
             attr = attr_dict.copy()
             attr.update(self.vertex[key])
             self.vertex[key] = attr
 
-    def set_dea(self, attr_dict=None, **kwargs):
+    def get_vertex_attribute(self, key, name, default=None):
+        return self.vertex[key].get(name, default)
+
+    def get_vertex_attributes(self, key, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        return [self.vertex[key].get(name, default) for name, default in zip(names, defaults)]
+
+    def get_vertices_attribute(self, name, default=None):
+        return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+
+    def get_vertices_attributes(self, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        temp = zip(names, defaults)
+        return [[attr.get(name, default) for name, default in temp] for key, attr in self.vertices_iter(True)]
+
+    # --------------------------------------------------------------------------
+    # attributes: edge
+    # --------------------------------------------------------------------------
+
+    def update_default_edge_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
-        self.dea.update(attr_dict)
+        self.default_edge_attributes.update(attr_dict)
         for u, v in self.edges_iter():
             attr = attr_dict.copy()
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
-
-    def set_dfa(self, attr_dict=None, **kwargs):
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwargs)
-        self.dfa.update(attr_dict)
-        if not self.dualdata:
-            self.dualdata = Network()
-        for fkey in self.face:
-            attr = attr_dict.copy()
-            attr.update(self.dualdata.vertex[fkey])
-            self.dualdata.vertex[fkey] = attr
-
-    def set_vertex_attribute(self, key, name, value):
-        self.vertex[key][name] = value
-
-    def set_vertex_attributes(self, key, attr_dict):
-        self.vertex[key] = attr_dict
-
-    def get_vertex_attribute(self, key, name, default=None):
-        return self.vertex[key].get(name, default)
-
-    def set_edge_attribute(self, u, v, name, value):
-        if v in self.edge[u]:
-            self.edge[u][v][name] = value
-        else:
-            self.edge[v][u][name] = value
-
-    def set_edge_attributes(self, u, v, attr_dict):
-        if v in self.edge[u]:
-            self.edge[u][v] = attr_dict
-        else:
-            self.edge[v][u] = attr_dict
 
     def get_edge_attribute(self, u, v, name, default=None):
         if u in self.edge[v]:
             return self.edge[v][u].get(name, default)
         return self.edge[u][v].get(name, default)
 
-    def get_edge_attributes(self, u, v):
+    def get_edge_attributes(self, u, v, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
         if v in self.edge[u]:
-            return self.edge[u][v]
-        return self.edge[v][u]
-
-    def set_face_attribute(self, fkey, name, value):
-        if not self.dualdata:
-            self.dualdata = Network()
-        if fkey not in self.dualdata.vertex:
-            self.dualdata.vertex[fkey] = {}
-        self.dualdata.vertex[fkey][name] = value
-
-    def get_face_attribute(self, fkey, name, default=None):
-        if not self.dualdata:
-            return default
-        return self.dualdata.vertex[fkey].get(name, default)
-
-    # --------------------------------------------------------------------------
-
-    def set_vertices_attribute(self, name, value):
-        if not isinstance(value, (list, tuple)):
-            for i, key, attr in self.vertices_enum(True):
-                attr[name] = value
-        else:
-            for i, key, attr in self.vertices_enum(True):
-                attr[name] = value[i]
-
-    def get_vertices_attribute(self, name, default=None):
-        return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
-
-    def get_vertices_attributes(self, names, default=None):
-        return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
-
-    def set_edges_attribute(self, name, values):
-        for i, u, v, attr in self.edges_enum(True):
-            attr[name] = values[i]
+            return [self.edge[u][v].get(name, default) for name, default in zip(names, defaults)]
+        return [self.edge[v][u].get(name, default) for name, default in zip(names, defaults)]
 
     def get_edges_attribute(self, name, default=None):
         return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
 
-    def get_edges_attributes(self, names, default=None):
-        return [[attr.get(name, default) for name in names] for u, v, attr in self.edges_iter(True)]
+    def get_edges_attributes(self, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        temp = zip(names, defaults)
+        return [[attr.get(name, default) for name, default in temp] for u, v, attr in self.edges_iter(True)]
 
-    def set_faces_attribute(self, name, values):
-        for i, fkey, attr in self.edges_enum(True):
-            attr[name] = values[i]
+    # --------------------------------------------------------------------------
+    # attributes: face
+    # --------------------------------------------------------------------------
+
+    def update_default_face_attributes(self, attr_dict=None, **kwargs):
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwargs)
+        self.default_face_attributes.update(attr_dict)
+        for fkey in self.face:
+            attr = attr_dict.copy()
+            attr.update(self.facedata[fkey])
+            self.facedata[fkey] = attr
+
+    def get_face_attribute(self, fkey, name, default=None):
+        if not self.facedata:
+            return default
+        return self.facedata[fkey].get(name, default)
+
+    def get_face_attributes(self, fkey, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        if not self.facedata:
+            return defaults
+        return [self.facedata[fkey].get(name, default) for name, default in zip(names, defaults)]
 
     def get_faces_attribute(self, name, default=None):
-        return [self.get_face_attribute(fkey, name, default) for fkey in self.face]
+        if not self.facedata:
+            return [default for fkey in self.face]
+        return [self.facedata[fkey].get(name, default) for fkey in self.face]
 
-    def get_faces_attributes(self, names, default=None):
-        return [[self.get_face_attribute(fkey, name, default) for name in names] for fkey in self.face]
+    def get_faces_attributes(self, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        temp = zip(names, defaults)
+        if not self.facedata:
+            return [[default for name, default in temp] for fkey in self.face]
+        return [[self.facedata[fkey].get(name, default) for name, default in temp] for fkey in self.face]
+
+    # --------------------------------------------------------------------------
+    # attribute filters
+    # --------------------------------------------------------------------------
+
+    def vertices_where(self, where):
+        """Get vertices for which a certain condition or set of conditions is ``True``.
+
+        Parameters:
+            where (dict): A set of conditions in the form of key-value pairs.
+                The keys should be attribute names. The values can be attribute
+                values or ranges of attribute values in the form of min/max pairs.
+
+        Returns:
+            list: A list of vertex keys that satisfy the condition(s).
+
+        """
+        keys = []
+        for key, attr in self.vertices_iter(True):
+            is_match = True
+            for name, value in where.items():
+                if name not in attr:
+                    is_match = False
+                    break
+                if isinstance(value, (tuple, list)):
+                    minval, maxval = value
+                    if attr[name] < minval or attr[name] > maxval:
+                        is_match = False
+                        break
+                else:
+                    if value != attr[name]:
+                        is_match = False
+                        break
+            if is_match:
+                keys.append(key)
+        return keys
+
+    def edges_where(self, where):
+        """Get edges for which a certain condition or set of conditions is ``True``.
+
+        Parameters:
+            where (dict) : A set of conditions in the form of key-value pairs.
+                The keys should be attribute names. The values can be attribute
+                values or ranges of attribute values in the form of min/max pairs.
+
+        Returns:
+            list: A list of edge keys that satisfy the condition(s).
+
+        """
+        keys = []
+        for u, v, attr in self.edges_iter(True):
+            is_match = True
+            for name, value in where.items():
+                if name not in attr:
+                    is_match = False
+                    break
+                if isinstance(value, (tuple, list)):
+                    minval, maxval = value
+                    if attr[name] < minval or attr[name] > maxval:
+                        is_match = False
+                        break
+                else:
+                    if value != attr[name]:
+                        is_match = False
+                        break
+            if is_match:
+                keys.append((u, v))
+        return keys
 
     # --------------------------------------------------------------------------
     # vertex geometry
@@ -840,6 +1012,11 @@ network: {0}
             return self.attributes.get('color.vertex')
         return self.attributes.get('color.vertex')
 
+    def copy(self):
+        cls  = type(self)
+        data = deepcopy(self.data)
+        return cls.from_data(data)
+
     # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
@@ -852,13 +1029,26 @@ network: {0}
     # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
 
-    def plot(self, vcolor=None, vlabel=None, vsize=None, ecolor=None, elabel=None, ewidth=None, flabel=None):
+    def plot(self,
+             vertices_on=True,
+             edges_on=True,
+             vcolor=None,
+             vlabel=None,
+             vsize=None,
+             ecolor=None,
+             elabel=None,
+             ewidth=None,
+             flabel=None,
+             points=None,
+             lines=None):
         import matplotlib.pyplot as plt
         from brg.plotters.drawing import create_axes_2d
         # the network plotter should take care of axes, bounds, autoscale, show, ...
         # only necessary import should be the plotter
         axes = create_axes_2d()
         plotter = self.plotter
+        plotter.vertices_on = vertices_on
+        plotter.edges_on = edges_on
         if vcolor:
             plotter.vcolor = vcolor
         if vlabel:
@@ -873,24 +1063,13 @@ network: {0}
             plotter.ewidth = ewidth
         if flabel:
             plotter.flabel = flabel
+        if points:
+            plotter.points = points
+        if lines:
+            plotter.lines = lines
         plotter.plot(axes)
         axes.autoscale()
         plt.show()
-
-    # def plot3(self, vcolor=None):
-    #     import matplotlib.pyplot as plt
-    #     from brg.plotters.helpers import Bounds
-    #     from brg.datastructures.network.plotter import NetworkPlotter3D
-    #     from brg.plotters.drawing import create_axes_3d
-    #     # the network plotter should take care of axes, bounds, autoscale, show, ...
-    #     # set attributes differently
-    #     # only necessary import should be the plotter
-    #     axes = create_axes_3d()
-    #     plotter = NetworkPlotter3D(self)
-    #     bounds = Bounds([self.vertex_coordinates(key) for key in self])
-    #     bounds.plot(axes)
-    #     plotter.plot(axes)
-    #     plt.show()
 
 
 # ==============================================================================
@@ -905,28 +1084,4 @@ if __name__ == '__main__':
 
     print network
 
-    # network.plotter.vlabel = dict((key, key) for key in network)
-    # network.plotter.vsize = 0.2
-
-    # network.plot()
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# network: Network
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# - default vertex attributes
-
-# y => 0.0
-# x => 0.0
-# z => 0.0
-
-# - default edge attributes
-
-# None
-
-# - number of vertices: 32
-# - number of edges: 40
-
-# - vertex degree min: 1
-# - vertex degree max: 4
+    network.plot(vlabel={key: key for key in network})

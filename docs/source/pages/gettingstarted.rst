@@ -5,6 +5,34 @@ Getting started
 ********************************************************************************
 
 
+Tools
+=====
+
+Before we get started, make sure you have the necessary tools installed on your
+system.
+
+* A code editor or IDE:
+
+  * `Sublime Text <https://www.sublimetext.com/>`_ + `Anaconda Python IDE <http://damnwidget.github.io/anaconda/>`_
+  * `Eclipse <https://eclipse.org/>`_ + `PyDev <http://www.pydev.org/>`_
+  * ...
+
+* `Mercurial <https://www.mercurial-scm.org/>`_ and/or `Git <https://git-scm.com/>`_
+
+* A Git and/or Hg client:
+
+  * `SourceTree <https://www.sourcetreeapp.com/>`_
+  * `GitHub Desktop <https://desktop.github.com/>`_
+  * `MercurialEclipse <https://bitbucket.org/mercurialeclipse/main/wiki/Home>`_
+  * ...
+
+* `PathEditor <https://patheditor2.codeplex.com/>`_ (Windows)
+
+
+If you are on Mac, a package manager like `macports <https://www.macports.org/>`_
+or `homebrew <http://brew.sh/>`_ is also highly recommended.
+
+
 Download
 ========
 
@@ -25,8 +53,8 @@ Dependencies
 
 The BRG framework has very few dependencies, and most of them are optional. If
 you are happy working in Rhino or Blender, and are not interested in any of the
-numerical algorithms and functionality, then everything should work out of the
-box; provided you have Python installed of course.
+numerical stuff, then everything should work out of the box;
+provided you have Python installed, of course.
 
 For plotting two-dimensional representations of data structures (and to some extent
 three-dimensional as well), we use `Matplotlib <http://matplotlib.org/>`_.
@@ -34,8 +62,7 @@ For three-dimensional visualisations, we use `PyOpenGL <http://pyopengl.sourcefo
 and `PySide <https://wiki.qt.io/PySide>`_. Installation instructions for both, 
 and for the libraries they depend on are under construction and will be available soon.
 
-For all numerical calculations and algorithms,
-we rely on `NumPy <http://www.numpy.org/>`_ 
+For all numerical calculations and algorithms, we rely on `NumPy <http://www.numpy.org/>`_ 
 and `SciPy <https://www.scipy.org/>`_.
 
 Some network algorithms use `NetworkX <https://networkx.github.io/>`_ and
@@ -60,58 +87,86 @@ On mac, installing whatever doesn't ship with a scientific distribution is
 relatively easy with a package manager like `macports <https://www.macports.org/>`_
 or `homebrew <http://brew.sh/>`_.
 
-Also remeber that all of this is optional.
-Most functionality is available out-of-the-box.
+If you prefer a bit more control and want to try a manual install, SciPy provides
+some instructions for installing a `scientific Python stack <http://www.scipy.org/about.html>`_.
 
-
+Also remeber that all of this is optional. Most functionality is available out-of-the-box.
 
 
 Further Setup
 =============
 
 Once you have pulled the code from one of the repositories, the only thing
-left is to set a few environment variables. This simplifies importing modules in
-different contexts and environments.
+left to do is to set a few environment variables. This simplifies importing modules
+in different contexts and environments.
 
 
 On Windows
 ++++++++++
 
-On Windows, you can find the environment variables here::
-    
+On Windows, you can find the environment variables here
+
+::
+
     Control Panel > System > Advanced system settings > Environment Variables...
 
 
-Add the location of the BRG framework to your ``PYTHONPATH``::
+First, make sure that Python and/or your Scientific Python distribution is on the
+system ``PATH``. Usually, this is already taken care of by their installers.
+For example, if you installed Anaconda2, in PathEditor you should see the following
+lines in the list of directories
 
-    Z:\Code\brg_framework\src;%PYTHONPATH%
-
-
-Also make sure that Python and/or your Scientific Python distribution is on the
-system ``PATH``. I have the following directories listed at the beginning of the
-path::
+::
 
     C:\Anaconda2
     C:\Anaconda2\Scripts
     C:\Anaconda2\Library\bin
-    C:\IronPython27
-    C:\IronPython27\Scripts
+
+
+Then, add the location of the BRG framework to your ``PYTHONPATH``
+
+::
+
+    C:\path\to\the\brg_framework\src
+
+
+Start an interactive Python session (type ``python`` on the command line)
+and try the following
+
+::
+
+    >>> import brg
+    >>> from brg.datastructures.network import Network
+    >>> network = Network.from_obj(brg.get_data('lines.obj'))
+    >>> print network
 
 
 Rhino
 -----
+
+Although Rhino ships with its own version of IronPython, it is a bugy beta version,
+and therefore you should install your own copy of IronPython and add it to Rhino's
+search paths.
+
+If you are on Rhino 5, make sure to install IronPython 2.7.5. If you are test driving
+Rhino 6, you can use IronPython 2.7.5 or higher.
+
 
 In Rhino, open the *ScriptEditor*, and go to::
 
     Tools > Options > Files
 
 
-Add the following to the *Modules Search Paths* ::
+Add the following to the *Modules Search Paths* for IronPython::
 
     C:\IronPython27
     C:\IronPython27\Lib
     C:\IronPython27\DLLs
-    Z:\Code\brg_framework\src
+
+
+and this path for the framework library::
+
+    C:\path\to\the\brg_framework\src
 
 
 Then restart Rhino and run the following scripts
@@ -122,6 +177,19 @@ Then restart Rhino and run the following scripts
     import sys
 
     print sys.version_info
+
+
+This should print something like this::
+
+    sys.version_info(major=2, minor=7, micro=5, releaselevel='final', serial=0)
+
+
+.. code-block:: python
+
+    import ast
+
+
+This should not throw an error.
 
 
 .. code-block:: python
@@ -136,13 +204,7 @@ Then restart Rhino and run the following scripts
     brg_rhino.draw_network(network)
 
 
-If the first one outputs something like this::
-
-    # sys.version_info(major=2, minor=7, micro=5, releaselevel='final', serial=0)
-    
-
-and the second one draws a network in Rhino without throwing an error,
-you are all set.
+If this draws a network without throwing an error, you are all set.
 
 
 .. note::
@@ -154,29 +216,32 @@ you are all set.
     This means that you will need to install the same Python setup on both sides,
     to be able to access the all functionality from Rhino.
 
-.. IronPython27
-.. Blender
-
 
 On Mac
 ++++++
 
 If you are on a Mac, the procedure is similar. Open the Terminal and use your
-favourite text editing application to modify your ``.profile``::
+favourite text editing application to modify your ``.profile``
+
+::
 
     $ nano ~/.profile
 
-    export PATH="/Users/.../anaconda/bin:$PATH"
+::
 
-    export PYTHONPATH="/Users/.../brg_framework/src:$PYTHONPATH"
-    export PYTHONPATH="/Users/.../brg_packages:$PYTHONPATH"
-    export PYTHONPATH="/Users/.../brg_projects:$PYTHONPATH"
+    export PATH="/path/to/anaconda/bin:$PATH"
+    export PYTHONPATH="/path/to/the/brg_framework/src:$PYTHONPATH"
 
-Restart the Terminal or type::
+Restart the Terminal or type
+
+::
 
     $ source ~/.profile
 
-Start an interactive Python session and try the following::
+Start an interactive Python session (type ``python`` in the Terminal)
+and try the following
+
+::
 
     >>> import brg
     >>> from brg.datastructures.network import Network

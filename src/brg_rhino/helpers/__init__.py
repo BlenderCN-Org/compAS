@@ -10,10 +10,6 @@ helpers
 
 Helpers make it easier to work with datastructures in Rhino.
 
-.. seealso::
-
-    :mod:`brg_rhino.mixins`
-
 
 mesh
 ====
@@ -30,6 +26,8 @@ mesh
     mesh_from_surface_uv
     mesh_from_surface_heightfield
     draw_mesh
+    display_mesh_vertex_normals
+    display_mesh_face_normals
 
 
 network
@@ -49,9 +47,6 @@ network
     select_network_edge
     select_network_faces
     select_network_face
-    get_network_vertices
-    get_network_edges
-    get_network_faces
     update_network_attributes
     update_network_vertex_attributes
     update_network_edge_attributes

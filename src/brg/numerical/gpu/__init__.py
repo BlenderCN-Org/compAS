@@ -8,8 +8,11 @@ gpu
 .. module:: brg.numerical.gpu
 
 
-geometry
+pyopencl
 ========
+
+geometry
+--------
 
 .. currentmodule:: brg.numerical.gpu.geometry
 
@@ -19,12 +22,16 @@ geometry
     :toctree: generated/
 
 
-cuda.array
-==========
+pycuda
+======
 
-.. currentmodule:: brg.numerical.gpu.cuda.array
+.. currentmodule:: brg.numerical.gpu.cuda
 
-:mod:`brg.numerical.gpu.cuda.array`
+:mod:`brg.numerical.gpu.cuda`
+
+
+cuda._array
+-----------
 
 .. autosummary::
     :toctree: generated/
@@ -42,12 +49,8 @@ cuda.array
     cuda_zeros
 
 
-cuda.linalg
-===========
-
-.. currentmodule:: brg.numerical.gpu.cuda.linalg
-
-:mod:`brg.numerical.gpu.cuda.linalg`
+cuda._linalg
+------------
 
 .. autosummary::
     :toctree: generated/
@@ -65,12 +68,8 @@ cuda.linalg
     cuda_transpose
 
 
-cuda.math
-=========
-
-.. currentmodule:: brg.numerical.gpu.cuda.math
-
-:mod:`brg.numerical.gpu.cuda.math`
+cuda._math
+----------
 
 .. autosummary::
     :toctree: generated/
@@ -98,12 +97,8 @@ cuda.math
     cuda_tanh
 
 
-cuda.utilities
-==============
-
-.. currentmodule:: brg.numerical.gpu.cuda.utilities
-
-:mod:`brg.numerical.gpu.cuda.utilities`
+cuda._utilities
+---------------
 
 .. autosummary::
     :toctree: generated/

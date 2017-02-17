@@ -19,7 +19,7 @@ __email__      = '<vanmelet@ethz.ch>'
 __all__ = [
     'vector_from_points',
     'plane_from_points',
-    'fit_plane_from_points',
+    'bestfit_plane_from_points',
     'circle_from_points',
 
     'vector_component',
@@ -70,8 +70,8 @@ __all__ = [
     'closest_point_on_polyline',
 
     'is_colinear',  # is_point_on_line
-    'is_coplanar',  # is_point_on_plane
-    'is_polygon_convex',  # is_polygon_planar
+    'is_coplanar',  # is_point_on_plane, is_polygon_planar
+    'is_polygon_convex',
     'is_point_on_plane',
     'is_point_on_line',
     'is_point_on_segment',
@@ -79,13 +79,23 @@ __all__ = [
     'is_point_on_polyline',
     'is_point_in_triangle',
 
+    'is_intersection_line_line',
+    'is_intersection_line_plane',
+    'is_intersection_segment_plane',
+    'is_intersection_plane_plane',
     'is_intersection_line_triangle',
     'is_intersection_box_box',
 
     'intersection_line_line',
-    'intersection_lines',
     'intersection_circle_circle',
     'intersection_line_triangle',
+    'intersection_line_plane',
+    'intersection_segment_plane',
+    'intersection_plane_plane',
+    'intersection_plane_plane_plane',
+
+    'intersection_lines',
+    'intersection_planes',
 
     'translate_points',
     'translate_lines',
@@ -134,7 +144,7 @@ def plane_from_points(a, b, c):
     return a, n
 
 
-def fit_plane_from_points(points):
+def bestfit_plane_from_points(points):
     """Fitting a plane to a list of points.
 
     Parameters:
@@ -142,25 +152,24 @@ def fit_plane_from_points(points):
 
     Returns:
         tuple: base point and normal vector (normalized).
-         
+
     References:
         http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
 
     Warning:
-        This method will minimize the squares of the residuals as perpendicular 
-        to the main axis, not the residuals perpendicular to the plane. If the 
-        residuals are small (i.e. your points all lie close to the resulting plane), 
-        then this method will probably suffice. However, if your points are more 
+        This method will minimize the squares of the residuals as perpendicular
+        to the main axis, not the residuals perpendicular to the plane. If the
+        residuals are small (i.e. your points all lie close to the resulting plane),
+        then this method will probably suffice. However, if your points are more
         spread then this method may not be the best fit.
     """
-    
     centroid = centroid_points(points)
-    
-    xx,xy,xz = 0.,0.,0.
-    yy,yz,zz = 0.,0.,0.
-    
+
+    xx, xy, xz = 0., 0., 0.
+    yy, yz, zz = 0., 0., 0.
+
     for pt in points:
-        rx,ry,rz = subtract_vectors(pt,centroid)
+        rx, ry, rz = subtract_vectors(pt, centroid)
         xx += rx * rx
         xy += rx * ry
         xz += rx * rz
@@ -168,26 +177,26 @@ def fit_plane_from_points(points):
         yz += ry * rz
         zz += rz * rz
 
-    det_x = yy*zz - yz*yz
-    det_y = xx*zz - xz*xz
-    det_z = xx*yy - xy*xy
+    det_x = yy * zz - yz * yz
+    det_y = xx * zz - xz * xz
+    det_z = xx * yy - xy * xy
 
     det_max = max(det_x, det_y, det_z)
 
     if det_max == det_x:
-        a = (xz*yz - xy*zz) / det_x
-        b = (xy*yz - xz*yy) / det_x
-        dir = (1.,a,b)
+        a = (xz * yz - xy * zz) / det_x
+        b = (xy * yz - xz * yy) / det_x
+        normal = (1., a, b)
     elif det_max == det_y:
-        a = (yz*xz - xy*zz) / det_y
-        b = (xy*xz - yz*xx) / det_y
-        dir = (a,1.,b)
+        a = (yz * xz - xy * zz) / det_y
+        b = (xy * xz - yz * xx) / det_y
+        normal = (a, 1., b)
     else:
-        a = (yz*xy - xz*yy) / det_z
-        b = (xz*xy - yz*xx) / det_z
-        dir = (a,b,1.)
-        
-    return centroid, normalize_vector(dir)
+        a = (yz * xy - xz * yy) / det_z
+        b = (xz * xy - yz * xx) / det_z
+        normal = (a, b, 1.)
+
+    return centroid, normalize_vector(normal)
 
 
 def circle_from_points(a, b, c):
@@ -730,7 +739,7 @@ def angle_smallest_points(a, b, c):
     """
     u = subtract_vectors(b, a)
     v = subtract_vectors(c, a)
-    return angle_smallest_points(u, v)
+    return angle_smallest_vectors(u, v)
 
 
 # ------------------------------------------------------------------------------
@@ -1231,6 +1240,16 @@ def is_point_on_line(point, line, tol=0.0):
 
 
 def is_point_on_segment(point, segment, tol=0.0):
+    """Verify if a point lies on a given line segment.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates.
+        segment (tuple): Two points defining the line segment.
+
+    Returns:
+        (bool): True if the point is on the line segment, False otherwise.
+
+    """
     a, b = segment
     if not is_point_on_line(point, segment, tol=tol):
         return False
@@ -1321,8 +1340,7 @@ def is_point_in_triangle(point, triangle):
         c2 = cross_vectors(v, vector_from_points(a, p2))
         if dot_vectors(c1, c2) >= 0:
             return True
-        else:
-            return False
+        return False
     a, b, c = triangle
     if is_on_same_side(point, a, (b, c)) and \
        is_on_same_side(point, b, (a, c)) and \
@@ -1338,8 +1356,77 @@ def is_point_in_circle(point, circle):
     return False
 
 
-def is_intersection_line_triangle(line,triangle):
-    
+def is_intersection_line_line(l1, l2):
+    raise NotImplementedError
+
+
+def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
+    """Verify if a line segment intersects with a plane.
+
+    Parameters:
+        segment (tuple): Two points defining the line segment.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        (bool): True if the line segment intersects with the plane, False otherwise.
+
+    """
+    pt1 = segment[0]
+    pt2 = segment[1]
+    p_cent = plane[0]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2, pt1)
+    dot = dot_vectors(p_norm, v1)
+
+    if abs(dot) > epsilon:
+        v2 = subtract_vectors(pt1, p_cent)
+        fac = - dot_vectors(p_norm, v2) / dot
+        if fac > 0. and fac < 1.:
+            return True
+        return False
+    else:
+        return False
+
+
+def is_intersection_line_plane(line, plane, epsilon=1e-6):
+    """Verify if a line (continuous ray) intersects with a plane.
+
+    Parameters:
+        line (tuple): Two points defining the line.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        (bool): True if the line intersects with the plane, False otherwise.
+
+    """
+    pt1 = line[0]
+    pt2 = line[1]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2, pt1)
+    dot = dot_vectors(p_norm, v1)
+
+    if abs(dot) > epsilon:
+        return True
+    return False
+
+
+def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
+    """Computes the intersection of two planes
+
+    Parameters:
+        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
+        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Returns:
+        (bool): True if the planes intersect, False otherwise.
+
+    """
+    # check for parallelity of planes
+    if abs(dot_vectors(plane1[1], plane2[1])) > 1 - epsilon:
+        return False
+    return True
+
+
+def is_intersection_line_triangle(line, triangle):
     """
     Verifies if a line (ray) intersects with a triangle
     based on the Moeller Trumbore intersection algorithm
@@ -1354,7 +1441,7 @@ def is_intersection_line_triangle(line,triangle):
     Note:
         The line is treated as continues, directed ray and not as line segment with a start and end point
     """
-    a,b,c = triangle
+    a, b, c = triangle
     v1 = subtract_vectors(line[1], line[0])
     p1 = line[0]
     EPSILON = 0.000000001
@@ -1481,14 +1568,11 @@ def is_intersection_box_box(box_1, box_2):
     # checks for edge triangle intersections
     intx = False
     for pt1, pt2 in edges:
-        for a, b, c in tris:
-            for p1, p2 in [(pt1, pt2), (pt2, pt1)]:
-                v1 = subtract_vectors(p2, p1)
-                t = is_intersection_ray_triangle(p1, v1, a, b, c)
-                if t:
-                    v1 = scale_vector(v1, t)
-                    test_pt = add_vectors(v1, p1)
-                    if is_point_on_segment(test_pt, (p1, p2)):
+        for tri in tris:
+            for line in [(pt1, pt2), (pt2, pt1)]:
+                test_pt = intersection_line_triangle(line, tri)
+                if test_pt:
+                    if is_point_on_segment(test_pt, line):
                         # intersection found
                         intx = True
                         break
@@ -1510,16 +1594,11 @@ def intersection_line_line():
     raise NotImplementedError
 
 
-def intersection_lines():
-    raise NotImplementedError
-
-
 def intersection_circle_circle():
     raise NotImplementedError
 
 
-def intersection_line_triangle(line,triangle):
-    
+def intersection_line_triangle(line, triangle):
     """
     Computes the intersection point of a line (ray) and a triangle
     based on the Moeller Trumbore intersection algorithm
@@ -1534,7 +1613,7 @@ def intersection_line_triangle(line,triangle):
     Note:
         The line is treated as continues, directed ray and not as line segment with a start and end point
     """
-    a,b,c = triangle
+    a, b, c = triangle
     v1 = subtract_vectors(line[1], line[0])
     p1 = line[0]
     EPSILON = 0.000000001
@@ -1565,9 +1644,120 @@ def intersection_line_triangle(line,triangle):
         return None
     t = dot_vectors(e2, q) * inv_det
     if t > EPSILON:
-        return add_vectors(p1,scale_vector(v1,t))
+        return add_vectors(p1, scale_vector(v1, t))
     # No hit
-    return False
+    return None
+
+
+def intersection_line_plane(line, plane, epsilon=1e-6):
+    """Computes the intersection point of a line (ray) and a plane
+
+    Parameters:
+        line (tuple): Two points defining the line.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        point (tuple) if the line (ray) intersects with the plane, None otherwise.
+
+    """
+    pt1 = line[0]
+    pt2 = line[1]
+    p_cent = plane[0]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2, pt1)
+    dot = dot_vectors(p_norm, v1)
+
+    if abs(dot) > epsilon:
+        v2 = subtract_vectors(pt1, p_cent)
+        fac = -dot_vectors(p_norm, v2) / dot
+        vec = scale_vector(v1, fac)
+        return add_vectors(pt1, vec)
+    else:
+        return None
+
+
+def intersection_segment_plane(segment, plane, epsilon=1e-6):
+    """Computes the intersection point of a line segment and a plane
+
+    Parameters:
+        segment (tuple): Two points defining the line segment.
+        plane (tuple): The base point and normal defining the plane.
+    Returns:
+        point (tuple) if the line segment intersects with the plane, None otherwise.
+
+    """
+    pt1 = segment[0]
+    pt2 = segment[1]
+    p_cent = plane[0]
+    p_norm = plane[1]
+
+    v1 = subtract_vectors(pt2, pt1)
+    dot = dot_vectors(p_norm, v1)
+
+    if abs(dot) > epsilon:
+        v2 = subtract_vectors(pt1, p_cent)
+        fac = -dot_vectors(p_norm, v2) / dot
+        if fac > 0. and fac < 1.:
+            vec = scale_vector(v1, fac)
+            return add_vectors(pt1, vec)
+        return None
+    else:
+        return None
+
+
+def intersection_plane_plane(plane1, plane2, epsilon=1e-6):
+    """Computes the intersection of two planes
+
+    Parameters:
+        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
+        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Returns:
+        line (tuple): Two points defining the intersection line. None if planes are parallel.
+
+    """
+    # check for parallelity of planes
+    if abs(dot_vectors(plane1[1], plane2[1])) > 1 - epsilon:
+        return None
+    vec = cross_vectors(plane1[1], plane2[1])  # direction of intersection line
+    p1 = plane1[0]
+    vec_inplane = cross_vectors(vec, plane1[1])
+    p2 = add_vectors(p1, vec_inplane)
+    px1 = intersection_line_plane((p1, p2), plane2)
+    px2 = add_vectors(px1, vec)
+    return (px1, px2)
+
+
+def intersection_plane_plane_plane(plane1, plane2, plane3, epsilon=1e-6):
+    """Computes the intersection of three planes
+
+    Parameters:
+        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
+        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Returns:
+        point (tuple): The intersection point. None if two (or all three) planes are parallel.
+
+    Note:
+        Currently this only computes the intersection point. E.g.: If two planes
+        are parallel the intersection lines are not computed. see:
+        http://geomalgorithms.com/Pic_3-planes.gif
+    """
+    line = intersection_plane_plane(plane1, plane2, epsilon)
+    if not line:
+        return None
+    pt = intersection_line_plane(line, plane3, epsilon)
+    if pt:
+        return pt
+    return None
+
+
+def intersection_lines():
+    raise NotImplementedError
+
+
+def intersection_planes():
+    raise NotImplementedError
+
+
 # ==============================================================================
 # transformations
 # ==============================================================================
@@ -1663,7 +1853,12 @@ def mirror_point_plane(point, plane):
 def mirror_points_plane(points, plane):
     pass
 
-def mirror_vector_vector(v1,v2):
+
+# not sure what the point of this is?!
+# usually used for bouncing back a ray on a plane see:
+#https://www.edplace.com/userfiles/image/Mirrors%20and%20Reflection.jpg
+# maybe a it should more be a function like: reflect line on plane? 
+def mirror_vector_vector(v1, v2):
     """Mirrors vector about vector.
 
     Parameters:
@@ -1672,8 +1867,10 @@ def mirror_vector_vector(v1,v2):
 
     Returns:
         Tuple: mirrored vector
-    """  
-    return subtract_vectors(v1, scale_vector(v2,2*dot_vectors(v1,v2)))
+    """
+    return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
+
+
 # ------------------------------------------------------------------------------
 # project (not the same as pull) => projection direction is required
 # ------------------------------------------------------------------------------
@@ -1688,7 +1885,7 @@ def project_point_plane(point, plane):
 
     Parameters:
         point (sequence of float): XYZ coordinates of the original point.
-        plane (tuple): Base point and normal vector defining the plane.
+        plane (tuple): Base poin.t and normal vector defining the plane
 
     Returns:
         list: XYZ coordinates of the projected point.
@@ -1749,6 +1946,7 @@ def project_point_line(point, line):
     ab = subtract_vectors(b, a)
     ap = subtract_vectors(point, a)
     c = vector_component(ap, ab)
+
     return add_vectors(a, c)
 
 
@@ -1758,8 +1956,13 @@ def project_points_line(points, line):
 
 
 # ==============================================================================
+# best-fit(ting)
+# ==============================================================================
+
+# ==============================================================================
 # Debugging
 # ==============================================================================
+
 
 if __name__ == '__main__':
 

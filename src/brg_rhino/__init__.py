@@ -20,7 +20,6 @@ Package for the integration of the framework in the Rhino CAD modeling environme
     brg_rhino.forms
     brg_rhino.geometry
     brg_rhino.helpers
-    brg_rhino.mixins
     brg_rhino.numerical
     brg_rhino.ui
     brg_rhino.utilities

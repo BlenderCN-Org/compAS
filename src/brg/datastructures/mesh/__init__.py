@@ -16,6 +16,13 @@ Package for working with mesh objects.
 
     Mesh
 
+.. autosummary::
+    :toctree: generated/
+
+    plotter.MeshPlotter2D
+    viewer.MeshViewer
+    viewer.SubdMeshViewer
+
 
 operations
 ==========
@@ -93,3 +100,4 @@ numerical
 """
 
 from .mesh import Mesh
+

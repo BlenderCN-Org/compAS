@@ -16,6 +16,13 @@ Package for working with network objects.
 
     Network
 
+.. autosummary::
+    :toctree: generated/
+
+    plotter.NetworkPlotter2D
+    plotter.NetworkPlotter3D
+    viewer.NetworkViewer
+
 
 operations
 ==========
@@ -55,7 +62,6 @@ algorithms
     smooth_network_area
     smooth_network_mass
     smooth_network_length
-    smooth_network_angle
     network_dfs
     network_bfs
     network_dfs_paths

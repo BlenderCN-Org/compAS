@@ -16,9 +16,8 @@ In general the following is assumed.
 
 * point: the xyz coordinates as iterable of floats.
 * vector: the xyz coordinates of the end point. the start is always the origin.
-* line: a tuple with two points.
-* ray: a tuple with two points.
-* segment: a tuple with two points.
+* line: a tuple with two points representing a continuous line (ray).
+* segment: a tuple with two points representing a line segment.
 * plane: a tuple with a base point and normal vector.
 * circle: a tuple with a point,
   the normal vector of the plane of the circle, and the radius as float.
@@ -31,7 +30,7 @@ In general the following is assumed.
 
 
 spatial
-======================================
+=======
 
 .. currentmodule:: brg.geometry.spatial
 
@@ -45,6 +44,7 @@ constructors
 
     vector_from_points
     plane_from_points
+    bestfit_plane_from_points
     circle_from_points
 
 miscellaneous
@@ -154,6 +154,12 @@ queries
     is_point_on_polyline
     is_point_in_triangle
     is_point_in_circle
+    is_intersection_line_line
+    is_intersection_line_plane
+    is_intersection_segment_plane
+    is_intersection_plane_plane
+    is_intersection_line_triangle
+    is_intersection_box_box
 
 intersections
 -------------
@@ -162,8 +168,14 @@ intersections
     :toctree: generated/
 
     intersection_line_line
-    intersection_lines
     intersection_circle_circle
+    intersection_line_triangle
+    intersection_line_plane
+    intersection_segment_plane
+    intersection_plane_plane
+    intersection_plane_plane_plane
+    intersection_lines
+    intersection_planes
 
 transformations
 ---------------
@@ -174,7 +186,11 @@ transformations
     translate_points
     translate_lines
     rotate_points
+    mirror_point_point
+    mirror_points_point
+    mirror_point_line
     mirror_points_line
+    mirror_point_plane
     mirror_points_plane
     project_point_plane
     project_points_plane
@@ -192,6 +208,60 @@ planar
 .. autosummary::
     :toctree: generated/
 
+    vector_from_points_2d
+    circle_from_points_2d
+    vector_component_2d
+    add_vectors_2d
+    subtract_vectors_2d
+    scale_vector_2d
+    normalize_vector_2d
+    normalize_vectors_2d
+    dot_vectors_2d
+    cross_vectors_2d
+    length_vector_2d
+    length_vector_sqrd_2d
+    distance_point_point_2d
+    distance_point_point_sqrd_2d
+    distance_point_line_2d
+    distance_point_line_sqrd_2d
+    distance_line_line_2d
+    distance_line_line_sqrd_2d
+    angles_points_2d
+    angles_vectors_2d
+    angle_smallest_points_2d
+    angle_smallest_vectors_2d
+    midpoint_line_2d
+    centroid_points_2d
+    center_of_mass_polygon_2d
+    area_polygon_2d
+    area_triangle_2d
+    bounding_box_2d
+    closest_point_on_line_2d
+    closest_point_on_segment_2d
+    closest_point_on_polygon_2d
+    closest_part_of_triangle
+    is_ccw_2d
+    is_colinear_2d
+    is_polygon_convex_2d
+    is_point_on_line_2d
+    is_point_on_segment_2d
+    is_point_on_polygon_2d
+    is_point_in_triangle_2d
+    is_point_in_polygon_2d
+    is_intersection_line_line_2d
+    is_intersection_segment_segment_2d
+    intersection_line_line_2d
+    intersection_lines_2d
+    intersection_circle_circle_2d
+    translate_points_2d
+    translate_lines_2d
+    rotate_points_2d
+    mirror_point_point_2d
+    mirror_points_point_2d
+    mirror_point_line_2d
+    mirror_points_line_2d
+    project_point_line_2d
+    project_points_line_2d
 
 
 elements

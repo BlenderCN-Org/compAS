@@ -21,7 +21,8 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = [
     'create_layers',
     'clear_layers',
-    'delete_layers'
+    'clear_current_layer',
+    'delete_layers',
 ]
 
 
@@ -134,6 +135,11 @@ def clear_layers(layers, clear_children=True):
         purge_object(obj.RuntimeSerialNumber)
 
     rs.EnableRedraw(True)
+
+
+def clear_current_layer():
+    layer = rs.CurrentLayer()
+    clear_layers((layer, ))
 
 
 def delete_layers(layers):

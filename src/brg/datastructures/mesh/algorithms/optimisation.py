@@ -19,6 +19,7 @@ __all__ = [
 def optimise_trimesh_topology(mesh,
                               target,
                               kmax=100,
+                              target_start=1.0,
                               kmax_start=None,
                               tol=0.1,
                               divergence=0.01,
@@ -54,44 +55,12 @@ def optimise_trimesh_topology(mesh,
 
     Examples:
 
-        .. code-block:: python
-
-            from brg.datastructures.mesh import Mesh
-            from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
-
-            vertices = [
-                (0.0, 0.0, 0.0),
-                (10.0, 0.0, 0.0),
-                (10.0, 10.0, 0.0),
-                (0.0, 10.0, 0.0),
-                (5.0, 5.0, 0.0)
-            ]
-
-            faces = [
-                ('0', '1', '4'),
-                ('1', '2', '4'),
-                ('2', '3', '4'),
-                ('3', '0', '4')
-            ]
-
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-            optimise_trimesh_topology(
-                mesh,
-                target=0.5,
-                target_start=1.0,
-                tol=0.05,
-                kmax=300,
-                allow_boundary=True,
-                verbose=False
-            )
-
-            mesh.plot(vsize=0.05)
-
         .. plot::
+            :include-source:
 
             from brg.datastructures.mesh import Mesh
             from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
+
             vertices = [
                 (0.0, 0.0, 0.0),
                 (10.0, 0.0, 0.0),
@@ -105,7 +74,9 @@ def optimise_trimesh_topology(mesh,
                 ('2', '3', '4'),
                 ('3', '0', '4')
             ]
+
             mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
             optimise_trimesh_topology(
                 mesh,
                 target=0.5,
@@ -115,7 +86,8 @@ def optimise_trimesh_topology(mesh,
                 allow_boundary=True,
                 verbose=False
             )
-            mesh.plot(vsize=0.05)
+
+            mesh.plot(vertexsize=0.05)
 
 
     """
@@ -126,8 +98,8 @@ def optimise_trimesh_topology(mesh,
     lmax = (1 + tol) * (4.0 / 3.0) * target
 
     edge_len = []
-    for u,v in mesh.edges():
-        edge_len.append(mesh.edge_length(u,v))
+    for u, v in mesh.edges():
+        edge_len.append(mesh.edge_length(u, v))
     target_start = max(edge_len)
 
     fac = float(target_start / target)
@@ -302,4 +274,4 @@ if __name__ == '__main__':
 
     print t1 - t0
 
-    mesh.plot(vsize=0.05)
+    mesh.plot(vertexsize=0.05)
