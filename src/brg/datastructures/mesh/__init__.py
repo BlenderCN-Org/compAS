@@ -72,6 +72,7 @@ algorithms
     subdivide_mesh_doosabin
     subdivide_trimesh_loop
     delaunay_from_points
+    voronoi_from_points
     optimise_trimesh_topology
 
 

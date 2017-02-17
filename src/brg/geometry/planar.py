@@ -1,5 +1,7 @@
 from __future__ import print_function
 
+import random
+
 from math import sqrt
 from math import acos
 from math import pi
@@ -78,6 +80,7 @@ __all__ = [
 
     'subtract_vectors_2d',
     'scale_vector_2d',
+    'scatter_points_2d',
 
     'translate_points_2d',
     'translate_lines_2d',
@@ -85,6 +88,15 @@ __all__ = [
     'vector_from_points_2d',
     'vector_component_2d',
 ]
+
+
+# ------------------------------------------------------------------------------
+# miscellaneous
+# ------------------------------------------------------------------------------
+
+
+def scatter_points_2d():
+    return [(1.0 * random.randint(0, 100), 1.0 * random.randint(0, 100), 0.0) for i in range(20)]
 
 
 # ------------------------------------------------------------------------------

@@ -1,17 +1,23 @@
 import random
 
 from brg.datastructures.mesh import Mesh
-from brg.datastructures.mesh.operations import swap_edge_trimesh as swap_edge
+from brg.datastructures.mesh.algorithms import construct_dual_mesh
+from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
+from brg.datastructures.mesh.algorithms import smooth_mesh_centerofmass
+from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
+from brg.datastructures.mesh.operations import swap_edge_trimesh
 
 from brg.geometry import centroid_points
 from brg.geometry import distance_point_point
 from brg.geometry import add_vectors
 from brg.geometry import bounding_box
+from brg.geometry import circle_from_points
 
 from brg.geometry.planar import is_point_in_polygon_2d
 from brg.geometry.planar import is_point_in_triangle_2d
 from brg.geometry.planar import is_point_in_circle_2d
 from brg.geometry.planar import circle_from_points_2d
+from brg.geometry.planar import scatter_points_2d
 
 
 __author__    = 'Tom Van Mele'
@@ -22,6 +28,7 @@ __email__     = 'vanmelet@ethz.ch'
 
 __all__ = [
     'delaunay_from_points',
+    'voronoi_from_points'
 ]
 
 
@@ -39,7 +46,7 @@ def _super_triangle(coords):
     return pt1, pt2, pt3
 
 
-def delaunay_from_points(points, polygon=None, polygons=None, cls=None):
+def delaunay_from_points(points, polygon=None, polygons=None):
     """Computes the delaunay triangulation for a list of points.
 
     Parameters:
@@ -74,10 +81,7 @@ def delaunay_from_points(points, polygon=None, polygons=None, cls=None):
             )
 
     """
-    if cls:
-        mesh = cls()
-    else:
-        mesh = Mesh()
+    mesh = Mesh()
 
     # to avoid numerical issues for perfectly structured point sets
     tiny = 1e-8
@@ -148,7 +152,7 @@ def delaunay_from_points(points, polygon=None, polygons=None, cls=None):
                 circle = circle_from_points_2d(a, b, c)
 
                 if is_point_in_circle_2d(pt, circle):
-                    fkey, fkey_op = swap_edge(mesh, u, v)
+                    fkey, fkey_op = swap_edge_trimesh(mesh, u, v)
                     newtris.append(fkey)
                     newtris.append(fkey_op)
 
@@ -174,21 +178,99 @@ def delaunay_from_points(points, polygon=None, polygons=None, cls=None):
     return [[int(key) for key in mesh.face_vertices(fkey, True)] for fkey in mesh.faces()]
 
 
+def voronoi_from_points(points, boundary=None, holes=None, return_delaunay=False):
+    """Construct the Voronoi dual of the triangulation of a set of points.
+
+    Parameters:
+        pass
+
+    Example:
+
+        .. plot::
+            :include-source:
+
+            from numpy import random
+            from numpy import hstack
+            from numpy import zeros
+
+            from brg.datastructures.mesh import Mesh
+            from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
+            from brg.datastructures.mesh.algorithms import delaunay_from_points
+            from brg.datastructures.mesh.algorithms import voronoi_from_points
+
+            points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
+            mesh = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
+
+            optimise_trimesh_topology(mesh, 1.0, allow_boundary=True)
+
+            points = [mesh.vertex_coordinates(key) for key in mesh]
+
+            voronoi, delaunay = voronoi_from_points(points, return_delaunay=True)
+
+            lines = []
+            for u, v in voronoi.edges():
+                lines.append({
+                    'start': voronoi.vertex_coordinates(u, 'xy'),
+                    'end'  : voronoi.vertex_coordinates(v, 'xy')
+                })
+
+            boundary = set(delaunay.vertices_on_boundary())
+
+            delaunay.plot(
+                vertexsize=0.075,
+                faces_on=False,
+                edgecolor='#cccccc',
+                vertexcolor={key: '#0092d2' for key in delaunay if key not in boundary},
+                lines=lines
+            )
+
+    """
+    delaunay = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
+    voronoi  = construct_dual_mesh(delaunay)
+    for key in voronoi:
+        a, b, c = delaunay.face_coordinates(key)
+        center, radius, normal = circle_from_points(a, b, c)
+        voronoi.vertex[key]['x'] = center[0]
+        voronoi.vertex[key]['y'] = center[1]
+        voronoi.vertex[key]['z'] = center[2]
+    if return_delaunay:
+        return voronoi, delaunay
+    return voronoi
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    import brg
+    from numpy import random
+    from numpy import hstack
+    from numpy import zeros
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
 
-    vertices = [mesh.vertex_coordinates(key) for key in mesh]
-    faces = delaunay_from_points(vertices)
+    mesh = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
 
-    delaunay = Mesh.from_vertices_and_faces(vertices, faces)
+    optimise_trimesh_topology(mesh, 1.0, allow_boundary=True)
+
+    points = [mesh.vertex_coordinates(key) for key in mesh]
+
+    voronoi, delaunay = voronoi_from_points(points, return_delaunay=True)
+
+    lines = []
+    for u, v in voronoi.edges():
+        lines.append({
+            'start': voronoi.vertex_coordinates(u, 'xy'),
+            'end'  : voronoi.vertex_coordinates(v, 'xy')
+        })
+
+    boundary = set(delaunay.vertices_on_boundary())
 
     delaunay.plot(
-        vertexsize=0.1
+        vertexsize=0.075,
+        faces_on=False,
+        edgecolor='#cccccc',
+        vertexcolor={key: '#0092d2' for key in delaunay if key not in boundary},
+        lines=lines
     )

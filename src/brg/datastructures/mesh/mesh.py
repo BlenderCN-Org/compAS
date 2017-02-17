@@ -889,8 +889,7 @@ mesh summary
     def get_attribute(self, name, default):
         return self.attributes.get(name, default)
 
-    # write out full name?
-    def set_dva(self, attr_dict=None, **kwargs):
+    def update_default_vertex_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
@@ -899,9 +898,6 @@ mesh summary
             attr = attr_dict.copy()
             attr.update(self.vertex[key])
             self.vertex[key] = attr
-
-    def set_vertex_attribute(self, key, name, value):
-        self.vertex[key][name] = value
 
     def get_vertex_attribute(self, key, name, default=None):
         return self.vertex[key].get(name, default)
@@ -916,8 +912,7 @@ mesh summary
     def get_vertices_attributes(self, names, default=None):
         return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
 
-    # write out full name?
-    def set_dfa(self, attr_dict=None, **kwargs):
+    def update_default_face_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
@@ -930,12 +925,6 @@ mesh summary
             attr = attr_dict.copy()
             attr.update(self.dualdata.vertex[fkey])
             self.dualdata.vertex[fkey] = attr
-
-    def set_face_attribute(self, fkey, name, value):
-        if not self.dualdata:
-            self.dualdata = Mesh()
-            self.dualdata.add_vertex(key=fkey)
-        self.dualdata.vertex[fkey][name] = value
 
     def get_face_attribute(self, fkey, name, default=None):
         if not self.dualdata:
@@ -951,7 +940,7 @@ mesh summary
     # - unused edges can be culled
     # ..........................................................................
 
-    def set_dea(self, attr_dict=None, **kwargs):
+    def update_default_edge_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
@@ -961,17 +950,17 @@ mesh summary
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
 
-    def set_edge_attribute(self, u, v, name, value):
-        if u in self.edge and v in self.edge[u]:
-            self.edge[u][v][name] = value
-            return
-        if v in self.edge and u in self.edge[v]:
-            self.edge[v][u][name] = value
-            return
-        if u not in self.edge:
-            self.edge[u] = {}
-        self.edge[u][v] = {}
-        self.edge[u][v][name] = value
+    # def set_edge_attribute(self, u, v, name, value):
+    #     if u in self.edge and v in self.edge[u]:
+    #         self.edge[u][v][name] = value
+    #         return
+    #     if v in self.edge and u in self.edge[v]:
+    #         self.edge[v][u][name] = value
+    #         return
+    #     if u not in self.edge:
+    #         self.edge[u] = {}
+    #     self.edge[u][v] = {}
+    #     self.edge[u][v][name] = value
 
     def get_edge_attribute(self, u, v, name, default=None):
         if u in self.edge:
@@ -1727,8 +1716,8 @@ if __name__ == '__main__':
 
     mesh = Mesh.from_obj(brg.get_data('faces.obj'))
 
-    mesh.set_dva({'px': 0.0, 'py': 0.0, 'pz': 0.0})
-    mesh.set_dva({'is_fixed': False})
+    mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    mesh.update_default_vertex_attributes({'is_fixed': False})
 
     print(mesh)
 

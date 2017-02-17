@@ -162,14 +162,15 @@ def bestfit_plane_from_points(points):
         residuals are small (i.e. your points all lie close to the resulting plane),
         then this method will probably suffice. However, if your points are more
         spread then this method may not be the best fit.
+
     """
     centroid = centroid_points(points)
 
     xx, xy, xz = 0., 0., 0.
     yy, yz, zz = 0., 0., 0.
 
-    for pt in points:
-        rx, ry, rz = subtract_vectors(pt, centroid)
+    for point in points:
+        rx, ry, rz = subtract_vectors(point, centroid)
         xx += rx * rx
         xy += rx * ry
         xz += rx * rz
