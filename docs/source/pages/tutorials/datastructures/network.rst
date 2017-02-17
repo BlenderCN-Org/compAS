@@ -298,7 +298,7 @@ Topology
 
 .. rubric:: Exercise
 
-Find all the leaves of the network in the sample file ``'grid-irregular.obj'``.
+Find all the leaves of the network in the sample file ``'grid_irregular.obj'``.
 Leaves are vertices with only one neighbour.
 Print the keys of these vertices and give them a different color in a plot.
 
