@@ -1,7 +1,7 @@
 from math import cos
 from math import sin
 
-from brg.geometry import angle_smallest_vectors
+from brg.geometry.planar import angle_smallest_vectors_2d
 from brg.geometry.planar import is_intersection_segment_segment_2d
 
 
@@ -160,23 +160,69 @@ def is_network_planar_embedding(network):
             is_network_crossed(network))
 
 
-# # is it embedded in the plane with straight lines only
-# def is_network_straightline_embedding(network):
-#     raise NotImplementedError
-
-
-# # is it embedded in the plane with only straight lines between the nodes
-# # and without crossings
-# def is_network_planar_straightline_embedding(network):
-#     return (is_network_planar_embedding(network) and
-#             is_network_straightline_embedding(network))
-
-
 def embed_network_in_plane(network, fix=None, straightline=True):
     """Embed the network in the plane.
 
     Parameters:
-        network (brg.datastructures)
+        network (brg.datastructures.network.Network): The network object.
+
+        fix (list): Optional.
+            Two fixed points.
+            Default is ``None``.
+
+        straightline (bool): Optional.
+            Embed using straight lines.
+            Default is ``True``.
+
+    Returns:
+        bool:
+        ``True`` if the embedding was successful.
+        ``False`` otherwise.
+
+    Raises:
+        ImportError: If NetworkX is not installed.
+
+    Example:
+
+        .. plot::
+            :include-source:
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import embed_network_in_plane
+
+            network = Network.from_obj(brg.get_data('fink.obj'))
+            embedding = network.copy()
+
+            fix = (1, 12)
+
+            if embed_network_in_plane(embedding, fix=fix):
+
+                points = []
+                for key in embedding:
+                    points.append({
+                        'pos': embedding.vertex_coordinates(key, 'xy'),
+                        'size': 0.3,
+                        'text': key,
+                        'facecolor': '#ff0000' if key in fix else '#ffffff'
+                    })
+
+                lines = []
+                for u, v in embedding.edges():
+                    lines.append({
+                        'start': embedding.vertex_coordinates(u, 'xy'),
+                        'end': embedding.vertex_coordinates(v, 'xy')
+                    })
+
+                network.plot(
+                    vsize=0.3,
+                    vertices_on=False,
+                    vlabel={key: key for key in fix},
+                    ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+                    lines=lines,
+                    points=points
+                )
+
     """
     try:
         import networkx as nx
@@ -198,10 +244,12 @@ def embed_network_in_plane(network, fix=None, straightline=True):
     if not is_embedded:
         return False
     if fix:
-        vec0 = [network[fix[1]][axis] - network[fix[0]][axis] for axis in 'xy']
-        vec1 = [pos[fix[1]][axis] - pos[fix[0]][axis] for axis in 0, 1]
+        a, b = fix
+        vec0 = [network[b][axis] - network[a][axis] for axis in 'xy']
+        vec1 = [pos[b][axis] - pos[a][axis] for axis in 0, 1]
         # rotate
-        a    = -angle_smallest_vectors(vec0, vec1, rad=True)
+        a = -angle_smallest_vectors_2d(vec0, vec1)
+        a = 3.14159 * a / 180
         cosa = cos(a)
         sina = sin(a)
         for key in pos:
@@ -234,19 +282,37 @@ def embed_network_in_plane(network, fix=None, straightline=True):
 if __name__ == '__main__':
 
     import brg
+    from brg.datastructures.network import Network
+    from brg.datastructures.network.algorithms import embed_network_in_plane
 
-    from brg.datastructures.network.network import Network
+    network = Network.from_obj(brg.get_data('fink.obj'))
+    embedding = network.copy()
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    fix = (1, 12)
 
-    network.add_edge(21, 29)
-    network.add_edge(17, 28)
+    if embed_network_in_plane(embedding, fix=fix):
 
-    if not is_network_planar(network):
-        crossings = find_network_crossings(network)
+        points = []
+        for key in embedding:
+            points.append({
+                'pos': embedding.vertex_coordinates(key, 'xy'),
+                'size': 0.3,
+                'text': key,
+                'facecolor': '#ff0000' if key in fix else '#ffffff'
+            })
 
-    network.plot(
-        vsize=0.15,
-        vlabel={key: key for key in network},
-        ecolor={edge: (255, 0, 0) for edges in crossings for edge in edges}
-    )
+        lines = []
+        for u, v in embedding.edges():
+            lines.append({
+                'start': embedding.vertex_coordinates(u, 'xy'),
+                'end': embedding.vertex_coordinates(v, 'xy')
+            })
+
+        network.plot(
+            vsize=0.3,
+            vertices_on=False,
+            vlabel={key: key for key in fix},
+            ecolor={(u, v): '#cccccc' for u, v in network.edges()},
+            lines=lines,
+            points=points
+        )
