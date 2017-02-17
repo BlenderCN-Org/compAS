@@ -94,25 +94,6 @@ def vector_from_points_2d(a, b):
     return b[0] - a[0], b[1] - a[1]
 
 
-# this function is completely pointless
-#indeed, in 2D this is completely pointless ;) -> delete
-def plane_from_points_2d(a, b, c):
-    """Create a plane from three points.
-
-    Parameters:
-        a (sequence of float): XY coordinates.
-        b (sequence of float): XY coordinates.
-        c (sequence of float): XY coordinates.
-
-    Returns:
-        tuple: XY coordinates of base point and normal vector.
-    """
-    ab = subtract_vectors_2d(b, a)
-    ac = subtract_vectors_2d(c, a)
-    n = normalize_vector_2d(cross_vectors_2d(ab, ac))
-    return a, n
-
-
 def circle_from_points_2d(p1, p2, p3):
     """Create a circle from three points.
 
