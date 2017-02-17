@@ -83,7 +83,7 @@ class GA_VIS:
             if os.path.splitext(f)[1] == '.json':
                 filename = f
                 break
-        print filename
+        print(filename)
 
         with open(self.input_path+filename, 'rb') as fh:
             ga = json.load(fh)

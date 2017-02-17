@@ -110,9 +110,13 @@ def odb_results(odb, temp, name):
 name = sys.argv[-1]
 path = sys.argv[-2]
 temp = sys.argv[-3]
+cpus = sys.argv[-4]
 fnm = '{0}{1}.inp'.format(path, name)
 print('Submitting job {0}'.format(fnm))
-job = mdb.JobFromInputFile(inputFileName=fnm, name=name)
+job = mdb.JobFromInputFile(inputFileName=fnm, name=name, numCpus=int(cpus),
+                           parallelizationMethodExplicit=DOMAIN,
+                           numDomains=int(cpus),
+                           multiprocessingMode=DEFAULT)
 job.submit()
 job.waitForCompletion()
 odb_results(odb='{0}{1}.odb'.format(temp, name), temp=temp, name=name)
