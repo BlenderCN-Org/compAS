@@ -415,7 +415,6 @@ network: {0}
             else:
                 if int(key) > self._max_int_key:
                     self._max_int_key = int(key)
-        # key = str(key)
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
@@ -431,8 +430,6 @@ network: {0}
         else:
             attr_dict.update(kwattr)
         attr.update(attr_dict)
-        # u = str(u)
-        # v = str(v)
         if u not in self.vertex:
             u = self.add_vertex(u)
         if v not in self.vertex:
@@ -467,7 +464,6 @@ network: {0}
             else:
                 if int(fkey) > self._max_int_fkey:
                     self._max_int_fkey = int(fkey)
-        # fkey = str(fkey)
         self.face[fkey] = vertices
         self.facedata[fkey] = attr
         for i in range(0, len(vertices) - 1):
@@ -484,6 +480,24 @@ network: {0}
                 self.edge[u] = {}
             self.edge[u][v] = {}
         return fkey
+
+    def remove_vertex(self, key):
+        pass
+
+    def remove_edge(self, u, v):
+        raise NotImplementedError
+        if self.face:
+            # there are faces
+            f1 = self.halfedge[u][v]
+            f2 = self.halfedge[v][u]
+            if f1 is not None and f2 is not None:
+                vertices1 = self.face[f1]
+                vertices2 = self.face[f2]
+        else:
+            # there are no faces
+            del self.halfedge[u][v]
+            del self.halfedge[v][u]
+            del self.edge[u][v]
 
     # --------------------------------------------------------------------------
     # face construction
@@ -1026,8 +1040,7 @@ network: {0}
              ewidth=None,
              flabel=None,
              points=None,
-             lines=None,
-             arrows=None):
+             lines=None):
         import matplotlib.pyplot as plt
         from brg.plotters.drawing import create_axes_2d
         # the network plotter should take care of axes, bounds, autoscale, show, ...
@@ -1054,8 +1067,6 @@ network: {0}
             plotter.points = points
         if lines:
             plotter.lines = lines
-        if arrows:
-            plotter.arrows = arrows
         plotter.plot(axes)
         axes.autoscale()
         plt.show()
