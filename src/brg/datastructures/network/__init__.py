@@ -16,6 +16,13 @@ Package for working with network objects.
 
     Network
 
+.. autosummary::
+    :toctree: generated/
+
+    plotter.NetworkPlotter2D
+    plotter.NetworkPlotter3D
+    viewer.NetworkViewer
+
 
 operations
 ==========
