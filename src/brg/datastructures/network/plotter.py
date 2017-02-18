@@ -1,7 +1,5 @@
 from brg.utilities import color_to_colordict
 
-from brg.geometry.planar import centroid_points_2d
-
 from brg.plotters.utilities import assert_axes_dimension
 from brg.plotters.utilities import width_to_dict
 
@@ -10,15 +8,12 @@ from brg.plotters.drawing import create_axes_2d
 from brg.plotters.drawing import draw_xpoints_2d
 from brg.plotters.drawing import draw_xlines_2d
 from brg.plotters.drawing import draw_xarrows_2d
+from brg.plotters.drawing import draw_xpolygons_2d
 
 from brg.plotters.drawing import draw_points_3d
 from brg.plotters.drawing import draw_lines_3d
 
 from brg.plotters.helpers import Bounds
-
-from matplotlib.patches import Circle
-from matplotlib.collections import PatchCollection
-from matplotlib.collections import LineCollection
 
 
 __author__    = 'Tom Van Mele'
@@ -195,7 +190,8 @@ class NetworkPlotter2D(object):
     def __init__(self, network):
         self.network = network
         self.vertices_on = True
-        self.edges_on = True
+        self.edges_on    = True
+        self.faces_on    = False
         self.vcolor = None
         self.ecolor = None
         self.fcolor = None
@@ -220,7 +216,7 @@ class NetworkPlotter2D(object):
         # default values
         vcolor = color_to_colordict(self.vcolor, self.network.vertices(), self.default_vertex_color)
         ecolor = color_to_colordict(self.ecolor, self.network.edges(), self.default_edge_color)
-        # fcolor = color_to_colordict(self.fcolor, self.network.faces(), self.default_face_color)
+        fcolor = color_to_colordict(self.fcolor, self.network.faces(), self.default_face_color)
         vlabel = self.vlabel or {}
         elabel = self.elabel or {}
         flabel = self.flabel or {}
@@ -252,6 +248,23 @@ class NetworkPlotter2D(object):
                 })
             draw_xpoints_2d(points, axes)
         # faces
+        if self.faces_on:
+            if self.network.face:
+                polygons = []
+                for fkey in self.network.face:
+                    vertices = self.network.face_vertices(fkey)
+                    if vertices[0] == vertices[-1]:
+                        points = [self.network.vertex_coordinates(key, 'xy') for key in vertices[:-1]]
+                    else:
+                        points = [self.network.vertex_coordinates(key, 'xy') for key in vertices]
+                    polygons.append({
+                        'points'   : points,
+                        'text'     : None if fkey not in flabel else str(flabel[fkey]),
+                        'facecolor': fcolor[fkey],
+                        'edgecolor': fcolor[fkey],
+                        'textcolor': self.default_text_color
+                    })
+                draw_xpolygons_2d(polygons, axes)
         # points
         if self.points:
             points = []

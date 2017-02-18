@@ -36,9 +36,10 @@ __all__ = [
 ]
 
 
-ZORDER_LINES = 1000
-ZORDER_POINTS = 2000
-ZORDER_LABELS = 3000
+ZORDER_POLYGONS = 1000
+ZORDER_LINES    = 2000
+ZORDER_POINTS   = 3000
+ZORDER_LABELS   = 4000
 
 
 # ==============================================================================
@@ -347,7 +348,8 @@ def draw_xarrows_2d(lines, axes):
             '',
             xy=ep,
             xytext=sp,
-            arrowprops=arrowprops
+            arrowprops=arrowprops,
+            zorder=ZORDER_LINES,
         )
 
 
@@ -400,7 +402,7 @@ def draw_xpolygons_2d(polygons, axes):
                 c[1],
                 text,
                 fontsize=8,
-                zorder=13,
+                zorder=ZORDER_LABELS,
                 ha='center',
                 va='center',
                 color=textcolor
@@ -410,7 +412,7 @@ def draw_xpolygons_2d(polygons, axes):
         facecolor=facecolors,
         edgecolor='#333333',
         lw=0.25,
-        zorder=10
+        zorder=ZORDER_POLYGONS
     )
     axes.add_collection(coll)
 

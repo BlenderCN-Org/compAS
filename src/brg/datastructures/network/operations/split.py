@@ -26,7 +26,49 @@ def split_edge_network(network, u, v, t=0.5, allow_boundary=True):
         str: The key of the inserted vertex.
 
     Raises:
-        ValueError: If `u` and `v` are not neighbours.
+        ValueError: If ``t`` is not ``0 <= t <= 1``.
+        Exception: If ``u`` and ``v`` are not neighbours.
+
+
+    Example:
+
+        .. plot::
+            :include-source:
+
+            import brg
+            from brg.datastructures.network import Network
+            from brg.datastructures.network.algorithms import find_network_faces
+            from brg.datastructures.network.operations import split_edge_network
+
+            network = Network.from_obj(brg.get_data('lines.obj'))
+
+            find_network_faces(network, breakpoints=network.leaves())
+
+            a = split_edge_network(network, 0, 22)
+            b = split_edge_network(network, 2, 30)
+            c = split_edge_network(network, 17, 21)
+            d = split_edge_network(network, 28, 16)
+
+            lines = []
+            for u, v in network.edges():
+                lines.append({
+                    'start': network.vertex_coordinates(u, 'xy'),
+                    'end'  : network.vertex_coordinates(v, 'xy'),
+                    'arrow': 'end',
+                    'width': 4.0,
+                    'color': '#00ff00'
+                })
+
+            network.plot(
+                faces_on=True,
+                vsize=0.2,
+                vlabel={key: key for key in network},
+                vcolor={key: '#ff0000' for key in (a, b, c, d)},
+                fcolor={fkey: '#eeeeee' for fkey in network.face},
+                flabel={fkey: fkey for fkey in network.face},
+                lines=lines
+            )
+
 
     """
     if t <= 0.0:
@@ -62,9 +104,20 @@ def split_edge_network(network, u, v, t=0.5, allow_boundary=True):
     del network.halfedge[u][v]
     # update the UV face if it is not None
     if fkey_uv is not None:
+        # uv => uwv
         vertices = network.face[fkey_uv]
         i = vertices.index(u)
-        vertices.insert(i, w)
+        j = vertices.index(v)
+        # uv ... u
+        # v ...  u => not possible
+        # ...   uv
+        # v ... uv
+        # .. uv ..
+        if j > i:
+            vertices.insert(j, w)
+        else:
+            vertices.insert(i + 1, w)
+        network.face[fkey_uv] = vertices
     # split half-edge VU
     network.halfedge[v][w] = fkey_vu
     network.halfedge[w][u] = fkey_vu
@@ -73,7 +126,12 @@ def split_edge_network(network, u, v, t=0.5, allow_boundary=True):
     if fkey_vu is not None:
         vertices = network.face[fkey_vu]
         i = vertices.index(v)
-        vertices.insert(i, w)
+        j = vertices.index(u)
+        if j > i:
+            vertices.insert(j, w)
+        else:
+            vertices.insert(i + 1, w)
+        network.face[fkey_vu] = vertices
     # return the key of the split vertex
     return w
 
@@ -87,22 +145,33 @@ if __name__ == "__main__":
     import brg
     from brg.datastructures.network import Network
     from brg.datastructures.network.algorithms import find_network_faces
+    from brg.datastructures.network.operations import split_edge_network
 
-    data = brg.get_data('lines.obj')
-    network = Network.from_obj(data)
+    network = Network.from_obj(brg.get_data('lines.obj'))
 
     find_network_faces(network, breakpoints=network.leaves())
 
     a = split_edge_network(network, 0, 22)
     b = split_edge_network(network, 2, 30)
+    c = split_edge_network(network, 17, 21)
+    d = split_edge_network(network, 28, 16)
 
-    print network.halfedge[0][a]
-    print network.halfedge[a][22]
-
-    print network.halfedge[a][0]
-    print network.halfedge[22][a]
+    lines = []
+    for u, v in network.edges():
+        lines.append({
+            'start': network.vertex_coordinates(u, 'xy'),
+            'end'  : network.vertex_coordinates(v, 'xy'),
+            'arrow': 'end',
+            'width': 4.0,
+            'color': '#00ff00'
+        })
 
     network.plot(
-        vlabel=dict((key, key) for key in network),
-        flabel=dict((fkey, fkey) for fkey in network.face)
+        faces_on=True,
+        vsize=0.2,
+        vlabel={key: key for key in network},
+        vcolor={key: '#ff0000' for key in (a, b, c, d)},
+        fcolor={fkey: '#eeeeee' for fkey in network.face},
+        flabel={fkey: fkey for fkey in network.face},
+        lines=lines
     )

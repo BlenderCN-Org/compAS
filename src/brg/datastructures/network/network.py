@@ -1037,10 +1037,12 @@ network: {0}
     def plot(self,
              vertices_on=True,
              edges_on=True,
+             faces_on=False,
              vcolor=None,
+             ecolor=None,
+             fcolor=None,
              vlabel=None,
              vsize=None,
-             ecolor=None,
              elabel=None,
              ewidth=None,
              flabel=None,
@@ -1054,14 +1056,17 @@ network: {0}
         plotter = self.plotter
         plotter.vertices_on = vertices_on
         plotter.edges_on = edges_on
+        plotter.faces_on = faces_on
         if vcolor:
             plotter.vcolor = vcolor
+        if ecolor:
+            plotter.ecolor = ecolor
+        if fcolor:
+            plotter.fcolor = fcolor
         if vlabel:
             plotter.vlabel = vlabel
         if vsize:
             plotter.vsize = vsize
-        if ecolor:
-            plotter.ecolor = ecolor
         if elabel:
             plotter.elabel = elabel
         if ewidth:
