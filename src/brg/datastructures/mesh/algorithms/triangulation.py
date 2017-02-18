@@ -182,7 +182,10 @@ def voronoi_from_points(points, boundary=None, holes=None, return_delaunay=False
     """Construct the Voronoi dual of the triangulation of a set of points.
 
     Parameters:
-        pass
+        points
+        boundary
+        holes
+        return_delaunay
 
     Example:
 
