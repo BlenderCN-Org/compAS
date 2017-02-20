@@ -280,7 +280,8 @@ def draw_lines_2d(lines,
     axes.add_collection(coll)
 
 
-def draw_xlines_2d(lines, axes):
+# add line labels
+def draw_xlines_2d(lines, axes, alpha=1.0, linestyle='-'):
     fromto  = []
     widths  = []
     colors  = []
@@ -296,8 +297,8 @@ def draw_xlines_2d(lines, axes):
         fromto,
         linewidths=widths,
         colors=colors,
-        linestyle='-',
-        alpha=1.0,
+        linestyle=linestyle,
+        alpha=alpha,
         zorder=ZORDER_LINES
     )
     axes.add_collection(coll)
