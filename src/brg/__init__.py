@@ -32,7 +32,6 @@ used by all other packages and can be used entirely standalone.
 """
 
 import os
-import warnings
 
 
 HERE = os.path.dirname(__file__)
@@ -42,13 +41,13 @@ DATA = os.path.abspath(os.path.join(HOME, 'data'))
 DOCS = os.path.abspath(os.path.join(HOME, 'docs3'))
 
 
-def find_resource(filename):
+def _find_resource(filename):
     filename = filename.strip('/')
     return os.path.abspath(os.path.join(DATA, filename))
 
 
 def get_data(filename):
-    return find_resource(filename)
+    return _find_resource(filename)
 
 
 def get_license():

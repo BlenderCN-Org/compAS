@@ -19,7 +19,6 @@ visualisations...
 
     brg.datastructures.mesh
     brg.datastructures.network
-    brg.datastructures.tree
     brg.datastructures.volmesh
 
 """

@@ -486,23 +486,23 @@ network: {0}
             self.edge[u][v] = {}
         return fkey
 
-    def remove_vertex(self, key):
-        pass
+    # def remove_vertex(self, key):
+    #     pass
 
-    def remove_edge(self, u, v):
-        raise NotImplementedError
-        if self.face:
-            # there are faces
-            f1 = self.halfedge[u][v]
-            f2 = self.halfedge[v][u]
-            if f1 is not None and f2 is not None:
-                vertices1 = self.face[f1]
-                vertices2 = self.face[f2]
-        else:
-            # there are no faces
-            del self.halfedge[u][v]
-            del self.halfedge[v][u]
-            del self.edge[u][v]
+    # def remove_edge(self, u, v):
+    #     raise NotImplementedError
+    #     if self.face:
+    #         # there are faces
+    #         f1 = self.halfedge[u][v]
+    #         f2 = self.halfedge[v][u]
+    #         if f1 is not None and f2 is not None:
+    #             vertices1 = self.face[f1]
+    #             vertices2 = self.face[f2]
+    #     else:
+    #         # there are no faces
+    #         del self.halfedge[u][v]
+    #         del self.halfedge[v][u]
+    #         del self.edge[u][v]
 
     # --------------------------------------------------------------------------
     # face construction
@@ -999,16 +999,16 @@ network: {0}
     # --------------------------------------------------------------------------
 
     def key_index(self):
-        return dict((key, index) for index, key in self.vertices_enum())
+        return {key: index for index, key in self.vertices_enum()}
 
     def index_key(self):
         return dict(self.vertices_enum())
 
     def uv_index(self):
-        return dict(((u, v), index) for index, u, v in self.edges_enum())
+        return {(u, v): index for index, u, v in self.edges_enum()}
 
     def index_uv(self):
-        return dict((index, (u, v)) for index, u, v in self.edges_enum())
+        return {index: (u, v) for index, u, v in self.edges_enum()}
 
     def vertex_color(self, key, qualifier=None):
         if qualifier:
@@ -1021,6 +1021,10 @@ network: {0}
         cls  = type(self)
         data = deepcopy(self.data)
         return cls.from_data(data)
+
+    def edge_index(self, u, v):
+        uv_index = self.uv_index()
+        return uv_index[(u, v)]
 
     # --------------------------------------------------------------------------
     # --------------------------------------------------------------------------
