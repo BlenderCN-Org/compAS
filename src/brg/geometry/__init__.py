@@ -220,17 +220,15 @@ planar
     cross_vectors_2d
     length_vector_2d
     length_vector_sqrd_2d
-    distance_two_points_2d
-    distance_two_points_sqrd_2d
+    distance_point_point_2d
+    distance_point_point_sqrd_2d
     distance_point_line_2d
     distance_point_line_sqrd_2d
-    distance_two_lines_2d
-    distance_two_lines_sqrd_2d
     angles_points_2d
     angles_vectors_2d
     angle_smallest_points_2d
     angle_smallest_vectors_2d
-    midpoint_two_points_2d
+    midpoint_point_point_2d
     centroid_points_2d
     center_of_mass_polygon_2d
     area_polygon_2d

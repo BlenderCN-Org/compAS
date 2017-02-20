@@ -40,8 +40,8 @@ __all__ = [
     'closest_part_of_triangle',
     'cross_vectors_2d',
 
-    'distance_two_points_2d',
-    'distance_two_points_sqrd_2d',
+    'distance_point_point_2d',
+    'distance_point_point_sqrd_2d',
     'distance_point_line_2d',
     'distance_point_line_sqrd_2d',
     'dot_vectors_2d',
@@ -49,7 +49,7 @@ __all__ = [
     'length_vector_2d',
     'length_vector_sqrd_2d',
 
-    'intersection_two_lines_2d',
+    'intersection_line_line_2d',
     'intersection_lines_2d',
     'intersection_circle_circle_2d',
     'is_ccw_2d',
@@ -60,11 +60,11 @@ __all__ = [
     'is_point_on_polygon_2d',
     'is_point_in_triangle_2d',
     'is_point_in_polygon_2d',
-    'is_intersection_two_lines_2d',
-    'is_intersection_two_segments_2d',
+    'is_intersection_line_line_2d',
+    'is_intersection_segment_segment_2d',
 
-    # this one i would change
-    'midpoint_two_points_2d',
+    'midpoint_line_2d',
+    'midpoint_point_point_2d',
     'mirror_point_point_2d',
     'mirror_points_point_2d',
     'mirror_point_line_2d',
@@ -358,7 +358,7 @@ def length_vector_sqrd_2d(vector):
 # ------------------------------------------------------------------------------
 
 
-def distance_two_points_2d(a, b):
+def distance_point_point_2d(a, b):
     """Compute the distance between points a and b lying in the XY-plane.
 
     Parameters:
@@ -383,7 +383,7 @@ def distance_two_points_2d(a, b):
     return length_vector_2d(ab)
 
 
-def distance_two_points_sqrd_2d(a, b):
+def distance_point_point_sqrd_2d(a, b):
     """Compute the squared distance between points a and b lying in the XY-plane.
 
     Parameters:
@@ -589,7 +589,7 @@ def centroid_points_2d(points):
     return sum(x) / p, sum(y) / p, 0.0
 
 
-def midpoint_two_points_2d(a, b):
+def midpoint_point_point_2d(a, b):
     """Compute the midpoint of two points lying in the XY-plane.
 
     Parameters:
@@ -601,6 +601,11 @@ def midpoint_two_points_2d(a, b):
 
     """
     return 0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.0
+
+
+def midpoint_line_2d(line):
+    a, b = line
+    return midpoint_point_point_2d(a, b)
 
 
 def center_of_mass_polygon_2d(polygon):
@@ -629,7 +634,7 @@ def center_of_mass_polygon_2d(polygon):
     for i in range(-1, p - 1):
         p1  = polygon[i]
         p2  = polygon[i + 1]
-        d   = distance_two_points_2d(p1, p2)
+        d   = distance_point_point_2d(p1, p2)
         cx += 0.5 * d * (p1[0] + p2[0])
         cy += 0.5 * d * (p1[1] + p2[1])
         L  += d
@@ -734,7 +739,7 @@ def sort_points_2d(point, points):
         list (tuples): sorted points
         list (ints): closest point indices
     """
-    minsq = [distance_two_points_sqrd_2d(p, point) for p in points]
+    minsq = [distance_point_point_sqrd_2d(p, point) for p in points]
     return sorted(zip(minsq, points, range(len(points))), key=lambda x: x[0])
 
 
@@ -792,9 +797,9 @@ def closest_point_on_segment_2d(point, segment):
     """
     a, b = segment
     p  = closest_point_on_line_2d(point, segment)
-    d  = distance_two_points_sqrd_2d(a, b)
-    d1 = distance_two_points_sqrd_2d(a, p)
-    d2 = distance_two_points_sqrd_2d(b, p)
+    d  = distance_point_point_sqrd_2d(a, b)
+    d1 = distance_point_point_sqrd_2d(a, p)
+    d2 = distance_point_point_sqrd_2d(b, p)
     if d1 > d or d2 > d:
         if d1 < d2:
             return a
@@ -1041,13 +1046,13 @@ def is_point_in_circle_2d(point, circle):
         (bool): True if the point lies in the circle, False otherwise.
 
     """
-    dis = distance_two_points_2d(point, circle[0])
+    dis = distance_point_point_2d(point, circle[0])
     if dis <= circle[1]:
         return True
     return False
 
 
-def is_intersection_two_lines_2d(l1, l2):
+def is_intersection_line_line_2d(l1, l2):
     """Verify if two lines intersect in 2d lying in the XY plane.
 
     Parameters:
@@ -1061,7 +1066,7 @@ def is_intersection_two_lines_2d(l1, l2):
     raise NotImplementedError
 
 
-def is_intersection_two_segments_2d(ab, cd):
+def is_intersection_segment_segment_2d(ab, cd):
     """Verify if two the segments ab and cd intersect?
 
     Two segments a-b and c-d intersect, if both of the following conditions are true:
@@ -1089,7 +1094,7 @@ def is_intersection_two_segments_2d(ab, cd):
 # ==============================================================================
 
 
-def intersection_two_lines_2d(ab, cd):
+def intersection_line_line_2d(ab, cd):
     """Compute the intersection of two lines in the XY plane.
 
     Parameters:
@@ -1143,7 +1148,7 @@ def intersection_lines_2d(lines):
     """    
     pdic = []
     for a, b in itertools.combinations(lines, 2):
-        intx = intersection_two_lines_2d(a,b)
+        intx = intersection_line_line_2d(a,b)
         if not intx:
             continue
         pdic.append(intx)
@@ -1151,7 +1156,7 @@ def intersection_lines_2d(lines):
         return pdic      
     return None
 
-def intersection_two_segments_2d(ab, cd):
+def intersection_segment_segment_2d(ab, cd):
     raise NotImplementedError
 
 def intersection_segments_2d(segments):
@@ -1172,7 +1177,7 @@ def intersection_circle_circle_2d(circle1, circle2):
     """
     p1, r1 = circle1[0], circle1[1]
     p2, r2 = circle2[0], circle2[1]
-    d = distance_two_points_2d(p1, p2)
+    d = distance_point_point_2d(p1, p2)
     if d > r1 + r2:
         return None
     if d < abs(r1 - r2):
