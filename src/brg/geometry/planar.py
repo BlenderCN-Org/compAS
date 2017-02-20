@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import random
+import itertools
 
 from math import sqrt
 from math import acos
@@ -43,14 +44,12 @@ __all__ = [
     'distance_two_points_sqrd_2d',
     'distance_point_line_2d',
     'distance_point_line_sqrd_2d',
-    'distance_two_lines_2d',
-    'distance_two_lines_sqrd_2d',
     'dot_vectors_2d',
 
     'length_vector_2d',
     'length_vector_sqrd_2d',
 
-    'intersection_line_line_2d',
+    'intersection_two_lines_2d',
     'intersection_lines_2d',
     'intersection_circle_circle_2d',
     'is_ccw_2d',
@@ -61,8 +60,8 @@ __all__ = [
     'is_point_on_polygon_2d',
     'is_point_in_triangle_2d',
     'is_point_in_polygon_2d',
-    'is_intersection_line_line_2d',
-    'is_intersection_segment_segment_2d',
+    'is_intersection_two_lines_2d',
+    'is_intersection_two_segments_2d',
 
     # this one i would change
     'midpoint_two_points_2d',
@@ -462,15 +461,6 @@ def distance_point_line_sqrd_2d(point, line):
     l_ab = length_vector_sqrd_2d(ab)
     return l / l_ab
 
-
-def distance_two_lines_2d():
-    raise NotImplementedError
-
-
-def distance_two_lines_sqrd_2d():
-    raise NotImplementedError
-
-
 # ------------------------------------------------------------------------------
 # angles
 # ------------------------------------------------------------------------------
@@ -620,7 +610,7 @@ def center_of_mass_polygon_2d(polygon):
     each weighted by the length of the corresponding edge.
 
     Parameters:
-        polygon (sequence) : A sequence of XY(Z) coordinates of a 2D or 3D points
+        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
         (Z will be ignored) representing the locations of the corners of a polygon.
 
     Returns:
@@ -657,7 +647,7 @@ def area_polygon_2d(polygon):
     """Compute the area of a polygon lying in the XY-plane.
 
     Parameters:
-        polygon (sequence) : A sequence of XY(Z) coordinates of a 2D or 3D points
+        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
         (Z will be ignored) representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
@@ -813,13 +803,14 @@ def closest_point_on_segment_2d(point, segment):
 
 
 def closest_point_on_polygon_2d(point, polygon):
-    """
-    Compute closest point on a polygon to a given point lying in the XY-plane.
+    """Compute closest point on a polygon to a given point lying in the XY-plane.
 
     Parameters:
         point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        polygon (sequence): A sequence of points representing the polygon. The
-        first and last point should not be the sane.
+        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
  
     Returns:
         list: XYZ coordinates of closest point (Z = 0.0).
@@ -832,11 +823,19 @@ def closest_point_on_polygon_2d(point, polygon):
     
     return closest_point_in_cloud_2d(point, points)[1]
 
-#this is how far I got with cleaning 2D with 3D input issues (plus doc strings)
-
-# shall we use a, b, c or triangle as a special type (kind of polygon)?
-# triangle = (a,b,c) would be more consistent with line, segment, polygon
+#this function seems to be rather specific. Where is it used? Is it needed in the geometry package?
 def closest_part_of_triangle(point, triangle):
+    """Computes the closest part (edge or point) of a triangle to a test point 
+    lying in the XY-plane.
+
+    Parameters:
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        triangle (sequence): A sequence of three points representing the triangle.
+
+    Returns:
+        The coordinates of the corner point if a corner point is closest. Two corner points defining
+        the edge, if an edge is closest to the test point   
+    """
     a, b, c = triangle
     ab = subtract_vectors_2d(b, a)
     bc = subtract_vectors_2d(c, b)
@@ -876,23 +875,26 @@ def is_ccw_2d(a, b, c, colinear=False):
     """Verify if ``c`` is on the left of ``ab`` when looking from ``a`` to ``b``.
 
     Parameters:
-        a (sequence): XY coordinates.
-        b (sequence): XY coordinates.
-        c (sequence): XY coordinates.
+        a (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        b (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        c (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         colinear (bool): Optional. Allow points to be colinear. Default is ``False``.
 
     Returns:
         bool : ``True`` if ccw, ``False`` otherwise.
 
     Examples:
-        >>> is_ccw([0,0,0], [0,1,0], [-1, 0, 0])
-        True
-        >>> is_ccw([0,0,0], [0,1,0], [+1, 0, 0])
-        False
-        >>> is_ccw([0,0,0], [1,0,0], [2,0,0])
-        False
-        >>> is_ccw([0,0,0], [1,0,0], [2,0,0], True)
-        True
+        print(is_ccw([0,0,0], [0,1,0], [-1, 0, 0]))
+        #True
+        
+        print(is_ccw([0,0,0], [0,1,0], [+1, 0, 0]))
+        #False
+        
+        print(is_ccw([0,0,0], [1,0,0], [2,0,0]))
+        #False
+        
+        print(is_ccw([0,0,0], [1,0,0], [2,0,0], True))
+        #True
 
     References:
         https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation
@@ -910,13 +912,11 @@ def is_colinear_2d():
 def is_polygon_convex_2d(polygon, colinear=False):
     """Verify if the polygon is convex in the XY-plane.
 
-    Note:
-        The make_blocks is performed using the projection of the points onto the XY
-        plane.
-
     Parameters:
-        polygon (sequence): A sequence of points representing the polygon. The
-            first and last point should not be the sane.
+        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
         colinear (bool): Are points allowed to be colinear?
 
     Returns:
@@ -949,6 +949,21 @@ def is_point_on_polygon_2d():
 
 
 def is_point_in_convex_polygon_2d(point, polygon):
+    """Verify if a point is in the interior of a convex polygon lying in the XY-plane.
+
+    Parameters:
+        (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+
+    Warning:
+        Does not work for concave polygons.
+
+    Returns:
+        bool: True if the point is in the convex polygon, False otherwise.
+    """    
     ccw = None
     for i in range(-1, len(polygon) - 1):
         a = polygon[i]
@@ -962,13 +977,14 @@ def is_point_in_convex_polygon_2d(point, polygon):
 
 
 def is_point_in_polygon_2d(point, polygon):
-    """Verify if a point is in the interior of a polygon.
+    """Verify if a point is in the interior of a polygon lying in the XY-plane.
 
     Parameters:
-        point (sequence of float): 3d make_blocks point
-        polygon (Polygon): list of ordered points.
-        include_boundary (bool): Optional.
-            Include the boundary? Default is ``False``.
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
 
     Warning:
         A boundary check is not yet implemented.
@@ -992,27 +1008,37 @@ def is_point_in_polygon_2d(point, polygon):
                         inside = not inside
     return inside
 
-# shall we use a, b, c or triangle as a special type (kind of polygon)?
-# triangle = (a,b,c) would be more consistent with line, segment, polygon
-def is_point_in_triangle_2d(p, triangle):
+
+def is_point_in_triangle_2d(point, triangle):
+    """Verify if a point is in the interior of a triangle lying in the XY-plane.
+
+    Parameters:
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).    
+        (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        triangle (sequence) : A sequence of XY(Z) coordinates of three 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of a triangle.
+
+    Returns:
+        bool: True if the point is in the convex polygon, False otherwise.
+    """      
     a, b, c = triangle
-    ccw = is_ccw_2d(c, a, p, True)
-    if ccw != is_ccw_2d(a, b, p, True):
+    ccw = is_ccw_2d(c, a, point, True)
+    if ccw != is_ccw_2d(a, b, point, True):
         return False
-    if ccw != is_ccw_2d(b, c, p, True):
+    if ccw != is_ccw_2d(b, c, point, True):
         return False
     return True
 
 
 def is_point_in_circle_2d(point, circle):
-    """Verify if a point lies a circle in 2d lying in the XY plane.
+    """Verify if a point lies in a circle lying in the XY plane.
 
     Parameters:
-        point (sequence of float): XY coordinates.
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).  
         circle (tuple): center, radius of the circle in the xy plane.
 
     Returns:
-        (bool): True if there is a intersection, False otherwise.
+        (bool): True if the point lies in the circle, False otherwise.
 
     """
     dis = distance_two_points_2d(point, circle[0])
@@ -1021,7 +1047,7 @@ def is_point_in_circle_2d(point, circle):
     return False
 
 
-def is_intersection_line_line_2d(l1, l2):
+def is_intersection_two_lines_2d(l1, l2):
     """Verify if two lines intersect in 2d lying in the XY plane.
 
     Parameters:
@@ -1035,8 +1061,8 @@ def is_intersection_line_line_2d(l1, l2):
     raise NotImplementedError
 
 
-def is_intersection_segment_segment_2d(s1, s2):
-    """Do the segments a-b and c-d intersect?
+def is_intersection_two_segments_2d(ab, cd):
+    """Verify if two the segments ab and cd intersect?
 
     Two segments a-b and c-d intersect, if both of the following conditions are true:
 
@@ -1044,15 +1070,17 @@ def is_intersection_segment_segment_2d(s1, s2):
         * d is on the left of ac, and on the right of bc, or vice versa
 
     Parameters:
-        s1: (tuple): Two points defining a segment.
-        s2: (tuple): Two points defining a segment.
+        ab: (tuple): A sequence of XY(Z) coordinates of two 2D or 3D points
+        (Z will be ignored) representing the start and end points of a line segment.
+        cd: (tuple): A sequence of XY(Z) coordinates of two 2D or 3D points
+        (Z will be ignored) representing the start and end points of a line segment.
 
     Returns:
         bool: ``True`` if the segments intersect, ``False`` otherwise.
 
     """
-    a, b = s1
-    c, d = s2
+    a, b = ab
+    c, d = cd
     return is_ccw_2d(a, c, d) != is_ccw_2d(b, c, d) and is_ccw_2d(a, b, c) != is_ccw_2d(a, b, d)
 
 
@@ -1061,36 +1089,72 @@ def is_intersection_segment_segment_2d(s1, s2):
 # ==============================================================================
 
 
-def intersection_line_line_2d(l1, l2):
-    """Calculates the intersection of two lines in the XY plane.
+def intersection_two_lines_2d(ab, cd):
+    """Compute the intersection of two lines in the XY plane.
 
     Parameters:
-        l1 (tuple): two points.
-        l2 (tuple): two points.
+        ab: (tuple): A sequence of XY(Z) coordinates of two 2D or 3D points
+        (Z will be ignored) representing two points on the line.
+        cd: (tuple): A sequence of XY(Z) coordinates of two 2D or 3D points
+        (Z will be ignored) representing two points on the line.
 
     Returns:
-        None: if there is no intersection point.
+        None: if there is no intersection point (parallel lines).
         list: XY coordinates of intersection point.
 
     Note:
         If the lines are parallel, there is no intersection point.
-        Two lines in the XY plane are parallel if the Z component of their
-        cross product is zero.
-
+   
+    References:
+        https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+   
     """
-    a, b = l1
-    c, d = l2
-    ab = [b[i] - a[i] for i in range(2)]
-    cd = [d[i] - c[i] for i in range(2)]
-    div = ab[0] * cd[1] - ab[1] * cd[0]
-    if div == 0.0:
+    x1, y1 = ab[0][0],ab[0][1]
+    x2, y2 = ab[1][0],ab[1][1]
+    x3, y3 = cd[0][0],cd[0][1]
+    x4, y4 = cd[1][0],cd[1][1]
+
+    d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    if d == 0.0: 
         return None
-    x = (a[0] * b[1] - a[1] * b[0]) * cd[0] - (c[0] * d[1] - c[1] * d[0]) * ab[0]
-    y = (a[0] * b[1] - a[1] * b[0]) * cd[1] - (c[0] * d[1] - c[1] * d[0]) * ab[1]
-    return [x / div, y / div]
+    a = (x1 * y2 - y1 * x2) 
+    b = (x3 * y4 - y3 * x4)
+    x = (a * (x3 - x4) - (x1 -x2) * b) / d
+    y = (a * (y3 - y4) - (y1 -y2) * b) / d
+    return x, y, 0.0
 
+def intersection_lines_2d(lines):
+    """Compute the intersections of mulitple lines in the XY plane.
 
-def intersection_lines_2d():
+    Parameters:
+        lines: (sequence): A list of sequences of XY(Z) coordinates of two 2D or 3D points
+        (Z will be ignored) representing the lines.
+
+    Returns:
+        None: if there is no intersection point (parallel lines).
+        list: XY coordinates of intersection point.
+
+    Note:
+        If the lines are parallel, there is no intersection point.
+   
+    References:
+        https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+   
+    """    
+    pdic = []
+    for a, b in itertools.combinations(lines, 2):
+        intx = intersection_two_lines_2d(a,b)
+        if not intx:
+            continue
+        pdic.append(intx)
+    if pdic:
+        return pdic      
+    return None
+
+def intersection_two_segments_2d(ab, cd):
+    raise NotImplementedError
+
+def intersection_segments_2d(segments):
     raise NotImplementedError
 
 
