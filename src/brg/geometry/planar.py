@@ -64,6 +64,7 @@ __all__ = [
     'is_intersection_line_line_2d',
     'is_intersection_segment_segment_2d',
 
+    # this one i would change
     'midpoint_two_points_2d',
     'mirror_point_point_2d',
     'mirror_points_point_2d',
@@ -262,13 +263,13 @@ def dot_vectors_2d(u, v):
 
         .. code-block:: python
 
-            print dot_vectors_2d([1.0, 0], [2.0, 0])
+            print(dot_vectors_2d([1.0, 0], [2.0, 0]))
             # 2.0
 
-            print dot_vectors_2d([1.0, 0, 0], [2.0, 0, 0])
+            print(dot_vectors_2d([1.0, 0, 0], [2.0, 0, 0]))
             # 2.0
 
-            print dot_vectors_2d([1.0, 0, 1], [2.0, 0, 1])
+            print(dot_vectors_2d([1.0, 0, 1], [2.0, 0, 1]))
             # 2.0
 
     """
@@ -286,14 +287,17 @@ def cross_vectors_2d(u, v):
         list: The cross product of the two vectors.
 
     Examples:
-        cross([1.0, 0.0], [0.0, 1.0])
-        #[0.0, 0.0, 1.0]
 
-        cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
-        #[0.0, 0.0, 1.0]
+        .. code-block:: python
 
-        cross([1.0, 0.0, 1.0], [0.0, 1.0, 1.0])
-        #[0.0, 0.0, 1.0]
+            cross([1.0, 0.0], [0.0, 1.0])
+            # [0.0, 0.0, 1.0]
+
+            cross([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+            # [0.0, 0.0, 1.0]
+
+            cross([1.0, 0.0, 1.0], [0.0, 1.0, 1.0])
+            # [0.0, 0.0, 1.0]
 
     """
     return [0.0, 0.0, u[0] * v[1] - u[1] * v[0]]
