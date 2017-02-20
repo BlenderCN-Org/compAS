@@ -12,6 +12,7 @@ from mpl_toolkits.mplot3d.art3d import Line3DCollection
 from mpl_toolkits.mplot3d.art3d import Patch3DCollection
 
 from brg.geometry.planar import centroid_points_2d
+from brg.geometry.planar import midpoint_line_2d
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
@@ -200,13 +201,13 @@ def draw_xpoints_2d(points, axes):
     linewidth = []
     for point in points:
         pos = point['pos']
-        radius = point['radius']
-        text = point.get('text')
-        fcolor = point.get('facecolor') or '#ffffff'
-        ecolor = point.get('edgecolor') or '#000000'
-        lwidth = point.get('linewidth') or 1.0
+        radius    = point['radius']
+        text      = point.get('text')
+        fcolor    = point.get('facecolor') or '#ffffff'
+        ecolor    = point.get('edgecolor') or '#000000'
+        lwidth    = point.get('linewidth') or 1.0
         textcolor = point.get('textcolor') or '#000000'
-        fontsize = point.get('fontsize') or 6
+        fontsize  = point.get('fontsize') or 6
         circles.append(Circle(pos, radius=radius))
         facecolor.append(fcolor)
         edgecolor.append(ecolor)
@@ -286,13 +287,27 @@ def draw_xlines_2d(lines, axes, alpha=1.0, linestyle='-'):
     widths  = []
     colors  = []
     for line in lines:
-        sp    = line['start']
-        ep    = line['end']
-        width = line.get('width', 1.0)
-        color = line.get('color', '#000000')
+        sp        = line['start']
+        ep        = line['end']
+        width     = line.get('width', 1.0)
+        color     = line.get('color', '#000000')
+        text      = line.get('text', None)
+        textcolor = line.get('textcolor') or '#000000'
+        fontsize  = line.get('fontsize') or 6
         fromto.append((sp, ep))
         widths.append(width)
         colors.append(color)
+        if text:
+            x, y, z = midpoint_line_2d((sp, ep))
+            t = axes.text(x,
+                          y,
+                          text,
+                          fontsize=fontsize,
+                          zorder=ZORDER_LABELS,
+                          ha='center',
+                          va='center',
+                          color=textcolor)
+            t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
     coll = LineCollection(
         fromto,
         linewidths=widths,

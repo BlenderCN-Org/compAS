@@ -141,3 +141,70 @@ Advanced Graph Statics
 Loadpath Optimisation
 =====================
 
+.. plot::
+    :include-source:
+
+    import yaml
+
+    import brg_ags
+
+    from brg_ags.diagrams.formdiagram import FormDiagram
+    from brg_ags.diagrams.forcediagram import ForceDiagram
+
+    from brg_ags.viewers.viewer import Viewer
+
+    import brg_ags.algorithms as gs
+
+
+    with open(brg_ags.get_data('form_lpopt.yaml'), 'rb') as fp:
+        data = yaml.load(fp)
+
+
+    form = FormDiagram.from_data(data['form'])
+    form.identify_fixed()
+
+    force = ForceDiagram.from_formdiagram(form)
+
+    gs.update_forcediagram(force, form)
+
+    force.vertex[1]['is_param'] = True
+    force.vertex[2]['is_param'] = True
+    force.vertex[3]['is_param'] = True
+    force.vertex[4]['is_param'] = True
+    force.vertex[5]['is_param'] = True
+    force.vertex[6]['is_param'] = True
+
+    form.vertex[0]['is_fixed'] = True
+    form.vertex[1]['is_fixed'] = True
+    form.vertex[2]['is_fixed'] = True
+    form.vertex[3]['is_fixed'] = True
+    form.vertex[4]['is_fixed'] = True
+    form.vertex[5]['is_fixed'] = True
+    form.vertex[6]['is_fixed'] = True
+
+    form_lines = []
+    for u, v in form.edges_iter():
+        form_lines.append({
+            'start': form.vertex_coordinates(u, 'xy'),
+            'end'  : form.vertex_coordinates(v, 'xy'),
+            'width': 2.0,
+            'color': '#999999'
+        })
+
+    force_lines = []
+    for u, v in force.edges_iter():
+        force_lines.append({
+            'start': force.vertex_coordinates(u, 'xy'),
+            'end'  : force.vertex_coordinates(v, 'xy'),
+            'width': 2.0,
+            'color': '#999999'
+        })
+
+    gs.optimise_loadpath(form, force)
+
+    viewer = Viewer(form, force, delay_setup=False)
+
+    viewer.draw_form(forcescale=5, lines=form_lines)
+    viewer.draw_force(vertexlabel={key: key for key in force}, lines=force_lines)
+
+    viewer.show()
