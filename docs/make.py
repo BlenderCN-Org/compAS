@@ -6,7 +6,6 @@ modules = [
     'brg.datastructures',
     'brg.datastructures.mesh',
     'brg.datastructures.network',
-    'brg.datastructures.tree',
     'brg.datastructures.volmesh',
     'brg.files',
     'brg.geometry',
