@@ -744,7 +744,7 @@ def sort_points_2d(point, points):
 
 
 def closest_point_in_cloud_2d(point, points):
-    """Calculates the closest point in a pointcloud in the XY-plane.
+    """Calculates the closest point in a list of points in the XY-plane.
 
     Notes:
         Check kdTree class for an optimized implementation (MR).
