@@ -4,7 +4,7 @@
 License
 ********************************************************************************
 
-The BRG framework is released under the MIT license::
+compAS is released under the MIT license::
 
     MIT License
 

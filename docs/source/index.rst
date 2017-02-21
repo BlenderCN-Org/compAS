@@ -23,7 +23,6 @@ Contents
    pages/tutorials
    pages/applications
    pages/reference
-   pages/packages
    pages/license
 
 

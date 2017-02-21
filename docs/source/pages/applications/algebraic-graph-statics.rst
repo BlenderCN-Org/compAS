@@ -8,7 +8,7 @@ This page contains a few simple examples of Algebraic Graph Statics (AGS).
 For more advanced and interactive examples, and examples in Rhino, Grasshopper
 and the browser, please refer to the documentation of the AGS package.
 
-http://block.arch.ethz.ch/docs/compas_ags
+http://block.arch.ethz.ch/docs/compas/packages/compas_ags
 
 
 .. add scale to drawings
