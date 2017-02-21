@@ -663,12 +663,18 @@ network: {0}
     def face_ancestor(self, fkey, key):
         raise NotImplementedError
 
-    def face_edges(self, fkey):
+    def face_halfedges(self, fkey):
         vertices = self.face_vertices(fkey)
-        edges = []
+        halfedges = []
         for i in range(0, len(vertices) - 1):
             u = vertices[i]
             v = vertices[i + 1]
+            halfedges.append((u, v))
+        return halfedges
+
+    def face_edges(self, fkey):
+        edges = []
+        for u, v in self.face_halfedges(fkey):
             if v not in self.edge[u]:
                 u, v = v, u
             edges.append((u, v))
@@ -689,6 +695,13 @@ network: {0}
         adj = self.face_adjacency()
         tree = algo(root, adj)
         return tree
+
+    def face_adjacency_edge(self, f1, f2):
+        for u, v in self.face_halfedges(f1):
+            if self.halfedge[v][u] == f2:
+                if v in self.edge[u]:
+                    return u, v
+                return v, u
 
     # --------------------------------------------------------------------------
     # attributes: vertex
