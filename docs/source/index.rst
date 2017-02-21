@@ -1,11 +1,13 @@
 .. _home:
 
 ********************************************************************************
-BRG Framework Documentation
+compAS framework documentation
 ********************************************************************************
 
-This is the documentation of the Block Research Group framework for computational
+This is the documentation of the compAS framework for computational
 architecture, structural design, and (robotic) fabrication.
+
+compAS = computational Architecture & Structures
 
 
 Contents
