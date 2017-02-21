@@ -213,6 +213,7 @@ network: {0}
                 'facedata'    : self.facedata,
                 'max_int_key' : self._max_int_key,
                 'max_int_fkey': self._max_int_fkey,
+                # json int keys
                 'keytype'     : dict((str(key), key) for key in self.vertices_iter()),
                 'fkeytype'    : dict((str(fkey), fkey) for fkey in self.faces_iter()), }
 
@@ -231,6 +232,7 @@ network: {0}
         fcount       = data.get('fcount') or 0
         max_int_key  = data.get('max_int_key') or vcount - 1
         max_int_fkey = data.get('max_int_fkey') or fcount - 1
+        # json int keys
         keytype      = data.get('keytype') or None
         fkeytype     = data.get('fkeytype') or None
 
@@ -254,46 +256,53 @@ network: {0}
         self.facedata = {}
 
         for key, attr in vertex.iteritems():
+            # json int keys
             if keytype:
-                key = keytype[key]
+                key = keytype[str(key)]
             self.vertex[key] = self.default_vertex_attributes.copy()
             if attr:
                 self.vertex[key].update(attr)
 
         for u, nbrs in edge.iteritems():
+            # json int keys
             if keytype:
-                u = keytype[u]
+                u = keytype[str(u)]
             if u not in self.edge:
                 self.edge[u] = {}
             nbrs = nbrs or {}
             for v, attr in nbrs.iteritems():
+                # json int keys
                 if keytype:
-                    v = keytype[v]
+                    v = keytype[str(v)]
                 self.edge[u][v] = self.default_edge_attributes.copy()
                 if attr:
                     self.edge[u][v].update(attr)
 
         for key, nbrs in halfedge.iteritems():
+            # json int keys
             if keytype:
-                key = keytype[key]
+                key = keytype[str(key)]
             if key not in self.halfedge:
                 self.halfedge[key] = {}
             if not nbrs:
                 nbrs = {}
             for nbr, fkey in nbrs.iteritems():
+                # json int keys
                 if keytype:
-                    nbr = keytype[nbr]
+                    nbr = keytype[str(nbr)]
                 self.halfedge[key][nbr] = fkey
 
         for fkey, vertices in face.iteritems():
+            # json int keys
             if fkeytype:
-                fkey = fkeytype[fkey]
+                fkey = fkeytype[str(fkey)]
             self.face[fkey] = vertices
 
         # make a separate facedata key dict?
         for fkey, attr in facedata.iteritems():
+            # json int keys
             if fkeytype:
-                fkey = fkeytype[fkey]
+                fkey = fkeytype[str(fkey)]
             self.facedata[fkey] = attr
 
         self._max_int_key = max_int_key

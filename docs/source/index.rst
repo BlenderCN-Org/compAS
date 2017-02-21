@@ -17,12 +17,12 @@ Contents
    :maxdepth: 1
 
    pages/intro
-   pages/about
    pages/gettingstarted
    pages/python
    pages/tutorials
    pages/applications
    pages/reference
+   pages/packages
    pages/license
 
 

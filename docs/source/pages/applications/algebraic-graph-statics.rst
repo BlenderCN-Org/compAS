@@ -8,7 +8,7 @@ This page contains a few simple examples of Algebraic Graph Statics (AGS).
 For more advanced and interactive examples, and examples in Rhino, Grasshopper
 and the browser, please refer to the documentation of the AGS package.
 
-http://block.arch.ethz.ch/docs/compas/packages/compas_ags
+http://block.arch.ethz.ch/docs/bleqemxknqtwppdjy/packages/compas_ags
 
 
 .. add scale to drawings
@@ -50,7 +50,7 @@ force distribution.
     # make form diagram from obj
     # make force diagram from form
 
-    form = FormDiagram.from_obj(compas_ags.get_data('/cases/gs_form_force.obj'))
+    form = FormDiagram.from_obj(compas_ags.get_data('paper/gs_form_force.obj'))
     force = ForceDiagram.from_formdiagram(form)
 
     # set the magnitude of the applied load
@@ -96,7 +96,7 @@ We store the original configuration to be plotted together with the modified one
     # make form diagram from obj
     # make force diagram from form
 
-    form = FormDiagram.from_obj(compas_ags.get_data('cases/gs_form_force.obj'))
+    form = FormDiagram.from_obj(compas_ags.get_data('paper/gs_form_force.obj'))
     force = ForceDiagram.from_formdiagram(form)
 
     # set the fixed points
@@ -158,7 +158,7 @@ Loadpath Optimisation
 .. plot::
     :include-source:
 
-    import yaml
+    import json
 
     import compas_ags
 
@@ -170,8 +170,8 @@ Loadpath Optimisation
     import compas_ags.algorithms as gs
 
 
-    with open(compas_ags.get_data('form_lpopt.yaml'), 'rb') as fp:
-        data = yaml.load(fp)
+    with open(compas_ags.get_data('form_lpopt.json'), 'rb') as fp:
+        data = json.load(fp)
 
 
     form = FormDiagram.from_data(data['form'])

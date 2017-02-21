@@ -288,6 +288,7 @@ def _break_faces(network, breakpoints):
         if len(faces) == 1:
             continue
         del network.face[fkey]
+        # json int keys
         if fkey in network.facedata:
             del network.facedata[fkey]
         for vertices in faces:
