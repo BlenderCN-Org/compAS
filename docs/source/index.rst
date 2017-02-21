@@ -16,7 +16,6 @@ Contents
 .. toctree::
    :maxdepth: 1
 
-   pages/intro
    pages/about
    pages/gettingstarted
    pages/python
