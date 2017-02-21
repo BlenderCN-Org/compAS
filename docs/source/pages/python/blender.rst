@@ -1,12 +1,12 @@
-.. _nest-smoothing:
+.. _python-blender:
 
 ********************************************************************************
-Smoothing
+Python in Blender
 ********************************************************************************
+
+.. warning::
+    
+    This page is still under construction.
+
 
 .. contents::
-
-
-.. code-block:: python
-
-    #

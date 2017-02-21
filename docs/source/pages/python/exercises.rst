@@ -4,241 +4,191 @@
 Exercises
 ********************************************************************************
 
-.. highlight:: python
+.. note::
+
+    More exercises will be added in the future.
 
 
-Questions
-=========
+Construct a list of odd numbers below 20 and then reverse the list in place,
+without using *reverse* or *reversed*.
 
-1.  Construct a list of odd numbers below 20 and then reverse the list in place.
-    
-    * Don't use *reverse* or *reversed*.
+.. code-block:: python
 
+    odd = range(1, 20, 2)
+    # odd = [i for i in range(20) if i % 2]
 
-2.  Given two lists of 3D points (xyz coordinates), find the locations in the
-    second list that also exist in the first.
-    
-    * Use a tolerance of ``1e-3``.
+    odd[:] = odd[::-1]
 
 
-3.  Define a function that takes:
-    
-    * two positional arguments,
-    * one optional argument with default value ``None``, and
-    * an unknown number of additional keyword arguments.
+-----
 
 
-4.  Demonstrate the principle of a cyclic list. Given a list of length ``n``,
-    allow for indexing by ``m >= n`` and ``m <= -n``.
+Given a list of 3D points (xyz coordinates),
+construct a lookup table that links 3D locations to items in the list.
 
-5.  Construct a list ``c`` with all elements in ``b`` that are not in ``a``.
+Use a tolerance of ``.3f``
 
-    .. code-block:: python
+For example, if the list contains point ``(1.2345, 2.4325, 1.3456)`` at index 5, 
+the lookup should return 5 for point ``(1.2346, 2.4328, 1.3457)``
 
-        a = ...
-        b = ...
+.. code-block:: python
 
+    import random
 
-6.  Construct a list ``c`` with all elements in ``b`` that are not in ``a``,
-    while preserving the order of elements in ``b``.
+    points = [(random.randint(10000, 99000) / 10000., 
+               random.randint(10000, 99000) / 10000., 
+               random.randint(10000, 99000) / 10000.) for i in range(10)]
 
-    .. code-block:: python
+    points[5] = (1.2345, 2.4325, 1.3456)
 
-        a = ...
-        b = ...
+    lookup = dict(('{0[0]:.3f},{0[1]:.3f},{0[2]:.3f}'.format(xyz), index) for index, xyz in enumerate(points))
 
-
-7.  Construct a list of 1000 random integers between 1 and 1000000. Find the index
-    of the item with the highest value.
-
-8.  Define a class with a method that behaves as if it is abstract.
-
-9.  Define a class with alternative constructors that can be called explicitly.
-
-    .. code-block:: python
-
-        o = MyClass()
-        o = MyClass.from_xxx()
-        o = MyClass.from_yyy()
+    key = '{0[0]:.3f},{0[1]:.3f},{0[2]:.3f}'.format(points[5])
+    print lookup[key]
 
 
-10. Define a vector class that supports the following operations.
-
-    .. code-block:: python
-        
-        v1 = Vector(1, 2, 3)
-        v2 = Vector(1, 2, 3)
-        v3 = v1 + v2
-        v3 * 2
+-----
 
 
-11. Write a function that does a counter-clockwise check of 3 points A, B, C.
+Define a (dummy) function that takes:
 
-    * A, B, C are in the xy-plane (i.e. z=0)
-    * the function should return True if the rotation from vector AB onto AC is counter-clockwise.
+* 2 positional arguments
+* 1 optional argument with default value ``None``
+* an unknown number of additional keyword arguments
 
+.. code-block:: python
 
-12. Write a (memoized) recursive fibonacci function.
-
-13. Write a function that does a breadth-first seach of a given network
-    starting at a given root element.
-
-    * The network is given as a dictionary of adjacencies: nbrs = adjacency[node].
-    * Return a list of nodes in breadth-first order.
-
-
-14. Write a simple bubble sort function.
-
-
-Answers
-=======
-
-1::
-
-    a = range(1, 20, 2)
-    a[:] = a[::-1]
-
-
-2::
-
-    points = []
-    lookup = dict(('{0[0]:.3f},{0[1]:.3f},{0[2]:.3f}'.format(xyz), i) for i, xyz in enumerate(points))
-
-
-3::
-
-    def f(arg1, arg2, arg3=None, **kwargs):
+    def f(a, b, c=None, **d):
         pass
 
 
-4::
-
-    a = [0, 1, 2]
-    item = a[5 % len(a)]
+-----
 
 
-5::
+Demonstrate the principle of a cyclic list.
 
-    a = [1, 4, 7, 9, 12, 19, 13, 3, 2]
-    b = range(20)
-    c = list(set(b) - set(a))
+* given a list of length n
+* allow for indexing by ``m >= n`` and ``m <= -n``
+* n = 6
+* items[6]
+* items[600]
+* items[-9]
+* items[-3000]
+
+.. code-block:: python
+
+    a = range(10)
+
+    print a[12 % len(a)]
+
+    class CyclicList(object):
+        def __init__(self, items):
+            self.items = items
+
+        def __getitem__(self, key):
+            return self.items[key % len(self.items)]
+
+    c = CyclicList(range(10))
+    print c[20]
 
 
-6::
+-----
 
+
+Construct a list *c* with all element in *b* that are not in *a*.
+
+.. code-block:: python
+
+    a = range(1, 100, 2)
+    b = range(1, 100)
+
+    c = set(b) - set(a)
+
+
+-----
+
+
+Construct a list *c* with all element in *b* that are not in *a*,
+but while preserving the order of the elements in *b*.
+
+.. code-block:: python
+
+    a = range(1, 100, 2)
+    b = range(1, 100)
     a = set(a)
     c = [x for x in b if x not in a]
 
 
-7::
-
-    from random import randint
-
-    a = dict((randint(1, 1000000), i) for i in range(1000))
-    k, v = sorted(a.items(), key=lambda x: x[1])[-1]
+-----
 
 
-8::
+Construct a list of 1000 random integers between 1 and 10000000.
+Then find the index of the item with the highest value.
 
-    class MyAbstractClass(object):
-        def method(self):
-            raise NotImplementedError
+.. code-block:: python
 
+    import random
 
-9::
+    items = [random.randint(1, 10000000) for i in range(1000)]
+    k, v  = sorted(enumerate(items), key=lambda x: x[1])[-1]
 
-    class MyClass(object):
-        def __init__(self):
-            pass
-
-        @classmethod
-        def from_xxx(cls):
-            return cls()
-
-        @classmethod
-        def from_yyy(cls):
-            return cls()
+    items = dict((index, randint(1, 1000000)) for index in range(1000))
+    k, v  = sorted(items.items(), key=lambda x: x[1])[-1]
 
 
-10::
-
-    class Vector(object):
-
-        def __init__(self, x, y, z):
-            self.x = x
-            self.y = y
-            self.z = z
-
-        def __add__(self, other):
-            x = self.x + other.x
-            y = self.y + other.y
-            z = self.z + other.z
-            return Vector(x, y, z)
-
-        def __mul__(self, n):
-            self.x *= n
-            self.y *= n
-            self.z *= n
+-----
 
 
-    v1 = Vector(1, 2, 3)
-    v2 = Vector(1, 2, 3)
-    v3 = v1 + v2
-    v4 = v3 * 3
+Write a function that returns ``True`` if the rotation from AB onto AC is CCW.
+A, B, C are points in the xy-plane...
 
-    print v1, v2, v3, v4
-
-
-11::
+.. code-block:: python
 
     def is_ccw(A, B, C):
         return (B[0] - A[0]) * (C[1] - A[1]) > (B[1] - A[1]) * (C[0] - A[0])
 
 
-    A = [1.0, 0.0]
-    B = [1.0, 1.0]
-    C = [0.0, 1.0]
-
-    print is_ccw(A, B, C)
-    print is_ccw(A, C, B)
+-----
 
 
-12::
+Write a function that returns the nth number in the fibonacci series.
 
-    def rfib(n, memo={}):
-        if n == 0:
-            return 0
-        if n == 1:
-            return 1
+.. code-block:: python
+
+    def fib(n):
+        # if n == 1: return 1
+        # if n == 2: return 1
+        a, b = 1, 1
+        for i in range(n - 1):
+            a, b = b, a + b
+        return a
+
+
+-----
+
+
+Write a recursive version of the fibonacci function.
+
+.. code-block:: python
+
+    def rfib(n):
+        if n == 1: return 1
+        if n == 2: return 1
+        return rfib(n-2) + rfib(n-1)
+
+
+-----
+
+
+Write a memoized version of the recursive fibonacci function.
+
+.. code-block:: python
+
+    def mrfib(n, memo={}):
+        if n == 1: return 1
+        if n == 2: return 1
         if n not in memo:
-            memo[n] = rfib(n - 2) + rfib(n - 1)
+            memo[n] = mrfib(n-2, memo) + mrfib(n-1, memo)
         return memo[n]
 
 
-    print rfib(1000)
-
-
-13::
-
-    #
-
-
-14::
-
-    from random import randint
-
-
-    def bubble(a):
-        for n in range(len(a) - 1, 0, -1):
-            for i in range(n):
-                if a[i] > a[i + 1]:
-                    a[i], a[i + 1] = a[i + 1], a[i]
-
-
-    a = [randint(1, 1000) for i in range(100)]
-
-    print a
-
-    bubble(a)
-
-    print a

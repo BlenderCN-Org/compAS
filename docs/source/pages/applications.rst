@@ -22,4 +22,9 @@ Applications
 .. toctree::
     :maxdepth: 1
 
+    applications/nest-smoothing
+    applications/nest-fabrication
+    applications/floor-modeling
+    applications/floor-fea
+    applications/armadillo-fabrication
     applications/algebraic-graph-statics
