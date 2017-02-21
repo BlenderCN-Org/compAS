@@ -851,8 +851,44 @@ network: {0}
             attr.update(self.facedata[fkey])
             self.facedata[fkey] = attr
 
+    def set_face_attribute(self, fkey, name, value):
+        if fkey not in self.facedata:
+            self.facedata[fkey] = self.default_face_attributes.copy()
+        self.facedata[fkey][name] = value
+
+    def set_face_attributes(self, fkey, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        if fkey not in self.facedata:
+            self.facedata[fkey] = self.default_face_attributes.copy()
+        self.facedata[fkey].update(attr_dict)
+
+    def set_faces_attribute(self, name, value, fkeys=None):
+        if not fkeys:
+            for fkey, attr in self.faces_iter(True):
+                attr[name] = value
+        else:
+            for fkey in fkeys:
+                if fkey not in self.facedata:
+                    self.facedata[fkey] = self.default_face_attributes.copy()
+                self.facedata[fkey][name] = value
+
+    def set_faces_attributes(self, fkeys=None, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        if not fkeys:
+            for fkey, attr in self.faces_iter(True):
+                attr.update(attr_dict)
+        else:
+            for fkey in fkeys:
+                if fkey not in self.facedata:
+                    self.facedata[fkey] = self.default_face_attributes.copy()
+                self.facedata[fkey].update(attr_dict)
+
     def get_face_attribute(self, fkey, name, default=None):
         if not self.facedata:
+            return default
+        if fkey not in self.facedata:
             return default
         return self.facedata[fkey].get(name, default)
 
@@ -861,20 +897,30 @@ network: {0}
             defaults = [None] * len(names)
         if not self.facedata:
             return defaults
+        if fkey not in self.facedata:
+            return defaults
         return [self.facedata[fkey].get(name, default) for name, default in zip(names, defaults)]
 
-    def get_faces_attribute(self, name, default=None):
+    def get_faces_attribute(self, name, default=None, fkeys=None):
+        if not fkeys:
+            if not self.facedata:
+                return [default for fkey in self.face]
+            return [self.get_face_attribute(fkey, name, default) for fkey in self.face]
         if not self.facedata:
-            return [default for fkey in self.face]
-        return [self.facedata[fkey].get(name, default) for fkey in self.face]
+            return [default for fkey in fkeys]
+        return [self.get_face_attribute(fkey, name, default) for fkey in fkeys]
 
-    def get_faces_attributes(self, names, defaults=None):
+    def get_faces_attributes(self, names, defaults=None, fkeys=None):
         if not defaults:
             defaults = [None] * len(names)
         temp = zip(names, defaults)
+        if not fkeys:
+            if not self.facedata:
+                return [[default for name, default in temp] for fkey in self.face]
+            return [[self.get_face_attribute(fkey, name, default) for name, default in temp] for fkey in self.face]
         if not self.facedata:
-            return [[default for name, default in temp] for fkey in self.face]
-        return [[self.facedata[fkey].get(name, default) for name, default in temp] for fkey in self.face]
+            return [[default for name, default in temp] for fkey in fkeys]
+        return [[self.get_face_attribute(fkey, name, default) for name, default in temp] for fkey in fkeys]
 
     # --------------------------------------------------------------------------
     # attribute filters
