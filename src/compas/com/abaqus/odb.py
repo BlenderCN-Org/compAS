@@ -1,8 +1,10 @@
-"""compas_fea.odb : Abaqus .odb file."""
+"""Abaqus .odb data extraction file."""
 
 from abaqus import *
 from abaqusConstants import *
 from job import *
+
+from time import time
 
 import json
 
@@ -13,38 +15,35 @@ __license__    = 'MIT License'
 __date__       = 'Oct 17, 2016'
 
 
-def odb_results(odb, temp, name):
+def odb_results(temp, name, output):
     """ Extracts results from the .odb file for all steps.
 
     Parameters:
-        odb (str): Path of the .odb file to open.
         temp (str): Temp folder for storing data.
         name (str): Name of the Structure.
+        output (str): Output type 'json' or 'txt'.
 
     Returns:
         None
     """
-    print('EXTRACTING DATA.....')
+    odb = '{0}{1}.odb'.format(temp, name)
     od = openOdb(path=odb)
-    fo_nodes = ['RF', 'RM', 'U', 'UR']
-    fo_elements = ['SF', 'SM', 'SK', 'SE', 'S']
     # print od.steps['S2_LOADS'].frames[-1].fieldOutputs['SF'].values[4]
     for step in od.steps.keys():
         frames = od.steps[step].frames
         for frame in [frames[-1]]:
+            tic = time()
             fo = frame.fieldOutputs
             fields = fo.keys()
             description = frame.description
-            with open('{0}{1}_{2}_info.txt'.format(temp, name, step), 'w') as f:
-                f.write(description)
-            # no = str(frame.incrementNumber)
-
+ 
             # Node data
-            for field in fo_nodes:
+            cadd = ['magnitude']
+            for field in ['RF', 'RM', 'U', 'UR', 'CF', 'CM']:
                 if field in fields:
                     components = list(fo[field].componentLabels)
-                    cadd = ['magnitude']
-                    dt = {component: {} for component in components + cadd}
+                    call = components + cadd
+                    dt = {component: {} for component in call}
                     values = fo[field].values
                     for value in values:
                         data = value.data
@@ -52,58 +51,73 @@ def odb_results(odb, temp, name):
                         for c, component in enumerate(components):
                             dt[component][node] = float(data[c])
                         dt['magnitude'][node] = float(value.magnitude)
-                    for component in components + cadd:
-                        json_name = '{0}{1}_{2}_{3}_{4}.json'.format(
+                    for component in call:
+                        fnm = '{0}{1}_{2}_{3}_{4}'.format(
                             temp, name, step, field, component)
-                        with open(json_name, 'w') as f:
-                            json.dump(dt[component], f)
+                        if output == 'json':
+                            with open(fnm + '.json', 'w') as f:
+                                json.dump(dt[component], f)
+                        elif output == 'txt':
+                            nkeys = sorted(dt[component], key=int)
+                            with open(fnm + '.txt', 'w') as f:
+                                f.write('node value\n')
+                                for nkey in nkeys:
+                                    val = dt[component][nkey]
+                                    f.write('{0} {1}\n'.format(nkey, val))
 
             # Element data
-            for field in fo_elements:
+            cadd = ['mises', 'maxPrincipal', 'axes', 'minPrincipal']
+            for field in ['SF', 'SM', 'SK', 'SE', 'S', 'E']:
                 if field in fields:
                     components = list(fo[field].componentLabels)
-                    cadd = ['magnitude', 'mises', 'maxPrincipal', 'axes',
-                            'minPrincipal']
-                    dt = {component: {} for component in components + cadd}
+                    call = components + cadd
+                    dt = {component: {} for component in call}
                     values = fo[field].values
                     for value in values:
                         data = value.data
                         element = str(value.elementLabel - 1)
                         ip = value.integrationPoint
-                        if value.sectionPoint:
-                            sp = value.sectionPoint.number
-                        else:
-                            sp = 0
+                        sp = value.sectionPoint.number if value.sectionPoint else 0
                         id = 'ip{0}_sp{1}'.format(ip, sp)
                         for c, component in enumerate(components):
                             try:
                                 dt[component][element][id] = float(data[c])
                             except:
-                                for ic in components + cadd:
-                                    dt[ic][element] = {}
-                                try:
+                                for j in call:
+                                    dt[j][element] = {}
+                                try:  # Can remove this try?
                                     dt[component][element][id] = float(data[c])
                                 except:
                                     pass
-                        if value.magnitude:
-                            dt['magnitude'][element][id] = float(value.magnitude)
                         if value.localCoordSystem:
                             dt['axes'][element][id] = value.localCoordSystem
                         if value.mises:
                             dt['mises'][element][id] = float(value.mises)
-                        maxP = float(value.maxPrincipal)
-                        minP = float(value.minPrincipal)
+                        maxP = value.maxPrincipal
+                        minP = value.minPrincipal
                         if maxP:
-                            dt['maxPrincipal'][element][id] = maxP
+                            dt['maxPrincipal'][element][id] = float(maxP)
                         if minP:
-                            dt['minPrincipal'][element][id] = minP
-                    for component in components + cadd:
-                        json_name = '{0}{1}_{2}_{3}_{4}.json'.format(
+                            dt['minPrincipal'][element][id] = float(minP)
+                    for component in call:
+                        fnm = '{0}{1}_{2}_{3}_{4}'.format(
                             temp, name, step, field, component)
-                        with open(json_name, 'w') as f:
-                            json.dump(dt[component], f)
+                        if output == 'json':
+                            with open(fnm + '.json', 'w') as f:
+                                json.dump(dt[component], f)
+                        elif output == 'txt':
+                            ekeys = sorted(dt[component], key=int)
+                            with open(fnm + '.txt', 'w') as f:
+                                f.write('element id value\n')
+                                for ekey in ekeys:
+                                    ids = dt[component][ekey]
+                                    for id in ids:
+                                        val = dt[component][ekey][id]
+                                        f.write('{0} {1} {2}\n'.format(ekey, id, val))
 
-    print('DATA EXTRACTION COMPLETE')
+            with open('{0}{1}_{2}_info.txt'.format(temp, name, step), 'w') as f:
+                f.write(description + '\n')    
+                f.write('Data extraction time: {0:.3g}s'.format(time() - tic))    
 
 
 # Run and extract data
@@ -111,12 +125,11 @@ name = sys.argv[-1]
 path = sys.argv[-2]
 temp = sys.argv[-3]
 cpus = sys.argv[-4]
+output = sys.argv[-5]
 fnm = '{0}{1}.inp'.format(path, name)
-print('Submitting job {0}'.format(fnm))
 job = mdb.JobFromInputFile(inputFileName=fnm, name=name, numCpus=int(cpus),
-                           parallelizationMethodExplicit=DOMAIN,
-                           numDomains=int(cpus),
-                           multiprocessingMode=DEFAULT)
+                           multiprocessingMode=DEFAULT, numDomains=int(cpus),
+                           parallelizationMethodExplicit=DOMAIN)
 job.submit()
 job.waitForCompletion()
-odb_results(odb='{0}{1}.odb'.format(temp, name), temp=temp, name=name)
+odb_results(temp=temp, name=name, output=output)
