@@ -1,4 +1,4 @@
-"""brg_blender.utilities.ui : Blender UI functions."""
+"""compas_blender.utilities.ui : Blender UI functions."""
 
 import bpy
 

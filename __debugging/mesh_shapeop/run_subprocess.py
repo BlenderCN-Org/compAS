@@ -3,23 +3,23 @@ import sys
 
 HERE = os.path.dirname(__file__)
 
-sys.path.insert(0, '/Users/vanmelet/bitbucket/brg_framework/src')
+sys.path.insert(0, '/Users/vanmelet/bitbucket/compas_framework/src')
 
-import brg
-import brg_rhino.utilities as rhino
+import compas
+import compas_rhino.utilities as rhino
 
-from brg_rhino.utilities.scripts import ScriptServer
+from compas_rhino.utilities.scripts import ScriptServer
 
 server = ScriptServer(HERE + '/subprocesses', HERE + '/subprocesses/temp', '/opt/local/bin/pythonw')
 
-# from brg.datastructures.mesh.mesh import Mesh
-# from brg_rhino.xxx import add_mesh_gui_helpers
+# from compas.datastructures.mesh.mesh import Mesh
+# from compas_rhino.xxx import add_mesh_gui_helpers
 # Mesh = add_mesh_gui_helpers(Mesh)
 # mesh = Mesh.from_obj()
 
-from brg_rhino.datastructures.mesh import RhinoMesh
+from compas_rhino.datastructures.mesh import RhinoMesh
 
-mesh = RhinoMesh.from_obj(brg.find_resource('faces.obj'))
+mesh = RhinoMesh.from_obj(compas.find_resource('faces.obj'))
 mesh.attributes['name'] = 'FACES'
 
 mesh.vertex['25']['z'] = 0.0

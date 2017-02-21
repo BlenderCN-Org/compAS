@@ -16,7 +16,7 @@
     limitations under the License.
 """
 
-from brg.datastructures.mesh.operations.split import split_edge
+from compas.datastructures.mesh.operations.split import split_edge
 
 
 __author__     = ['Tom Van Mele', ]

@@ -116,7 +116,7 @@ def network_face_matrix(network, rtype='csr'):
 
     Parameters:
         network (compas.datastructures.network.network.Network) :
-            A ``brg`` network datastructure object.
+            A ``compas`` network datastructure object.
         rtype (str) : Optional.
             The type of matrix to be returned. The default is ``'csr'``.
 

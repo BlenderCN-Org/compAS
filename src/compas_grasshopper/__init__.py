@@ -1,8 +1,8 @@
 """
-.. _brg_grasshopper:
+.. _compas_grasshopper:
 
 ********************************************************************************
-brg_grasshopper
+compas_grasshopper
 ********************************************************************************
 
 .. module:: compas_grasshopper

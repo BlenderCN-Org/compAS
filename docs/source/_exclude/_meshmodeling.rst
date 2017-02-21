@@ -22,7 +22,7 @@ Delaunay Triangulation A
     # **************************************************************************
 
     import rhinoscriptsyntax as rs
-    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+    from compas.datastructures.mesh.algorithms.triangulation import delaunay_from_points
 
     objs = rs.GetObjects("Select Points",1)
     pts = [rs.PointCoordinates(obj) for obj in objs]
@@ -52,9 +52,9 @@ mesh without 'holes'. The following code shows how to include specific boundarie
     # **************************************************************************
 
     import rhinoscriptsyntax as rs
-    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
-    from brg.datastructures.mesh import Mesh
-    import brg_rhino
+    from compas.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+    from compas.datastructures.mesh import Mesh
+    import compas_rhino
     
     objs = rs.GetObjects("Select Points",1)
     pts = [rs.PointCoordinates(obj) for obj in objs]
@@ -72,13 +72,13 @@ mesh without 'holes'. The following code shows how to include specific boundarie
     faces = delaunay_from_points(pts,boundary_polyline,holes_polylines)
     
     mesh = Mesh.from_vertices_and_faces(pts,faces)
-    brg_rhino.draw_mesh(mesh)
+    compas_rhino.draw_mesh(mesh)
  
 .. image:: /_images/delaunay_02.*
 
 .. seealso::
 
-    * :func:`brg.datastructures.mesh.algorithms.triangulation.delaunay_from_points`
+    * :func:`compas.datastructures.mesh.algorithms.triangulation.delaunay_from_points`
     * Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane
 
 
@@ -89,8 +89,8 @@ Create a Voronoi mesh based on the given Delaunay mesh.
 
 .. seealso::
 
-    * :func:`brg.geometry.planar.circle_from_points_2d`
-    * :func:`brg.datastructures.algorithms.construct_dual_mesh`
+    * :func:`compas.geometry.planar.circle_from_points_2d`
+    * :func:`compas.datastructures.algorithms.construct_dual_mesh`
 
 
 Solution: Delaunay Triangulation Exercise
@@ -100,11 +100,11 @@ Solution: Delaunay Triangulation Exercise
 
     import rhinoscriptsyntax as rs
 
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms.duality import construct_dual_mesh
-    from brg.geometry.planar import circle_from_points_2d
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.algorithms.duality import construct_dual_mesh
+    from compas.geometry.planar import circle_from_points_2d
     
-    import brg_rhino
+    import compas_rhino
     
     def construct_voronoi_mesh(mesh, cls=None):
         """Construct the voronoi dual of a mesh."""
@@ -136,11 +136,11 @@ Solution: Delaunay Triangulation Exercise
     
     
     guid = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
+    mesh = compas_rhino.mesh_from_guid(Mesh,guid)
     
     if mesh.is_trimesh():
         voronoi = construct_voronoi_mesh(mesh)
-        brg_rhino.draw_mesh(voronoi, show_faces=False)
+        compas_rhino.draw_mesh(voronoi, show_faces=False)
 
     
 Mesh Smoothing A
@@ -155,22 +155,22 @@ Mesh Smoothing A
     
     import rhinoscriptsyntax as rs
 
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
-    from brg.datastructures.mesh.algorithms import smooth_mesh_area
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from compas.datastructures.mesh.algorithms import smooth_mesh_area
 
-    import brg_rhino
+    import compas_rhino
 
     
     guid = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
+    mesh = compas_rhino.mesh_from_guid(Mesh,guid)
     
     # get all indices of fixed points along the boundaries
     fixed = mesh.vertices_on_boundary()
     
     smooth_mesh_area(mesh,fixed,kmax=100)
     #smooth_mesh_centroid(mesh,fixed,kmax=100)
-    brg_rhino.draw_mesh(mesh)   
+    compas_rhino.draw_mesh(mesh)   
     
 
 .. image:: /_images/smoothing_01.*
@@ -189,12 +189,12 @@ Mesh Smoothing B
     
     import rhinoscriptsyntax as rs
 
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
-    from brg.datastructures.mesh.algorithms import smooth_mesh_area
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from compas.datastructures.mesh.algorithms import smooth_mesh_area
 
-    import brg_rhino
-    from brg_rhino.conduits.mesh import MeshConduit
+    import compas_rhino
+    from compas_rhino.conduits.mesh import MeshConduit
     
 
     def wrapper(conduit, vis):
@@ -206,7 +206,7 @@ Mesh Smoothing B
 
     
     guid = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
+    mesh = compas_rhino.mesh_from_guid(Mesh,guid)
     
     # get all indices of fixed points along the boundaries
     fixed = mesh.vertices_on_boundary()
@@ -226,7 +226,7 @@ Mesh Smoothing B
     except Exception as e:
         print e
     else:
-        brg_rhino.draw_mesh(mesh)
+        compas_rhino.draw_mesh(mesh)
     
     finally:
         conduit.Enabled = False
@@ -250,13 +250,13 @@ Mesh Smoothing C
     
     import rhinoscriptsyntax as rs
 
-    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms import smooth_mesh_centroid
-    from brg.datastructures.mesh.algorithms import smooth_mesh_area
+    from compas.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from compas.datastructures.mesh.algorithms import smooth_mesh_area
 
-    import brg_rhino
-    from brg_rhino.conduits.mesh import MeshConduit
+    import compas_rhino
+    from compas_rhino.conduits.mesh import MeshConduit
     
 
     def wrapper(conduit, vis):
@@ -276,7 +276,7 @@ Mesh Smoothing C
     
 
     guid = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
+    mesh = compas_rhino.mesh_from_guid(Mesh,guid)
     mesh.set_dva({'guide_srf': None})
     
     fixed = mesh.vertices_on_boundary()
@@ -299,7 +299,7 @@ Mesh Smoothing C
     except Exception as e:
         print e
     else:
-        brg_rhino.draw_mesh(mesh)
+        compas_rhino.draw_mesh(mesh)
     
     finally:
         conduit.Enabled = False
@@ -311,12 +311,12 @@ Mesh Smoothing C
 
 .. seealso::
 
-    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_centroid`
-    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_centerofmass`
-    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_length`
-    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_area` 
-    * :func:`brg.datastructures.mesh.algorithms.smooth_mesh_angle` 
-    * :mod:`brg_rhino.conduits.mesh`    
+    * :func:`compas.datastructures.mesh.algorithms.smooth_mesh_centroid`
+    * :func:`compas.datastructures.mesh.algorithms.smooth_mesh_centerofmass`
+    * :func:`compas.datastructures.mesh.algorithms.smooth_mesh_length`
+    * :func:`compas.datastructures.mesh.algorithms.smooth_mesh_area` 
+    * :func:`compas.datastructures.mesh.algorithms.smooth_mesh_angle` 
+    * :mod:`compas_rhino.conduits.mesh`    
 
 
 Smoothing Exercise
@@ -329,7 +329,7 @@ algorithms.
 
 .. seealso::
 
-    * :mod:`brg.utilities.colors` 
+    * :mod:`compas.utilities.colors` 
 
 
 Solution: Smoothing Exercise
@@ -339,14 +339,14 @@ Solution: Smoothing Exercise
 
     import rhinoscriptsyntax as rs
     
-    from brg.datastructures.mesh import Mesh
-    from brg.utilities import i_to_rgb
+    from compas.datastructures.mesh import Mesh
+    from compas.utilities import i_to_rgb
     
-    import brg_rhino
+    import compas_rhino
     
     
     guid = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
+    mesh = compas_rhino.mesh_from_guid(Mesh,guid)
     
     edge_lengths = {(u,v) : mesh.edge_length(u,v,) for u, v in mesh.edges()}
     
@@ -363,7 +363,7 @@ Solution: Smoothing Exercise
     #print "The maximum edge length is {0}".format(max(edge_lengths))
     #print color_e
     if mesh.is_trimesh():
-        brg_rhino.draw_mesh(mesh,show_faces=False,show_vertices=False,edge_color=color_e)
+        compas_rhino.draw_mesh(mesh,show_faces=False,show_vertices=False,edge_color=color_e)
 
 
 Mesh from Boundary
@@ -378,12 +378,12 @@ Mesh from Boundary
     
     import rhinoscriptsyntax as rs
 
-    from brg.datastructures.mesh.algorithms.triangulation import delaunay_from_points
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms import optimise_trimesh_topology
+    from compas.datastructures.mesh.algorithms.triangulation import delaunay_from_points
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.algorithms import optimise_trimesh_topology
 
-    import brg_rhino
-    from brg_rhino.conduits.mesh import MeshConduit
+    import compas_rhino
+    from compas_rhino.conduits.mesh import MeshConduit
     
     
     def wrapper(conduit, vis):
@@ -411,7 +411,7 @@ Mesh from Boundary
     except Exception as e:
         print e
     else:
-        brg_rhino.draw_mesh(mesh)
+        compas_rhino.draw_mesh(mesh)
     
     finally:
         conduit.Enabled = False
@@ -423,7 +423,7 @@ Mesh from Boundary
 
 .. seealso::
 
-    * :func:`brg.datastructures.mesh.algorithms.optimise_trimesh_topology`
+    * :func:`compas.datastructures.mesh.algorithms.optimise_trimesh_topology`
     * Botsch M. and Kobbelt L. (2004) A Remeshing Approach to Multiresolution Modeling
     
     
@@ -436,8 +436,8 @@ edge. Only allow this to work on vertices with a valency/degree of six.
 
 .. seealso::
 
-    * :mod:`brg.datastructures.mesh.mesh` 
-    * :mod:`brg.datastructures.mesh.operations` 
+    * :mod:`compas.datastructures.mesh.mesh` 
+    * :mod:`compas.datastructures.mesh.operations` 
 
 
 Solution: Remeshing Exercise
@@ -447,17 +447,17 @@ Solution: Remeshing Exercise
 
     import rhinoscriptsyntax as rs
     
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.operations import swap_edge_trimesh
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.operations import swap_edge_trimesh
     
-    import brg_rhino
+    import compas_rhino
     
     guid = rs.GetObject("Select Mesh",32)
-    mesh = brg_rhino.mesh_from_guid(Mesh,guid)
+    mesh = compas_rhino.mesh_from_guid(Mesh,guid)
     rs.DeleteObject(guid)
     
     while True:
-        brg_rhino.draw_mesh(mesh,show_faces=False)
+        compas_rhino.draw_mesh(mesh,show_faces=False)
         rs.EnableRedraw()
         pt_obj = rs.GetObject("Select Vertex",1)
         if not pt_obj: break

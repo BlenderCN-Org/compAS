@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# brg_framework documentation build configuration file, created by
+# compas_framework documentation build configuration file, created by
 # sphinx-quickstart on Wed Feb  1 16:47:24 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -82,8 +82,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'brg_framework'
-copyright = u'2017, Tom Van Mele'
+project = u'compas'
+copyright = u'2017, Block Research Group'
 author = u'Tom Van Mele'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -134,7 +134,7 @@ html_theme_options = {
 }
 
 html_context = {
-    'css_files': ['_static/css/brg.css'],
+    'css_files': ['_static/css/compas.css'],
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -145,7 +145,7 @@ html_static_path = ['_static', ]
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'brg_frameworkdoc'
+htmlhelp_basename = 'compasdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -172,7 +172,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'brg_framework.tex', u'brg\\_framework Documentation',
+    (master_doc, 'compas.tex', u'compas Documentation',
      u'Tom Van Mele', 'manual'),
 ]
 
@@ -182,7 +182,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'brg_framework', u'brg_framework Documentation',
+    (master_doc, 'compas', u'compas Documentation',
      [author], 1)
 ]
 
@@ -193,8 +193,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'brg_framework', u'brg_framework Documentation',
-     author, 'brg_framework', 'One line description of project.',
+    (master_doc, 'compas', u'compas Documentation',
+     author, 'compas', 'One line description of project.',
      'Miscellaneous'),
 ]
 

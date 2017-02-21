@@ -19,10 +19,10 @@ Plotters
     :include-source:
 
     import random
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
 

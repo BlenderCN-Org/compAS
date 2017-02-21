@@ -82,7 +82,7 @@
       <button_text>
         <locale_1033>mesh_from_nurbs</locale_1033>
       </button_text>
-      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\objects_to_mesh_in_rhino\nurbs_objects_to_mesh.py</script>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\compas_framework\examples\objects_to_mesh_in_rhino\nurbs_objects_to_mesh.py</script>
     </macro_item>
     <macro_item guid="5972478b-ea53-4894-85f4-301c0fa52f72" bitmap_id="40ad0422-2999-47cd-ae94-a27493f7c00a">
       <text>
@@ -94,7 +94,7 @@
       <button_text>
         <locale_1033>mesh_from_mesh</locale_1033>
       </button_text>
-      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\objects_to_mesh_in_rhino\mesh_to_mesh.py</script>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\compas_framework\examples\objects_to_mesh_in_rhino\mesh_to_mesh.py</script>
     </macro_item>
     <macro_item guid="e9fd0c00-f3a0-4d23-964f-af15b5b98708" bitmap_id="0a4d96f9-fefe-4a35-962b-732096cd69fe">
       <text>
@@ -106,7 +106,7 @@
       <button_text>
         <locale_1033>planarize</locale_1033>
       </button_text>
-      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\mesh_optimization_in_rhino\planarize_panels.py</script>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\compas_framework\examples\mesh_optimization_in_rhino\planarize_panels.py</script>
     </macro_item>
     <macro_item guid="76eea51e-aed6-4632-b710-c42e608ef086" bitmap_id="84e34f42-cdcc-45c8-b768-327b4607ac28">
       <text>
@@ -118,7 +118,7 @@
       <button_text>
         <locale_1033>relax</locale_1033>
       </button_text>
-      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\meshing_of_architectural_surfaces_in_rhino\relax_on_surface.py</script>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\compas_framework\examples\meshing_of_architectural_surfaces_in_rhino\relax_on_surface.py</script>
     </macro_item>
     <macro_item guid="97b5efaa-5875-451d-8e6a-689f23dda07f" bitmap_id="7ae3a331-593c-4d3d-9949-dd692fb67d3c">
       <text>
@@ -130,7 +130,7 @@
       <button_text>
         <locale_1033>planarize members</locale_1033>
       </button_text>
-      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\meshing_of_architectural_surfaces_in_rhino\planarize_gridshell_members.py</script>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\compas_framework\examples\meshing_of_architectural_surfaces_in_rhino\planarize_gridshell_members.py</script>
     </macro_item>
     <macro_item guid="c67b10ef-3ff6-47cf-a7dd-1180066feb05" bitmap_id="4e09f3be-82cc-422b-b5fb-13e2a82929cd">
       <text>
@@ -142,7 +142,7 @@
       <button_text>
         <locale_1033>sub div</locale_1033>
       </button_text>
-      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\sub_div_modelling\sub_div_modelling.py</script>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\compas_framework\examples\sub_div_modelling\sub_div_modelling.py</script>
     </macro_item>
     <macro_item guid="e5b563c1-528b-49a8-a25e-6176dfa7bbe6" bitmap_id="c96982d0-42ed-4728-8e30-91d4233b5fb3">
       <text>
@@ -154,7 +154,7 @@
       <button_text>
         <locale_1033>mesh_from_nurbs_ani</locale_1033>
       </button_text>
-      <script>-_RunPythonScript C:\Users\rippmanm\workspace\brg_framework\examples\objects_to_mesh_in_rhino\nurbs_objects_to_mesh_ani.py</script>
+      <script>-_RunPythonScript C:\Users\rippmanm\workspace\compas_framework\examples\objects_to_mesh_in_rhino\nurbs_objects_to_mesh_ani.py</script>
     </macro_item>
   </macros>
   <bitmaps>

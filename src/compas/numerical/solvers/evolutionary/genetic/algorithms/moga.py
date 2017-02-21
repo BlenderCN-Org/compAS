@@ -676,7 +676,7 @@ class MOGA:
     def make_moga_input_data(self):
         """Returns a dictionary containing the most relavant genetic data present in the instance 
         of ``MOGA``. This is the data required to restart a genetic optimization process or to
-        launch a visualization using ``brg_ga.visualization.moga_visualization``. 
+        launch a visualization using ``compas_ga.visualization.moga_visualization``. 
 
         Returns
         -------
@@ -734,7 +734,7 @@ class MOGA:
   
     def write_moga_json_file(self):
         """Writes a JSON file containing the most relevant data for MOGA optimization and 
-        visualization using ``brg_ga.visualization.moga_visualization``. 
+        visualization using ``compas_ga.visualization.moga_visualization``. 
         """
         data = self.make_moga_input_data()
         filename = ''
@@ -746,7 +746,7 @@ class MOGA:
         
     def write_gen_json_file(self,generation):
         """Writes a JSON file containing the most relevant data for MOGA optimization and 
-        visualization using ``brg_ga.visualization.ga_visualization`` for the given
+        visualization using ``compas_ga.visualization.ga_visualization`` for the given
         generation ``generation``.
 
         Parameters:

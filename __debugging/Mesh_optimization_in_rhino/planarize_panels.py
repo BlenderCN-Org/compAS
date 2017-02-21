@@ -10,22 +10,22 @@ import rhinoscriptsyntax as rs
 import math
 import copy
 import Rhino
-from brg.datastructures.mesh.mesh import Mesh
-from brg.geometry.functions import centroid
-from brg.geometry.functions import distance
-from brg.geometry.functions import midpoint
+from compas.datastructures.mesh.mesh import Mesh
+from compas.geometry.functions import centroid
+from compas.geometry.functions import distance
+from compas.geometry.functions import midpoint
 
 
-from brg.geometry.arithmetic import add_vectors
-from brg.geometry.arithmetic import subtract_vectors
+from compas.geometry.arithmetic import add_vectors
+from compas.geometry.arithmetic import subtract_vectors
 
-from brg.geometry.transformations import normalize
-from brg.geometry.transformations import scale
-from brg.utilities.colors import i2rgb
-from brg.geometry.spatial import closest_point_on_plane
+from compas.geometry.transformations import normalize
+from compas.geometry.transformations import scale
+from compas.utilities.colors import i2rgb
+from compas.geometry.spatial import closest_point_on_plane
 
-import brg_rhino.utilities as rhino
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
+import compas_rhino.utilities as rhino
+from compas.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
 
 #import utility as rhutil
 import Rhino

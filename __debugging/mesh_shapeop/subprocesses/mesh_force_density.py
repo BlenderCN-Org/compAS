@@ -2,11 +2,11 @@
 
 import sys
 
-sys.path.insert(0, '/Users/vanmelet/bitbucket/brg_framework/src')
+sys.path.insert(0, '/Users/vanmelet/bitbucket/compas_framework/src')
 
 
-from brg.datastructures.mesh.mesh import Mesh
-from brg.datastructures.mesh.numerical.methods import mesh_fd
+from compas.datastructures.mesh.mesh import Mesh
+from compas.datastructures.mesh.numerical.methods import mesh_fd
 
 
 __author__    = 'Tom Van Mele'

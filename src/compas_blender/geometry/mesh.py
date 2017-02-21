@@ -1,4 +1,4 @@
-"""brg_blender.geometry.mesh : Manipulating Blender meshes."""
+"""compas_blender.geometry.mesh : Manipulating Blender meshes."""
 
 from numpy import array
 

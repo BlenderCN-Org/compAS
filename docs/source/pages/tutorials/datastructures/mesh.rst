@@ -4,8 +4,8 @@
 Mesh
 ********************************************************************************
 
-* :mod:`brg.datastructures.mesh`
-* :class:`brg.datastructures.mesh.Mesh`
+* :mod:`compas.datastructures.mesh`
+* :class:`compas.datastructures.mesh.Mesh`
 
 
 The ``Mesh`` is an implementation of a *half-edge* data structure, and is suited
@@ -26,11 +26,11 @@ Meshes and Mesh algorithms
 
 .. code-block:: python
 
-    import brg
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms import subdivide_mesh_catmullclark
+    import compas
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.algorithms import subdivide_mesh_catmullclark
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
     subd = mesh.copy()
 
     subdivide_mesh_catmullclark(subd, k=2)
@@ -43,11 +43,11 @@ Meshes and Mesh algorithms
 
 .. plot::
 
-    import brg
-    from brg.datastructures.mesh import Mesh
-    from brg.datastructures.mesh.algorithms import subdivide_mesh_catmullclark
+    import compas
+    from compas.datastructures.mesh import Mesh
+    from compas.datastructures.mesh.algorithms import subdivide_mesh_catmullclark
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
     subd = mesh.copy()
 
     subdivide_mesh_catmullclark(subd, k=2)
@@ -62,10 +62,10 @@ Meshes and Mesh algorithms
 
     # this example requires PyOpenGL and PySide
 
-    from brg.datastructures.mesh import Mesh
-    from brg.geometry.elements.polyhedron import Polyhedron
-    from brg.datastructures.mesh.viewer import SubdMeshViewer
-    from brg.datastructures.mesh.algorithms import subdivide_mesh_doosabin
+    from compas.datastructures.mesh import Mesh
+    from compas.geometry.elements.polyhedron import Polyhedron
+    from compas.datastructures.mesh.viewer import SubdMeshViewer
+    from compas.datastructures.mesh.algorithms import subdivide_mesh_doosabin
 
     cube = Polyhedron.generate(6)
 

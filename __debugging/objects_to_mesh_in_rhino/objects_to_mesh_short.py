@@ -9,12 +9,12 @@ import time
 import math
 import copy
 
-from brg.datastructures.mesh.mesh import Mesh
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
-from brg.datastructures.mesh.algorithms.tri.topology import remesh
-from brg.datastructures.mesh.algorithms.tri.delaunay import delaunay
+from compas.datastructures.mesh.mesh import Mesh
+from compas.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
+from compas.datastructures.mesh.algorithms.tri.topology import remesh
+from compas.datastructures.mesh.algorithms.tri.delaunay import delaunay
 
-import brg_rhino.utilities as rhino
+import compas_rhino.utilities as rhino
 
 import Rhino
 import scriptcontext

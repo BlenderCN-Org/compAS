@@ -155,7 +155,7 @@ class WebAPI(object):
 if __name__ == '__main__':
 
     api = WebAPI()
-    api.url = 'http://block.arch.ethz.ch/api/brg_private/tna.py'
+    api.url = 'http://block.arch.ethz.ch/api/compas_private/tna.py'
 
     print api.test()
     print api.info()

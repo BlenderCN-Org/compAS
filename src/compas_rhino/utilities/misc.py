@@ -108,7 +108,7 @@ def pick_point(message='Pick a point.'):
 
 
 def browse_for_folder(message=None, default=None):
-    return rs.BrowseForFolder(folder=default, message=message, title='brg')
+    return rs.BrowseForFolder(folder=default, message=message, title='compas')
 
 
 def browse_for_file(title=None, folder=None, filter=None):

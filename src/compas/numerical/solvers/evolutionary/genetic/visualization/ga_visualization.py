@@ -11,7 +11,7 @@ __email__      = 'mtomas@ethz.ch'
 
 class GA_VIS:
     """This class is to be used for the visualization of the optimization performed by the
-    ``brg_ga.ga`` function. The function ``draw_ga_evolution`` produces a PDF that shows the
+    ``compas_ga.ga`` function. The function ``draw_ga_evolution`` produces a PDF that shows the
     minimum, maximum and average fitness value of the genetic population per generation.
     """
 

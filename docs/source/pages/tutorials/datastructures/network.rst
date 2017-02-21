@@ -4,8 +4,8 @@
 Network
 ********************************************************************************
 
-* :mod:`brg.datastructures.network`
-* :class:`brg.datastructures.network.Network`
+* :mod:`compas.datastructures.network`
+* :class:`compas.datastructures.network.Network`
 
 
 The ``Network`` is an edge graph. It is suited for describing general networks
@@ -18,10 +18,10 @@ Structure of the data
 
 .. code-block:: python
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(compas.get_data('lines.obj'))
 
     # structure of the vertex dict
 
@@ -59,7 +59,7 @@ Create a network
 .. plot::
     :include-source:
 
-    from brg.datastructures.network import Network
+    from compas.datastructures.network import Network
 
     network = Network()
 
@@ -110,7 +110,7 @@ Constructors
 
 .. code-block:: python
     
-    from brg.datastructures.network import Network
+    from compas.datastructures.network import Network
 
     vertices = [[0.0, 0.0, 0.0],
                 [1.0, 0.0, 0.0],
@@ -126,10 +126,10 @@ Constructors
 .. plot::
     :include-source:
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     network.plot(
         vsize=0.2,
@@ -151,10 +151,10 @@ Accessors
 
     # lists
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     print network.vertices()
     print network.vertices(data=True)
@@ -167,10 +167,10 @@ Accessors
 
     # iterators
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     for key in network.vertices_iter():
         print key
@@ -189,10 +189,10 @@ Accessors
 
     # enumerators
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     for index, key in network.vertices_enum():
         print index, key
@@ -241,10 +241,10 @@ described in ``'grid_irregular.obj'``. Then plot the network with these colors.
     :include-source:
     
     import random
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
 
@@ -265,10 +265,10 @@ Topology
 
     # adjacency
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     vertices = network.neighbours(0) + [0]
 
@@ -285,10 +285,10 @@ Topology
 
     # degree
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     network.plot(
         vsize=0.2,
@@ -308,7 +308,7 @@ Customisation
 
 .. code-block:: python
 
-    import brg_rhino
+    import compas_rhino
    
     class Cablenet(Network):
        
@@ -334,5 +334,5 @@ Customisation
             return [attr['q'] for u, v, attr in self.edges_iter(True)]
 
         def draw(self):
-            brg_rhino.draw_network(self)
+            compas_rhino.draw_network(self)
 

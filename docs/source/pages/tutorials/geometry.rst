@@ -4,7 +4,7 @@
 Geometry
 ********************************************************************************
 
-* :mod:`brg.geometry`
+* :mod:`compas.geometry`
 
 
 .. polyhedrons: planarity of the faces?

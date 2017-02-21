@@ -1,4 +1,4 @@
-"""brg_fea.odb : Abaqus .odb file."""
+"""compas_fea.odb : Abaqus .odb file."""
 
 from abaqus import *
 from abaqusConstants import *

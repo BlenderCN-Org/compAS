@@ -4,7 +4,7 @@
 Geometry
 ********************************************************************************
 
-* :mod:`brg.geometry`
+* :mod:`compas.geometry`
 
 
 .. raytracing?
@@ -28,11 +28,11 @@ Edge length
 
 .. code-block:: python
 
-    import brg
-    from brg.datastructures.network import Network
-    from brg.geometry import distance_point_point
+    import compas
+    from compas.datastructures.network import Network
+    from compas.geometry import distance_point_point
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     lengths = []
 
@@ -46,10 +46,10 @@ Edge length
 .. plot::
     :include-source:
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     network.plot(
         vsize=0.05,
@@ -62,11 +62,11 @@ Face centroid
 
 .. code-block:: python
 
-    import brg
-    from brg.datastructures.mesh import Mesh
-    from brg.geometry import centroid_points
+    import compas
+    from compas.datastructures.mesh import Mesh
+    from compas.geometry import centroid_points
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     centroids = []
 
@@ -80,10 +80,10 @@ Face centroid
 .. plot::
     :include-source:
 
-    import brg
-    from brg.datastructures.mesh import Mesh
+    import compas
+    from compas.datastructures.mesh import Mesh
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     mesh.plot(
         vsize=0.05,
@@ -98,9 +98,9 @@ Vertex area
 
     # areas = [mesh.vertex_area(key) for key in mesh.vertex]
 
-    from brg.geometry import centroid_points
-    from brg.geometry import cross_vectors
-    from brg.geometry import length_vector
+    from compas.geometry import centroid_points
+    from compas.geometry import cross_vectors
+    from compas.geometry import length_vector
 
     fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.face}
 
@@ -140,10 +140,10 @@ Vertex area
 
 .. plot::
 
-    import brg
-    from brg.datastructures.mesh import Mesh
+    import compas
+    from compas.datastructures.mesh import Mesh
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     mesh.plotter.vsize = 0.2
     mesh.plotter.vlabel = {key: '{0:.1f}'.format(mesh.vertex_area(key)) for key in mesh}

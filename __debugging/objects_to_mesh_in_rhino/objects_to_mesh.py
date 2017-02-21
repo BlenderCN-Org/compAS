@@ -9,23 +9,23 @@ import time
 import math
 import copy
 
-from brg.datastructures.mesh.mesh import Mesh
-from brg.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
-from brg.datastructures.mesh.algorithms.tri.topology import remesh
-from brg.datastructures.mesh.algorithms.tri.delaunay import delaunay
-from brg.geometry.functions import distance
-from brg.geometry.spatial import closest_point_on_plane
+from compas.datastructures.mesh.mesh import Mesh
+from compas.datastructures.mesh.algorithms.smoothing import mesh_smooth_centroid
+from compas.datastructures.mesh.algorithms.tri.topology import remesh
+from compas.datastructures.mesh.algorithms.tri.delaunay import delaunay
+from compas.geometry.functions import distance
+from compas.geometry.spatial import closest_point_on_plane
 
-import brg_rhino.utilities as rhino
+import compas_rhino.utilities as rhino
 
 import Rhino
 import scriptcontext
 import rhinoscriptsyntax as rs  
 
 
-from brg.datastructures.mesh.operations.tri.split import split_edge
-from brg.datastructures.mesh.operations.tri.collapse import collapse_edge
-from brg.datastructures.mesh.operations.tri.swap import swap_edge
+from compas.datastructures.mesh.operations.tri.split import split_edge
+from compas.datastructures.mesh.operations.tri.collapse import collapse_edge
+from compas.datastructures.mesh.operations.tri.swap import swap_edge
 
 def remesh_ani(srf,mesh,trg_len_min,trg_len_max,gauss_min,gauss_max,
            tol=0.1, divergence=0.01, kmax=100,

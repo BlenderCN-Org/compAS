@@ -1,4 +1,4 @@
-"""brg_blender.utilities.objects : Selecting or editing of Blender objects."""
+"""compas_blender.utilities.objects : Selecting or editing of Blender objects."""
 
 import bpy
 

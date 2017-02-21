@@ -10,7 +10,7 @@ __email__      = 'mtomas@ethz.ch'
 
 class MULTI_VIS:
     """This class is to be used for the visualization of the optimization performed by the 
-    ``brg_ga.moga`` function. The function ``draw_objective_spaces`` produces a multi page PDF 
+    ``compas_ga.moga`` function. The function ``draw_objective_spaces`` produces a multi page PDF 
     that shows the objective space resulting from each generaton of genetic optimization per page. 
     """
     

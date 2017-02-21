@@ -1,14 +1,14 @@
 """An example of dynamic relaxation for beam elements."""
 
-from brg_blender.geometry.curve import bezier_curve_interpolate
+from compas_blender.geometry.curve import bezier_curve_interpolate
 
-from brg_blender.utilities.drawing import xdraw_mesh
-from brg_blender.utilities.layers import layer_clear
-from brg_blender.utilities.objects import get_objects_by_layer
-from brg_blender.utilities.objects import select_objects_none
+from compas_blender.utilities.drawing import xdraw_mesh
+from compas_blender.utilities.layers import layer_clear
+from compas_blender.utilities.objects import get_objects_by_layer
+from compas_blender.utilities.objects import select_objects_none
 
-from brg.numerical.methods.dynamic_relaxation import run
-from brg.numerical.linalg import normrow
+from compas.numerical.methods.dynamic_relaxation import run
+from compas.numerical.linalg import normrow
 
 from math import pi
 

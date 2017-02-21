@@ -12,16 +12,16 @@ Using a script
 
 .. code-block:: python
 
-    import brg
-    from brg.datastructures.network import Network
-    from brg.utilities import XFuncIO
+    import compas
+    from compas.datastructures.network import Network
+    from compas.utilities import XFuncIO
 
-    import brg_rhino as rhino
+    import compas_rhino as rhino
 
 
     xrun = XFuncIO()
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(compas.get_data('lines.obj'))
 
     network.set_dva({
         'px': 0.0,
@@ -81,7 +81,7 @@ Using a script
     edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
     fixed = [key_index[key] for key, attr in network.vertices_iter(True) if attr['is_fixed']]
 
-    fname = 'brg.numerical.methods.force_density.fd'
+    fname = 'compas.numerical.methods.force_density.fd'
     fargs = [xyz, edges, fixed, q, loads]
 
     xrun(fname, *fargs, rtype='dict')
@@ -117,10 +117,10 @@ Using a custom class
 
 .. code-block:: python
 
-    import brg
+    import compas
     from cablenet import Cablenet
 
-    cablenet = Cablenet.from_obj(brg.get_data('lines.obj'))
+    cablenet = Cablenet.from_obj(compas.get_data('lines.obj'))
 
     cablenet.set_fixed_vertices(cablenet.leaves())
 
@@ -138,10 +138,10 @@ Using a custom class
 
     # cablenet.py
 
-    from brg.datastructures.network import Network
-    from brg.utilities.xfuncio import XFuncIO
+    from compas.datastructures.network import Network
+    from compas.utilities.xfuncio import XFuncIO
 
-    import brg_rhino as rhino
+    import compas_rhino as rhino
 
 
     xrun = XFuncIO()
@@ -209,7 +209,7 @@ Using a custom class
 
         def update_equilibrium(self):
             k_i   = dict((k, i) for i, k in self.vertices_enum())
-            fname = 'brg.numerical.methods.force_density.fd'
+            fname = 'compas.numerical.methods.force_density.fd'
             fargs = [self.xyz, self.ij, self.fixed, self.q, self.loads]
 
             xrun(fname, *fargs, rtype='dict')
@@ -253,10 +253,10 @@ Using geometric input
 
     import ast
 
-    from brg.utilities import geometric_key as gkey
+    from compas.utilities import geometric_key as gkey
     from cablenet import Cablenet
 
-    import brg_rhino as rhino
+    import compas_rhino as rhino
 
     guids = rhino.select_lines()
     lines = rhino.get_line_coordinates(guids)

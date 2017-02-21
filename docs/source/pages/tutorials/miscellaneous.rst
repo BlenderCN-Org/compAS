@@ -82,10 +82,10 @@ limitation.
 
 .. seealso::
 
-    * :mod:`brg.utilities.scripts`
-    * :mod:`brg.utilities.xfunc`
-    * :mod:`brg.utilities.xfuncio`
-    * :mod:`brg_rhino.utilities.scripts`
+    * :mod:`compas.utilities.scripts`
+    * :mod:`compas.utilities.xfunc`
+    * :mod:`compas.utilities.xfuncio`
+    * :mod:`compas_rhino.utilities.scripts`
 
 
 Geometric maps
@@ -130,7 +130,7 @@ example, the unique start and end points of a set of lines.
 
 .. code-block:: python
 
-    from brg.utilities import geometric_key
+    from compas.utilities import geometric_key
 
     class Network(object):
 
@@ -172,8 +172,8 @@ example, the unique start and end points of a set of lines.
 
 .. seealso::
 
-    * :func:`brg.utilities.geometric_key`
-    * :class:`brg.datastructures.network.Network`
+    * :func:`compas.utilities.geometric_key`
+    * :class:`compas.datastructures.network.Network`
 
 
 File handling

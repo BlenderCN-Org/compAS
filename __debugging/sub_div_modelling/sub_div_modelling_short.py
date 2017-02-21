@@ -1,9 +1,9 @@
 import rhinoscriptsyntax as rs  
 
-from brg_rhino.datastructures.mesh import RhinoMesh
-import brg_rhino.utilities as RhinoBRG
+from compas_rhino.datastructures.mesh import RhinoMesh
+import compas_rhino.utilities as RhinoBRG
 
-from brg.datastructures.mesh.algorithms.subdivision import subdivision
+from compas.datastructures.mesh.algorithms.subdivision import subdivision
 
 
 #start mesh sub division modelling

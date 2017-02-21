@@ -4,7 +4,7 @@
 Network algorithms
 ********************************************************************************
 
-:mod:`brg.datastructures.network.algorithms`
+:mod:`compas.datastructures.network.algorithms`
 
 
 .. contents::
@@ -20,12 +20,12 @@ Shortest paths
     # when not all edge weights are the same
     # => use Dijkstra algorithm
 
-    import brg
+    import compas
 
-    from brg.datastructures.network import Network
-    from brg.datastructures.network.algorithms import network_dijkstra_path
+    from compas.datastructures.network import Network
+    from compas.datastructures.network.algorithms import network_dijkstra_path
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
     weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
@@ -62,13 +62,13 @@ Dual networks
     # find faces
     # and construct the dual
 
-    import brg
+    import compas
 
-    from brg.datastructures.network import Network
-    from brg.datastructures.network.algorithms import find_network_faces
-    from brg.datastructures.network.algorithms import construct_dual_network
+    from compas.datastructures.network import Network
+    from compas.datastructures.network.algorithms import find_network_faces
+    from compas.datastructures.network.algorithms import construct_dual_network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     find_network_faces(network, network.leaves())
 

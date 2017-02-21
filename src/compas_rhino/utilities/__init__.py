@@ -1,5 +1,5 @@
 """
-.. _brg_rhino.utilities:
+.. _compas_rhino.utilities:
 
 ********************************************************************************
 utilities
@@ -17,7 +17,7 @@ document
 
 .. currentmodule:: compas_rhino.utilities.document
 
-:mod:`brg_rhino.utilities.document`
+:mod:`compas_rhino.utilities.document`
 
 .. autosummary::
     :toctree: generated/
@@ -33,7 +33,7 @@ layers
 
 .. currentmodule:: compas_rhino.utilities.layers
 
-:mod:`brg_rhino.utilities.layers`
+:mod:`compas_rhino.utilities.layers`
 
 .. autosummary::
     :toctree: generated/
@@ -48,7 +48,7 @@ objects
 
 .. currentmodule:: compas_rhino.utilities.objects
 
-:mod:`brg_rhino.utilities.objects`
+:mod:`compas_rhino.utilities.objects`
 
 .. note::
 
@@ -115,7 +115,7 @@ scripts
 
 .. currentmodule:: compas_rhino.utilities.scripts
 
-:mod:`brg_rhino.utilities.scripts`
+:mod:`compas_rhino.utilities.scripts`
 
 .. autosummary::
     :toctree: generated/
@@ -128,7 +128,7 @@ misc
 
 .. currentmodule:: compas_rhino.utilities.misc
 
-:mod:`brg_rhino.utilities.misc`
+:mod:`compas_rhino.utilities.misc`
 
 .. autosummary::
     :toctree: generated/
@@ -154,7 +154,7 @@ drawing
 
 .. currentmodule:: compas_rhino.utilities.drawing
 
-:mod:`brg_rhino.utilities.drawing`
+:mod:`compas_rhino.utilities.drawing`
 
 .. autosummary::
     :toctree: generated/

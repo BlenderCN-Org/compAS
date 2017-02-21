@@ -1,5 +1,5 @@
 """
-.. _brg_rhino.numerical:
+.. _compas_rhino.numerical:
 
 ********************************************************************************
 numerical
@@ -21,7 +21,7 @@ linalg
 
 .. currentmodule:: compas_rhino.numerical.linalg
 
-:mod:`brg_rhino.numerical.linalg`
+:mod:`compas_rhino.numerical.linalg`
 
 .. autosummary::
     :toctree: generated/
@@ -32,7 +32,7 @@ matrices
 
 .. currentmodule:: compas_rhino.numerical.matrices
 
-:mod:`brg_rhino.numerical.matrices`
+:mod:`compas_rhino.numerical.matrices`
 
 .. autosummary::
     :toctree: generated/

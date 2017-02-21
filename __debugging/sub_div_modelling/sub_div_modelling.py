@@ -2,21 +2,21 @@
 import time
 import rhinoscriptsyntax as rs  
 import math
-from brg_rhino.datastructures.mesh import RhinoMesh
-from brg_rhino.conduits.lines import LinesConduit
-import brg_rhino.utilities as rhino
+from compas_rhino.datastructures.mesh import RhinoMesh
+from compas_rhino.conduits.lines import LinesConduit
+import compas_rhino.utilities as rhino
 
-from brg.geometry.arithmetic import add_vectors
-from brg.geometry.arithmetic import subtract_vectors
-from brg.geometry.functions import distance
-from brg.geometry.transformations import normalize
-from brg.geometry.transformations import scale
+from compas.geometry.arithmetic import add_vectors
+from compas.geometry.arithmetic import subtract_vectors
+from compas.geometry.functions import distance
+from compas.geometry.transformations import normalize
+from compas.geometry.transformations import scale
 
 
 import subdivision_uf
-#from brg.datastructures.mesh.algorithms.subdivision import subdivision
-from brg.datastructures.mesh.operations.split import split_edge
-from brg.datastructures.mesh.algorithms.orientation import mesh_unify_cycle_directions
+#from compas.datastructures.mesh.algorithms.subdivision import subdivision
+from compas.datastructures.mesh.operations.split import split_edge
+from compas.datastructures.mesh.algorithms.orientation import mesh_unify_cycle_directions
 
 # check for subdivision http://xrt.wikidot.com/blog:31
 # more mesh stuff to implement: 

@@ -539,7 +539,7 @@ class GA:
     def make_ga_input_data(self):
         """Returns a dictionary containing the most relavant genetic data present in the instance 
         of ``GA``. This is the data required to restart a genetic optimization process or to
-        launch a visualization using ``brg_ga.visualization.ga_visualization``. 
+        launch a visualization using ``compas_ga.visualization.ga_visualization``. 
 
         Returns
         -------
@@ -567,7 +567,7 @@ class GA:
   
     def write_ga_json_file(self):
         """Writes a JSON file containing the most relevant data for GA optimization and 
-        visualization using ``brg_ga.visualization.ga_visualization``. 
+        visualization using ``compas_ga.visualization.ga_visualization``. 
         """
         data = self.make_ga_input_data()
         filename = self.fit_name+'.json'

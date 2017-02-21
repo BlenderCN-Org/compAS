@@ -38,19 +38,19 @@ force distribution.
 .. plot::
     :include-source:
 
-    import brg_ags
+    import compas_ags
 
-    from brg_ags.diagrams import FormDiagram
-    from brg_ags.diagrams import ForceDiagram
+    from compas_ags.diagrams import FormDiagram
+    from compas_ags.diagrams import ForceDiagram
 
-    from brg_ags.viewers.viewer import Viewer
+    from compas_ags.viewers.viewer import Viewer
 
-    import brg_ags.algorithms as gs
+    import compas_ags.algorithms as gs
 
     # make form diagram from obj
     # make force diagram from form
 
-    form = FormDiagram.from_obj(brg_ags.get_data('/cases/gs_form_force.obj'))
+    form = FormDiagram.from_obj(compas_ags.get_data('/cases/gs_form_force.obj'))
     force = ForceDiagram.from_formdiagram(form)
 
     # set the magnitude of the applied load
@@ -84,19 +84,19 @@ We store the original configuration to be plotted together with the modified one
 .. plot::
     :include-source:
 
-    import brg_ags
+    import compas_ags
 
-    from brg_ags.diagrams import FormDiagram
-    from brg_ags.diagrams import ForceDiagram
+    from compas_ags.diagrams import FormDiagram
+    from compas_ags.diagrams import ForceDiagram
 
-    from brg_ags.viewers.viewer import Viewer
+    from compas_ags.viewers.viewer import Viewer
 
-    import brg_ags.algorithms as gs
+    import compas_ags.algorithms as gs
 
     # make form diagram from obj
     # make force diagram from form
 
-    form = FormDiagram.from_obj(brg_ags.get_data('cases/gs_form_force.obj'))
+    form = FormDiagram.from_obj(compas_ags.get_data('cases/gs_form_force.obj'))
     force = ForceDiagram.from_formdiagram(form)
 
     # set the fixed points
@@ -160,17 +160,17 @@ Loadpath Optimisation
 
     import yaml
 
-    import brg_ags
+    import compas_ags
 
-    from brg_ags.diagrams.formdiagram import FormDiagram
-    from brg_ags.diagrams.forcediagram import ForceDiagram
+    from compas_ags.diagrams.formdiagram import FormDiagram
+    from compas_ags.diagrams.forcediagram import ForceDiagram
 
-    from brg_ags.viewers.viewer import Viewer
+    from compas_ags.viewers.viewer import Viewer
 
-    import brg_ags.algorithms as gs
+    import compas_ags.algorithms as gs
 
 
-    with open(brg_ags.get_data('form_lpopt.yaml'), 'rb') as fp:
+    with open(compas_ags.get_data('form_lpopt.yaml'), 'rb') as fp:
         data = yaml.load(fp)
 
 

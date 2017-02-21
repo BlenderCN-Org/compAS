@@ -4,7 +4,7 @@
 Numerical
 ********************************************************************************
 
-* :mod:`brg.numerical`
+* :mod:`compas.numerical`
 
 
 .. contents::
@@ -44,10 +44,10 @@ two data formats, using key-index maps.
 
 .. code-block:: python
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     key_index = dict((k, i) for i, k in network.vertices_enum())
 
@@ -63,10 +63,10 @@ two data formats, using key-index maps.
 
 .. plot::
 
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     key_index = dict((k, i) for i, k in network.vertices_enum())
 
@@ -92,7 +92,7 @@ Adjacency matrix
 
 .. code-block:: python
 
-    from brg.numerical.matrices import adjacency_matrix
+    from compas.numerical.matrices import adjacency_matrix
 
     adjacency = [[key_index[nbr] for nbr in network.neighbours(key)] for key in network]
 
@@ -104,7 +104,7 @@ Degree matrix
 
 .. code-block:: python
 
-    from brg.numerical.matrices import degree_matrix
+    from compas.numerical.matrices import degree_matrix
 
     adjacency = [[key_index[nbr] for nbr in network.neighbours(key)] for key in network]
 
@@ -116,7 +116,7 @@ Connectivity matrix
 
 .. code-block:: python
 
-    from brg.numerical.matrices import connectivity_matrix
+    from compas.numerical.matrices import connectivity_matrix
 
     edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
 
@@ -128,7 +128,7 @@ Laplacian matrix
 
 .. code-block:: python
 
-    from brg.numerical.matrices import laplacian_matrix
+    from compas.numerical.matrices import laplacian_matrix
 
     edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
 
@@ -140,10 +140,10 @@ Datastructure-specific implementations
 
 .. code-block:: python
     
-    from brg.datastructures.network.numerical.matrices import network_adjacency_matrix
-    from brg.datastructures.network.numerical.matrices import network_degree_matrix
-    from brg.datastructures.network.numerical.matrices import network_connectivity_matrix
-    from brg.datastructures.network.numerical.matrices import network_laplacian_matrix
+    from compas.datastructures.network.numerical.matrices import network_adjacency_matrix
+    from compas.datastructures.network.numerical.matrices import network_degree_matrix
+    from compas.datastructures.network.numerical.matrices import network_connectivity_matrix
+    from compas.datastructures.network.numerical.matrices import network_laplacian_matrix
 
     A = network_adjacency_matrix(network)
     D = network_degree_matrix(network)
@@ -180,7 +180,7 @@ Linear Algebra
 
     # compute edge lengths
     
-    from brg.numerical.linalg import normrow
+    from compas.numerical.linalg import normrow
 
     uvw = C.dot(xyz)
     l   = normrow(uvw)
@@ -191,13 +191,13 @@ Linear Algebra
 
 .. plot::
 
-    import brg
+    import compas
     from numpy import array
-    from brg.datastructures.network import Network
-    from brg.numerical.linalg import normrow
-    from brg.datastructures.network.numerical.matrices import network_connectivity_matrix
+    from compas.datastructures.network import Network
+    from compas.numerical.linalg import normrow
+    from compas.datastructures.network.numerical.matrices import network_connectivity_matrix
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     xyz = array([network.vertex_coordinates(key) for key in network])
     C   = network_connectivity_matrix(network)
@@ -214,13 +214,13 @@ Linear Algebra
     # centroidal smoothing
     # i.e. laplacian smoothing with *umbrella* weights
 
-    import brg
+    import compas
     from numpy import array
-    from brg.datastructures.network import Network
-    from brg.datastructures.network.numerical.matrices import network_laplacian_matrix
-    from brg.datastructures.network.numerical.matrices import network_degree_matrix
+    from compas.datastructures.network import Network
+    from compas.datastructures.network.numerical.matrices import network_laplacian_matrix
+    from compas.datastructures.network.numerical.matrices import network_degree_matrix
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     key_index = {key: index for index, key in network.vertices_enum()}
 
@@ -250,13 +250,13 @@ Linear Algebra
 
 .. plot::
 
-    import brg
+    import compas
     from numpy import array
-    from brg.datastructures.network import Network
-    from brg.datastructures.network.numerical.matrices import network_laplacian_matrix
-    from brg.datastructures.network.numerical.matrices import network_degree_matrix
+    from compas.datastructures.network import Network
+    from compas.datastructures.network.numerical.matrices import network_laplacian_matrix
+    from compas.datastructures.network.numerical.matrices import network_degree_matrix
 
-    network = Network.from_obj(brg.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     key_index = {key: index for index, key in network.vertices_enum()}
 
@@ -297,7 +297,7 @@ Object-aligned bounding box
     from numpy.random import randint
     from numpy.random import rand
 
-    from brg.numerical.xforms import rotation_matrix
+    from compas.numerical.xforms import rotation_matrix
 
     clouds = []
 
@@ -343,11 +343,11 @@ Object-aligned bounding box
 
     import matplotlib.pyplot as plt
 
-    from brg.plotters.helpers import Bounds
-    from brg.plotters.helpers import Cloud3D
-    from brg.plotters.helpers import Box
+    from compas.plotters.helpers import Bounds
+    from compas.plotters.helpers import Cloud3D
+    from compas.plotters.helpers import Box
 
-    from brg.plotters.drawing import create_axes_3d
+    from compas.plotters.drawing import create_axes_3d
 
     axes = create_axes_3d()
 
@@ -370,15 +370,15 @@ Object-aligned bounding box
 
     import matplotlib.pyplot as plt
 
-    from brg.plotters.helpers import Bounds
-    from brg.plotters.helpers import Cloud3D
-    from brg.plotters.helpers import Box
+    from compas.plotters.helpers import Bounds
+    from compas.plotters.helpers import Cloud3D
+    from compas.plotters.helpers import Box
 
-    from brg.numerical.xforms import rotation_matrix
+    from compas.numerical.xforms import rotation_matrix
 
-    from brg.plotters.drawing import create_axes_3d
+    from compas.plotters.drawing import create_axes_3d
 
-    from brg.numerical.spatial import bounding_box_3d
+    from compas.numerical.spatial import bounding_box_3d
 
     clouds = []
 
@@ -440,7 +440,7 @@ Principal component analysis
 
     from numpy import random
 
-    from brg.numerical.xforms import rotation_matrix
+    from compas.numerical.xforms import rotation_matrix
 
     data = random.rand(300, 3)
     data[:, 0] *= 10.0
@@ -462,10 +462,10 @@ Principal component analysis
 
     import matplotlib.pyplot as plt
 
-    from brg.plotters.helpers import Axes3D
-    from brg.plotters.helpers import Cloud3D
-    from brg.plotters.helpers import Bounds
-    from brg.plotters.drawing import create_axes_3d
+    from compas.plotters.helpers import Axes3D
+    from compas.plotters.helpers import Cloud3D
+    from compas.plotters.helpers import Bounds
+    from compas.plotters.drawing import create_axes_3d
 
     average, vectors, values = principal_components(data)
 
@@ -484,14 +484,14 @@ Principal component analysis
 
     import matplotlib.pyplot as plt
 
-    from brg.numerical.xforms import rotation_matrix
+    from compas.numerical.xforms import rotation_matrix
 
-    from brg.plotters.helpers import Axes3D
-    from brg.plotters.helpers import Cloud3D
-    from brg.plotters.helpers import Bounds
-    from brg.plotters.drawing import create_axes_3d
+    from compas.plotters.helpers import Axes3D
+    from compas.plotters.helpers import Cloud3D
+    from compas.plotters.helpers import Bounds
+    from compas.plotters.drawing import create_axes_3d
 
-    from brg.numerical.statistics import principal_components
+    from compas.numerical.statistics import principal_components
 
     data = random.rand(300, 3)
     data[:, 0] *= 10.0
@@ -526,16 +526,16 @@ Contours
     # the distance field is defined by the distance of every vertex
     # from the 2D centroid of the mesh
 
-    import brg
+    import compas
 
-    from brg.datastructures.mesh import Mesh
+    from compas.datastructures.mesh import Mesh
 
-    from brg.geometry import centroid_points
-    from brg.geometry import distance_point_point
+    from compas.geometry import centroid_points
+    from compas.geometry import distance_point_point
 
-    from brg.datastructures.mesh.numerical import plot_mesh_isolines
+    from compas.datastructures.mesh.numerical import plot_mesh_isolines
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     points = [mesh.vertex_coordinates(key) for key in mesh]
     centroid = centroid_points(points)
@@ -549,16 +549,16 @@ Contours
 
 .. plot::
 
-    import brg
+    import compas
 
-    from brg.datastructures.mesh import Mesh
+    from compas.datastructures.mesh import Mesh
 
-    from brg.geometry import centroid_points
-    from brg.geometry import distance_point_point
+    from compas.geometry import centroid_points
+    from compas.geometry import distance_point_point
 
-    from brg.datastructures.mesh.numerical import plot_mesh_isolines
+    from compas.datastructures.mesh.numerical import plot_mesh_isolines
 
-    mesh = Mesh.from_obj(brg.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     points = [mesh.vertex_coordinates(key) for key in mesh]
     centroid = centroid_points(points)

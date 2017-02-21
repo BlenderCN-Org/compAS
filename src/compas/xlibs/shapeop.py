@@ -2,7 +2,7 @@
 
 import sys
 
-sys.path.insert(0, "/Users/vanmelet/bitbucket/brg_framework/libs/ShapeOp.0.1.0/build/libShapeOp/bindings/python")
+sys.path.insert(0, "/Users/vanmelet/bitbucket/compas_framework/libs/ShapeOp.0.1.0/build/libShapeOp/bindings/python")
 
 import shapeopPython
 

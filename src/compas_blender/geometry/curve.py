@@ -1,4 +1,4 @@
-"""brg_blender.geometry.curve : Manipulating Blender curves."""
+"""compas_blender.geometry.curve : Manipulating Blender curves."""
 
 from mathutils.geometry import interpolate_bezier
 

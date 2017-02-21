@@ -87,8 +87,8 @@ def draw_network(network,
 
     See Also:
         * :class:`compas.datastructures.network.Network`
-        * :func:`brg_rhino.utilities.drawing.xdraw_lines`
-        * :func:`brg_rhino.utilities.drawing.xdraw_points`
+        * :func:`compas_rhino.utilities.drawing.xdraw_lines`
+        * :func:`compas_rhino.utilities.drawing.xdraw_points`
 
     Example:
 

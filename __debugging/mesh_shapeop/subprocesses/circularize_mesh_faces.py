@@ -2,12 +2,12 @@
 
 import sys
 
-sys.path.insert(0, '/Users/vanmelet/bitbucket/brg_framework/src')
+sys.path.insert(0, '/Users/vanmelet/bitbucket/compas_framework/src')
 
 
-from brg.datastructures.mesh.mesh import Mesh
-from brg.xlibs.shapeop import planarize_mesh_faces
-from brg.xlibs.shapeop import circularize_mesh_faces
+from compas.datastructures.mesh.mesh import Mesh
+from compas.xlibs.shapeop import planarize_mesh_faces
+from compas.xlibs.shapeop import circularize_mesh_faces
 
 
 __author__    = 'Tom Van Mele'

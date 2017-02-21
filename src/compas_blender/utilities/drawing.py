@@ -1,4 +1,4 @@
-"""brg_blender.utilities.drawing : Functions for drawing in Blender."""
+"""compas_blender.utilities.drawing : Functions for drawing in Blender."""
 
 from compas_blender.utilities.layers import layer_mask
 

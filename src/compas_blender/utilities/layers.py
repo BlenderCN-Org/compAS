@@ -1,4 +1,4 @@
-"""brg_blender.utilities.layers : Manipulating Blender layers."""
+"""compas_blender.utilities.layers : Manipulating Blender layers."""
 
 from compas_blender.utilities.objects import delete_objects
 from compas_blender.utilities.objects import get_objects_by_layer

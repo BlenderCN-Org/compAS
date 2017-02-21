@@ -1,5 +1,5 @@
 """
-.. _brg_rhino.helpers:
+.. _compas_rhino.helpers:
 
 ********************************************************************************
 helpers
@@ -16,7 +16,7 @@ mesh
 
 .. currentmodule:: compas_rhino.helpers.mesh
 
-:mod:`brg_rhino.helpers.mesh`
+:mod:`compas_rhino.helpers.mesh`
 
 .. autosummary::
     :toctree: generated/
@@ -35,7 +35,7 @@ network
 
 .. currentmodule:: compas_rhino.helpers.network
 
-:mod:`brg_rhino.helpers.network`
+:mod:`compas_rhino.helpers.network`
 
 .. autosummary::
     :toctree: generated/
@@ -63,7 +63,7 @@ volmesh
 
 .. currentmodule:: compas_rhino.helpers.volmesh
 
-:mod:`brg_rhino.helpers.volmesh`
+:mod:`compas_rhino.helpers.volmesh`
 
 .. autosummary::
     :toctree: generated/

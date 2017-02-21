@@ -4,9 +4,9 @@
 Datastructures
 ********************************************************************************
 
-* :mod:`brg.datastructures.mesh`
-* :mod:`brg.datastructures.network`
-* :mod:`brg.datastructures.volmesh`
+* :mod:`compas.datastructures.mesh`
+* :mod:`compas.datastructures.network`
+* :mod:`compas.datastructures.volmesh`
 
 
 .. toctree::

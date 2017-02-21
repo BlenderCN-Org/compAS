@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
 
-    html_file = '/Users/vanmelet/bitbucket/brg_framework/src/brg/viewers/widgets/threejs/examples/webgl_geometry_nurbs.html'
+    html_file = '/Users/vanmelet/bitbucket/compas_framework/src/compas/viewers/widgets/threejs/examples/webgl_geometry_nurbs.html'
 
     with open(html_file, 'r') as fp:
         html = fp.read()

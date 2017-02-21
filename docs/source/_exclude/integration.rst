@@ -18,12 +18,12 @@ Rhino
 
     # simple drawing
     
-    import brg
-    from brg.datastructures.network import Network
+    import compas
+    from compas.datastructures.network import Network
 
-    import brg_rhino as rhino
+    import compas_rhino as rhino
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(compas.get_data('lines.obj'))
 
     rhino.draw_network(network)
 

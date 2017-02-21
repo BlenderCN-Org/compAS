@@ -1,5 +1,5 @@
 import rhinoscriptsyntax as rs  
-from brg_rhino.datastructures.mesh import RhinoMesh
+from compas_rhino.datastructures.mesh import RhinoMesh
   
   
 srf = rs.GetObject("Select Surface",8)   

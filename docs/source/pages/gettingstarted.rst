@@ -41,11 +41,11 @@ again, it may not :)
 
 The mercurial repo can be cloned from::
 
-    https://bitbucket.org/brgbits/brg_framework
+    https://bitbucket.org/compasbits/compas_framework
 
 A Git fork is available here::
 
-    https://bitbucket.org/GramazioKohlerResearch/brg_framework
+    https://bitbucket.org/GramazioKohlerResearch/compas_framework
 
 
 Dependencies
@@ -127,7 +127,7 @@ Then, add the location of the BRG framework to your ``PYTHONPATH``
 
 ::
 
-    C:\path\to\the\brg_framework\src
+    C:\path\to\the\compas_framework\src
 
 
 Start an interactive Python session (type ``python`` on the command line)
@@ -135,9 +135,9 @@ and try the following
 
 ::
 
-    >>> import brg
-    >>> from brg.datastructures.network import Network
-    >>> network = Network.from_obj(brg.get_data('lines.obj'))
+    >>> import compas
+    >>> from compas.datastructures.network import Network
+    >>> network = Network.from_obj(compas.get_data('lines.obj'))
     >>> print network
 
 
@@ -166,7 +166,7 @@ Add the following to the *Modules Search Paths* for IronPython::
 
 and this path for the framework library::
 
-    C:\path\to\the\brg_framework\src
+    C:\path\to\the\compas_framework\src
 
 
 Then restart Rhino and run the following scripts
@@ -194,14 +194,14 @@ This should not throw an error.
 
 .. code-block:: python
 
-    import brg
-    import brg_rhino
+    import compas
+    import compas_rhino
 
-    from brg.datastructures.network import Network
+    from compas.datastructures.network import Network
 
-    network = Network.from_obj(brg.get_data('lines.obj'))
+    network = Network.from_obj(compas.get_data('lines.obj'))
 
-    brg_rhino.draw_network(network)
+    compas_rhino.draw_network(network)
 
 
 If this draws a network without throwing an error, you are all set.
@@ -230,7 +230,7 @@ favourite text editing application to modify your ``.profile``
 ::
 
     export PATH="/path/to/anaconda/bin:$PATH"
-    export PYTHONPATH="/path/to/the/brg_framework/src:$PYTHONPATH"
+    export PYTHONPATH="/path/to/the/compas_framework/src:$PYTHONPATH"
 
 Restart the Terminal or type
 
@@ -243,8 +243,8 @@ and try the following
 
 ::
 
-    >>> import brg
-    >>> from brg.datastructures.network import Network
-    >>> network = Network.from_obj(brg.get_data('lines.obj'))
+    >>> import compas
+    >>> from compas.datastructures.network import Network
+    >>> network = Network.from_obj(compas.get_data('lines.obj'))
     >>> print network
 

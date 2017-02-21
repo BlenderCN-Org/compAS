@@ -7,7 +7,7 @@ API Reference
 .. toctree::
 	:maxdepth: 1
 
-	reference/brg
-	reference/brg_rhino
-	reference/brg_grasshopper
-	reference/brg_blender
+	reference/compas
+	reference/compas_rhino
+	reference/compas_grasshopper
+	reference/compas_blender
