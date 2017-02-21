@@ -1,8 +1,14 @@
 .. _algebraic-graph-statics:
 
 ********************************************************************************
-Algebraic Graph Statics
+Graph(ic) Statics
 ********************************************************************************
+
+This page contains a few simple examples of Algebraic Graph Statics (AGS).
+For more advanced and interactive examples, and examples in Rhino, Grasshopper
+and the browser, please refer to the documentation of the AGS package.
+
+http://block.arch.ethz.ch/docs/compas_ags
 
 
 .. add scale to drawings
@@ -16,17 +22,21 @@ Algebraic Graph Statics
 .. contents::
 
 
+Single-panel truss
+==================
 
-Basic Graph Statics
-===================
+In this example, we create the form diagram of a simple truss from the
+geometric information stored in an OBJ file.
+
+We set the edge representing an applied load as independent, give it a force
+(or force density) and compute the force densities in the dependent edges.
+
+Finally, we simply draw the force diagram as a representation of the computed
+force distribution.
+
 
 .. plot::
     :include-source:
-
-    # single-panel truss
-    # formdiagram from obj (lines)
-    # forcediagram from formdiagram
-    # viewer
 
     import brg_ags
 
@@ -35,43 +45,44 @@ Basic Graph Statics
 
     from brg_ags.viewers.viewer import Viewer
 
-    import brg_ags.algorithms as ags
+    import brg_ags.algorithms as gs
+
+    # make form diagram from obj
+    # make force diagram from form
 
     form = FormDiagram.from_obj(brg_ags.get_data('/cases/gs_form_force.obj'))
-
-    # replace by set_fixed
-    form.identify_fixed()
-
     force = ForceDiagram.from_formdiagram(form)
 
-    index_uv = {index: (u, v) for index, u, v in form.edges_enum()}
+    # set the magnitude of the applied load
 
-    u, v = index_uv[0]
+    form.set_edge_force_by_index(0, -10.0)
 
-    form.edge[u][v]['is_ind'] = True
-    form.edge[u][v]['q'] = -3.
+    # update form and force diagram
 
-    ags.update_forcedensity(form)
-    ags.update_forcediagram(force, form)
+    gs.update_forcedensity(form)
+    gs.update_forcediagram(force, form)
 
-    viewer = Viewer(form, force)
+    # display results
 
-    viewer.setup()
+    viewer = Viewer(form, force, delay_setup=False)
 
-    viewer.draw_form(forcescale=2)
+    viewer.draw_form()
     viewer.draw_force()
 
     viewer.show()
 
 
-Advanced Graph Statics
-======================
+Force-driven design
+===================
+
+Here we do the same as in the previous example, but then modify the force
+diagram and compute the corresponding changes in the form diagram.
+
+We store the original configuration to be plotted together with the modified one.
+
 
 .. plot::
     :include-source:
-
-    # single-panel truss
-    # modification of form & update of force
 
     import brg_ags
 
@@ -80,30 +91,29 @@ Advanced Graph Statics
 
     from brg_ags.viewers.viewer import Viewer
 
-    import brg_ags.algorithms as ags
+    import brg_ags.algorithms as gs
+
+    # make form diagram from obj
+    # make force diagram from form
 
     form = FormDiagram.from_obj(brg_ags.get_data('cases/gs_form_force.obj'))
-
-    form.identify_fixed()
-
     force = ForceDiagram.from_formdiagram(form)
 
-    form[5]['is_fixed'] = True
-    form[4]['is_fixed'] = True
+    # set the fixed points
 
-    force[2]['is_fixed'] = True
+    form.set_fixed([4, 5])
+    force.set_fixed([2])
 
-    index_uv = form.index_uv()
+    # set the magnitude of the applied load
 
-    u, v = index_uv[0]
+    form.set_edge_force_by_index(0, -10.0)
 
-    form.edge[u][v]['q'] = -5.
-    form.edge[u][v]['is_ind'] = True
+    # update the diagrams
 
-    ags.update_forcedensity(form)
-    ags.update_forcediagram(force, form)
+    gs.update_forcedensity(form)
+    gs.update_forcediagram(force, form)
 
-    # store lines representing the original diagram
+    # store lines representing the current state of equilibrium
 
     form_lines = []
     for u, v in form.edges_iter():
@@ -123,9 +133,13 @@ Advanced Graph Statics
             'color': '#999999'
         })
 
+    # modify the geometry of the force diagram
+
     force.vertex[1]['x'] -= 5.0
 
-    ags.update_formdiagram(form, force, kmax=100)
+    # update the formdiagram
+
+    gs.update_formdiagram(form, force, kmax=100)
 
     # display the orginal configuration
     # and the configuration after modifying the force diagram
