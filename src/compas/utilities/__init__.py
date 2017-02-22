@@ -21,6 +21,19 @@ _datetime
     timestamp
 
 
+animation
+=========
+
+.. currentmodule:: compas.utilities.animation
+
+:mod:`compas.utilities.animation`
+
+.. autosummary::
+    :toctree: generated/
+
+    gif_from_images
+
+
 colors
 ======
 
@@ -109,19 +122,6 @@ scripts
     ScriptServer
 
 
-xfunc
-=====
-
-.. currentmodule:: compas.utilities.xfunc
-
-:mod:`compas.utilities.xfunc`
-
-.. autosummary::
-    :toctree: generated/
-
-    XFunc
-
-
 xfuncio
 =======
 
@@ -144,5 +144,4 @@ from .maps import *
 from .mixing import *
 from .names import *
 from .scripts import *
-from .xfunc import *
 from .xfuncio import *
