@@ -206,17 +206,11 @@ class XFuncIO(object):
 
 if __name__ == '__main__':
 
-    here    = os.path.dirname(__file__)
-    basedir = os.path.abspath(os.path.join(here, '../../'))
-    tmpdir  = os.path.abspath(os.path.join(here, 'tmp'))
+    xfunc = XFuncIO(mode=1)
 
-    xfunc = XFuncIO(basedir, tmpdir, mode=1)
+    xfname = 'compas.utilities.animation.test'
 
-    xfname = 'compas.utilities.maps.geometric_key'
-    xfargs = [[0.1, 0.001, 0.3], ]
-    xfkwargs = {'precision': '5f'}
-
-    xfunc(xfname, *xfargs, **xfkwargs)
+    xfunc(xfname)
 
     print(xfunc.data)
     print(xfunc.error)
