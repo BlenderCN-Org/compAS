@@ -8,12 +8,12 @@ Getting started
 Tools
 =====
 
-Before we get started, make sure you have the necessary tools installed on your
-system. You will need a code editor and a source control management tool, and a
-few optional bits and pieces.
+Before getting started, make sure you have the necessary tools installed on your
+system. At the very least, you will need a code editor and a source control
+management tool.
 
-Some installation instructions for different alternatives of these tools can be
-found here: :doc:`/pages/devenv`.
+Some installation instructions for different editors and repo managers, and a
+few other helpful bits and pieces can be found here: :doc:`/pages/devenv`.
 
 
 Download
@@ -24,11 +24,11 @@ again, it may not :)
 
 The mercurial repo can be cloned from::
 
-    https://bitbucket.org/compasbits/compas_framework
+    https://bitbucket.org/brgbits/compAS
 
 A Git fork is available here::
 
-    https://bitbucket.org/GramazioKohlerResearch/compas_framework
+    https://bitbucket.org/GramazioKohlerResearch/compAS
 
 
 Dependencies
@@ -43,7 +43,8 @@ For plotting two-dimensional representations of data structures (and to some ext
 three-dimensional as well), we use `Matplotlib <http://matplotlib.org/>`_.
 For three-dimensional visualisations, we use `PyOpenGL <http://pyopengl.sourceforge.net/>`_ 
 and `PySide <https://wiki.qt.io/PySide>`_. Installation instructions for both, 
-and for the libraries they depend on are under construction and will be available soon.
+and for the libraries they depend on are under construction and will be available
+here :doc:`/pages/devenv`.
 
 For all numerical calculations and algorithms, we rely on `NumPy <http://www.numpy.org/>`_ 
 and `SciPy <https://www.scipy.org/>`_.
@@ -53,7 +54,8 @@ Some network algorithms use `NetworkX <https://networkx.github.io/>`_ and
 In future versions, `Triangle <http://www.cs.cmu.edu/~quake/triangle.html>`_ and
 `TetGen <http://wias-berlin.de/software/tetgen/>`_ might be used through
 `MeshPy <https://mathema.tician.de/software/meshpy/>`_ for some of the mesh
-algorithms, especially those relating to meshing for FE Analysis.
+algorithms, especially those relating to meshing for FE Analysis, but this is not
+case now.
 
 
 Setup
@@ -124,15 +126,50 @@ and try the following
     >>> print network
 
 
+On Mac
+++++++
+
+If you are on a Mac, the procedure is similar. Open the Terminal and use your
+favourite text editing application to modify your ``.profile``
+
+::
+
+    $ nano ~/.profile
+
+::
+
+    export PATH="/path/to/anaconda/bin:$PATH"
+    export PYTHONPATH="/path/to/the/compas_framework/src:$PYTHONPATH"
+
+Restart the Terminal or type
+
+::
+
+    $ source ~/.profile
+
+Start an interactive Python session (type ``python`` in the Terminal)
+and try the following
+
+::
+
+    >>> import compas
+    >>> from compas.datastructures.network import Network
+    >>> network = Network.from_obj(compas.get_data('lines.obj'))
+    >>> print network
+
+
 Rhino
------
+=====
 
-Although Rhino ships with its own version of IronPython, it is a bugy beta version,
-and therefore you should install your own copy of IronPython and add it to Rhino's
-search paths.
+Rhino uses IronPython to interpret your Python scripts. It ships with its own
+version of IronPython, but, at least in Rhino 5, this bundled IronPython is a buggy
+beta version. Therefore, if you are using Rhino 5, you should install your own
+copy of IronPython and add it to your system path  and to Rhino's search paths.
+Make sure to install IronPython 2.7.5, and not the latest version.
 
-If you are on Rhino 5, make sure to install IronPython 2.7.5. If you are test driving
-Rhino 6, you can use IronPython 2.7.5 or higher.
+.. note::
+    
+    If you are test driving Rhino 6, the bundled IronPython should work fine
 
 
 In Rhino, open the *ScriptEditor*, and go to::
@@ -199,34 +236,3 @@ If this draws a network without throwing an error, you are all set.
     This means that you will need to install the same Python setup on both sides,
     to be able to access the all functionality from Rhino.
 
-
-On Mac
-++++++
-
-If you are on a Mac, the procedure is similar. Open the Terminal and use your
-favourite text editing application to modify your ``.profile``
-
-::
-
-    $ nano ~/.profile
-
-::
-
-    export PATH="/path/to/anaconda/bin:$PATH"
-    export PYTHONPATH="/path/to/the/compas_framework/src:$PYTHONPATH"
-
-Restart the Terminal or type
-
-::
-
-    $ source ~/.profile
-
-Start an interactive Python session (type ``python`` in the Terminal)
-and try the following
-
-::
-
-    >>> import compas
-    >>> from compas.datastructures.network import Network
-    >>> network = Network.from_obj(compas.get_data('lines.obj'))
-    >>> print network
