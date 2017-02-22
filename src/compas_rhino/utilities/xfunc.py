@@ -3,10 +3,10 @@ import json
 
 try:
     from System.Diagnostics import Process
-except ImportError as e:
+except ImportError:
     import platform
     if platform.system() == 'Windows':
-        raise e
+        raise
 
 
 __author__     = ['Tom Van Mele', ]
@@ -43,7 +43,7 @@ try:
     profile = cProfile.Profile()
     profile.enable()
 
-    sys.path.insert(0, basedir)
+    # sys.path.insert(0, basedir)
     parts = funcname.split('.')
 
     if len(parts) > 1:
@@ -85,7 +85,7 @@ with open(opath, 'wb+') as fp:
 
 
 def _xecute(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
-    """Execute a function with optional positional and named arguments.
+    """Execute in a subprocess a function with optional positional and named arguments.
 
     Parameters:
         funcname (str): The full name of the function.
@@ -128,49 +128,27 @@ def _xecute(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
     with open(opath, 'wb+') as fh:
         fh.write('')
 
-    # p = Process()
-    # p.StartInfo.UseShellExecute = False
-    # p.StartInfo.RedirectStandardOutput = True
-    # p.StartInfo.RedirectStandardError = True
-    # p.StartInfo.FileName = self.python
-    # p.StartInfo.Arguments = '-u {0} {1} {2}'.format(self.script, self.ipath, self.opath)
-    # p.Start()
-    # p.WaitForExit()
-
-    # while True:
-    #     # combine with updatefunc?
-    #     # into userfunc?
-    #     if self.waitfunc:
-    #         self.waitfunc()
-    #     line = p.StandardOutput.ReadLine()
-    #     if not line:
-    #         break
-    #     line = line.strip()
-    #     print line
-    #     # check if this does what it is supposed to do
-    #     if self.updatefunc:
-    #         self.updatefunc(self.updateconduit, line)
-
-    # stderr = p.StandardError.ReadToEnd()
-
-    # if stderr:
-    #     self.error = stderr
-    #     raise ScriptServerError(stderr)
-
-    # print p.StandardOutput.ReadToEnd()
-    # print p.ExitCode
-
-    process_args = ['pythonw', '-u', '-c', WRAPPER, basedir, funcname, ipath, opath]
-    process = Popen(process_args, stderr=PIPE, stdout=PIPE)
+    p = Process()
+    p.StartInfo.UseShellExecute = False
+    p.StartInfo.RedirectStandardOutput = True
+    p.StartInfo.RedirectStandardError = True
+    p.StartInfo.FileName = 'pythonw'
+    p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER, basedir, funcname, ipath, opath)
+    p.Start()
+    p.WaitForExit()
 
     while True:
-        line = process.stdout.readline()
+        line = p.StandardOutput.ReadLine()
         if not line:
             break
         line = line.strip()
         if mode:
-            print(line)
-    _, stderr = process.communicate()
+            print line
+
+    stderr = p.StandardError.ReadToEnd()
+
+    # print p.StandardOutput.ReadToEnd()
+    # print p.ExitCode
 
     if stderr:
         odict = {'error'     : stderr,
@@ -195,6 +173,7 @@ def _xecute(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
 
 
 class XFunc(object):
+    """"""
 
     def __init__(self, basedir='.', tmpdir='.', delete_files=True, mode=0):
         self._basedir     = None
@@ -252,7 +231,7 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
-    xfunc = XFuncIO(mode=1)
+    xfunc = XFunc(mode=1)
 
     xfname = 'compas.utilities.animation.test'
 

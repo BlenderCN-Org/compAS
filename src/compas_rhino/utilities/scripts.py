@@ -56,17 +56,22 @@ class ScriptServer(object):
     def prefunc(self, funcname):
         self.funcname = funcname
         self.script = os.path.join(self.scriptdir, '%s.py' % self.funcname)
+
         if not os.path.isfile(self.script) or not os.path.exists(self.script):
             self.error = 'The script does not exist: %s' % self.script
             raise ScriptServerError(self.error)
+
         if not self.tempdir:
             self.tempdir = self.scriptdir
+
         if not os.path.isdir(self.tempdir):
             self.error = 'The tempdir does not exist: %s' % self.tempdir
             raise ScriptServerError(self.error)
+
         if not os.access(self.tempdir, os.W_OK | os.X_OK):
             self.error = 'The tempdir is writable: %s' % self.tempdir
             raise ScriptServerError(self.error)
+
         self.ipath = os.path.join(self.tempdir, '%s.in' % self.funcname)
         self.opath = os.path.join(self.tempdir, '%s.out' % self.funcname)
 
@@ -74,10 +79,12 @@ class ScriptServer(object):
         if not idict:
             idict = {}
         idict.update(kwargs)
+
         with open(self.ipath, 'wb+') as fh:
             json.dump(idict, fh)
         with open(self.opath, 'wb+') as fh:
             fh.write('')
+
         p = Process()
         p.StartInfo.UseShellExecute = False
         p.StartInfo.RedirectStandardOutput = True
@@ -86,6 +93,7 @@ class ScriptServer(object):
         p.StartInfo.Arguments = '-u {0} {1} {2}'.format(self.script, self.ipath, self.opath)
         p.Start()
         p.WaitForExit()
+
         while True:
             # combine with updatefunc?
             # into userfunc?
@@ -99,12 +107,16 @@ class ScriptServer(object):
             # check if this does what it is supposed to do
             if self.updatefunc:
                 self.updatefunc(self.updateconduit, line)
+
         stderr = p.StandardError.ReadToEnd()
+
         if stderr:
             self.error = stderr
             raise ScriptServerError(stderr)
+
         print p.StandardOutput.ReadToEnd()
         print p.ExitCode
+
         with open(self.opath, 'rb') as fh:
             result = json.load(fh)
             if not result:
