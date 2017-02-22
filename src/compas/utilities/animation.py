@@ -1,5 +1,8 @@
 import os
-import imageio
+try:
+    import imageio
+except:
+    pass
 
 
 __author__    = ['Matthias Rippmann', ]
