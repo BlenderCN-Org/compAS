@@ -18,6 +18,7 @@ Contents
 
    pages/intro
    pages/gettingstarted
+   pages/devenv
    pages/python
    pages/tutorials
    pages/applications

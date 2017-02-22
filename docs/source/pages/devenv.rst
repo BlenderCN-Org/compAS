@@ -1,7 +1,7 @@
-.. _tools:
+.. _devenv:
 
 ********************************************************************************
-Tools
+Development Environment
 ********************************************************************************
 
 
@@ -25,4 +25,3 @@ Tools
 
 If you are on Mac, a package manager like `macports <https://www.macports.org/>`_
 or `homebrew <http://brew.sh/>`_ is also highly recommended.
-

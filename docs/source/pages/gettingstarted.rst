@@ -13,7 +13,7 @@ system. You will need a code editor and a source control management tool, and a
 few optional bits and pieces.
 
 Some installation instructions for different alternatives of these tools can be
-found tools_.
+found here: :doc:`/pages/devenv`.
 
 
 Download
@@ -230,4 +230,3 @@ and try the following
     >>> from compas.datastructures.network import Network
     >>> network = Network.from_obj(compas.get_data('lines.obj'))
     >>> print network
-

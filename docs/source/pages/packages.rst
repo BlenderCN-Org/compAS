@@ -4,5 +4,5 @@
 Packages
 ********************************************************************************
 
-* `compas_ags <http://block.arch.ethz.ch/docs/bleqemxknqtwppdjy/packages/compas_ags>`_
-* `compas_fea <http://block.arch.ethz.ch/docs/bleqemxknqtwppdjy/packages/compas_fea>`_
+* `compAS AGS <http://block.arch.ethz.ch/docs/bleqemxknqtwppdjy/packages/compas_ags>`_
+* `compAS FEA <http://block.arch.ethz.ch/docs/bleqemxknqtwppdjy/packages/compas_fea>`_
