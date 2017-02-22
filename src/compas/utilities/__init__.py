@@ -138,11 +138,11 @@ xfuncio
 """
 
 from ._datetime import *
+from .animation import *
 from .colors import *
 from .maps import *
 from .mixing import *
 from .names import *
-# from .profiling import *
 from .scripts import *
 from .xfunc import *
 from .xfuncio import *

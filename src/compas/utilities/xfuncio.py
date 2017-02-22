@@ -25,6 +25,7 @@ import cStringIO
 import cProfile
 import pstats
 import traceback
+from json import encoder
 
 
 basedir  = sys.argv[1]
@@ -78,8 +79,13 @@ else:
     odict['iterations'] = None
     odict['profile']    = stream.getvalue()
 
+e_frepr = encoder.FLOAT_REPR
+encoder.FLOAT_REPR = lambda o: format(o, '.16g')
+
 with open(opath, 'wb+') as fp:
     json.dump(odict, fp)
+
+encoder.FLOAT_REPR = e_frepr
 """
 
 

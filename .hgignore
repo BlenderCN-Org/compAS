@@ -4,8 +4,12 @@ syntax: glob
 .pydevproject
 .settings
 
+*.sublime-project
+*.sublime-workspace
+
 *.orig
 *.3dmbak
+*.rui
 *.rui_bak
 *.pyc
 *.in
@@ -21,8 +25,3 @@ libs/**
 
 threejs/**
 
-syntax: regexp
-^examples/objects_to_mesh_in_rhino/toolbar\.rui$
-
-syntax: regexp
-^examples/objects_to_mesh_in_rhino/toolbar\.rui$
