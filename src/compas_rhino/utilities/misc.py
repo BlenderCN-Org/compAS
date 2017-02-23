@@ -35,7 +35,23 @@ __all__ = [
 # ==============================================================================
 # Truly miscellaneous :)
 # ==============================================================================
-
+def screenshot_current_view(path,width=1920,height=1080,scale=1,draw_grid=False,draw_world_axes=False,draw_cplane_axes=False,background=False):
+    properties = [draw_grid,draw_world_axes,draw_cplane_axes,background]
+    properties = ["Yes" if item else "No" for item in properties]
+    scale = max(1,scale) #the rhino command requires a scale > 1
+    rs.EnableRedraw(True)
+    rs.Sleep(0)
+    result = rs.Command("-_ViewCaptureToFile \""+ path + "\""
+               " Width="+ str(width) +
+               " Height=" + str(height) +
+               " Scale=" + str(scale) +
+               " DrawGrid=" + properties[0] +
+               " DrawWorldAxes=" + properties[1] +
+               " DrawCPlaneAxes=" + properties[2] +
+               " TransparentBackground=" + properties[3] +
+               " _enter",False)
+    rs.EnableRedraw(False)
+    return result
 
 def add_gui_helpers(helpers, overwrite=False, protected=False):
     def decorate(cls):

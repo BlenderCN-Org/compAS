@@ -11,26 +11,22 @@ __license__   = 'MIT License'
 __email__     = 'rippmann@arch.ethz.ch'
 
 
-def test():
-    print dir(imageio)
+def gif_from_images(files, gif_path, fps=10, loop=0, reverse=False, pingpong=False, subrectangles=True):
+     
+    if reverse:
+        files.reverse()
 
-
-def gif_from_images(path, name):
-    filenames = []
-
-    for file in os.listdir(path):
-        if file.endswith(".jpg"):
-            filenames.append(os.path.join(path, file))
-
-    with imageio.get_writer(os.path.join(path, name, '.gif'), mode='I') as writer:
-        for filename in filenames:
+    if pingpong:
+        rev_files = files[:]
+        rev_files.reverse()
+        files += rev_files 
+     
+    with imageio.get_writer(gif_path, 
+                            mode = 'I', 
+                            fps = fps, 
+                            loop = loop, 
+                            subrectangles = subrectangles) as writer:
+        for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)
-
-
-# ==============================================================================
-# Debugging
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass
+    
