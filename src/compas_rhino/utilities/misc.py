@@ -156,8 +156,10 @@ def display_text(text, title='Text', width=800, height=600):
 
 
 def display_image(image, title='Image', width=800, height=600):
-    form = ImageForm(image, title, width, height)
-    return form.show()
+    pass
+    #wrong number of input args. Please Check!
+    #form = ImageForm(image, title, width, height)
+    #return form.show()
 
 
 def display_html():
