@@ -35,6 +35,7 @@ __all__ = [
 # ==============================================================================
 # Truly miscellaneous :)
 # ==============================================================================
+
 def screenshot_current_view(path,width=1920,height=1080,scale=1,draw_grid=False,draw_world_axes=False,draw_cplane_axes=False,background=False):
     properties = [draw_grid,draw_world_axes,draw_cplane_axes,background]
     properties = ["Yes" if item else "No" for item in properties]
