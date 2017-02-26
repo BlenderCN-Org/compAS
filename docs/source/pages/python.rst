@@ -10,6 +10,7 @@ Python
    python/basics-1
    python/basics-2
    python/advanced
+   python/numerical
    python/performance
    python/rhino
    python/grasshopper

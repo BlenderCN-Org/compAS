@@ -1,8 +1,10 @@
 """compas_blender.geometry.curve : Manipulating Blender curves."""
 
-from mathutils.geometry import interpolate_bezier
-
-import bpy
+try:
+    import bpy
+    from mathutils.geometry import interpolate_bezier
+except ImportError:
+    pass
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']

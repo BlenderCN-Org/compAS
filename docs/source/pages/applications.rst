@@ -1,7 +1,7 @@
-.. _applications:
+.. _examples:
 
 ********************************************************************************
-Applications
+Examples
 ********************************************************************************
 
 .. parallelise diagrams
@@ -22,9 +22,9 @@ Applications
 .. toctree::
     :maxdepth: 1
 
-    applications/nest-smoothing
-    applications/nest-fabrication
-    applications/floor-modeling
-    applications/floor-fea
-    applications/armadillo-fabrication
-    applications/algebraic-graph-statics
+    applications/mesh-modeling
+    applications/mesh-fea
+    applications/polyhedral-modeling
+    applications/network-equilibrium
+    applications/fabrication-data
+    applications/fabrication-geometry

@@ -4,9 +4,6 @@
 Geometry
 ********************************************************************************
 
-* :mod:`compas.geometry`
-
-
 .. polyhedrons: planarity of the faces?
 .. polyhedrons: volume of the polyhedron
 .. polyhedrons: planarize faces

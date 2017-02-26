@@ -1,7 +1,7 @@
 .. _home:
 
 ********************************************************************************
-compAS framework documentation
+compAS docs
 ********************************************************************************
 
 This is the documentation of the compAS framework for computational
@@ -17,13 +17,13 @@ Contents
    :maxdepth: 1
 
    pages/intro
-   pages/about
    pages/gettingstarted
-   pages/python
-   pages/tutorials
    pages/applications
    pages/reference
    pages/packages
+   pages/tutorials
+   pages/devenv
+   pages/python
    pages/license
 
 

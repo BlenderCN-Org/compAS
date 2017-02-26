@@ -146,9 +146,7 @@ def is_network_planar(network):
     try:
         import planarity
     except ImportError:
-        print """Planarity is not installed.
-Some functionality of this module will not be available.
-Get Planarity at https://github.com/hagberg/planarity."""
+        print "Planarity is not installed. Get Planarity at https://github.com/hagberg/planarity."
         raise
     return planarity.is_planar(network.edges())
 
@@ -227,9 +225,7 @@ def embed_network_in_plane(network, fix=None, straightline=True):
     try:
         import networkx as nx
     except ImportError:
-        print """NetworkX is not installed.
-    Some functionality of this module will not be available.
-    Get NetworkX at https://networkx.github.io/."""
+        print "NetworkX is not installed. Get NetworkX at https://networkx.github.io/."
         raise
     count = 100
     is_embedded = False

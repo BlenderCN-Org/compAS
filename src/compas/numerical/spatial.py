@@ -210,6 +210,77 @@ def bounding_box_3d(points):
     Returns:
         list: The coordinates of the corners of the bounding box. The list
         can be used to construct a bounding box object for easier plotting.
+
+    Example:
+
+        .. plot::
+            :include-source:
+
+            from numpy.random import randint
+            from numpy.random import rand
+
+            import matplotlib.pyplot as plt
+
+            from compas.plotters.helpers import Bounds
+            from compas.plotters.helpers import Cloud3D
+            from compas.plotters.helpers import Box
+
+            from compas.numerical.xforms import rotation_matrix
+
+            from compas.plotters.drawing import create_axes_3d
+
+            from compas.numerical.spatial import bounding_box_3d
+
+            clouds = []
+
+            for i in range(8):
+                a = randint(1, high=8) * 10 * 3.14159 / 180
+                d = [1, 1, 1]
+
+                cloud = rand(100, 3)
+
+                if i in (1, 2, 5, 6):
+                    cloud[:, 0] *= - 10.0
+                    cloud[:, 0] -= 3.0
+                    d[0] = -1
+                else:
+                    cloud[:, 0] *= 10.0
+                    cloud[:, 0] += 3.0
+
+                if i in (2, 3, 6, 7):
+                    cloud[:, 1] *= - 3.0
+                    cloud[:, 1] -= 3.0
+                    d[1] = -1
+                else:
+                    cloud[:, 1] *= 3.0
+                    cloud[:, 1] += 3.0
+
+                if i in (4, 5, 6, 7):
+                    cloud[:, 2] *= - 6.0
+                    cloud[:, 2] -= 3.0
+                    d[2] = -1
+                else:
+                    cloud[:, 2] *= 6.0
+                    cloud[:, 2] += 3.0
+
+                R = rotation_matrix(a, d)
+                cloud[:] = cloud.dot(R)
+
+                clouds.append(cloud.tolist())
+
+            axes = create_axes_3d()
+
+            bounds = Bounds([point for points in clouds for point in points])
+            bounds.plot(axes)
+
+            for cloud in clouds:
+                bbox = bounding_box_3d(cloud)
+
+                Cloud3D(cloud).plot(axes)
+                Box(bbox[1]).plot(axes)
+
+            plt.show()
+
     """
     points = asarray(points)
     n, dim = points.shape
@@ -278,25 +349,15 @@ def _compute_global_coords(o, uvw, rst):
 
 if __name__ == "__main__":
 
-    from numpy import asarray
-
-    from itertools import groupby
-
     from numpy.random import randint
     from numpy.random import rand
 
     from scipy.cluster.vq import kmeans
-    from scipy.cluster.vq import whiten
     from scipy.cluster.vq import vq
-
-    from scipy.cluster.hierarchy import fclusterdata
 
     import matplotlib.pyplot as plt
 
-    from compas.geometry import centroid_points
-
     from compas.plotters.helpers import Bounds
-    from compas.plotters.helpers import Cloud3D
     from compas.plotters.helpers import Box
 
     from compas.numerical.xforms import rotation_matrix

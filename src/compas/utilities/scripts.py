@@ -197,7 +197,7 @@ def ScriptWrapper(object):
 
 if __name__ == '__main__':
 
-    server = ScriptServer('tmp', 'tmp')
+    server = ScriptServer()
     try:
         result = server.test(n=10, pause=0.1)
     except ScriptServerError:

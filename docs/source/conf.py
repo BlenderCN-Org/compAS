@@ -82,7 +82,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'compas'
+project = u'compAS'
 copyright = u'2017, Block Research Group'
 author = u'Tom Van Mele'
 

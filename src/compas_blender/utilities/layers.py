@@ -3,7 +3,10 @@
 from compas_blender.utilities.objects import delete_objects
 from compas_blender.utilities.objects import get_objects_by_layer
 
-import bpy
+try:
+    import bpy
+except ImportError:
+    pass
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']

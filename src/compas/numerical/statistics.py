@@ -36,9 +36,45 @@ def principal_components(data):
             locations in 2D space, only two principle components will be returned.
 
     Examples:
-        >>> vectors = PCA(data)
-        >>> for vector in vectors:
-        ...     print vector
+
+        .. plot::
+            :include-source:
+
+            from numpy import random
+
+            import matplotlib.pyplot as plt
+
+            from compas.numerical.xforms import rotation_matrix
+
+            from compas.plotters.helpers import Axes3D
+            from compas.plotters.helpers import Cloud3D
+            from compas.plotters.helpers import Bounds
+            from compas.plotters.drawing import create_axes_3d
+
+            from compas.numerical.statistics import principal_components
+
+            data = random.rand(300, 3)
+            data[:, 0] *= 10.0
+            data[:, 1] *= 1.0
+            data[:, 2] *= 4.0
+
+            a = 3.14159 * 30.0 / 180
+            Ry = rotation_matrix(a, [0, 1.0, 0.0])
+
+            a = -3.14159 * 45.0 / 180
+            Rz = rotation_matrix(a, [0, 0, 1.0])
+
+            data[:] = data.dot(Ry).dot(Rz)
+
+            average, vectors, values = principal_components(data)
+
+            axes = create_axes_3d()
+
+            Bounds(data).plot(axes)
+            Cloud3D(data).plot(axes)
+            Axes3D(average, vectors).plot(axes)
+
+            plt.show()
 
     """
     data = asarray(data)
@@ -92,6 +128,8 @@ if __name__ == "__main__":
     from compas.plotters.helpers import Cloud3D
     from compas.plotters.helpers import Bounds
     from compas.plotters.drawing import create_axes_3d
+
+    from compas.numerical.statistics import principal_components
 
     data = random.rand(300, 3)
     data[:, 0] *= 10.0

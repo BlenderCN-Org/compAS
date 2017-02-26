@@ -8,29 +8,12 @@ Getting started
 Tools
 =====
 
-Before we get started, make sure you have the necessary tools installed on your
-system.
+Before getting started, make sure you have the necessary tools installed on your
+system. At the very least, you will need a code editor and a source control
+management tool.
 
-* A code editor or IDE:
-
-  * `Sublime Text <https://www.sublimetext.com/>`_ + `Anaconda Python IDE <http://damnwidget.github.io/anaconda/>`_
-  * `Eclipse <https://eclipse.org/>`_ + `PyDev <http://www.pydev.org/>`_
-  * ...
-
-* `Mercurial <https://www.mercurial-scm.org/>`_ and/or `Git <https://git-scm.com/>`_
-
-* A Git and/or Hg client:
-
-  * `SourceTree <https://www.sourcetreeapp.com/>`_
-  * `GitHub Desktop <https://desktop.github.com/>`_
-  * `MercurialEclipse <https://bitbucket.org/mercurialeclipse/main/wiki/Home>`_
-  * ...
-
-* `PathEditor <https://patheditor2.codeplex.com/>`_ (Windows)
-
-
-If you are on Mac, a package manager like `macports <https://www.macports.org/>`_
-or `homebrew <http://brew.sh/>`_ is also highly recommended.
+Some installation instructions for different editors and repo managers, and a
+few other helpful bits and pieces can be found here: :doc:`/pages/devenv`.
 
 
 Download
@@ -41,11 +24,11 @@ again, it may not :)
 
 The mercurial repo can be cloned from::
 
-    https://bitbucket.org/compasbits/compas_framework
+    https://bitbucket.org/brgbits/compAS
 
 A Git fork is available here::
 
-    https://bitbucket.org/GramazioKohlerResearch/compas_framework
+    https://bitbucket.org/GramazioKohlerResearch/compAS
 
 
 Dependencies
@@ -56,11 +39,21 @@ you are happy working in Rhino or Blender, and are not interested in any of the
 numerical stuff, then everything should work out of the box;
 provided you have Python installed, of course.
 
+.. note::
+
+    Currently we support only Python +2.6. Most things will probably also work in
+    Python 3.x, but not everything, yet.
+
+
+Optional dependencies
+=====================
+
 For plotting two-dimensional representations of data structures (and to some extent
 three-dimensional as well), we use `Matplotlib <http://matplotlib.org/>`_.
 For three-dimensional visualisations, we use `PyOpenGL <http://pyopengl.sourceforge.net/>`_ 
 and `PySide <https://wiki.qt.io/PySide>`_. Installation instructions for both, 
-and for the libraries they depend on are under construction and will be available soon.
+and for the libraries they depend on are under construction and will be available
+here :doc:`/pages/devenv`.
 
 For all numerical calculations and algorithms, we rely on `NumPy <http://www.numpy.org/>`_ 
 and `SciPy <https://www.scipy.org/>`_.
@@ -70,15 +63,18 @@ Some network algorithms use `NetworkX <https://networkx.github.io/>`_ and
 In future versions, `Triangle <http://www.cs.cmu.edu/~quake/triangle.html>`_ and
 `TetGen <http://wias-berlin.de/software/tetgen/>`_ might be used through
 `MeshPy <https://mathema.tician.de/software/meshpy/>`_ for some of the mesh
-algorithms, especially those relating to meshing for FE Analysis.
+algorithms, especially those relating to meshing for FE Analysis, but this is not
+case now.
 
 
 Setup
 =====
 
 Scientific Python distributions like `Anaconda <https://www.continuum.io/>`_ or
-`Enthought EPD <https://www.enthought.com/products/epd/>`_ provide most of these,
-or at least a package manager to install them with.
+`Enthought EPD <https://www.enthought.com/products/epd/>`_ provide most of the
+optional dependencies (and of course Python), or a package manager to
+install them with. Make sure to get a version that ships with Python 2.x (see
+note above).
 
 On Windows, many installers for remaining and otherwise difficult-to-install packages
 can be found on Christof Gholke's page 
@@ -86,11 +82,6 @@ can be found on Christof Gholke's page
 On mac, installing whatever doesn't ship with a scientific distribution is
 relatively easy with a package manager like `macports <https://www.macports.org/>`_
 or `homebrew <http://brew.sh/>`_.
-
-If you prefer a bit more control and want to try a manual install, SciPy provides
-some instructions for installing a `scientific Python stack <http://www.scipy.org/about.html>`_.
-
-Also remeber that all of this is optional. Most functionality is available out-of-the-box.
 
 
 Further Setup
@@ -123,11 +114,11 @@ lines in the list of directories
     C:\Anaconda2\Library\bin
 
 
-Then, add the location of the BRG framework to your ``PYTHONPATH``
+Then, add the location of the compAS framework to your ``PYTHONPATH``
 
 ::
 
-    C:\path\to\the\compas_framework\src
+    C:\path\to\compAS\src
 
 
 Start an interactive Python session (type ``python`` on the command line)
@@ -141,15 +132,50 @@ and try the following
     >>> print network
 
 
+On Mac
+++++++
+
+If you are on a Mac, the procedure is similar. Open the Terminal and use your
+favourite text editing application to modify your ``.profile``
+
+::
+
+    $ nano ~/.profile
+
+::
+
+    export PATH="/path/to/anaconda/bin:$PATH"
+    export PYTHONPATH="/path/to/compAS/src:$PYTHONPATH"
+
+Restart the Terminal or type
+
+::
+
+    $ source ~/.profile
+
+Start an interactive Python session (type ``python`` in the Terminal)
+and try the following
+
+::
+
+    >>> import compas
+    >>> from compas.datastructures.network import Network
+    >>> network = Network.from_obj(compas.get_data('lines.obj'))
+    >>> print network
+
+
 Rhino
------
+=====
 
-Although Rhino ships with its own version of IronPython, it is a bugy beta version,
-and therefore you should install your own copy of IronPython and add it to Rhino's
-search paths.
+Rhino uses IronPython to interpret your Python scripts. It ships with its own
+version of IronPython, but, at least in Rhino 5, this bundled IronPython is a buggy
+beta version. Therefore, if you are using Rhino 5, you should install your own
+copy of IronPython and add it to your system path  and to Rhino's search paths.
+Make sure to install IronPython 2.7.5, and not the latest version.
 
-If you are on Rhino 5, make sure to install IronPython 2.7.5. If you are test driving
-Rhino 6, you can use IronPython 2.7.5 or higher.
+.. note::
+    
+    If you are test driving Rhino 6, the bundled IronPython should work fine
 
 
 In Rhino, open the *ScriptEditor*, and go to::
@@ -166,7 +192,7 @@ Add the following to the *Modules Search Paths* for IronPython::
 
 and this path for the framework library::
 
-    C:\path\to\the\compas_framework\src
+    C:\path\to\compAS\src
 
 
 Then restart Rhino and run the following scripts
@@ -215,36 +241,4 @@ If this draws a network without throwing an error, you are all set.
     machine, you can't use the Mac Python installation from that side.
     This means that you will need to install the same Python setup on both sides,
     to be able to access the all functionality from Rhino.
-
-
-On Mac
-++++++
-
-If you are on a Mac, the procedure is similar. Open the Terminal and use your
-favourite text editing application to modify your ``.profile``
-
-::
-
-    $ nano ~/.profile
-
-::
-
-    export PATH="/path/to/anaconda/bin:$PATH"
-    export PYTHONPATH="/path/to/the/compas_framework/src:$PYTHONPATH"
-
-Restart the Terminal or type
-
-::
-
-    $ source ~/.profile
-
-Start an interactive Python session (type ``python`` in the Terminal)
-and try the following
-
-::
-
-    >>> import compas
-    >>> from compas.datastructures.network import Network
-    >>> network = Network.from_obj(compas.get_data('lines.obj'))
-    >>> print network
 

@@ -4,7 +4,10 @@ from numpy import array
 
 from compas.numerical.linalg import normrow
 
-import bpy
+try:
+    import bpy
+except ImportError:
+    pass
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']

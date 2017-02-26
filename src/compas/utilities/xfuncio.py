@@ -13,7 +13,7 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['xecuteio', 'XFuncIO']
+__all__ = ['XFuncIO']
 
 
 WRAPPER = """
@@ -25,8 +25,6 @@ import cStringIO
 import cProfile
 import pstats
 import traceback
-from json import encoder
-
 
 basedir  = sys.argv[1]
 funcname = sys.argv[2]
@@ -43,7 +41,7 @@ try:
     profile = cProfile.Profile()
     profile.enable()
 
-    # sys.path.insert(0, basedir)
+    sys.path.insert(0, basedir)
     parts = funcname.split('.')
 
     if len(parts) > 1:
@@ -79,58 +77,66 @@ else:
     odict['iterations'] = None
     odict['profile']    = stream.getvalue()
 
-e_frepr = encoder.FLOAT_REPR
-encoder.FLOAT_REPR = lambda o: format(o, '.16g')
-
 with open(opath, 'wb+') as fp:
     json.dump(odict, fp)
-
-encoder.FLOAT_REPR = e_frepr
 """
 
 
-def run_as_xfunc(basedir, tmpdir):
-    def decorator(func):
-        @wraps
-        def wrapper(*args, **kwargs):
-            # stuff before
-            res = func()
-            # stuff after
-            return res
-        return wrapper
-    return decorator
+# def run_as_xfunc(basedir, tmpdir):
+#     def decorator(func):
+#         @wraps
+#         def wrapper(*args, **kwargs):
+#             # stuff before
+#             res = func()
+#             # stuff after
+#             return res
+#         return wrapper
+#     return decorator
 
 
-def xecuteio(funcname, basedir, tmpdir, *args, **kwargs):
-    # if not os.path.isdir(basedir):
-    #     raise Exception('basedir is not a directory: %s' % basedir)
+def _xecuteio(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
+    """Execute a function with optional positional and named arguments.
+
+    Parameters:
+        funcname (str): The full name of the function.
+        basedir (str):
+            A directory that should be added to the PYTHONPATH such that the function can be found.
+        tmpdir (str):
+            A directory that should be used for storing the IO files.
+        delete_files (bool):
+            Set to ``False`` if the IO files should not be deleted afterwards.
+        mode (int):
+            The printing mode.
+        args (list):
+            Optional.
+            Positional arguments to be passed to the function.
+            Default is ``[]``.
+        kwargs (dict):
+            Optional.
+            Named arguments to be passed to the function.
+            Default is ``{}``.
+
+    """
+
+    if not os.path.isdir(basedir):
+        raise Exception('basedir is not a directory: %s' % basedir)
+
     if not os.path.isdir(tmpdir):
         raise Exception('tmpdir is not a directory: %s' % tmpdir)
+
     if not os.access(tmpdir, os.W_OK):
         raise Exception('you do not have write access to tmpdir')
-
-    mode = kwargs.get('mode', 0)
-
-    try:
-        del kwargs['mode']
-    except KeyError:
-        pass
 
     ipath = os.path.join(tmpdir, '%s.in' % funcname)
     opath = os.path.join(tmpdir, '%s.out' % funcname)
 
     idict = {'args': args, 'kwargs': kwargs}
 
-    # e_frepr = encoder.FLOAT_REPR
-    # encoder.FLOAT_REPR = lambda o: format(o, '.16g')
-
     with open(ipath, 'wb+') as fh:
         json.dump(idict, fh)
 
     with open(opath, 'wb+') as fh:
         fh.write('')
-
-    # encoder.FLOAT_REPR = e_frepr
 
     process_args = ['pythonw', '-u', '-c', WRAPPER, basedir, funcname, ipath, opath]
     process = Popen(process_args, stderr=PIPE, stdout=PIPE)
@@ -153,21 +159,34 @@ def xecuteio(funcname, basedir, tmpdir, *args, **kwargs):
         with open(opath, 'rb') as fh:
             odict = json.load(fh)
 
+    if delete_files:
+        try:
+            os.remove(ipath)
+        except OSError:
+            pass
+        try:
+            os.remove(opath)
+        except OSError:
+            pass
+
     return odict
 
 
 class XFuncIO(object):
-    def __init__(self, basedir='.', tmpdir='.', mode=0):
-        self._basedir   = None
-        self._tmpdir    = None
-        self.basedir    = basedir
-        self.tmpdir     = tmpdir
-        self.mode       = mode
-        self.python     = 'pythonw'
-        self.data       = None
-        self.iterations = None
-        self.profile    = None
-        self.error      = None
+    """"""
+    
+    def __init__(self, basedir='.', tmpdir='.', delete_files=True, mode=0):
+        self._basedir     = None
+        self._tmpdir      = None
+        self.basedir      = basedir
+        self.tmpdir       = tmpdir
+        self.delete_files = delete_files
+        self.mode         = mode
+        self.python       = 'pythonw'
+        self.data         = None
+        self.iterations   = None
+        self.profile      = None
+        self.error        = None
 
     @property
     def basedir(self):
@@ -175,8 +194,8 @@ class XFuncIO(object):
 
     @basedir.setter
     def basedir(self, basedir):
-        # if not os.path.isdir(basedir):
-        #     raise Exception('basedir is not a directory: %s' % basedir)
+        if not os.path.isdir(basedir):
+            raise Exception('basedir is not a directory: %s' % basedir)
         self._basedir = basedir
 
     @property
@@ -192,8 +211,14 @@ class XFuncIO(object):
         self._tmpdir = tmpdir
 
     def __call__(self, funcname, *args, **kwargs):
-        kwargs['mode'] = self.mode
-        odict = xecuteio(funcname, self.basedir, self.tmpdir, *args, **kwargs)
+        odict = _xecuteio(funcname,
+                          self.basedir,
+                          self.tmpdir,
+                          self.delete_files,
+                          self.mode,
+                          *args,
+                          **kwargs)
+
         self.data       = odict['data']
         self.profile    = odict['profile']
         self.iterations = odict['iterations']
@@ -206,17 +231,11 @@ class XFuncIO(object):
 
 if __name__ == '__main__':
 
-    here    = os.path.dirname(__file__)
-    basedir = os.path.abspath(os.path.join(here, '../../'))
-    tmpdir  = os.path.abspath(os.path.join(here, 'tmp'))
+    xfunc = XFuncIO(mode=1)
 
-    xfunc = XFuncIO(basedir, tmpdir, mode=1)
+    xfname = 'compas.utilities.animation.test'
 
-    xfname = 'compas.utilities.maps.geometric_key'
-    xfargs = [[0.1, 0.001, 0.3], ]
-    xfkwargs = {'precision': '5f'}
-
-    xfunc(xfname, *xfargs, **xfkwargs)
+    xfunc(xfname)
 
     print(xfunc.data)
     print(xfunc.error)

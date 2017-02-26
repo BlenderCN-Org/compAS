@@ -110,19 +110,6 @@ objects
     is_curve_polygon
 
 
-scripts
-=======
-
-.. currentmodule:: compas_rhino.utilities.scripts
-
-:mod:`compas_rhino.utilities.scripts`
-
-.. autosummary::
-    :toctree: generated/
-
-    ScriptServer
-
-
 misc
 ====
 
@@ -169,6 +156,32 @@ drawing
     xdraw_spheres
     xdraw_mesh
 
+
+scripts
+=======
+
+.. currentmodule:: compas_rhino.utilities.scripts
+
+:mod:`compas_rhino.utilities.scripts`
+
+.. autosummary::
+    :toctree: generated/
+
+    ScriptServer
+
+
+xfunc
+=====
+
+.. currentmodule:: compas_rhino.utilities.xfunc
+
+:mod:`compas_rhino.utilities.xfunc`
+
+.. autosummary::
+    :toctree: generated/
+
+    XFunc
+
 """
 
 from .document import *
@@ -176,3 +189,5 @@ from .layers import *
 from .objects import *
 from .misc import *
 from .drawing import *
+from .scripts import *
+from .xfunc import *

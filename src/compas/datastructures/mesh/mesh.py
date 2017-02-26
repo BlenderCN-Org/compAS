@@ -71,7 +71,7 @@ class Mesh(object):
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            mesh.plot()
+            mesh.plot(vertexsize=0.2)
 
 
         .. plot::
@@ -83,6 +83,7 @@ class Mesh(object):
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
             mesh.plot(
+                vertexsize=0.2,
                 vertexlabel={key: key for key in mesh}
             )
 
@@ -95,6 +96,7 @@ class Mesh(object):
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
             mesh.plot(
+                vertexsize=0.2,
                 facelabel={fkey: fkey for fkey in mesh.face}
             )
 
@@ -1722,5 +1724,6 @@ if __name__ == '__main__':
     print(mesh)
 
     mesh.plot(
+        vertexsize=0.2,
         vertexlabel={key: '{0:.1f}'.format(mesh.vertex_area(key)) for key in mesh}
     )

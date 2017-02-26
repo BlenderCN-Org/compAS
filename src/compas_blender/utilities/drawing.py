@@ -1,5 +1,8 @@
 """compas_blender.utilities.drawing : Functions for drawing in Blender."""
 
+from math import atan2
+from math import acos
+
 from compas_blender.utilities.layers import layer_mask
 
 from compas_blender.utilities.objects import delete_objects
@@ -9,11 +12,12 @@ from compas.geometry.spatial import centroid_points
 from compas.geometry.spatial import subtract_vectors
 from compas.geometry.spatial import length_vector
 
-from mathutils import Vector
-from math import atan2
-from math import acos
+try:
+    import bpy
+    from mathutils import Vector
+except ImportError:
+    pass
 
-import bpy
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -272,15 +276,18 @@ def xdraw_texts(texts):
     return objects
 
 
-material_delete_all()
-material_create('red', (1, 0, 0))
-material_create('orange', (1, 0.5, 0))
-material_create('yellow', (1, 1, 0))
-material_create('blue', (0, 0, 1))
-material_create('green', (0, 1, 0))
-material_create('white', (1, 1, 1))
-material_create('black', (0, 0, 0))
-material_create('grey', (0.5, 0.5, 0.5))
+try:
+    material_delete_all()
+    material_create('red', (1, 0, 0))
+    material_create('orange', (1, 0.5, 0))
+    material_create('yellow', (1, 1, 0))
+    material_create('blue', (0, 0, 1))
+    material_create('green', (0, 1, 0))
+    material_create('white', (1, 1, 1))
+    material_create('black', (0, 0, 0))
+    material_create('grey', (0.5, 0.5, 0.5))
+except:
+    pass
 
 # ==============================================================================
 # Debugging
