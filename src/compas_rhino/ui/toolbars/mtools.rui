@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RhinoUI major_ver="2" minor_ver="0" guid="56bbfb31-4827-4647-b26f-355c5f6cf6d0" localize="False" default_language_id="1033">
+  <extend_rhino_menus>
+    <menu guid="98023396-ee11-4173-a094-c345d92f96d6">
+      <text>
+        <locale_1033>Extend Rhino Menus</locale_1033>
+      </text>
+    </menu>
+  </extend_rhino_menus>
+  <menus />
+  <tool_bar_groups>
+    <tool_bar_group guid="c9728dd6-7242-4d8b-9190-c2c8e28b47cf" dock_bar_guid32="a7d4a4ab-8db8-4865-b3cd-84ce09369d20" dock_bar_guid64="00000000-0000-0000-0000-000000000000" active_tool_bar_group="99db4f5d-5692-4f8b-96b0-4f49dad832db" single_file="False" hide_single_tab="False" point_floating="-2,0">
+      <text>
+        <locale_1033>MeshTools</locale_1033>
+      </text>
+      <tool_bar_group_item guid="99db4f5d-5692-4f8b-96b0-4f49dad832db" major_version="1" minor_version="1">
+        <text>
+          <locale_1033>MeshTools</locale_1033>
+        </text>
+        <tool_bar_id>e24b9dfd-4d95-4a0e-a9b1-aa7ab101575e</tool_bar_id>
+      </tool_bar_group_item>
+      <dock_bar_info dock_bar="False" docking="True" horz="False" visible="False" floating="False" mru_float_style="4096" bar_id="59459" mru_width="32767" point_pos="-2,-5" float_point="-2,0" rect_mru_dock_pos="0,0,0,0" dock_location_u="59420" dock_location="left" float_size="56,38" />
+    </tool_bar_group>
+  </tool_bar_groups>
+  <tool_bars>
+    <tool_bar guid="e24b9dfd-4d95-4a0e-a9b1-aa7ab101575e" item_display_style="text_only">
+      <text>
+        <locale_1033>MeshTools</locale_1033>
+      </text>
+      <tool_bar_item guid="4d9fc352-0c90-4a4d-b34a-9b72e8d068ba" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>c731fa17-1470-4be9-b733-537a9bdfa02b</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="f7932eba-a242-468e-9212-fb5774582965" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>c19c3417-e8db-4e2b-a217-3f5a9a7f800c</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="30f6c6aa-a765-4b05-8063-c374ad83b5f7" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>6950b64f-b2ca-49e2-af92-e7f071c8d6b2</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="f5621a38-33d6-4297-8776-35d0e853d2a5" button_display_mode="control_only" button_style="spacer">
+        <text />
+      </tool_bar_item>
+      <tool_bar_item guid="6a25c652-55de-414a-b454-059ed143fe3a" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>bf1d25ef-5bc5-429a-acf2-94e716589143</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="e7dd7008-62fc-4bc4-860a-2c1591b611de" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>eb5b2261-6ad7-4506-8d97-1ed4488a4b8c</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="57009aa0-9950-40c3-af55-a03269e703ef" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>a9fdc4ee-6f2f-4962-861b-23388e8cc324</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="980b44be-6eaa-4aa8-9523-d65fa54870cc" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>1e6e04d6-2e5c-4e3b-9211-9a81a6af42e5</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="5f4b6822-c8cf-425f-a821-32eed9228edd" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>c70ff33b-15ad-41d7-aeec-fdc2d7491c2a</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="ed59b436-2d59-47ac-bc92-40389bda60cd" button_display_mode="control_only" button_style="spacer">
+        <text />
+      </tool_bar_item>
+      <tool_bar_item guid="51f967a8-99fd-4cdd-a2d5-c399a7754390" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>a12937ca-bc34-4e2c-920f-12ba86b41f70</left_macro_id>
+      </tool_bar_item>
+      <tool_bar_item guid="c00c0c64-59b3-4e58-8754-34bf63432ff5" button_display_mode="control_only" button_style="normal">
+        <text />
+        <left_macro_id>18e68893-13e1-4989-9130-7fe27f63f4ae</left_macro_id>
+      </tool_bar_item>
+    </tool_bar>
+  </tool_bars>
+  <macros>
+    <macro_item guid="bf1d25ef-5bc5-429a-acf2-94e716589143">
+      <text>
+        <locale_1033>edit</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>edit</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>edit</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.edit())</script>
+    </macro_item>
+    <macro_item guid="c19c3417-e8db-4e2b-a217-3f5a9a7f800c">
+      <text>
+        <locale_1033>from_xxx</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>from_xxx</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>from xxx</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.from_xxx())</script>
+    </macro_item>
+    <macro_item guid="c731fa17-1470-4be9-b733-537a9bdfa02b">
+      <text>
+        <locale_1033>init</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>init</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>init</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript ResetEngine (from compas_rhino.datastructures.toolbars.meshtools import MeshTools;mtools = MeshTools();mtools.init())</script>
+    </macro_item>
+    <macro_item guid="eb5b2261-6ad7-4506-8d97-1ed4488a4b8c">
+      <text>
+        <locale_1033>modify</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>modify</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>modify</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.modify())</script>
+    </macro_item>
+    <macro_item guid="a12937ca-bc34-4e2c-920f-12ba86b41f70">
+      <text>
+        <locale_1033>modify_tri</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>modify_tri</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>modify tri</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.modify_tri())</script>
+    </macro_item>
+    <macro_item guid="c70ff33b-15ad-41d7-aeec-fdc2d7491c2a">
+      <text>
+        <locale_1033>relax</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>relax</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>relax</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.relax())</script>
+    </macro_item>
+    <macro_item guid="1e6e04d6-2e5c-4e3b-9211-9a81a6af42e5">
+      <text>
+        <locale_1033>smooth</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>smooth</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>smooth</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.smooth())</script>
+    </macro_item>
+    <macro_item guid="3f15ad08-02f0-4ba4-9efb-e2182f806c45">
+      <text>
+        <locale_1033>smooth_tri</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>smooth_tri</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>smooth tri</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.smooth_tri())</script>
+    </macro_item>
+    <macro_item guid="a9fdc4ee-6f2f-4962-861b-23388e8cc324">
+      <text>
+        <locale_1033>subd</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>subd</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>subd</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.subd())</script>
+    </macro_item>
+    <macro_item guid="18e68893-13e1-4989-9130-7fe27f63f4ae">
+      <text>
+        <locale_1033>subd_tri</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>subd_tri</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>subd tri</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.subd_tri())</script>
+    </macro_item>
+    <macro_item guid="6950b64f-b2ca-49e2-af92-e7f071c8d6b2">
+      <text>
+        <locale_1033>to_xxx</locale_1033>
+      </text>
+      <tooltip>
+        <locale_1033>None</locale_1033>
+      </tooltip>
+      <help_text>
+        <locale_1033>None</locale_1033>
+      </help_text>
+      <button_text>
+        <locale_1033>to_xxx</locale_1033>
+      </button_text>
+      <menu_text>
+        <locale_1033>to xxx</locale_1033>
+      </menu_text>
+      <script>-_RunPythonScript (mtools.to_xxx())</script>
+    </macro_item>
+  </macros>
+  <bitmaps>
+    <small_bitmap item_width="16" item_height="16">
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxj
+AAAAAElFTkSuQmCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
+    </small_bitmap>
+    <normal_bitmap item_width="24" item_height="24">
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYSURBVEhL7cEBAQAAAIIg/6+uIUAAAFwNCRgA
+AdACW14AAAAASUVORK5CYIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
+    </normal_bitmap>
+    <large_bitmap item_width="32" item_height="32">
+      <bitmap>iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQ
+IAABnXhJQwAAAABJRU5ErkJgggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
+    </large_bitmap>
+  </bitmaps>
+  <scripts />
+</RhinoUI>
