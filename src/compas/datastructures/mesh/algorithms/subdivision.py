@@ -33,6 +33,7 @@ __all__ = [
 # investigate meaning and definition of limit surface
 # any subd algorithm should return a new subd mesh, leaving the control mesh intact
 
+
 def subdivide_mesh(mesh, scheme='tri', **options):
     """Subdivide the input mesh.
 
@@ -42,10 +43,15 @@ def subdivide_mesh(mesh, scheme='tri', **options):
             The scheme according to which the mesh should be subdivided.
             Defult is 'tri'. Supported values are:
 
+            * tri: insertion subdivision.
+            * corner: corner cutting.
             * catmullclark : catmull-clark subdivision.
             * doosabin : doo-sabin subdivision.
 
         options (kwargs) : Optional additional keyword arguments.
+
+    Returns:
+        Mesh: The subdivided mesh.
 
     Raises:
         NotImplementedError
@@ -53,83 +59,84 @@ def subdivide_mesh(mesh, scheme='tri', **options):
 
     """
     options = options or {}
-    # if scheme == 'tri':
-    #     return subdivide_mesh_tri(mesh)
-    # if scheme == 'corner':
-    #     return subdivide_mesh_corner(mesh)
-    # if scheme == 'quad':
-    #     return subdivide_mesh_quad(mesh)
+
+    if scheme == 'tri':
+        return subdivide_mesh_tri(mesh)
+    if scheme == 'corner':
+        return subdivide_mesh_corner(mesh)
     if scheme == 'catmullclark':
         return subdivide_mesh_catmullclark(mesh, **options)
     if scheme == 'doosabin':
         return subdivide_mesh_doosabin(mesh, **options)
+
     raise NotImplementedError
 
 
 def subdivide_mesh_tri(mesh):
-    """"""
-    for fkey in mesh.faces():
-        mesh.insert_vertex(fkey)
+    """Subdivide a mesh using simple insertion of vertices.
+    """
+    subd = mesh.copy()
+
+    for fkey in subd.faces():
+        subd.insert_vertex(fkey)
+
+    return subd
 
 
-# this is actually loop-subd
-# however, corner cutting is a valid technique and should be added
-# 'real' loop subd only works on tri meshes
 def subdivide_mesh_corner(mesh):
-    """"""
+    """Subdivide a mesh by cutting croners.
+
+    Note:
+        This is essentially the same as Loop subdivision, but applied to general
+        meshes.
+
+    Warning:
+        This algorithms does not yet support multiple levels of subd.
+
+    Returns:
+        Mesh: The subdivided mesh.
+
+    """
+    subd = mesh.copy()
+
     # split every edge
     edgepoints = []
-    for u, v in mesh.edges():
-        w = split_edge_mesh(mesh, u, v, allow_boundary=True)
+
+    for u, v in subd.edges():
+        w = split_edge_mesh(subd, u, v, allow_boundary=True)
         edgepoints.append(w)
+
     edgepoints = set(edgepoints)
+
     # create 4 new faces for every old face
-    for fkey in mesh.faces():
-        cycle = mesh.face[fkey]
+    for fkey in subd.faces():
+        cycle = subd.face[fkey]
         vertices = set(cycle)
         start = None
+
         for key in vertices:
             if key in edgepoints:
                 start = key
                 break
+
         if not start:
             raise BRGMeshError
+
         face = []
         while True:
             a = key
             b = cycle[a]
             c = cycle[b]
-            mesh.add_face([a, b, c])
+            subd.add_face([a, b, c])
             face.append(a)
             if c == start:
                 break
             key = c
-        mesh.add_face(face)
-        del mesh.face[fkey]
 
+        subd.add_face(face)
+        del subd.face[fkey]
 
-# def subdivide_mesh_quad(mesh):
-#     """"""
-#     # keep a copy of the faces before splitting the edges
-#     fkey_vertices = dict((fkey, mesh.face_vertices(fkey, ordered=True)) for fkey in mesh.face)
-#     # split every edge
-#     ekeys = []
-#     for u, v in mesh.edges():
-#         w = split_edge_mesh(mesh, u, v, allow_boundary=True)
-#         ekeys.append(w)
-#     # insert a vertex at the centroid of every face
-#     # create a new face for every vertex of the old faces
-#     # [a (from split), key, d (from split), centroid]
-#     for fkey in mesh.faces():
-#         x, y, z = mesh.face_centroid(fkey)
-#         c = mesh.add_vertex(x=x, y=y, z=z)
-#         for key in fkey_vertices[fkey]:
-#             rface = dict((j, i) for i, j in mesh.face[fkey].items())
-#             a = rface[key]
-#             d = mesh.face[fkey][key]
-#             mesh.add_face([a, key, d, c])
-#         del mesh.face[fkey]
-#     return ekeys
+    return subd
 
 
 def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
@@ -140,12 +147,43 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
     according to the scheme prescribed by the Catmull-Clark algorithm.
 
     Parameters:
-        mesh (Mesh) : The mesh object that will be subdivided.
-        k (int) : Optional. The number of levels of subdivision. Default is `1`.
-        fixed (list) : Optional. A list of fixed vertices. Default is `None`.
+        mesh (Mesh):
+            The mesh object that will be subdivided.
+        k (int): Optional.
+            The number of levels of subdivision.
+            Default is ``1``.
+        fixed (list): Optional.
+            A list of fixed vertices.
+            Default is ``None``.
 
     Returns:
-        None : The given mesh is modified *in place*. No new mesh is created.
+        Mesh: The subdivided mesh.
+
+    Examples:
+
+        .. code-block:: python
+
+            from compas.datastructures.mesh import Mesh
+
+            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+            from compas.geometry.elements.polyhedron import Polyhedron
+            from compas.datastructures.mesh.viewer import SubdMeshViewer
+
+            cube = Polyhedron.generate(6)
+
+            mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+
+            viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_catmullclark, width=600, height=600)
+
+            viewer.axes_on = False
+            viewer.grid_on = False
+
+            for _ in range(10):
+               viewer.camera.zoom_in()
+
+            viewer.setup()
+            viewer.show()
+
     """
     def average(points):
         p = len(points)
@@ -167,7 +205,8 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
         fkey_vertices   = dict((fkey, subd.face_vertices(fkey, ordered=True)) for fkey in subd.faces())
         fkey_centroid   = dict((fkey, subd.face_centroid(fkey)) for fkey in subd.face)
 
-        # apply quad subdivision scheme
+        # ----------------------------------------------------------------------
+        # apply quad meshivision scheme
         # keep track of the created edge points that are not on the boundary
         # keep track track of the new edge points on the boundary
         # and their relation to the previous boundary points
@@ -177,7 +216,10 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
 
             w = split_edge_mesh(subd, u, v, allow_boundary=True)
 
+            # document why this is necessary
+            # everything else in this loop is just quad subdivision
             if u in bkeys and v in bkeys:
+
                 if u not in bkey_edgepoints:
                     bkey_edgepoints[u] = []
                 if v not in bkey_edgepoints:
@@ -185,6 +227,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
 
                 bkey_edgepoints[u].append(w)
                 bkey_edgepoints[v].append(w)
+
                 continue
 
             edgepoints.append(w)
@@ -198,6 +241,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
                 d = subd.face[fkey][key]
                 subd.add_face([a, key, d, c])
             del subd.face[fkey]
+        # ----------------------------------------------------------------------
 
         # these are the coordinates before updating
         key_xyz = dict((key, subd.vertex_coordinates(key)) for key in subd.vertex)
@@ -228,14 +272,14 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
                 E = [coord * e for coord in average(nbrs)]
                 V = [coord * v for coord in key_xyz[key]]
                 x, y, z = [E[_] + V[_] for _ in range(3)]
+
             else:
                 fnbrs = [fkey_centroid[fkey] for fkey in key_fkeys[key] if fkey is not None]
                 nbrs = [key_xyz[nbr] for nbr in subd.halfedge[key]]
-                n = len(nbrs)
                 n = float(len(nbrs))
-                f = 1. / n
-                e = 2. / n
-                v = (n - 3.) / n
+                f = 1.0 / n
+                e = 2.0 / n
+                v = (n - 3.0) / n
                 F = [coord * f for coord in average(fnbrs)]
                 E = [coord * e for coord in average(nbrs)]
                 V = [coord * v for coord in key_xyz[key]]
@@ -248,53 +292,6 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
     return subd
 
 
-# def _subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
-#     """"""
-
-#     if not fixed:
-#         fixed = []
-
-#     fixed = set(fixed)
-#     subd = mesh.copy()
-
-#     for level in range(k):
-
-#         ekeys = subdivide_mesh_quad(subd)
-
-#         key_xyz = dict((key, subd.vertex_coordinates(key)) for key in subd)
-
-#         for ekey in ekeys:
-#             nbrs = [key_xyz[nbr] for nbr in subd.halfedge[ekey]]
-#             xyz  = [axis / 4. for axis in map(sum, zip(*nbrs))]
-#             subd.vertex[ekey]['x'] = xyz[0]
-#             subd.vertex[ekey]['y'] = xyz[1]
-#             subd.vertex[ekey]['z'] = xyz[2]
-
-#         for key in subd.vertices_iter():
-#             epoints = []
-#             fpoints = []
-
-#             for enbr in subd.halfedge[key]:
-#                 fkey = subd.halfedge[key][enbr]
-#                 fnbr = subd.face[fkey][enbr]
-#                 epoints.append(key_xyz[enbr])
-#                 fpoints.append(key_xyz[fnbr])
-
-#             n = float(len(epoints))
-#             E = [axis / n for axis in map(sum, zip(*epoints))]
-#             F = [axis / n for axis in map(sum, zip(*fpoints))]
-#             V = key_xyz[key]
-#             e = 2. / n
-#             f = 1. / n
-#             v = (n - 3.) / n
-#             xyz = [e * E[i] + f * F[i] + v * V[i] for i in range(3)]
-#             subd.vertex[key]['x'] = xyz[0]
-#             subd.vertex[key]['y'] = xyz[1]
-#             subd.vertex[key]['z'] = xyz[2]
-
-#     return subd
-
-
 def subdivide_mesh_doosabin(mesh, k=1, fixed=None):
     """"""
     if not fixed:
@@ -305,8 +302,9 @@ def subdivide_mesh_doosabin(mesh, k=1, fixed=None):
     cls = type(mesh)
 
     for _ in range(k):
-        old_xyz  = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
-        fkey_old_new = dict((fkey, {}) for fkey in mesh.face)
+        old_xyz      = {key: mesh.vertex_coordinates(key) for key in mesh}
+        fkey_old_new = {fkey: {} for fkey in mesh.face}
+
         subd = cls()
 
         for fkey in mesh.face:
@@ -346,6 +344,7 @@ def subdivide_mesh_doosabin(mesh, k=1, fixed=None):
 
             for nbr in mesh.vertex_neighbours(key, ordered=True):
                 fkey = mesh.halfedge[key][nbr]
+
                 if fkey is not None:
                     face.append(fkey_old_new[fkey][key])
 
@@ -383,36 +382,35 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
 
     Examples:
 
-        >>> from compas.datastructures.mesh.mesh import Mesh
-        >>> from compas.geometry.polyhedron import Polyhedron
-        >>> from compas.datastructures.mesh.algorithms.orientation import mesh_flip_cycle_directions
-        >>> from compas.datastructures.mesh.viewer import SubdMeshViewer
+        .. code-block:: python
 
-        >>> tet = Polyhedron.generate(4)
+            from compas.datastructures.mesh import Mesh
+            from compas.geometry.elements import Polyhedron
+            from compas.datastructures.mesh.algorithms import mesh_flip_cycle_directions
+            from compas.datastructures.mesh.viewer import SubdMeshViewer
 
-        >>> mesh = Mesh.from_vertices_and_faces(tet.vertices, tet.faces)
-        >>> mesh_flip_cycle_directions(mesh)
+            tet = Polyhedron.generate(4)
 
-        >>> viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
+            mesh = Mesh.from_vertices_and_faces(tet.vertices, tet.faces)
+            mesh_flip_cycle_directions(mesh)
 
-        >>> viewer.axes.x_color = (0.1, 0.1, 0.1)
-        >>> viewer.axes.y_color = (0.1, 0.1, 0.1)
-        >>> viewer.axes.z_color = (0.1, 0.1, 0.1)
+            viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
 
-        >>> viewer.axes_on = False
-        >>> viewer.grid_on = False
+            viewer.axes_on = False
+            viewer.grid_on = False
 
-        >>> for _ in range(20):
-        ...    viewer.camera.zoom_in()
+            for _ in range(10):
+               viewer.camera.zoom_in()
 
-        >>> viewer.setup()
-        >>> viewer.show()
+            viewer.setup()
+            viewer.show()
 
     """
     if not fixed:
         fixed = []
 
     fixed = set(fixed)
+
     subd = mesh.copy()
 
     for _ in range(k):
@@ -472,19 +470,6 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
 # when extraordinary vertices exist in the control mesh, any subd mesh has gas faces with more than 4 vertices
 def subdivide_quadmesh_quad(mesh, k=1):
     """Subdivide a quad mesh using the quad algorithm.
-
-    Examples:
-
-        >>> from compas.datastructures.mesh.quad import QuadMesh
-        >>> from compas.geometry.polyhedron import Polyhedron
-
-        >>> cube = Polyhedron.generate(6)
-
-        >>> quad = QuadMesh.from_vertices_and_faces(cube.vertices, cube.faces)
-        >>> quad = quad_subdivision(quad)
-
-        >>> quad.draw()
-
     """
     c1 = 3. / 16.
     c2 = 9. / 16.
@@ -567,31 +552,19 @@ def subdivide_quadmesh_quad(mesh, k=1):
 
 if __name__ == "__main__":
 
-    import compas
-
     from compas.datastructures.mesh import Mesh
 
     from compas.geometry.elements.polyhedron import Polyhedron
     from compas.datastructures.mesh.viewer import SubdMeshViewer
 
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+    cube = Polyhedron.generate(6)
 
-    subd = subdivide_mesh_doosabin(mesh, k=2)
+    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-    subd.plot(vertexsize=0.05, vertexcolor={key: (255, 0, 0) for key in mesh})
+    viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
 
-    # cube = Polyhedron.generate(6)
+    viewer.axes_on = False
+    viewer.grid_on = False
 
-    # mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
-
-    # viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_catmullclark, width=600, height=600)
-
-    # viewer.axes.x_color = (0.1, 0.1, 0.1)
-    # viewer.axes.y_color = (0.1, 0.1, 0.1)
-    # viewer.axes.z_color = (0.1, 0.1, 0.1)
-
-    # viewer.axes_on = False
-    # viewer.grid_on = False
-
-    # viewer.setup()
-    # viewer.show()
+    viewer.setup()
+    viewer.show()
