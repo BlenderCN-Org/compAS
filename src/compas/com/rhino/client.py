@@ -87,6 +87,4 @@ class RhinoClient(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    rhino = RhinoApp()
-    rhino.AddPoint(0, 0, 0)
+    pass

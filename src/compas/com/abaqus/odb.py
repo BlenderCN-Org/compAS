@@ -15,11 +15,15 @@ __license__    = 'MIT License'
 __date__       = 'Oct 17, 2016'
 
 
+node_fields = ['RF', 'RM', 'U', 'UR', 'CF', 'CM']
+element_fields = ['SF', 'SM', 'SK', 'SE', 'S', 'E']
+
+
 def odb_results(temp, name, output):
     """ Extracts results from the .odb file for all steps.
 
     Parameters:
-        temp (str): Temp folder for storing data.
+        temp (str): Temp folder for storing the written data and analysis files.
         name (str): Name of the Structure.
         output (str): Output type 'json' or 'txt'.
 
@@ -35,45 +39,40 @@ def odb_results(temp, name, output):
             tic = time()
             fo = frame.fieldOutputs
             fields = fo.keys()
-            description = frame.description
- 
+
             # Node data
             cadd = ['magnitude']
-            for field in ['RF', 'RM', 'U', 'UR', 'CF', 'CM']:
+            for field in node_fields:
                 if field in fields:
                     components = list(fo[field].componentLabels)
                     call = components + cadd
                     dt = {component: {} for component in call}
-                    values = fo[field].values
-                    for value in values:
+                    for value in fo[field].values:
                         data = value.data
                         node = str(value.nodeLabel - 1)
                         for c, component in enumerate(components):
                             dt[component][node] = float(data[c])
                         dt['magnitude'][node] = float(value.magnitude)
                     for component in call:
-                        fnm = '{0}{1}_{2}_{3}_{4}'.format(
-                            temp, name, step, field, component)
+                        fnm = '{0}{1}_{2}_{3}_{4}'.format(temp, name, step, field, component)
                         if output == 'json':
                             with open(fnm + '.json', 'w') as f:
                                 json.dump(dt[component], f)
                         elif output == 'txt':
-                            nkeys = sorted(dt[component], key=int)
                             with open(fnm + '.txt', 'w') as f:
                                 f.write('node value\n')
-                                for nkey in nkeys:
+                                for nkey in sorted(dt[component], key=int):
                                     val = dt[component][nkey]
                                     f.write('{0} {1}\n'.format(nkey, val))
 
             # Element data
             cadd = ['mises', 'maxPrincipal', 'axes', 'minPrincipal']
-            for field in ['SF', 'SM', 'SK', 'SE', 'S', 'E']:
+            for field in element_fields:
                 if field in fields:
                     components = list(fo[field].componentLabels)
                     call = components + cadd
                     dt = {component: {} for component in call}
-                    values = fo[field].values
-                    for value in values:
+                    for value in fo[field].values:
                         data = value.data
                         element = str(value.elementLabel - 1)
                         ip = value.integrationPoint
@@ -93,31 +92,26 @@ def odb_results(temp, name, output):
                             dt['axes'][element][id] = value.localCoordSystem
                         if value.mises:
                             dt['mises'][element][id] = float(value.mises)
-                        maxP = value.maxPrincipal
-                        minP = value.minPrincipal
-                        if maxP:
-                            dt['maxPrincipal'][element][id] = float(maxP)
-                        if minP:
-                            dt['minPrincipal'][element][id] = float(minP)
+                        if value.maxPrincipal:
+                            dt['maxPrincipal'][element][id] = float(value.maxPrincipal)
+                        if value.minPrincipal:
+                            dt['minPrincipal'][element][id] = float(value.minPrincipal)
                     for component in call:
-                        fnm = '{0}{1}_{2}_{3}_{4}'.format(
-                            temp, name, step, field, component)
+                        fnm = '{0}{1}_{2}_{3}_{4}'.format(temp, name, step, field, component)
                         if output == 'json':
                             with open(fnm + '.json', 'w') as f:
                                 json.dump(dt[component], f)
                         elif output == 'txt':
-                            ekeys = sorted(dt[component], key=int)
                             with open(fnm + '.txt', 'w') as f:
                                 f.write('element id value\n')
-                                for ekey in ekeys:
-                                    ids = dt[component][ekey]
-                                    for id in ids:
+                                for ekey in sorted(dt[component], key=int):
+                                    for id in dt[component][ekey]:
                                         val = dt[component][ekey][id]
                                         f.write('{0} {1} {2}\n'.format(ekey, id, val))
 
             with open('{0}{1}_{2}_info.txt'.format(temp, name, step), 'w') as f:
-                f.write(description + '\n')    
-                f.write('Data extraction time: {0:.3g}s'.format(time() - tic))    
+                f.write(frame.description + '\n')
+                f.write('Data extraction time: {0:.3g}s'.format(time() - tic))
 
 
 # Run and extract data
@@ -127,9 +121,8 @@ temp = sys.argv[-3]
 cpus = sys.argv[-4]
 output = sys.argv[-5]
 fnm = '{0}{1}.inp'.format(path, name)
-job = mdb.JobFromInputFile(inputFileName=fnm, name=name, numCpus=int(cpus),
-                           multiprocessingMode=DEFAULT, numDomains=int(cpus),
-                           parallelizationMethodExplicit=DOMAIN)
+job = mdb.JobFromInputFile(inputFileName=fnm, name=name, numCpus=int(cpus), multiprocessingMode=DEFAULT,
+                           numDomains=int(cpus), parallelizationMethodExplicit=DOMAIN)
 job.submit()
 job.waitForCompletion()
 odb_results(temp=temp, name=name, output=output)
