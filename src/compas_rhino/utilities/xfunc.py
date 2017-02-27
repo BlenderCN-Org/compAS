@@ -254,14 +254,10 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
-    pass
+    xfunc = XFunc(mode=1)
 
-    # xfunc = XFunc(mode=1)
+    xfunc('compas.utilities.animation.test', )
 
-    # xfname = 'compas.utilities.animation.test'
-
-    # xfunc(xfname)
-
-    # print(xfunc.data)
-    # print(xfunc.error)
-    # print(xfunc.profile)
+    print(xfunc.data)
+    print(xfunc.error)
+    print(xfunc.profile)
