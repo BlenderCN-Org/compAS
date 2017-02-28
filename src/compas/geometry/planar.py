@@ -816,21 +816,24 @@ def closest_point_on_polygon_2d(point, polygon):
         (Z will be ignored) representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
- 
+
     Returns:
         list: XYZ coordinates of closest point (Z = 0.0).
 
-    """   
-    points = []     
+    """
+    points = []
     for i in range(len(polygon)):
-        segment = polygon[i-1],polygon[i]
+        segment = polygon[i - 1], polygon[i]
         points.append(closest_point_on_segment_2d(point, segment))
-    
+
     return closest_point_in_cloud_2d(point, points)[1]
 
-#this function seems to be rather specific. Where is it used? Is it needed in the geometry package?
+
+# this function seems to be rather specific.
+# where is it used?
+# is it needed in the geometry package?
 def closest_part_of_triangle(point, triangle):
-    """Computes the closest part (edge or point) of a triangle to a test point 
+    """Computes the closest part (edge or point) of a triangle to a test point
     lying in the XY-plane.
 
     Parameters:
@@ -839,7 +842,7 @@ def closest_part_of_triangle(point, triangle):
 
     Returns:
         The coordinates of the corner point if a corner point is closest. Two corner points defining
-        the edge, if an edge is closest to the test point   
+        the edge, if an edge is closest to the test point.
     """
     a, b, c = triangle
     ab = subtract_vectors_2d(b, a)
@@ -890,16 +893,16 @@ def is_ccw_2d(a, b, c, colinear=False):
 
     Examples:
         print(is_ccw([0,0,0], [0,1,0], [-1, 0, 0]))
-        #True
-        
+        # True
+
         print(is_ccw([0,0,0], [0,1,0], [+1, 0, 0]))
-        #False
-        
+        # False
+
         print(is_ccw([0,0,0], [1,0,0], [2,0,0]))
-        #False
-        
+        # False
+
         print(is_ccw([0,0,0], [1,0,0], [2,0,0], True))
-        #True
+        # True
 
     References:
         https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation
@@ -968,7 +971,7 @@ def is_point_in_convex_polygon_2d(point, polygon):
 
     Returns:
         bool: True if the point is in the convex polygon, False otherwise.
-    """    
+    """
     ccw = None
     for i in range(-1, len(polygon) - 1):
         a = polygon[i]
@@ -1018,14 +1021,14 @@ def is_point_in_triangle_2d(point, triangle):
     """Verify if a point is in the interior of a triangle lying in the XY-plane.
 
     Parameters:
-        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).    
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         triangle (sequence) : A sequence of XY(Z) coordinates of three 2D or 3D points
         (Z will be ignored) representing the locations of the corners of a triangle.
 
     Returns:
         bool: True if the point is in the convex polygon, False otherwise.
-    """      
+    """
     a, b, c = triangle
     ccw = is_ccw_2d(c, a, point, True)
     if ccw != is_ccw_2d(a, b, point, True):
@@ -1039,7 +1042,7 @@ def is_point_in_circle_2d(point, circle):
     """Verify if a point lies in a circle lying in the XY plane.
 
     Parameters:
-        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).  
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
         circle (tuple): center, radius of the circle in the xy plane.
 
     Returns:
@@ -1109,24 +1112,25 @@ def intersection_line_line_2d(ab, cd):
 
     Note:
         If the lines are parallel, there is no intersection point.
-   
+
     References:
         https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-   
+
     """
-    x1, y1 = ab[0][0],ab[0][1]
-    x2, y2 = ab[1][0],ab[1][1]
-    x3, y3 = cd[0][0],cd[0][1]
-    x4, y4 = cd[1][0],cd[1][1]
+    x1, y1 = ab[0][0], ab[0][1]
+    x2, y2 = ab[1][0], ab[1][1]
+    x3, y3 = cd[0][0], cd[0][1]
+    x4, y4 = cd[1][0], cd[1][1]
 
     d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
-    if d == 0.0: 
+    if d == 0.0:
         return None
-    a = (x1 * y2 - y1 * x2) 
+    a = (x1 * y2 - y1 * x2)
     b = (x3 * y4 - y3 * x4)
-    x = (a * (x3 - x4) - (x1 -x2) * b) / d
-    y = (a * (y3 - y4) - (y1 -y2) * b) / d
+    x = (a * (x3 - x4) - (x1 - x2) * b) / d
+    y = (a * (y3 - y4) - (y1 - y2) * b) / d
     return x, y, 0.0
+
 
 def intersection_lines_2d(lines):
     """Compute the intersections of mulitple lines in the XY plane.
@@ -1141,23 +1145,25 @@ def intersection_lines_2d(lines):
 
     Note:
         If the lines are parallel, there is no intersection point.
-   
+
     References:
         https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-   
-    """    
+
+    """
     pdic = []
     for a, b in itertools.combinations(lines, 2):
-        intx = intersection_line_line_2d(a,b)
+        intx = intersection_line_line_2d(a, b)
         if not intx:
             continue
         pdic.append(intx)
     if pdic:
-        return pdic      
+        return pdic
     return None
+
 
 def intersection_segment_segment_2d(ab, cd):
     raise NotImplementedError
+
 
 def intersection_segments_2d(segments):
     raise NotImplementedError

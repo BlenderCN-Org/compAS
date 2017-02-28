@@ -93,6 +93,7 @@ def material_create(name, color, alpha=1):
     material.diffuse_intensity = 1.0
     material.alpha = alpha
     material.ambient = 1
+    material.emit = 2
     return material
 
 
@@ -214,6 +215,40 @@ def xdraw_spheres(spheres, div=20):
         copy.scale *= s['radius']
         copy.data.materials.append(bpy.data.materials[s['color']])
         copy.name = s['name']
+        objects.append(copy)
+    delete_objects([object])
+    for object in objects:
+        bpy.context.scene.objects.link(object)
+    return objects
+
+
+def xdraw_pipes(pipes, div=4):
+    """ Draw a set of pipes.
+
+    Parameters:
+        pipes (dic): 'radius', 'start', 'end', 'color', 'name' as the keys.
+        div (int): Divisions for pipes.
+
+    Returns:
+        list: Created pipe objects.
+    """
+    objects = []
+    bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
+    object = bpy.context.object
+    for p in pipes:
+        start = p['start']
+        end = p['end']
+        L = length_vector(subtract_vectors(end, start))
+        phi = atan2(end[1] - start[1], end[0] - start[0])
+        theta = acos((end[2] - start[2]) / L)
+        copy = object.copy()
+        copy.rotation_euler[1] = theta
+        copy.rotation_euler[2] = phi
+        copy.location = Vector(centroid_points([start, end]))
+        copy.data = copy.data.copy()
+        copy.scale = ((p['radius'], p['radius'], L))
+        copy.data.materials.append(bpy.data.materials[p['color']])
+        copy.name = p['name']
         objects.append(copy)
     delete_objects([object])
     for object in objects:

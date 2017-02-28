@@ -1,4 +1,4 @@
-import ast
+# import ast
 
 from compas.utilities.colors import color_to_colordict
 
