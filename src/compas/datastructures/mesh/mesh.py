@@ -651,7 +651,11 @@ mesh summary
             for fkey in self.face:
                 vertices = self.face_vertices(fkey, ordered=True)
                 vertices = [key_index[key] + 1 for key in vertices]
-                fh.write('f {0[0]} {0[1]} {0[2]} {0[3]}\n'.format(vertices))
+                ixs = ['f']
+                for v in vertices:
+                    ixs.append('{0}'.format(v))
+                fh.write(' '.join(ixs) + '\n')
+
 
     def to_json(self, filepath):
         """Serialize the mesh data to a JSON file.
