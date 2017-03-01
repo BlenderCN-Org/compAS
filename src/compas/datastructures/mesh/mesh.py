@@ -651,7 +651,11 @@ mesh summary
             for fkey in self.face:
                 vertices = self.face_vertices(fkey, ordered=True)
                 vertices = [key_index[key] + 1 for key in vertices]
-                fh.write('f {0[0]} {0[1]} {0[2]} {0[3]}\n'.format(vertices))
+                ixs = ['f']
+                for vkey in vertices:
+                    ixs.append('{0}'.format(vkey))
+                fh.write(' '.join(ixs) + '\n')
+
 
     def to_json(self, filepath):
         """Serialize the mesh data to a JSON file.
@@ -666,29 +670,29 @@ mesh summary
         with open(filepath, 'wb+') as fh:
             json.dump(data, fh)
 
-    # only valid for poly and quad
-    def to_trimesh(self):
-        from tri import TriMesh
-        mesh = TriMesh()
-        for key in self.vertex:
-            attr = self.vertex[key]
-            mesh.add_vertex(key=key, attr_dict=attr)
-        for fkey in self.face:
-            vertices = self.face_vertices(fkey)
-            mesh.add_face(vertices, fkey=fkey)
-        return mesh
-
-    # only valid for poly
-    def to_quadmesh(self):
-        from quad import QuadMesh
-        mesh = QuadMesh()
-        for key in self.vertex:
-            attr = self.vertex[key]
-            mesh.add_vertex(key=key, attr_dict=attr)
-        for fkey in self.face:
-            vertices = self.face_vertices(fkey)
-            mesh.add_face(vertices, fkey=fkey)
-        return mesh
+#     # only valid for poly and quad
+#     def to_trimesh(self):
+#         from tri import TriMesh
+#         mesh = TriMesh()
+#         for key in self.vertex:
+#             attr = self.vertex[key]
+#             mesh.add_vertex(key=key, attr_dict=attr)
+#         for fkey in self.face:
+#             vertices = self.face_vertices(fkey)
+#             mesh.add_face(vertices, fkey=fkey)
+#         return mesh
+# 
+#     # only valid for poly
+#     def to_quadmesh(self):
+#         from quad import QuadMesh
+#         mesh = QuadMesh()
+#         for key in self.vertex:
+#             attr = self.vertex[key]
+#             mesh.add_vertex(key=key, attr_dict=attr)
+#         for fkey in self.face:
+#             vertices = self.face_vertices(fkey)
+#             mesh.add_face(vertices, fkey=fkey)
+#         return mesh
 
     def to_lines(self, axes='xyz'):
         return [(self.vertex_coordinates(u, axes), self.vertex_coordinates(v, axes))
