@@ -67,7 +67,6 @@ algorithms
     smooth_mesh_angle
     subdivide_mesh
     subdivide_mesh_tri
-    subdivide_mesh_quad
     subdivide_mesh_catmullclark
     subdivide_mesh_doosabin
     subdivide_trimesh_loop

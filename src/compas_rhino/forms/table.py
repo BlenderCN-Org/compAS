@@ -12,11 +12,11 @@ try:
     from System.Windows.Forms import DockStyle
     from System.Windows.Forms import RowStyle
     from System.Windows.Forms import SizeType
-except ImportError as e:
 
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__     = ['Tom Van Mele', ]

@@ -4,11 +4,10 @@ try:
     from Rhino.Geometry import Point3d
     from System.Drawing.Color import FromArgb
 
-except ImportError as e:
-
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__     = 'Tom Van Mele'

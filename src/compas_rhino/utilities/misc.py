@@ -11,10 +11,10 @@ try:
     from Rhino.UI.Dialogs import ShowPropertyListBox
     from Rhino.UI.Dialogs import ShowMessageBox
 
-except ImportError as e:
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__     = ['Tom Van Mele', ]

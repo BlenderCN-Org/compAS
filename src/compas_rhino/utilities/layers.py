@@ -5,11 +5,10 @@ try:
     find_object = sc.doc.Objects.Find
     purge_object = sc.doc.Objects.Purge
 
-except ImportError as e:
-
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__     = ['Tom Van Mele', ]

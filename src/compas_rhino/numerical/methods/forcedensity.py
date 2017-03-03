@@ -61,8 +61,9 @@ def update_equilibrium_from_qs(network):
     i_k     = dict(network.vertices_enum())
     xyz     = [network.vertex_coordinates(key) for key in network]
     n       = len(xyz)
-    anchors = [k_i[key] for key in network.anchors]
-    fixed   = [k_i[key] for key in network.fixed]
+    # anchors = [k_i[key] for key in network.anchors]
+    anchors = []
+    fixed   = [k_i[key] for key, attr in network.vertices_iter(True) if attr['is_fixed']]
     fixed   = list(set(anchors + fixed))
     free    = list(set(range(n)) - set(fixed))
     ni      = len(free)
