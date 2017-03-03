@@ -1,9 +1,10 @@
 try:
     from Rhino.UI import MouseCallback
-except ImportError as e:
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
+
     class MouseCallback(object):
         pass
 

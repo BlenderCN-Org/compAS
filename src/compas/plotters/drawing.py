@@ -356,8 +356,11 @@ def draw_xarrows_2d(lines, axes):
         'shrinkB'         : 5,
     }
     for line in lines:
-        sp = line['start']
-        ep = line['end']
+        sp        = line['start']
+        ep        = line['end']
+        text      = line.get('text', None)
+        textcolor = line.get('textcolor') or '#000000'
+        fontsize  = line.get('fontsize') or 6
         arrowprops['color']     = line.get('color', '#000000')
         arrowprops['linewidth'] = line.get('width', 1.0)
         axes.annotate(
@@ -367,6 +370,17 @@ def draw_xarrows_2d(lines, axes):
             arrowprops=arrowprops,
             zorder=ZORDER_LINES,
         )
+        if text:
+            x, y, z = midpoint_line_2d((sp, ep))
+            t = axes.text(x,
+                          y,
+                          text,
+                          fontsize=fontsize,
+                          zorder=ZORDER_LABELS,
+                          ha='center',
+                          va='center',
+                          color=textcolor)
+            t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
 
 
 # ==============================================================================

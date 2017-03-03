@@ -5,8 +5,17 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'i_to_rgb', 'i_to_red', 'i_to_green', 'i_to_blue', 'i_to_white', 'i_to_black',
-    'rgb_to_hex', 'hex_to_rgb', 'color_to_colordict', 'color_to_rgb',
+    'i_to_rgb',
+    'i_to_red',
+    'i_to_green',
+    'i_to_blue',
+    'i_to_white',
+    'i_to_black',
+    'rgb_to_hex',
+    'hex_to_rgb',
+    'color_to_colordict',
+    'color_to_rgb',
+    'rgb_complement'
 ]
 
 
@@ -78,6 +87,12 @@ def i_to_black(i):
 # see: http://stackoverflow.com/questions/4296249/how-do-i-convert-a-hex-triplet-to-an-rgb-tuple-and-back
 
 
+def is_color_rgb(color):
+    if isinstance(color, (tuple, list)):
+        return len(color) == 3
+    return False
+
+
 def rgb_to_hex(rgb, g=None, b=None):
     if g is None and b is None:
         r, g, b = rgb
@@ -127,6 +142,12 @@ def color_to_rgb(color, normalize=False):
     if not normalize:
         return r, g, b
     return r / 255., g / 255., b / 255.
+
+
+def rgb_complement(rgb):
+    r, g, b = rgb
+    k = min(rgb) + max(rgb)
+    return [k - c for c in rgb]
 
 
 class Color(object):

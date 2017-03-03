@@ -8,11 +8,10 @@ try:
     from System.Drawing import FontFamily
     from System.Environment import NewLine
 
-except ImportError as e:
-
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__     = ['Tom Van Mele', ]

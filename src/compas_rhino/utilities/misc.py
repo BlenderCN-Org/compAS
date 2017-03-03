@@ -1,8 +1,8 @@
 import os
 import inspect
 
-from compas_rhino.forms.text import TextForm
-from compas_rhino.forms.image import ImageForm
+from compas_rhino.forms import TextForm
+from compas_rhino.forms import ImageForm
 
 try:
     import System
@@ -11,10 +11,10 @@ try:
     from Rhino.UI.Dialogs import ShowPropertyListBox
     from Rhino.UI.Dialogs import ShowMessageBox
 
-except ImportError as e:
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__     = ['Tom Van Mele', ]
@@ -36,23 +36,32 @@ __all__ = [
 # Truly miscellaneous :)
 # ==============================================================================
 
-def screenshot_current_view(path,width=1920,height=1080,scale=1,draw_grid=False,draw_world_axes=False,draw_cplane_axes=False,background=False):
-    properties = [draw_grid,draw_world_axes,draw_cplane_axes,background]
+
+def screenshot_current_view(path,
+                            width=1920,
+                            height=1080,
+                            scale=1,
+                            draw_grid=False,
+                            draw_world_axes=False,
+                            draw_cplane_axes=False,
+                            background=False):
+    properties = [draw_grid, draw_world_axes, draw_cplane_axes, background]
     properties = ["Yes" if item else "No" for item in properties]
-    scale = max(1,scale) #the rhino command requires a scale > 1
+    scale = max(1, scale)  # the rhino command requires a scale > 1
     rs.EnableRedraw(True)
     rs.Sleep(0)
-    result = rs.Command("-_ViewCaptureToFile \""+ path + "\""
-               " Width="+ str(width) +
-               " Height=" + str(height) +
-               " Scale=" + str(scale) +
-               " DrawGrid=" + properties[0] +
-               " DrawWorldAxes=" + properties[1] +
-               " DrawCPlaneAxes=" + properties[2] +
-               " TransparentBackground=" + properties[3] +
-               " _enter",False)
+    result = rs.Command("-_ViewCaptureToFile \"" + path + "\""
+                        " Width=" + str(width) +
+                        " Height=" + str(height) +
+                        " Scale=" + str(scale) +
+                        " DrawGrid=" + properties[0] +
+                        " DrawWorldAxes=" + properties[1] +
+                        " DrawCPlaneAxes=" + properties[2] +
+                        " TransparentBackground=" + properties[3] +
+                        " _enter", False)
     rs.EnableRedraw(False)
     return result
+
 
 def add_gui_helpers(helpers, overwrite=False, protected=False):
     def decorate(cls):
@@ -156,10 +165,8 @@ def display_text(text, title='Text', width=800, height=600):
 
 
 def display_image(image, title='Image', width=800, height=600):
-    pass
-    #wrong number of input args. Please Check!
-    #form = ImageForm(image, title, width, height)
-    #return form.show()
+    form = ImageForm(image, title, width, height)
+    return form.show()
 
 
 def display_html():

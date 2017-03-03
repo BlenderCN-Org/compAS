@@ -30,8 +30,8 @@ def optimise_trimesh_topology(mesh,
 
     This involves three operations:
 
-        * split edges that are shorter than a minimum length,
-        * collapse edges that are longer than a maximum length,
+        * split edges that are longer than a maximum length,
+        * collapse edges that are shorter than a minimum length,
         * swap edges if this improves the valency error.
 
     The minimum and maximum lengths are calculated based on a desired target
@@ -51,7 +51,7 @@ def optimise_trimesh_topology(mesh,
         This algorithm not only changes the geometry of the mesh, but also its
         topology as needed to achieve the specified target lengths.
         Topological changes are made such that vertex valencies are well-balanced
-        and close to ...
+        and close to six.
 
     Examples:
 

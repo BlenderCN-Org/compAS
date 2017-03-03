@@ -1,17 +1,17 @@
-import ast
+# import ast
 
 from compas.utilities.colors import color_to_colordict
 
-import compas_rhino.utilities as rhino
+import compas_rhino as rhino
 
 try:
     import Rhino
     from Rhino.Geometry import Point3d
     import rhinoscriptsyntax as rs
-except ImportError as e:
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__    = 'Tom Van Mele'

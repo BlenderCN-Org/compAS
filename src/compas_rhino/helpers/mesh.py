@@ -3,16 +3,16 @@ from compas.utilities.colors import color_to_colordict
 
 from compas_rhino.geometry.surface import RhinoSurface
 
-import compas_rhino.utilities as rhino
+import compas_rhino as rhino
 
 try:
     import Rhino
     import scriptcontext as sc
     import rhinoscriptsyntax as rs
-except ImportError as e:
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__    = ['Tom Van Mele', ]

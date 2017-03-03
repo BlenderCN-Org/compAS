@@ -7,7 +7,7 @@ try:
     from System.Diagnostics import Process
 except ImportError:
     import platform
-    if platform.system() == 'Windows':
+    if platform.python_implementation() == 'IronPython':
         raise
 
 

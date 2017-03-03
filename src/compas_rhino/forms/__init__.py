@@ -35,11 +35,10 @@ try:
     from System.Windows.Forms import Form as WinForm
     import Rhino
 
-except ImportError as e:
-
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
     class WinForm(object):
         pass
@@ -76,7 +75,7 @@ class Form(WinForm):
 
 
 from .attributes import AttributesForm
-from .browser import BrowserForm
+# from .browser import BrowserForm
 from .chart import ChartForm
 from .image import ImageForm
 from .multipage import MultiPageForm
