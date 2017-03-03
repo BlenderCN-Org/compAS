@@ -24,9 +24,9 @@ __all__ = ['ImageForm', ]
 class ImageForm(Form):
     """"""
 
-    def __init__(self, imagepath, title='ImageForm'):
+    def __init__(self, imagepath, title='ImageForm', width=None, height=None):
         self.imagepath = imagepath
-        super(ImageForm, self).__init__(title)
+        super(ImageForm, self).__init__(title, width, height)
 
     def init(self):
         box = PictureBox()

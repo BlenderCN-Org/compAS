@@ -75,7 +75,7 @@ class Form(WinForm):
 
 
 from .attributes import AttributesForm
-from .browser import BrowserForm
+# from .browser import BrowserForm
 from .chart import ChartForm
 from .image import ImageForm
 from .multipage import MultiPageForm
