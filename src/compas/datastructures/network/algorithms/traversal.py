@@ -323,7 +323,45 @@ def network_dijkstra_path(adjacency, weight, source, target):
                 edges.append([u, v])
 
             network.plot(
-                vlabel={key: key for key in (start, end)},
+                vlabel={key: key for key in path},
+                vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
+                vsize=0.15,
+                ecolor={(u, v): (255, 0, 0) for u, v in edges},
+                ewidth={(u, v): 2.0 for u, v in edges},
+                elabel={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
+            )
+
+        .. plot::
+            :include-source:
+
+            import compas
+
+            from compas.datastructures.network import Network
+            from compas.datastructures.network.algorithms import network_dijkstra_path
+
+            network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+
+            weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
+            weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+
+            weight[(8, 7)] = 1000
+            weight[(7, 8)] = 1000
+
+            start = 21
+            end = 22
+
+            path = network_dijkstra_path(network.adjacency, weight, start, end)
+
+            edges = []
+            for i in range(len(path) - 1):
+                u = path[i]
+                v = path[i + 1]
+                if v not in network.edge[u]:
+                    u, v = v, u
+                edges.append([u, v])
+
+            network.plot(
+                vlabel={key: key for key in path},
                 vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
                 vsize=0.15,
                 ecolor={(u, v): (255, 0, 0) for u, v in edges},
@@ -335,6 +373,8 @@ def network_dijkstra_path(adjacency, weight, source, target):
     dist = network_dijkstra_distances(adjacency, weight, target)
     path = [source]
     node = source
+    node = min(adjacency[node], key=lambda k: dist[k] + weight[(node, k)])
+    path.append(node)
     while node != target:
         node = min(adjacency[node], key=lambda k: dist[k])
         path.append(node)
@@ -348,16 +388,22 @@ def network_dijkstra_path(adjacency, weight, source, target):
 if __name__ == '__main__':
 
     import compas
+
     from compas.datastructures.network import Network
+    from compas.datastructures.network.algorithms import network_dijkstra_path
 
-    network = Network.from_obj(compas.get_data('lines.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
-    weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())
+    weight = dict(((u, v), 1.0) for u, v in network.edges())
     weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-    path = network_dijkstra_path(network.adjacency, weight, 0, 26)
+    weight[(7, 17)] = 1000
+    weight[(17, 7)] = 1000
 
-    print path
+    start = 21
+    end = 22
+
+    path = network_dijkstra_path(network.adjacency, weight, start, end)
 
     edges = []
     for i in range(len(path) - 1):
@@ -368,9 +414,10 @@ if __name__ == '__main__':
         edges.append([u, v])
 
     network.plot(
-        vsize=0.15,
-        vlabel={key: key for key in network},
+        vlabel={key: key for key in path},
         vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
+        vsize=0.15,
         ecolor={(u, v): (255, 0, 0) for u, v in edges},
-        ewidth={(u, v): 2.0 for u, v in edges}
+        ewidth={(u, v): 2.0 for u, v in edges},
+        elabel={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
     )
