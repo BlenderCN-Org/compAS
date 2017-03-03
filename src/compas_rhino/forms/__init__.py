@@ -35,11 +35,10 @@ try:
     from System.Windows.Forms import Form as WinForm
     import Rhino
 
-except ImportError as e:
-
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
     class WinForm(object):
         pass

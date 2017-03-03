@@ -6,11 +6,10 @@ try:
     from System.Windows.Forms import DockStyle
     from System.Drawing import Image
 
-except ImportError as e:
-
+except ImportError:
     import platform
-    if platform.system() == 'Windows':
-        raise e
+    if platform.python_implementation() == 'IronPython':
+        raise
 
 
 __author__     = ['Tom Van Mele', ]

@@ -142,5 +142,5 @@ from .colors import *
 from .maps import *
 from .mixing import *
 from .names import *
-from .scripts import *
-from .xfuncio import *
+# from .scripts import *
+# from .xfuncio import *
