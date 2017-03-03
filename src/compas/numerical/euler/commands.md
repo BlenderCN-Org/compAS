@@ -11,7 +11,14 @@ Block Research Group
 ```bash
 $ ssh liewa@euler.ethz.ch
 liewa@euler.ethz.ch's password: 
-Last login: Wed Nov 23 13:12:52 2016 from arch-hix-dock-449.ethz.ch
+[liewa@euler07 ~]$ 
+```
+
+or for X11 access
+
+```bash
+$ ssh -Y liewa@euler.ethz.ch
+liewa@euler.ethz.ch's password: 
 [liewa@euler07 ~]$ 
 ```
 

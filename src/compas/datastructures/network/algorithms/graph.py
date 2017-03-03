@@ -146,7 +146,7 @@ def is_network_planar(network):
     try:
         import planarity
     except ImportError:
-        print "Planarity is not installed. Get Planarity at https://github.com/hagberg/planarity."
+        print("Planarity is not installed. Get Planarity at https://github.com/hagberg/planarity.")
         raise
     return planarity.is_planar(network.edges())
 
@@ -225,7 +225,7 @@ def embed_network_in_plane(network, fix=None, straightline=True):
     try:
         import networkx as nx
     except ImportError:
-        print "NetworkX is not installed. Get NetworkX at https://networkx.github.io/."
+        print("NetworkX is not installed. Get NetworkX at https://networkx.github.io/.")
         raise
     count = 100
     is_embedded = False
@@ -242,7 +242,7 @@ def embed_network_in_plane(network, fix=None, straightline=True):
     if fix:
         a, b = fix
         vec0 = [network[b][axis] - network[a][axis] for axis in 'xy']
-        vec1 = [pos[b][axis] - pos[a][axis] for axis in 0, 1]
+        vec1 = [pos[b][axis] - pos[a][axis] for axis in (0, 1)]
         # rotate
         a = -angle_smallest_vectors_2d(vec0, vec1)
         a = 3.14159 * a / 180

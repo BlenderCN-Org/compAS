@@ -10,9 +10,10 @@ from numpy import zeros
 from numpy.random import rand
 
 from random import sample
+
 from functools import partial
 
-from compas.numerical.solvers.evolutionary.genetic.visualization.ga_visualization import GA_VIS
+from compas.numerical.solvers.evolutionary.genetic.visualization.ga_visualization import visualize_evolution
 
 import json
 import multiprocessing
@@ -25,8 +26,7 @@ __version__    = '0.10'
 __date__       = '10.10.2016'
 
 
-def de_solver(fn, bounds, population, iterations, results=None, threads=1,
-              F=0.8, CR=0.9, name='Function', args=()):
+def de_solver(fn, bounds, population, iterations, results=None, threads=1, F=0.8, CR=0.9, name='f', args=()):
     """ Call the differential evolution solver.
 
     Note:
@@ -73,18 +73,16 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=1,
     k = len(bounds)
     b_ran = array([bound[1] - bound[0] for bound in bounds])[:, newaxis]
     b_min = array([bound[0] for bound in bounds])[:, newaxis]
-    agents = (rand(k, population) * tile(b_ran, (1, population)) +
-              tile(b_min, (1, population)))
+    agents = (rand(k, population) * tile(b_ran, (1, population)) + tile(b_min, (1, population)))
     candidates = [list(range(population)) for i in range(population)]
     for i in range(population):
         del candidates[i][i]
     candidates = array(candidates)
     ts = 0
     if threads > 1:
-        t = range(population)
         pool = multiprocessing.Pool(processes=threads)
         func = partial(funct, agents, args)
-        fun = array(pool.map(func, t))
+        fun = array(pool.map(func, range(population)))
         pool.close()
         pool.join()
     elif threads == 1:
@@ -112,10 +110,9 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=1,
             cc[:, i] = agents[:, inds[2]]
         agents_ = ind * (ac + F * (bc - cc)) + ~ind * agents
         if threads > 1:
-            t = range(population)
             pool = multiprocessing.Pool(processes=threads)
             func = partial(funct, agents_, args)
-            fun_ = array(pool.map(func, t))
+            fun_ = array(pool.map(func, range(population)))
             pool.close()
             pool.join()
         elif threads == 1:
@@ -137,43 +134,36 @@ def de_solver(fn, bounds, population, iterations, results=None, threads=1,
 
         # Save generation
         if results:
-            fnm = results + 'generation_{0:0>4}_population.pop'.format(ts - 1)
+            fnm = results + 'generation_{0:0>5}_population.pop'.format(ts - 1)
             with open(fnm, 'w') as f:
                 f.write('Generation\n')
-                f.write('{0}\n'.format(ts - 1))
-                f.write('\n')
+                f.write('{0}\n\n'.format(ts - 1))
                 f.write('Number of individuals per generation\n')
-                f.write('{0}\n'.format(population))
-                f.write('\n')
+                f.write('{0}\n\n'.format(population))
                 f.write('Population scaled variables\n')
                 for i in range(population):
                     entry = [str(i)] + [str(j) for j in list(agents[:, i])]
                     f.write(', '.join(entry) + '\n')
-                f.write('\n')
-                f.write('Population fitness value\n')
+                f.write('\nPopulation fitness value\n')
                 for i in range(population):
                     f.write('{0}, {1}\n'.format(i, fun[i]))
                 f.write('\n')
 
     # Save parameters
     if results:
+        path = results
         parameters = {
             'num_pop': population,
             'fit_name': name,
             'min_fit': None,
             'fit_type': 'min',
-            'end_gen': ts,
-            'num_gen': iterations,
+            'end_gen': ts - 1,
+            'num_gen': iterations - 1,
             'start_from_gen': 0}
-        filename = '{0}parameters.json'.format(results)
+        filename = '{0}parameters.json'.format(path)
         with open(filename, 'w+') as fp:
             json.dump(parameters, fp)
-        vis = GA_VIS()
-        vis.input_path = results
-        vis.output_path = vis.input_path
-        vis.conversion_function = None
-        vis.start_from_gen = 0
-        # vis.draw_ga_evolution(filename)  # need it to take absolute path
+        visualize_evolution(path, path, show_plot=False)
 
     return fopt, xopt
 
@@ -196,4 +186,4 @@ if __name__ == "__main__":
         return z
 
     bounds = [(-10, 10) for i in range(2)]
-    fopt, xopt = de_solver(fn, bounds, population=20, iterations=100, threads=0)
+    fopt, xopt = de_solver(fn, bounds, population=20, iterations=100, threads=0, results='/home/al/Temp/')

@@ -77,8 +77,8 @@ class Plane(object):
 if __name__ == '__main__':
 
     plane = Plane.from_point_and_vectors([0, 0, 0], [1.0, 0, 0], [0, 1.0, 0])
-    print plane.normal
+    print(plane.normal)
 
-    print plane.normal.x
-    print plane.normal.y
-    print plane.normal.z
+    print(plane.normal.x)
+    print(plane.normal.y)
+    print(plane.normal.z)

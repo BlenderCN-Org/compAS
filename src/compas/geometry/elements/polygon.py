@@ -151,12 +151,12 @@ if __name__ == '__main__':
 
     polygon = Polygon([[1, 1, 0], [0, 1, 0], [0, 0, 0], [1, 0, 0]])
 
-    print polygon.centroid
-    print polygon.center
-    print polygon.area
-    print polygon.length
-    print polygon.normal
-    print polygon.frame
+    print(polygon.centroid)
+    print(polygon.center)
+    print(polygon.area)
+    print(polygon.length)
+    print(polygon.normal)
+    print(polygon.frame)
 
-    print polygon.is_convex()
-    print polygon.is_coplanar()
+    print(polygon.is_convex())
+    print(polygon.is_coplanar())

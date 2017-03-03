@@ -1,10 +1,12 @@
 import time
 
+from numpy import abs
 from numpy import arccos
 from numpy import array
 from numpy import cross
 from numpy import isnan
 from numpy import isinf
+from numpy import max
 from numpy import mean
 from numpy import newaxis
 from numpy import ones
@@ -26,12 +28,15 @@ from time import time
 
 try:
     import bpy
+    from compas_blender.utilities.objects import delete_objects
+    from compas_blender.utilities.objects import object_layer
+    from compas_blender.utilities.drawing import xdraw_mesh
+    from compas_blender.utilities.drawing import xdraw_pipes
 except:
     pass
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
@@ -234,66 +239,66 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius, ufunc=
     return xyz, q, f, l, r
 
 
-def beam_indices(beams):
-    inds, indi, indf = [], [], []
-    EIx, EIy = [], []
-    for key in beams:
-        beam = beams[key]
-        inds.extend(beam['nodes'][0:-2])
-        indi.extend(beam['nodes'][1:-1])
-        indf.extend(beam['nodes'][2:])
-        EIx.extend(beam['EIx'][1:-1])
-        EIy.extend(beam['EIy'][1:-1])
-    EIx = array(EIx)[:, newaxis]
-    EIy = array(EIy)[:, newaxis]
-    return inds, indi, indf, EIx, EIy
+# def beam_indices(beams):
+#     inds, indi, indf = [], [], []
+#     EIx, EIy = [], []
+#     for key in beams:
+#         beam = beams[key]
+#         inds.extend(beam['nodes'][0:-2])
+#         indi.extend(beam['nodes'][1:-1])
+#         indf.extend(beam['nodes'][2:])
+#         EIx.extend(beam['EIx'][1:-1])
+#         EIy.extend(beam['EIy'][1:-1])
+#     EIx = array(EIx)[:, newaxis]
+#     EIy = array(EIy)[:, newaxis]
+#     return inds, indi, indf, EIx, EIy
 
 
-def beam_shear(S, X, inds, indi, indf, EIx, EIy):
-    S *= 0
-    Qs = X[inds, :]
-    Qi = X[indi, :]
-    Qf = X[indf, :]
-    Qa = Qi - Qs
-    Qb = Qf - Qi
-    Qc = Qf - Qs
-    Qn = cross(Qa, Qb)
-    Qnn = normrow(Qn)
-    La = normrow(Qa)
-    Lb = normrow(Qb)
-    Lc = normrow(Qc)
-    Ln = normrow(Qn)
-    a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
-    k = 2 * sin(a) / Lc
-    mu = -0.5 * Qs + 0.5 * Qf
-    mun = normrow(mu)
-    ex = Qn / tile(Qnn, (1, 3))  # Temporary simplification
-    ez = mu / tile(mun, (1, 3))
-    ey = cross(ez, ex)
-    K = tile(k / Ln, (1, 3)) * Qn
-    Kx = tile(sum(K * ex, 1)[:, newaxis], (1, 3)) * ex
-    Ky = tile(sum(K * ey, 1)[:, newaxis], (1, 3)) * ey
-    Mc = EIx * Kx + EIy * Ky
-    cma = cross(Mc, Qa)
-    cmb = cross(Mc, Qb)
-    ua = cma / tile(normrow(cma), (1, 3))
-    ub = cmb / tile(normrow(cmb), (1, 3))
-    c1 = cross(Qa, ua)
-    c2 = cross(Qb, ub)
-    Lc1 = normrow(c1)
-    Lc2 = normrow(c2)
-    M = sum(Mc**2, 1)[:, newaxis]
-    Sa = ua * tile(M * Lc1 / (La * sum(Mc * c1, 1)[:, newaxis]), (1, 3))
-    Sb = ub * tile(M * Lc2 / (Lb * sum(Mc * c2, 1)[:, newaxis]), (1, 3))
-    Sa[isnan(Sa)] = 0
-    Sb[isnan(Sb)] = 0
-    S[inds, :] += Sa
-    S[indi, :] += -Sa - Sb
-    S[indf, :] += Sb
-    # Add node junction duplication for when elements cross each other
-    # mu[0, :] = -1.25*x[0, :] + 1.5*x[1, :] - 0.25*x[2, :]
-    # mu[-1, :] = 0.25*x[-3, :] - 1.5*x[-2, :] + 1.25*x[-1, :]
-    return S
+# def beam_shear(S, X, inds, indi, indf, EIx, EIy):
+#     S *= 0
+#     Qs = X[inds, :]
+#     Qi = X[indi, :]
+#     Qf = X[indf, :]
+#     Qa = Qi - Qs
+#     Qb = Qf - Qi
+#     Qc = Qf - Qs
+#     Qn = cross(Qa, Qb)
+#     Qnn = normrow(Qn)
+#     La = normrow(Qa)
+#     Lb = normrow(Qb)
+#     Lc = normrow(Qc)
+#     Ln = normrow(Qn)
+#     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
+#     k = 2 * sin(a) / Lc
+#     mu = -0.5 * Qs + 0.5 * Qf
+#     mun = normrow(mu)
+#     ex = Qn / tile(Qnn, (1, 3))  # Temporary simplification
+#     ez = mu / tile(mun, (1, 3))
+#     ey = cross(ez, ex)
+#     K = tile(k / Ln, (1, 3)) * Qn
+#     Kx = tile(sum(K * ex, 1)[:, newaxis], (1, 3)) * ex
+#     Ky = tile(sum(K * ey, 1)[:, newaxis], (1, 3)) * ey
+#     Mc = EIx * Kx + EIy * Ky
+#     cma = cross(Mc, Qa)
+#     cmb = cross(Mc, Qb)
+#     ua = cma / tile(normrow(cma), (1, 3))
+#     ub = cmb / tile(normrow(cmb), (1, 3))
+#     c1 = cross(Qa, ua)
+#     c2 = cross(Qb, ub)
+#     Lc1 = normrow(c1)
+#     Lc2 = normrow(c2)
+#     M = sum(Mc**2, 1)[:, newaxis]
+#     Sa = ua * tile(M * Lc1 / (La * sum(Mc * c1, 1)[:, newaxis]), (1, 3))
+#     Sb = ub * tile(M * Lc2 / (Lb * sum(Mc * c2, 1)[:, newaxis]), (1, 3))
+#     Sa[isnan(Sa)] = 0
+#     Sb[isnan(Sb)] = 0
+#     S[inds, :] += Sa
+#     S[indi, :] += -Sa - Sb
+#     S[indf, :] += Sb
+#     # Add node junction duplication for when elements cross each other
+#     # mu[0, :] = -1.25*x[0, :] + 1.5*x[1, :] - 0.25*x[2, :]
+#     # mu[-1, :] = 0.25*x[-3, :] - 1.5*x[-2, :] + 1.25*x[-1, :]
+#     return S
 
 
 def residual(Ct, uvw, BC, S, P, Pn, q, f0=0, rtype='force'):
@@ -308,46 +313,52 @@ def residual(Ct, uvw, BC, S, P, Pn, q, f0=0, rtype='force'):
     return R, 100 * res
 
 
-def run(vertices, edges, l0, A, E, BC, P=None, s0=None, beams=None,
-        rtype='force', steps=50000, tol=0.1, ct='ct', factor=1, refresh=0,
-        bmesh=None):
-    m = len(edges)
-    n = len(vertices)
+def run(network, factor=1, tol=100, steps=50000, refresh=0, beams=None, rtype='magnitude_1', bmesh=False, scale=0.1):
+
+    m = len(network.edges())
+    n = len(network.vertices())
 
     # Beams
-    if beams:
-        inds, indi, indf, EIx, EIy = beam_indices(beams)
+    #if beams:
+    #    inds, indi, indf, EIx, EIy = beam_indices(beams)
 
-    # Indexed arrays
-    s0_ = zeros((m, 1))
-    if s0:
-        for i, j in s0:
-            s0_[i] = j
-    s0 = s0_
-    A_ = zeros((m, 1))
-    for i, j in A:
-        A_[i] = j
-    A = A_
-    E_ = zeros((m, 1))
-    for i, j in E:
-        E_[i] = j
-    E = E_
-    P_ = zeros((n, 3))
-    if P:
-        for i, j in P:
-            P_[i, :] = j
-    P = P_
-    BC_ = ones((n, 3))
-    for i, j in BC:
-        BC_[i, :] = j
-    BC = BC_
+    # Indexed arrays vertices
+    BC = zeros((n, 3))
+    P = zeros((n, 3))
+    X = zeros((n, 3))
+    V = zeros((n, 3))
+    k_i = network.key_index()
+    for key in network.vertices():
+        index = k_i[key]
+        vertex = network.vertex[key]
+        BC[index, :] = vertex['BC']
+        P[index, :] = vertex['P']
+        X[index, :] = [vertex[i] for i in 'xyz']
+
+    # Indexed arrays edges
+    E = zeros((m, 1))
+    A = zeros((m, 1))
+    s0 = zeros((m, 1))
+    l0 = zeros((m, 1))
+    Cind, Tind = [], []
+    uv_i = network.uv_index()
+    edges = []
+    for u, v in network.edges():
+        index = uv_i[(u, v)]
+        edge = network.edge[u][v]
+        E[index] = edge['E']
+        A[index] = edge['A']
+        s0[index] = edge['s0']
+        if edge['CT'] == 'C':
+            Cind.append(index)
+        elif edge['CT'] == 'T':
+            Tind.append(index)
+        edges.append([k_i[u], k_i[v]])
+        l0[index] = network.edge_length(u, v)  # make it also take general l0 from attribute
 
     # Arrays
     C = connectivity_matrix(edges, 'csr')
     Ct = C.transpose()
-    X = array(vertices)
-    V = zeros(X.shape)
-    l0 = array(l0)[:, newaxis]
     ks = E * A / l0
     Pn = normrow(P)
     S = zeros(P.shape)
@@ -357,16 +368,18 @@ def run(vertices, edges, l0, A, E, BC, P=None, s0=None, beams=None,
     res = 1000 * tol
     tic = time()
 
+    # Update mesh
+    if bmesh:
+        bmesh = xdraw_mesh('network', vertices=X, edges=edges, faces=[], layer=0)
+
     # Main loop
     while (ts <= steps) and (res > tol):
         uvw, l = lengths(C, X)
         f = f0 + ks * (l - l0)
-        if ct == 't':
-            f *= f > 0
-        elif ct == 'c':
-            f *= f < 0
-        if beams:
-            S = beam_shear(S, X, inds, indi, indf, EIx, EIy)
+        f[Tind] *= f[Tind] > 0
+        f[Cind] *= f[Cind] < 0
+#        if beams:
+#            S = beam_shear(S, X, inds, indi, indf, EIx, EIy)
         q = tile(f / l, (1, 3))
         R, res = residual(Ct, uvw, BC, S, P, Pn, q, rtype=rtype)
         V += R / M
@@ -383,6 +396,10 @@ def run(vertices, edges, l0, A, E, BC, P=None, s0=None, beams=None,
                 bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         ts += 1
 
+    # Delete mesh
+    if bmesh:
+        delete_objects([bmesh])
+
     # Summary
     if refresh:
         print('-' * 50)
@@ -391,7 +408,23 @@ def run(vertices, edges, l0, A, E, BC, P=None, s0=None, beams=None,
         print('Time: {0:.3g}s'.format(time() - tic))
         print('-' * 50)
 
-    return X
+    # Plot results
+    pipes = []
+    fmax = max(abs(f))
+    fsc = abs(f) / fmax
+    log = (f > 0) * 1
+    colours = ['blue' if i else 'red' for i in log]
+    sp_ep = array(edges)
+    sp = X[sp_ep[:, 0], :]
+    ep = X[sp_ep[:, 1], :]
+    for c in range(m):
+        r = scale * fsc[c]
+        col = colours[c]
+        pipes.append({'radius': r, 'start': sp[c, :], 'end': ep[c, :], 'color': col, 'name': str(c)})
+    objects = xdraw_pipes(pipes, div=4)
+    object_layer(objects, 19)
+
+    return X, f, l
 
 
 # ==============================================================================

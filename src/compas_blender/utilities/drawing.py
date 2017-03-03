@@ -76,6 +76,30 @@ def draw_pipe(start, end, radius, n=4):
     return object
 
 
+def draw_plane(width, length, dx, layer=0):
+    """ Create a plane mesh.
+
+    Parameters:
+        width (float): Width of plane.
+        length (float): Length of plane.
+        dx (float): Spacing in x and y directions.
+        layer (int): Layer to draw mesh on.
+
+    Returns:
+        obj: Created plane object.
+    """
+    nx = int(width / dx)
+    ny = int(length / dx)
+    x = [i * dx for i in range(nx + 1)]
+    y = [i * dx for i in range(ny + 1)]
+    pts = [[xi, yi, 0] for yi in y for xi in x]
+    fcs = [[(j + 0) * (nx + 1) + i + 0, (j + 0) * (nx + 1) + i + 1,
+            (j + 1) * (nx + 1) + i + 1, (j + 1) * (nx + 1) + i + 0]
+           for i in range(nx) for j in range(ny)]
+    mesh = xdraw_mesh('base', vertices=pts, edges=[], faces=fcs, layer=layer)
+    return mesh
+
+
 def material_create(name, color, alpha=1):
     """ Create a material.
 
@@ -127,6 +151,7 @@ def xdraw_mesh(name, vertices=[], edges=[], faces=[], layer=0):
     mesh = bpy.data.meshes.new(name)
     object = bpy.data.objects.new(name, mesh)
     bpy.context.scene.objects.link(object)
+    # bpy.context.object.show_wire = True
     mesh.from_pydata(vertices, edges, faces)
     mesh.update(calc_edges=True)
     object_layer([object], layer)

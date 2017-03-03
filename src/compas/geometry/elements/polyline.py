@@ -146,13 +146,13 @@ class Polyline(object):
 if __name__ == '__main__':
 
     polyline = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]])
-    print polyline.lines
-    print polyline.length
+    print(polyline.lines)
+    print(polyline.length)
 
-    print type(polyline.points[0])
-    print polyline.points[0].x
+    print(type(polyline.points[0]))
+    print(polyline.points[0].x)
 
-    print type(polyline.lines[0])
-    print polyline.lines[0].length
+    print(type(polyline.lines[0]))
+    print(polyline.lines[0].length)
 
-    print polyline.is_closed()
+    print(polyline.is_closed())

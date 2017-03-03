@@ -242,7 +242,7 @@ if __name__ == '__main__':
 
     t1 = timeit.timeit('points = [[i, i, i] for i in xrange(100000)]', 'from __main__ import Point', number=100)
 
-    print t0 / t1
+    print(t0 / t1)
 
 
 

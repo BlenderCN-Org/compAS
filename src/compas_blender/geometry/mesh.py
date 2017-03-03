@@ -2,6 +2,9 @@
 
 from numpy import array
 
+from compas.datastructures.network import Network
+from compas.datastructures.mesh import Mesh
+
 from compas.numerical.linalg import normrow
 
 try:
@@ -68,3 +71,31 @@ def mesh_remove_duplicate_vertices(mesh):
         vertex.select = True
     bpy.ops.mesh.remove_doubles()
     bpy.ops.object.mode_set(mode='OBJECT')
+
+
+def network_from_mesh(mesh):
+    """ Create a Network datastructure from a mesh's edges.
+
+    Parameters:
+        mesh (obj): Blender mesh object.
+
+    Returns:
+        obj: Network object.
+    """
+    vertices, edges, faces = mesh_data(mesh)
+    network = Network.from_vertices_and_edges(vertices, edges)
+    return network
+
+
+def mesh_from_mesh(mesh):
+    """ Create a Mesh datastructure from a mesh's faces.
+
+    Parameters:
+        mesh (obj): Blender mesh object.
+
+    Returns:
+        obj: Mesh object.
+    """
+    vertices, edges, faces = mesh_data(mesh)
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    return mesh
