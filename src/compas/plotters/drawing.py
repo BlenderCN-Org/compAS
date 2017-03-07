@@ -282,7 +282,7 @@ def draw_lines_2d(lines,
 
 
 # add line labels
-def draw_xlines_2d(lines, axes, alpha=1.0, linestyle='-'):
+def draw_xlines_2d(lines, axes, alpha=1.0, linestyle='solid'):
     fromto  = []
     widths  = []
     colors  = []
@@ -322,7 +322,7 @@ def draw_xlines_2d(lines, axes, alpha=1.0, linestyle='-'):
 def draw_lines_3d(lines,
                   axes,
                   linewidth=1.0,
-                  linestyle='-',
+                  linestyle='solid',
                   color='#000000'):
     """"""
     l = len(lines)

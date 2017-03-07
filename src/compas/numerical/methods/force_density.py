@@ -52,17 +52,22 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
 
 if __name__ == '__main__':
 
+    import random
+
     import compas
 
     from compas.datastructures.network import Network
 
     network = Network.from_obj(compas.get_data('saddle.obj'))
 
-    network.set_dva({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
-    network.set_dea({'q': 1.0})
+    network.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    network.update_default_edge_attributes({'q': 1.0})
 
     for key in network:
         network.vertex[key]['is_anchor'] = network.is_vertex_leaf(key)
+
+    for u, v, attr in network.edges_iter(True):
+        attr['q'] = 1.0 * random.randint(1, 5)
 
     k_i   = network.key_index()
     xyz   = network.get_vertices_attributes(('x', 'y', 'z'))

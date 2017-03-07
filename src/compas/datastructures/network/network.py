@@ -1207,6 +1207,7 @@ network: {0}
              elabel=None,
              ewidth=None,
              flabel=None,
+             textcolor=None,
              points=None,
              lines=None):
         import matplotlib.pyplot as plt
@@ -1219,21 +1220,23 @@ network: {0}
         plotter.edges_on = edges_on
         plotter.faces_on = faces_on
         if vcolor:
-            plotter.vcolor = vcolor
+            plotter.vertexcolor = vcolor
         if ecolor:
-            plotter.ecolor = ecolor
+            plotter.edgecolor = ecolor
         if fcolor:
-            plotter.fcolor = fcolor
+            plotter.facecolor = fcolor
         if vlabel:
-            plotter.vlabel = vlabel
+            plotter.vertexlabel = vlabel
         if vsize:
-            plotter.vsize = vsize
+            plotter.vertexsize = vsize
         if elabel:
-            plotter.elabel = elabel
+            plotter.edgelabel = elabel
         if ewidth:
-            plotter.ewidth = ewidth
+            plotter.edgewidth = ewidth
         if flabel:
-            plotter.flabel = flabel
+            plotter.facelabel = flabel
+        if textcolor:
+            plotter.textcolor = textcolor
         if points:
             plotter.points = points
         if lines:

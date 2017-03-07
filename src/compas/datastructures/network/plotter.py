@@ -44,7 +44,7 @@ class NetworkPlotter2D(object):
         edges_on (bool):
             Display the edges. Default is ``True``.
 
-        vcolor (str, tuple, dict):
+        vertexcolor (str, tuple, dict):
             The vertex color specification.
             Default is ``None``.
             Possible values are:
@@ -56,7 +56,7 @@ class NetworkPlotter2D(object):
                 * dict: A dictionary of HEX and/or RGB color codes.
                   When provided this will be applied to all vertices included in the dict.
 
-        ecolor (str, tuple, dict):
+        edgecolor (str, tuple, dict):
             The edge color specification.
             Default is ``None``.
             Possible values are:
@@ -68,7 +68,7 @@ class NetworkPlotter2D(object):
                 * dict: A dictionary of HEX and/or RGB color codes.
                   When provided this will be applied to all edges included in the dict.
 
-        fcolor (str, tuple, dict):
+        facecolor (str, tuple, dict):
             The face color specification.
             Default is ``None``.
             Possible values are:
@@ -80,22 +80,22 @@ class NetworkPlotter2D(object):
                 * dict: A dictionary of HEX and/or RGB color codes.
                   When provided this will be applied to all faces included in the dict.
 
-        vlabel (dict):
+        vertexlabel (dict):
             A dictionary of vertex labels.
             Default is ``None``.
             Labels are added to the plot for those vertices included in the dict.
 
-        elabel (dict):
+        edgelabel (dict):
             A dictionary of edge labels.
             Default is ``None``.
             Labels are added to the plot for those edges included in the dict.
 
-        flabel (dict):
+        facelabel (dict):
             A dictionary of face labels.
             Default is ``None``.
             Labels are added to the plot for those faces included in the dict.
 
-        vsize (float, dict):
+        vertexsize (float, dict):
             The size of vertices.
             Default is ``None``.
             Possible values are:
@@ -105,7 +105,7 @@ class NetworkPlotter2D(object):
                 * dict: A dictionary of size values.
                   When provided, this will be applied to all vertices in the dict.
 
-        ewidth (float, dict):
+        edgewidth (float, dict):
             The width of the edges.
             Default is ``None``.
             Possible values are:
@@ -122,13 +122,13 @@ class NetworkPlotter2D(object):
 
                 * pos: The XY coordinates of the point.
                 * text: An optional label. Defaults to ``None``.
-                * size: An optional point size. Defaults to ``default_vertex_size``.
+                * size: An optional point size. Defaults to ``default_vertexsize``.
                 * textcolor: Optional color specification for the label text.
-                  Defaults to ``default_text_color``.
+                  Defaults to ``default_textcolor``.
                 * facecolor: Optional color specification for the fill color of the vertex.
-                  Defaults to ``default_face_color``.
+                  Defaults to ``default_facecolor``.
                 * edgecolor: Optional color specification for the outline color of the vertex.
-                  Defaults to ``default_edge_color``.
+                  Defaults to ``default_edgecolor``.
 
         lines (list):
             A list of additional lines to be added to the plot.
@@ -138,8 +138,8 @@ class NetworkPlotter2D(object):
                 * start: The XY coordinates of the start point.
                 * end: The XY coordinates of the end point.
                 * text: An optional label. Defaults to ``None``.
-                * width: An optional linewidth. Defaults to ``default_edge_width``.
-                * color: Optional color specification. Defaults to ``default_edge_color``.
+                * width: An optional linedgewidth. Defaults to ``default_edgewidth``.
+                * color: Optional color specification. Defaults to ``default_edgecolor``.
                 * arrow: Optional addition of arrowhead(s).
                   Possible values are ``None``, ``'start'``, ``'end'``, ``'both'``.
 
@@ -165,9 +165,9 @@ class NetworkPlotter2D(object):
             network = Network.from_obj(compas.get_data('lines.obj'))
             plotter = NetworkPlotter2D(network)
 
-            plotter.vsize  = 0.2
-            plotter.vcolor = {key: '#ff0000' for key in network.leaves()}
-            plotter.vlabel = {key: key for key in network}
+            plotter.vertexsize  = 0.2
+            plotter.vertexcolor = {key: '#ff0000' for key in network.leaves()}
+            plotter.vertexlabel = {key: key for key in network}
 
             plotter.lines = [{
                 'start': network.vertex_coordinates(u, 'xy'),
@@ -192,36 +192,42 @@ class NetworkPlotter2D(object):
         self.vertices_on = True
         self.edges_on    = True
         self.faces_on    = False
-        self.vcolor = None
-        self.ecolor = None
-        self.fcolor = None
-        self.vlabel = None
-        self.elabel = None
-        self.flabel = None
-        self.vsize  = None
-        self.ewidth = None
+        self.vertexcolor = None
+        self.edgecolor = None
+        self.facecolor = None
+        self.vertexlabel = None
+        self.edgelabel = None
+        self.facelabel = None
+        self.vertexsize  = None
+        self.edgewidth = None
+        self.textcolor = None
         # additional
         self.points = None
         self.lines  = None
         # defaults
-        self.default_text_color = '#000000'
-        self.default_vertex_color = '#ffffff'
-        self.default_edge_color = '#000000'
-        self.default_face_color = '#000000'
-        self.default_edge_width = 1.0
-        self.default_vertex_size = 0.1
+        self.default_textcolor = '#000000'
+        self.default_vertexcolor = '#ffffff'
+        self.default_edgecolor = '#000000'
+        self.default_facecolor = '#000000'
+        self.default_edgewidth = 1.0
+        self.default_vertexsize = 0.1
+        self.default_pointcolor = '#ffffff'
+        self.default_linecolor = '#000000'
+        self.default_linewidth = 1.0
+        self.default_pointsize = 0.1
 
     def plot(self, axes):
         assert_axes_dimension(axes, 2)
         # default values
-        vcolor = color_to_colordict(self.vcolor, self.network.vertices(), self.default_vertex_color)
-        ecolor = color_to_colordict(self.ecolor, self.network.edges(), self.default_edge_color)
-        fcolor = color_to_colordict(self.fcolor, self.network.faces(), self.default_face_color)
-        vlabel = self.vlabel or {}
-        elabel = self.elabel or {}
-        flabel = self.flabel or {}
-        vsize  = self.vsize or self.default_vertex_size
-        ewidth = width_to_dict(self.ewidth, self.network.edges(), self.default_edge_width)
+        vertexcolor = color_to_colordict(self.vertexcolor, self.network.vertices_iter(), self.default_vertexcolor)
+        edgecolor = color_to_colordict(self.edgecolor, self.network.edges_iter(), self.default_edgecolor)
+        facecolor = color_to_colordict(self.facecolor, self.network.faces_iter(), self.default_facecolor)
+        textcolor = color_to_colordict(self.textcolor, self.network.vertices_iter(), self.default_textcolor)
+        vertexsize  = self.vertexsize or self.default_vertexsize  # this should be a dict
+        edgewidth = width_to_dict(self.edgewidth, self.network.edges_iter(), self.default_edgewidth)
+        vertexlabel = self.vertexlabel or {}
+        edgelabel = self.edgelabel or {}
+        facelabel = self.facelabel or {}
         # edges
         if self.edges_on:
             lines  = []
@@ -229,9 +235,9 @@ class NetworkPlotter2D(object):
                 lines.append({
                     'start': self.network.vertex_coordinates(u, 'xy'),
                     'end'  : self.network.vertex_coordinates(v, 'xy'),
-                    'text' : None if (u, v) not in elabel else str(elabel[(u, v)]),
-                    'color': ecolor[(u, v)],
-                    'width': ewidth[(u, v)]
+                    'text' : None if (u, v) not in edgelabel else str(edgelabel[(u, v)]),
+                    'color': edgecolor[(u, v)],
+                    'width': edgewidth[(u, v)]
                 })
             draw_xlines_2d(lines, axes)
         # vertices
@@ -240,11 +246,11 @@ class NetworkPlotter2D(object):
             for key, attr in self.network.vertices_iter(data=True):
                 points.append({
                     'pos'       : (attr['x'], attr['y']),
-                    'text'      : None if key not in vlabel else str(vlabel[key]),
-                    'radius'    : vsize,
-                    'textcolor' : self.default_text_color,
-                    'facecolor' : vcolor[key],
-                    'edgecolor' : self.default_edge_color,
+                    'text'      : None if key not in vertexlabel else str(vertexlabel[key]),
+                    'radius'    : vertexsize,
+                    'textcolor' : textcolor[key],
+                    'facecolor' : vertexcolor[key],
+                    'edgecolor' : self.default_edgecolor,
                 })
             draw_xpoints_2d(points, axes)
         # faces
@@ -259,10 +265,10 @@ class NetworkPlotter2D(object):
                         points = [self.network.vertex_coordinates(key, 'xy') for key in vertices]
                     polygons.append({
                         'points'   : points,
-                        'text'     : None if fkey not in flabel else str(flabel[fkey]),
-                        'facecolor': fcolor[fkey],
-                        'edgecolor': fcolor[fkey],
-                        'textcolor': self.default_text_color
+                        'text'     : None if fkey not in facelabel else str(facelabel[fkey]),
+                        'facecolor': facecolor[fkey],
+                        'edgecolor': facecolor[fkey],
+                        'textcolor': self.default_textcolor
                     })
                 draw_xpolygons_2d(polygons, axes)
         # points
@@ -272,10 +278,10 @@ class NetworkPlotter2D(object):
                 points.append({
                     'pos'       : point['pos'],
                     'text'      : point.get('text', ''),
-                    'radius'    : point.get('size', vsize),
-                    'textcolor' : point.get('textcolor', self.default_text_color),
-                    'facecolor' : point.get('facecolor', self.default_vertex_color),
-                    'edgecolor' : point.get('edgecolor', self.default_edge_color),
+                    'radius'    : point.get('size', self.default_pointsize),
+                    'textcolor' : point.get('textcolor', self.default_textcolor),
+                    'facecolor' : point.get('facecolor', self.default_pointcolor),
+                    'edgecolor' : point.get('edgecolor', self.default_linecolor),
                 })
             draw_xpoints_2d(points, axes)
         # lines
@@ -287,16 +293,16 @@ class NetworkPlotter2D(object):
                     arrows.append({
                         'start': line['start'],
                         'end'  : line['end'],
-                        'color': line.get('color', self.default_edge_color),
-                        'width': line.get('width', self.default_edge_width),
+                        'color': line.get('color', self.default_linecolor),
+                        'width': line.get('width', self.default_linedgewidth),
                         'arrow': line.get('arrow', 'end')
                     })
                 else:
                     lines.append({
                         'start': line['start'],
                         'end'  : line['end'],
-                        'color': line.get('color', self.default_edge_color),
-                        'width': line.get('width', self.default_edge_width),
+                        'color': line.get('color', self.default_linecolor),
+                        'width': line.get('width', self.default_linedgewidth),
                     })
             if lines:
                 draw_xlines_2d(lines, axes)
@@ -315,7 +321,7 @@ class NetworkPlotter3D(object):
         key_index = self.network.key_index()
         points = [self.network.vertex_coordinates(key) for key in self.network]
         lines = [(points[key_index[u]], points[key_index[v]]) for u, v in self.network.edges_iter()]
-        draw_lines_3d(lines, axes, color='#000000', linewidth=1.0)
+        draw_lines_3d(lines, axes, color='#000000', linedgewidth=1.0)
         draw_points_3d(points, axes, facecolor='#ffffff', edgecolor='#000000')
         bounds = Bounds(points)
         bounds.plot(axes)
@@ -337,9 +343,9 @@ if __name__ == "__main__":
     network = Network.from_obj(compas.get_data('lines.obj'))
     plotter = NetworkPlotter2D(network)
 
-    plotter.vsize  = 0.2
-    plotter.vcolor = {key: '#ff0000' for key in network.leaves()}
-    plotter.vlabel = {key: key for key in network}
+    plotter.vertexsize  = 0.2
+    plotter.vertexcolor = {key: '#ff0000' for key in network.leaves()}
+    plotter.vertexlabel = {key: key for key in network}
 
     plotter.lines = [{
         'start': network.vertex_coordinates(u, 'xy'),
