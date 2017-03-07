@@ -120,7 +120,7 @@ def draw_network(network,
     for key, attr in network.vertices_iter(True):
         points.append({
             'pos'  : network.vertex_coordinates(key),
-            'name' : '{0}.vertex.{1}'.format(network.attributes['name'], key),
+            'name' : '{0}.vertex.{1}'.format(network.attributes['name'], repr(key)),
             'color': vertexcolor[key]
         })
 
@@ -129,7 +129,7 @@ def draw_network(network,
         lines.append({
             'start': network.vertex_coordinates(u),
             'end'  : network.vertex_coordinates(v),
-            'name' : '{0}.edge.{1}-{2}'.format(network.attributes['name'], u, v),
+            'name' : '{0}.edge.{1}-{2}'.format(network.attributes['name'], repr(u), repr(v)),
             'color': edgecolor[(u, v)]
         })
 
@@ -209,8 +209,7 @@ def select_network_vertices(network, message="Select network vertices."):
                 if not prefix or prefix in name:
                     key = name[-1]
                     if not seen.add(key):
-                        if not network._key_to_str:
-                            key = int(key)
+                        key = ast.literal_eval(key)
                         keys.append(key)
     return keys
 
@@ -238,8 +237,7 @@ def select_network_vertex(network, message="Select a network vertex"):
         if 'vertex' in name:
             if not prefix or prefix in name:
                 key = name[-1]
-                if not network._key_to_str:
-                    key = int(key)
+                key = ast.literal_eval(key)
                 return key
     return None
 
@@ -279,10 +277,10 @@ def select_network_edges(network, message="Select network edges"):
                 if not prefix or prefix in name:
                     key = name[-1]
                     if not seen.add(key):
-                        uv = tuple(key.split('-'))
-                        if not network._key_to_str:
-                            uv = int(uv[0]), int(uv[1])
-                        keys.append(uv)
+                        u, v = key.split('-')
+                        u = ast.literal_eval(u)
+                        v = ast.literal_eval(v)
+                        keys.append((u, v))
     return keys
 
 
@@ -309,10 +307,10 @@ def select_network_edge(network, message="Select a network edge"):
         if 'edge' in name:
             if not prefix or prefix in name:
                 key = name[-1]
-                uv = tuple(key.split('-'))
-                if not network._key_to_str:
-                    uv = int(uv[0]), int(uv[1])
-                return uv
+                u, v = key.split('-')
+                u = ast.literal_eval(u)
+                v = ast.literal_eval(v)
+                return u, v
     return None
 
 
@@ -374,8 +372,7 @@ def select_network_faces(network, message='Select network faces.'):
                 if not prefix or prefix in name:
                     key = name[-1]
                     if not seen.add(key):
-                        if not network._key_to_str:
-                            key = int(key)
+                        key = ast.literal_eval(key)
                         keys.append(key)
     return keys
 
@@ -403,8 +400,7 @@ def select_network_face(network, message='Select face.'):
         if 'face' in name:
             if not prefix or prefix in name:
                 key = name[-1]
-                if not network._key_to_str:
-                    return int(key)
+                key = ast.literal_eval(key)
                 return key
     return None
 

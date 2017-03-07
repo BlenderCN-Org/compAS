@@ -204,33 +204,64 @@ network: {0}
         * fcount
 
         """
-        return {'attributes'  : self.attributes,
+        data = {'attributes'  : self.attributes,
                 'dva'         : self.default_vertex_attributes,
                 'dea'         : self.default_edge_attributes,
                 'dfa'         : self.default_face_attributes,
-                'vertex'      : self.vertex,
-                'edge'        : self.edge,
-                'halfedge'    : self.halfedge,
-                'face'        : self.face,
-                'facedata'    : self.facedata,
+                'vertex'      : {},
+                'edge'        : {},
+                'halfedge'    : {},
+                'face'        : {},
+                'facedata'    : {},
                 'max_int_key' : self._max_int_key,
                 'max_int_fkey': self._max_int_fkey, }
 
+        key_rkey = {}
+
+        for key in self.vertex:
+            rkey = repr(key)
+            key_rkey[key] = rkey
+            data['vertex'][rkey] = self.vertex[key]
+            data['edge'][rkey] = {}
+            data['halfedge'][rkey] = {}
+
+        for u in self.edge:
+            ru = key_rkey[u]
+            for v in self.edge[u]:
+                rv = key_rkey[v]
+                data['edge'][ru][rv] = self.edge[u][v]
+
+        for u in self.halfedge:
+            ru = key_rkey[u]
+            for v in self.halfedge[u]:
+                rv = key_rkey[v]
+                data['halfedge'][ru][rv] = self.halfedge[u][v]
+
+        for fkey in self.face:
+            rfkey = repr(fkey)
+            data['face'][rfkey] = self.face[fkey]
+
+        for fkey in self.facedata:
+            rfkey = repr(fkey)
+            data['facedata'][rfkey] = self.facedata[fkey]
+
+        return data
+
     @data.setter
-    def data(self, data):
-        attributes   = data.get('attributes') or {}
-        dva          = data.get('dva') or {}
-        dea          = data.get('dea') or {}
-        dfa          = data.get('dfa') or {}
-        vertex       = data.get('vertex') or {}
-        edge         = data.get('edge') or {}
-        halfedge     = data.get('halfedge') or {}
-        face         = data.get('face') or {}
-        facedata     = data.get('facedata') or {}
-        vcount       = data.get('vcount') or 0
-        fcount       = data.get('fcount') or 0
-        max_int_key  = data.get('max_int_key') or vcount - 1
-        max_int_fkey = data.get('max_int_fkey') or fcount - 1
+    def data(self, rdata):
+        attributes   = rdata.get('attributes') or {}
+        dva          = rdata.get('dva') or {}
+        dea          = rdata.get('dea') or {}
+        dfa          = rdata.get('dfa') or {}
+        vertex       = rdata.get('vertex') or {}
+        edge         = rdata.get('edge') or {}
+        halfedge     = rdata.get('halfedge') or {}
+        face         = rdata.get('face') or {}
+        facedata     = rdata.get('facedata') or {}
+        vcount       = rdata.get('vcount') or 0
+        fcount       = rdata.get('fcount') or 0
+        max_int_key  = rdata.get('max_int_key') or vcount - 1
+        max_int_fkey = rdata.get('max_int_fkey') or fcount - 1
 
         if not vertex or not edge or not halfedge:
             return
@@ -251,33 +282,38 @@ network: {0}
         self.face     = {}
         self.facedata = {}
 
-        for key, attr in vertex.iteritems():
+        for rkey, attr in vertex.iteritems():
+            key = ast.literal_eval(rkey)
             self.vertex[key] = self.default_vertex_attributes.copy()
             if attr:
                 self.vertex[key].update(attr)
+            self.edge[key] = {}
+            self.halfedge[key] = {}
 
-        for u, nbrs in edge.iteritems():
-            if u not in self.edge:
-                self.edge[u] = {}
+        for ru, nbrs in edge.iteritems():
             nbrs = nbrs or {}
-            for v, attr in nbrs.iteritems():
+            u = ast.literal_eval(ru)
+            for rv, attr in nbrs.iteritems():
+                v = ast.literal_eval(rv)
                 self.edge[u][v] = self.default_edge_attributes.copy()
                 if attr:
                     self.edge[u][v].update(attr)
 
-        for key, nbrs in halfedge.iteritems():
-            if key not in self.halfedge:
-                self.halfedge[key] = {}
+        for rkey, nbrs in halfedge.iteritems():
             if not nbrs:
                 nbrs = {}
-            for nbr, fkey in nbrs.iteritems():
+            key = ast.literal_eval(rkey)
+            for rnbr, fkey in nbrs.iteritems():
+                nbr = ast.literal_eval(rnbr)
                 self.halfedge[key][nbr] = fkey
 
-        for fkey, vertices in face.iteritems():
+        for rfkey, vertices in face.iteritems():
+            fkey = ast.literal_eval(rfkey)
             self.face[fkey] = vertices
 
         # make a separate facedata key dict?
-        for fkey, attr in facedata.iteritems():
+        for rfkey, attr in facedata.iteritems():
+            fkey = ast.literal_eval(rfkey)
             self.facedata[fkey] = attr
 
         self._max_int_key = max_int_key
@@ -306,44 +342,7 @@ network: {0}
         with open(filepath, 'r') as fp:
             rdata = json.load(fp)
         network = cls()
-        # process data before re-assigning to data attribute
-        rkey_key = {}
-        data = {}
-        data.update(rdata)
-        data['vertex'] = {}
-        data['edge'] = {}
-        data['halfedge'] = {}
-        data['face'] = {}
-        data['facedata'] = {}
-        # vertex
-        for rkey in rdata['vertex']:
-            key = ast.literal_eval(rkey)
-            rkey_key[rkey] = key
-            data['vertex'][key] = rdata['vertex'][rkey]
-            data['edge'][key] = {}
-            data['halfedge'][key] = {}
-        # edge
-        for ru in rdata['edge']:
-            u = rkey_key[ru]
-            for rv in rdata['edge'][ru]:
-                v = rkey_key[rv]
-                data['edge'][u][v] = rdata['edge'][ru][rv]
-        # halfedge
-        for ru in rdata['halfedge']:
-            u = rkey_key[ru]
-            for rv in rdata['halfedge'][ru]:
-                v = rkey_key[rv]
-                data['halfedge'][u][v] = rdata['halfedge'][ru][rv]
-        # face
-        for rfkey in rdata['face']:
-            fkey = ast.literal_eval(rfkey)
-            data['face'][fkey] = rdata['face'][rfkey]
-        # facedata
-        for rfkey in rdata['facedata']:
-            fkey = ast.literal_eval(rfkey)
-            data['facedata'][fkey] = rdata['facedata'][rfkey]
-        # set processed data
-        network.data = data
+        network.data = rdata
         return network
 
     @classmethod
@@ -402,38 +401,8 @@ network: {0}
         return self.data
 
     def to_json(self, filepath):
-        key_rkey = {}
-        rdata = {}
-        rdata.update(self.data)
-        rdata['vertex'] = {}
-        rdata['edge'] = {}
-        rdata['halfedge'] = {}
-        rdata['face'] = {}
-        rdata['facedata'] = {}
-        for key in self.data['vertex']:
-            rkey = repr(key)
-            key_rkey[key] = rkey
-            rdata['vertex'][rkey] = self.data['vertex'][key]
-            rdata['edge'][rkey] = {}
-            rdata['halfedge'][rkey] = {}
-        for u in self.data['edge']:
-            ru = key_rkey[u]
-            for v in self.data['edge'][u]:
-                rv = key_rkey[v]
-                rdata['edge'][ru][rv] = self.data['edge'][u][v]
-        for u in self.data['halfedge']:
-            ru = key_rkey[u]
-            for v in self.data['halfedge'][u]:
-                rv = key_rkey[v]
-                rdata['halfedge'][ru][rv] = self.data['halfedge'][u][v]
-        for fkey in self.data['face']:
-            rfkey = repr(fkey)
-            rdata['face'][rfkey] = self.data['face'][fkey]
-        for fkey in self.data['facedata']:
-            rfkey = repr(fkey)
-            rdata['facedata'][rfkey] = self.data['facedata'][fkey]
         with open(filepath, 'w+') as fp:
-            json.dump(rdata, fp)
+            json.dump(self.data, fp)
 
     def to_yaml(self, filepath):
         raise NotImplementedError
@@ -1301,5 +1270,8 @@ if __name__ == '__main__':
     import compas
 
     network = Network.from_obj(compas.get_data('lines.obj'))
+
+    # network.to_json('lines.json')
+    # network = Network.from_json('lines.json')
 
     network.plot(vlabel={key: key for key in network}, vsize=0.2)
