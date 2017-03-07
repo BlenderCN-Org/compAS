@@ -1,3 +1,5 @@
+import re
+
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -15,7 +17,10 @@ __all__ = [
     'hex_to_rgb',
     'color_to_colordict',
     'color_to_rgb',
-    'rgb_complement'
+    'rgb_to_rgb',
+    'is_color_rgb',
+    'is_color_hex',
+    'is_color_light'
 ]
 
 
@@ -93,7 +98,16 @@ def is_color_rgb(color):
     return False
 
 
-def rgb_to_hex(rgb, g=None, b=None):
+def is_color_hex(color):
+    if isinstance(color, basestring):
+        match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
+        if match:
+            return True
+        return False
+    return False
+
+
+def rgb_to_rgb(rgb, g=None, b=None):
     if g is None and b is None:
         r, g, b = rgb
     else:
@@ -101,34 +115,64 @@ def rgb_to_hex(rgb, g=None, b=None):
     r = max(0, min(r, 255))
     g = max(0, min(g, 255))
     b = max(0, min(b, 255))
+    c = min((r, g, b))
+    if isinstance(c, float) and c <= 1.0:
+        r = r * 255.0
+        g = g * 255.0
+        b = b * 255.0
+    return int(r), int(g), int(b)
+
+
+def rgb_to_hex(rgb, g=None, b=None):
+    r, g, b = rgb_to_rgb(rgb, g=g, b=b)
     # return format(r << 16 | g << 8 | b, '06x')
     return '#{0:02x}{1:02x}{2:02x}'.format(r, g, b)
 
 
-def hex_to_rgb(value):
+def hex_to_rgb(value, normalize=False):
     value = value.lstrip('#').lower()
-    return HEX_DEC[value[0:2]], HEX_DEC[value[2:4]], HEX_DEC[value[4:6]]
+    r = HEX_DEC[value[0:2]]
+    g = HEX_DEC[value[2:4]]
+    b = HEX_DEC[value[4:6]]
+    if normalize:
+        return r / 255.0, g / 255.0, b / 255.0
+    return r, g, b
 
 
 def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=False):
     color = color or default
+
+    # if input is hex
+    # and output should be rgb
     if isinstance(color, basestring):
         if colorformat == 'rgb':
-            color = hex_to_rgb(color)
+            color = hex_to_rgb(color, normalize=normalize)
         return dict((key, color) for key in keys)
+
+    # if input is rgb
+    # and output should be hex
     if isinstance(color, (tuple, list)) and len(color) == 3:
         if colorformat == 'hex':
             color = rgb_to_hex(color)
         return dict((key, color) for key in keys)
+
     if isinstance(color, dict):
         for k, c in color.items():
+
+            # if input is hex
+            # and output should be rgb
             if isinstance(c, basestring):
                 if colorformat == 'rgb':
                     color = hex_to_rgb(color)
+
+            # if input is rgb
+            # and output should be hex
             if isinstance(c, (tuple, list)) and len(c) == 3:
                 if colorformat == 'hex':
                     color[k] = rgb_to_hex(c)
+
         return dict((key, default if key not in color else color[key]) for key in keys)
+
     raise Exception('This is not a valid color format: {0}'.format(type(color)))
 
 
@@ -144,17 +188,20 @@ def color_to_rgb(color, normalize=False):
     return r / 255., g / 255., b / 255.
 
 
-def rgb_complement(rgb):
-    r, g, b = rgb
-    k = min(rgb) + max(rgb)
-    return [k - c for c in rgb]
-
-
-class Color(object):
-    """"""
-
-    def __init__(self):
-        pass
+def is_color_light(color):
+    if is_color_hex(color):
+        rgb = hex_to_rgb(color)
+    else:
+        rgb = color
+    r, g, b = rgb_to_rgb(rgb)
+    r = r / 255.0
+    g = g / 255.0
+    b = b / 255.0
+    r = ((r + 0.055) / 1.055) ** 2.4
+    g = ((g + 0.055) / 1.055) ** 2.4
+    b = ((b + 0.055) / 1.055) ** 2.4
+    L = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return L > 0.179
 
 
 # ==============================================================================
@@ -162,4 +209,12 @@ class Color(object):
 # ==============================================================================
 
 if __name__ == '__main__':
-    pass
+    
+    print hex_to_rgb('#000000')
+    print hex_to_rgb('#ffffff')
+    print rgb_to_hex(0, 0, 0)
+    print rgb_to_hex(1, 1, 1)
+    print rgb_to_hex(1.0, 1.0, 1.0)
+    print rgb_to_hex(255, 255, 255)
+    print rgb_to_hex(255., 255., 255.0)
+    print is_color_hex('#000')

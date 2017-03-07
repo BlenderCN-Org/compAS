@@ -275,7 +275,7 @@ def network_dijkstra_distances(adjacency, weight, target):
     return dist
 
 
-def network_dijkstra_path(adjacency, weight, source, target):
+def network_dijkstra_path(adjacency, weight, source, target, dist=None):
     """Find the shortest path between two vertices if the edge weights are not
     all one.
 
@@ -370,13 +370,14 @@ def network_dijkstra_path(adjacency, weight, source, target):
             )
 
     """
-    dist = network_dijkstra_distances(adjacency, weight, target)
+    if not dist:
+        dist = network_dijkstra_distances(adjacency, weight, target)
     path = [source]
     node = source
-    node = min(adjacency[node], key=lambda k: dist[k] + weight[(node, k)])
+    node = min(adjacency[node], key=lambda nbr: dist[nbr] + weight[(node, nbr)])
     path.append(node)
     while node != target:
-        node = min(adjacency[node], key=lambda k: dist[k])
+        node = min(adjacency[node], key=lambda nbr: dist[nbr])
         path.append(node)
     return path
 
@@ -401,9 +402,16 @@ if __name__ == '__main__':
     weight[(17, 7)] = 1000
 
     start = 21
+    end = 29
+
+    path1 = network_dijkstra_path(network.adjacency, weight, start, end)
+
+    start = 29
     end = 22
 
-    path = network_dijkstra_path(network.adjacency, weight, start, end)
+    path2 = network_dijkstra_path(network.adjacency, weight, start, end)
+
+    path = path1 + path2[1:]
 
     edges = []
     for i in range(len(path) - 1):
@@ -413,9 +421,14 @@ if __name__ == '__main__':
             u, v = v, u
         edges.append([u, v])
 
+    vcolor = {key: (255, 0, 0) for key in path}
+    vcolor[21] = '#00ff00'
+    vcolor[22] = '#00ff00'
+
     network.plot(
-        vlabel={key: key for key in path},
-        vcolor={key: (255, 0, 0) for key in (path[0], path[-1])},
+        vlabel={key: key for key in network},
+        textcolor={key: '#ffffff' for key in path[1:-1]},
+        vcolor=vcolor,
         vsize=0.15,
         ecolor={(u, v): (255, 0, 0) for u, v in edges},
         ewidth={(u, v): 2.0 for u, v in edges},
