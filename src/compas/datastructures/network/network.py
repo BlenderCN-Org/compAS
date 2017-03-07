@@ -1,4 +1,6 @@
 import json
+import ast
+
 from copy import deepcopy
 
 from compas.files.obj import OBJ
@@ -212,10 +214,7 @@ network: {0}
                 'face'        : self.face,
                 'facedata'    : self.facedata,
                 'max_int_key' : self._max_int_key,
-                'max_int_fkey': self._max_int_fkey,
-                # json int keys
-                'keytype'     : dict((str(key), key) for key in self.vertices_iter()),
-                'fkeytype'    : dict((str(fkey), fkey) for fkey in self.faces_iter()), }
+                'max_int_fkey': self._max_int_fkey, }
 
     @data.setter
     def data(self, data):
@@ -232,9 +231,6 @@ network: {0}
         fcount       = data.get('fcount') or 0
         max_int_key  = data.get('max_int_key') or vcount - 1
         max_int_fkey = data.get('max_int_fkey') or fcount - 1
-        # json int keys
-        keytype      = data.get('keytype') or None
-        fkeytype     = data.get('fkeytype') or None
 
         if not vertex or not edge or not halfedge:
             return
@@ -256,53 +252,32 @@ network: {0}
         self.facedata = {}
 
         for key, attr in vertex.iteritems():
-            # json int keys
-            if keytype:
-                key = keytype[str(key)]
             self.vertex[key] = self.default_vertex_attributes.copy()
             if attr:
                 self.vertex[key].update(attr)
 
         for u, nbrs in edge.iteritems():
-            # json int keys
-            if keytype:
-                u = keytype[str(u)]
             if u not in self.edge:
                 self.edge[u] = {}
             nbrs = nbrs or {}
             for v, attr in nbrs.iteritems():
-                # json int keys
-                if keytype:
-                    v = keytype[str(v)]
                 self.edge[u][v] = self.default_edge_attributes.copy()
                 if attr:
                     self.edge[u][v].update(attr)
 
         for key, nbrs in halfedge.iteritems():
-            # json int keys
-            if keytype:
-                key = keytype[str(key)]
             if key not in self.halfedge:
                 self.halfedge[key] = {}
             if not nbrs:
                 nbrs = {}
             for nbr, fkey in nbrs.iteritems():
-                # json int keys
-                if keytype:
-                    nbr = keytype[str(nbr)]
                 self.halfedge[key][nbr] = fkey
 
         for fkey, vertices in face.iteritems():
-            # json int keys
-            if fkeytype:
-                fkey = fkeytype[str(fkey)]
             self.face[fkey] = vertices
 
         # make a separate facedata key dict?
         for fkey, attr in facedata.iteritems():
-            # json int keys
-            if fkeytype:
-                fkey = fkeytype[str(fkey)]
             self.facedata[fkey] = attr
 
         self._max_int_key = max_int_key
@@ -329,8 +304,45 @@ network: {0}
     @classmethod
     def from_json(cls, filepath):
         with open(filepath, 'r') as fp:
-            data = json.load(fp)
+            rdata = json.load(fp)
         network = cls()
+        # process data before re-assigning to data attribute
+        rkey_key = {}
+        data = {}
+        data.update(rdata)
+        data['vertex'] = {}
+        data['edge'] = {}
+        data['halfedge'] = {}
+        data['face'] = {}
+        data['facedata'] = {}
+        # vertex
+        for rkey in rdata['vertex']:
+            key = ast.literal_eval(rkey)
+            rkey_key[rkey] = key
+            data['vertex'][key] = rdata['vertex'][rkey]
+            data['edge'][key] = {}
+            data['halfedge'][key] = {}
+        # edge
+        for ru in rdata['edge']:
+            u = rkey_key[ru]
+            for rv in rdata['edge'][ru]:
+                v = rkey_key[rv]
+                data['edge'][u][v] = rdata['edge'][ru][rv]
+        # halfedge
+        for ru in rdata['halfedge']:
+            u = rkey_key[ru]
+            for rv in rdata['halfedge'][ru]:
+                v = rkey_key[rv]
+                data['halfedge'][u][v] = rdata['halfedge'][ru][rv]
+        # face
+        for rfkey in rdata['face']:
+            fkey = ast.literal_eval(rfkey)
+            data['face'][fkey] = rdata['face'][rfkey]
+        # facedata
+        for rfkey in rdata['facedata']:
+            fkey = ast.literal_eval(rfkey)
+            data['facedata'][fkey] = rdata['facedata'][rfkey]
+        # set processed data
         network.data = data
         return network
 
@@ -390,10 +402,38 @@ network: {0}
         return self.data
 
     def to_json(self, filepath):
-        # keep track of the types of the keys
-        # to restore afterwards
+        key_rkey = {}
+        rdata = {}
+        rdata.update(self.data)
+        rdata['vertex'] = {}
+        rdata['edge'] = {}
+        rdata['halfedge'] = {}
+        rdata['face'] = {}
+        rdata['facedata'] = {}
+        for key in self.data['vertex']:
+            rkey = repr(key)
+            key_rkey[key] = rkey
+            rdata['vertex'][rkey] = self.data['vertex'][key]
+            rdata['edge'][rkey] = {}
+            rdata['halfedge'][rkey] = {}
+        for u in self.data['edge']:
+            ru = key_rkey[u]
+            for v in self.data['edge'][u]:
+                rv = key_rkey[v]
+                rdata['edge'][ru][rv] = self.data['edge'][u][v]
+        for u in self.data['halfedge']:
+            ru = key_rkey[u]
+            for v in self.data['halfedge'][u]:
+                rv = key_rkey[v]
+                rdata['halfedge'][ru][rv] = self.data['halfedge'][u][v]
+        for fkey in self.data['face']:
+            rfkey = repr(fkey)
+            rdata['face'][rfkey] = self.data['face'][fkey]
+        for fkey in self.data['facedata']:
+            rfkey = repr(fkey)
+            rdata['facedata'][rfkey] = self.data['facedata'][fkey]
         with open(filepath, 'w+') as fp:
-            json.dump(self.data, fp)
+            json.dump(rdata, fp)
 
     def to_yaml(self, filepath):
         raise NotImplementedError
@@ -421,8 +461,14 @@ network: {0}
 
     def clear_facedict(self):
         del self.face
+        del self.facedata
         self.face = {}
+        self.facedata = {}
         self._max_int_fkey = -1
+
+    def clear_edgedict(self):
+        del self.edge
+        self.edge = {}
 
     def clear_halfedgedict(self):
         del self.halfedge
@@ -1256,6 +1302,4 @@ if __name__ == '__main__':
 
     network = Network.from_obj(compas.get_data('lines.obj'))
 
-    print network
-
-    network.plot(vlabel={key: key for key in network})
+    network.plot(vlabel={key: key for key in network}, vsize=0.2)

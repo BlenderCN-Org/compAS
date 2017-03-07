@@ -1,4 +1,4 @@
-# import ast
+import ast
 
 from compas.utilities.colors import color_to_colordict
 
@@ -209,6 +209,8 @@ def select_network_vertices(network, message="Select network vertices."):
                 if not prefix or prefix in name:
                     key = name[-1]
                     if not seen.add(key):
+                        if not network._key_to_str:
+                            key = int(key)
                         keys.append(key)
     return keys
 
@@ -235,7 +237,10 @@ def select_network_vertex(network, message="Select a network vertex"):
         name = rs.ObjectName(guid).split('.')
         if 'vertex' in name:
             if not prefix or prefix in name:
-                return name[-1]
+                key = name[-1]
+                if not network._key_to_str:
+                    key = int(key)
+                return key
     return None
 
 
@@ -275,6 +280,8 @@ def select_network_edges(network, message="Select network edges"):
                     key = name[-1]
                     if not seen.add(key):
                         uv = tuple(key.split('-'))
+                        if not network._key_to_str:
+                            uv = int(uv[0]), int(uv[1])
                         keys.append(uv)
     return keys
 
@@ -302,7 +309,10 @@ def select_network_edge(network, message="Select a network edge"):
         if 'edge' in name:
             if not prefix or prefix in name:
                 key = name[-1]
-                return tuple(key.split('-'))
+                uv = tuple(key.split('-'))
+                if not network._key_to_str:
+                    uv = int(uv[0]), int(uv[1])
+                return uv
     return None
 
 
@@ -364,6 +374,8 @@ def select_network_faces(network, message='Select network faces.'):
                 if not prefix or prefix in name:
                     key = name[-1]
                     if not seen.add(key):
+                        if not network._key_to_str:
+                            key = int(key)
                         keys.append(key)
     return keys
 
@@ -391,6 +403,8 @@ def select_network_face(network, message='Select face.'):
         if 'face' in name:
             if not prefix or prefix in name:
                 key = name[-1]
+                if not network._key_to_str:
+                    return int(key)
                 return key
     return None
 
@@ -484,7 +498,7 @@ def update_network_vertex_attributes(network, keys, names=None):
 
     """
     if not names:
-        names = network.dva.keys()
+        names = network.default_vertex_attributes.keys()
     names = sorted(names)
     values = [network.vertex[keys[0]][name] for name in names]
     if len(keys) > 1:
@@ -548,7 +562,7 @@ def update_network_edge_attributes(network, keys, names=None):
 
     """
     if not names:
-        names = network.dea.keys()
+        names = network.default_edge_attributes.keys()
     names = sorted(names)
     u, v = keys[0]
     values = [network.edge[u][v][name] for name in names]
@@ -614,7 +628,7 @@ def update_network_face_attributes(network, fkeys, names=None):
     if not network.dualdata:
         return
     if not names:
-        names = sorted(network.dfa.keys())
+        names = sorted(network.default_face_attributes.keys())
     values = [network.dualdata.vertex[fkeys[0]][name] for name in names]
     if len(fkeys) > 1:
         for i, name in enumerate(names):

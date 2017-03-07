@@ -27,4 +27,4 @@ Package for the integration of the framework in the Rhino CAD modeling environme
 """
 
 from .utilities import *
-# from .helpers import *
+from .helpers import *
