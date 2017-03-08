@@ -1357,7 +1357,7 @@ def is_point_in_circle(point, circle):
     return False
 
 
-def is_intersection_line_line(ab, cd):
+def is_intersection_line_line(ab, cd, epsilon=1e-6):
     """Verifies if two lines intersection in one point.
 
     Parameters:
@@ -1376,7 +1376,8 @@ def is_intersection_line_line(ab, cd):
     line_vector_1 = normalize_vector(vector_from_points(a, b))
     line_vector_2 = normalize_vector(vector_from_points(c, d))
     #check for parallel lines
-    if abs(dot_vectors(line_vector_1, line_vector_2)) == 1:
+    print(abs(dot_vectors(line_vector_1, line_vector_2)))
+    if abs(dot_vectors(line_vector_1, line_vector_2)) > 1.0 - epsilon:
         return False
     #check for intersection
     d_vector = cross_vectors(line_vector_1, line_vector_2)
