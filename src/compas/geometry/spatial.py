@@ -1591,8 +1591,51 @@ def is_intersection_box_box(box_1, box_2):
 # ==============================================================================
 
 
-def intersection_line_line():
-    raise NotImplementedError
+def intersection_line_line(ab, cd):
+    """Compute the intersection of two continuous lines.
+
+    Parameters:
+        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+
+    Returns:
+        point (tuple), point (tuple) as list: The two points marking the shortest 
+        distance between both lines.  
+        None, None (list): if the two lines are parallel.
+        
+
+    Note:
+
+        To check if two lines intersect in one point:
+
+        .. code-block:: python
+
+            point_1, point_2 = intersection_line_line(ab, cd)
+            if cmp(point_1,point_2):
+                print('The two lines intersect')
+            else:
+                print('The two lines do not intersect')
+ 
+         Alternative: is_intersection_line_line
+    """    
+    a, b = ab
+    c, d = cd
+    
+    line_unity_vector_1 = normalize_vector(vector_from_points(a, b))
+    line_unity_vector_2 = normalize_vector(vector_from_points(c, d))
+    d_vector = normalize_vector(cross_vectors(line_unity_vector_1, line_unity_vector_2))
+    
+    normal_1 = cross_vectors(line_unity_vector_1, d_vector)
+    normal_2 = cross_vectors(line_unity_vector_2, d_vector)
+    plane_1 = (a, normal_1)
+    plane_2 = (c, normal_2)
+    
+    intx_point_line_1 = intersection_line_plane(ab, plane_2)
+    intx_point_line_2 = intersection_line_plane(cd, plane_1)
+    
+    return [intx_point_line_1, intx_point_line_2]
 
 
 def intersection_circle_circle():
