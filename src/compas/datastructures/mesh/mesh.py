@@ -549,9 +549,7 @@ mesh summary
         key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
         for key, xyz in vertex.iteritems():
             i = key_index[key]
-            print(xyz)
             mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
-        print(mesh)
         edges_uv = []    
         for u, v in edges:
             i = key_index[u]
