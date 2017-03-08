@@ -1386,8 +1386,6 @@ def is_intersection_line_line(ab, cd, epsilon=1e-6):
     return False
     
 
-    
-
 def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
     """Verify if a line segment intersects with a plane.
 
