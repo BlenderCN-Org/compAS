@@ -1357,9 +1357,34 @@ def is_point_in_circle(point, circle):
     return False
 
 
-def is_intersection_line_line(l1, l2):
-    raise NotImplementedError
+def is_intersection_line_line(ab, cd, epsilon=1e-6):
+    """Verifies if two lines intersection in one point.
 
+    Parameters:
+        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+
+    Returns:
+        True (bool): if the lines intersect in one point, False is the lines are 
+        skew, parallel or lie on top of each other.
+    """      
+    a, b = ab
+    c, d = cd
+    
+    line_vector_1 = normalize_vector(vector_from_points(a, b))
+    line_vector_2 = normalize_vector(vector_from_points(c, d))
+    #check for parallel lines
+    print(abs(dot_vectors(line_vector_1, line_vector_2)))
+    if abs(dot_vectors(line_vector_1, line_vector_2)) > 1.0 - epsilon:
+        return False
+    #check for intersection
+    d_vector = cross_vectors(line_vector_1, line_vector_2)
+    if dot_vectors(d_vector, subtract_vectors(c, a)) == 0:
+        return True
+    return False
+    
 
 def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
     """Verify if a line segment intersects with a plane.
@@ -1590,9 +1615,69 @@ def is_intersection_box_box(box_1, box_2):
 # intersections
 # ==============================================================================
 
+def shortest_distance_line_line(ab, cd):
+    """Computes the shortes distance between two lines.
 
-def intersection_line_line():
-    raise NotImplementedError
+    Parameters:
+        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+
+    Returns:
+        point (tuple), point (tuple) as list: The two points marking the shortest 
+        distance between both lines.  
+        None, None (list): if the two lines are parallel. 
+    """  
+    return intersection_line_line(ab, cd)
+
+
+def intersection_line_line(ab, cd):
+    """Computes the intersection of two continuous lines. If the two lines are
+    skew the points marking the shortest distance between both lines are computed.
+
+    Parameters:
+        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing 
+        two points on the line.
+
+    Returns:
+        point (tuple), point (tuple) as list: The two points marking the shortest 
+        distance between both lines.  
+        None, None (list): if the two lines are parallel.
+        
+
+    Note:
+
+        To check if two lines intersect in one point:
+
+        .. code-block:: python
+
+            point_1, point_2 = intersection_line_line(ab, cd)
+            if cmp(point_1,point_2):
+                print('The two lines intersect')
+            else:
+                print('The two lines do not intersect')
+ 
+         Alternative: is_intersection_line_line
+    """    
+    a, b = ab
+    c, d = cd
+    
+    line_vector_1 = vector_from_points(a, b)
+    line_vector_2 = vector_from_points(c, d)
+    d_vector = cross_vectors(line_vector_1, line_vector_2)
+    
+    normal_1 = cross_vectors(line_vector_1, d_vector)
+    normal_2 = cross_vectors(line_vector_2, d_vector)
+    plane_1 = (a, normal_1)
+    plane_2 = (c, normal_2)
+    
+    intx_point_line_1 = intersection_line_plane(ab, plane_2)
+    intx_point_line_2 = intersection_line_plane(cd, plane_1)
+
+    return [intx_point_line_1, intx_point_line_2]
 
 
 def intersection_circle_circle():

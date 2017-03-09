@@ -17,6 +17,8 @@ from compas.geometry import area_polygon
 
 from compas.geometry.elements import Line
 
+from compas.utilities import geometric_key
+
 from compas.datastructures.network.algorithms import network_bfs
 from compas.datastructures.network.algorithms import network_bfs2
 
@@ -527,8 +529,51 @@ mesh summary
         return mesh
 
     @classmethod
-    def from_lines(cls, lines):
-        raise NotImplementedError
+    def from_lines(cls, lines, precision='3f'):
+        
+        from compas.datastructures.network.algorithms.duality import _sort_neighbours
+        from compas.datastructures.network.algorithms.duality import _find_first_neighbour
+        from compas.datastructures.network.algorithms.duality import _find_edge_face
+        
+        mesh = cls()
+        edges   = []
+        vertex  = {}
+        for line in lines:
+            sp = line[0]
+            ep = line[1]
+            a  = geometric_key(sp, precision)
+            b  = geometric_key(ep, precision)
+            vertex[a] = sp
+            vertex[b] = ep
+            edges.append((a, b))
+        key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
+        for key, xyz in vertex.iteritems():
+            i = key_index[key]
+            mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
+        edges_uv = []    
+        for u, v in edges:
+            i = key_index[u]
+            j = key_index[v]
+            edges_uv.append((i, j))
+        #the clear commands below are from the network equivalent. Needed?  
+        #network.clear_facedict()
+        #network.clear_halfedgedict()
+        mesh.halfedge = dict((key, {}) for key in mesh.vertex)
+        for u, v in edges_uv:
+            mesh.halfedge[u][v] = None
+            mesh.halfedge[v][u] = None
+        _sort_neighbours(mesh)
+         
+        u = sorted(mesh.vertices_iter(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        v = _find_first_neighbour(u, mesh)
+        _find_edge_face(u, v, mesh)
+        for u, v in mesh.edges_iter():
+            if mesh.halfedge[u][v] is None:
+                _find_edge_face(u, v, mesh)
+            if mesh.halfedge[v][u] is None:
+                _find_edge_face(v, u, mesh)
+     
+        return mesh
 
     @classmethod
     def from_obj(cls, filepath, **kwargs):
