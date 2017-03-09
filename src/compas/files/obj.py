@@ -210,19 +210,20 @@ class OBJReader(object):
         pass
 
     def _read_polygonal_geometry(self, name, data):
+        # point
         if name == 'p':
             self.points.append(int(data[0]) - 1)
             if self.group:
                 self.groups[self.group].append(('p', len(self.points) - 1))
-            return
-        if name == 'l':
+        # line
+        elif name == 'l':
             if len(data) < 2:
                 return
             self.lines.append([int(i) - 1 for i in data])
             if self.group:
                 self.groups[self.group].append(('l', len(self.lines) - 1))
-            return
-        if name == 'f':
+        # face
+        elif name == 'f':
             if len(data) < 3:
                 return
             face = []
@@ -233,7 +234,6 @@ class OBJReader(object):
             self.faces.append(face)
             if self.group:
                 self.groups[self.group].append(('f', len(self.faces) - 1))
-            return
 
     def _read_freeform_attribute(self, name, data):
         if name == 'deg':
@@ -298,20 +298,23 @@ class OBJParser(object):
         self.parse()
 
     def parse(self):
-        index_to_key = {}
+        index_key = {}
         vertex = {}
+
         for i, xyz in enumerate(iter(self.reader.vertices)):
             key = geometric_key(xyz, self.precision)
-            index_to_key[i] = key
+            index_key[i] = key
             vertex[key] = xyz
-        key_to_index = dict((key, index) for index, key in enumerate(vertex.iterkeys()))
-        index_to_index = dict((index, key_to_index[key]) for index, key in index_to_key.iteritems())
-        self.vertices = [xyz for xyz in vertex.itervalues()]
-        self.points = [index_to_index[index] for index in self.reader.points]
-        self.lines = [[index_to_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
-        self.polylines = [[index_to_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
-        self.faces = [[index_to_index[index] for index in face] for face in self.reader.faces]
-        self.groups = self.reader.groups
+
+        key_index = dict((key, index) for index, key in enumerate(vertex.iterkeys()))
+        index_index = dict((index, key_index[key]) for index, key in index_key.iteritems())
+
+        self.vertices  = [xyz for xyz in vertex.itervalues()]
+        self.points    = [index_index[index] for index in self.reader.points]
+        self.lines     = [[index_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
+        self.polylines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
+        self.faces     = [[index_index[index] for index in face] for face in self.reader.faces]
+        self.groups    = self.reader.groups
 
 
 class OBJComposer(object):
