@@ -197,10 +197,24 @@ def ScriptWrapper(object):
 
 if __name__ == '__main__':
 
-    server = ScriptServer()
+    scriptdir = '/Users/vanmelet/compAS/packages/compas_ags/_xscripts'
+    tempdir = '/Users/vanmelet/compAS/packages/compas_ags/_xscripts'
+
+    server = ScriptServer(scriptdir=scriptdir, tempdir=tempdir)
+
     try:
-        result = server.test(n=10, pause=0.1)
+
+        result = server.test(n=100, pause=0.01)
+
     except ScriptServerError:
+
         server.print_error()
+
     else:
+
         print(result)
+        server.print_profile()
+
+
+
+
