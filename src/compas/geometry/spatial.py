@@ -1455,7 +1455,7 @@ def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     return True
 
 
-def is_intersection_line_triangle(line, triangle):
+def is_intersection_line_triangle(line, triangle,  epsilon=1e-6):
     """
     Verifies if a line (ray) intersects with a triangle
     based on the Moeller Trumbore intersection algorithm
@@ -1473,7 +1473,6 @@ def is_intersection_line_triangle(line, triangle):
     a, b, c = triangle
     v1 = subtract_vectors(line[1], line[0])
     p1 = line[0]
-    EPSILON = 0.000000001
     # Find vectors for two edges sharing V1
     e1 = subtract_vectors(b, a)
     e2 = subtract_vectors(c, a)
@@ -1482,7 +1481,7 @@ def is_intersection_line_triangle(line, triangle):
     # if determinant is near zero, ray lies in plane of triangle
     det = dot_vectors(e1, p)
     # NOT CULLING
-    if(det > - EPSILON and det < EPSILON):
+    if(det > - epsilon and det < epsilon):
         return False
     inv_det = 1.0 / det
     # calculate distance from V1 to ray origin
@@ -1500,7 +1499,7 @@ def is_intersection_line_triangle(line, triangle):
     if(v < 0.0 or u + v  > 1.0):
         return False
     t = dot_vectors(e2, q) * inv_det
-    if t > EPSILON:
+    if t > epsilon:
         return True
     # No hit
     return False
@@ -1670,7 +1669,7 @@ def intersection_circle_circle():
     raise NotImplementedError
 
 
-def intersection_line_triangle(line, triangle):
+def intersection_line_triangle(line, triangle, epsilon=1e-6):
     """
     Computes the intersection point of a line (ray) and a triangle
     based on the Moeller Trumbore intersection algorithm
@@ -1688,7 +1687,6 @@ def intersection_line_triangle(line, triangle):
     a, b, c = triangle
     v1 = subtract_vectors(line[1], line[0])
     p1 = line[0]
-    EPSILON = 0.000000001
     # Find vectors for two edges sharing V1
     e1 = subtract_vectors(b, a)
     e2 = subtract_vectors(c, a)
@@ -1697,7 +1695,7 @@ def intersection_line_triangle(line, triangle):
     # if determinant is near zero, ray lies in plane of triangle
     det = dot_vectors(e1, p)
     # NOT CULLING
-    if(det > - EPSILON and det < EPSILON):
+    if(det > - epsilon and det < epsilon):
         return None
     inv_det = 1.0 / det
     # calculate distance from V1 to ray origin
@@ -1715,7 +1713,7 @@ def intersection_line_triangle(line, triangle):
     if(v < 0.0 or u + v  > 1.0):
         return None
     t = dot_vectors(e2, q) * inv_det
-    if t > EPSILON:
+    if t > epsilon:
         return add_vectors(p1, scale_vector(v1, t))
     # No hit
     return None
@@ -1968,7 +1966,7 @@ def reflect_line_plane(line, plane):
         return None
     return [intx_pt,add_vectors(intx_pt, vec_reflect)]
     
-def reflect_line_triangle(line, triangle):
+def reflect_line_triangle(line, triangle, epsilon=1e-6):
     """Reflects a line at a triangle.
 
     Parameters:
@@ -1978,6 +1976,41 @@ def reflect_line_triangle(line, triangle):
     Returns:
         line (tuple): The reflected line starting at the reflection point on the plane,
         None otherwise.
+        
+    Examples:
+
+        .. code-block:: python
+    
+            # prism points
+            pt1 = (0.0, 0.0, 0.0)
+            pt2 = (6.0, 0.0, 0.0) 
+            pt3 = (3.0, 5.0, 0.0) 
+            pt4 = (3.0, 2.0, 4.0)
+            
+            # triangular prism faces
+            tris = []
+            tris.append([pt4,pt2,pt1])
+            tris.append([pt4,pt3,pt2])
+            tris.append([pt4,pt1,pt3])
+            tris.append([pt1,pt2,pt3])
+            
+            # initial line (starting ray)
+            line = [(1.0,1.0,0.0),(1.0,1.0,1.0)]
+            
+            # start reflection cycle inside the prism
+            polyline = []
+            polyline.append(line[0])
+            for i in range(10):
+                for tri in tris:
+                    reflected_line = reflect_line_triangle(line, tri)
+                    if reflected_line:
+                        line = reflected_line
+                        polyline.append(line[0])
+                        break
+            
+            print(polyline)  
+            
+        .. image:: /_images/gif_refelction_01.*
 
     Note:
         The directions of the line and triangular face are important! The line will only be
@@ -1986,7 +2019,7 @@ def reflect_line_triangle(line, triangle):
         direction of the face). 
     
     """   
-    intx_pt = intersection_line_triangle(line, triangle)
+    intx_pt = intersection_line_triangle(line, triangle, epsilon)
     if not intx_pt:
         return None
     vec_line = subtract_vectors(line[1], line[0])

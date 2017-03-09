@@ -81,7 +81,7 @@ can be used from inside Rhino (IronPython) through a subprocess using the XFuncI
     import os
     import math
     
-    from compas.utilities import XFuncIO
+    from compas.utilities.xfuncio import XFuncIO
     from compas.geometry.spatial import subtract_vectors
     
     from compas_rhino.utilities.misc import screenshot_current_view
