@@ -176,16 +176,36 @@ function scaled_network_vertex_positions(network, width, height, padding=10) {
 // }
 
 
-// function display_network_vertex_labels() {
+function display_network_vertex_keys(network, display) {
 
-//     svg.append('svg:g')
-//         .attr('class', 'vertexlabels')
-//         .selectAll('text')
-//         .data(vertices)
-//         .enter()
-//         .append('svg:text')
-//         .attr('class', 'vlabel')
-//         .attr('x', function(key) { return pos[key]['x']; })
-//         .attr('y', function(key) { return pos[key]['y'] + 3; })
-//         .text(function(key, index) { return index; });
-// }
+    var svg;
+
+    var viewport = network.attributes['viewport']['element'];
+    var width    = network.attributes['viewport']['width'];
+    var height   = network.attributes['viewport']['height'];
+    var padding  = network.attributes['viewport']['padding'];
+    var name     = network.attributes['name'];
+
+    var vertices = network.vertices();
+
+    var pos = scaled_network_vertex_positions(network, width, height, padding);
+
+    svg = viewport.select('#' + name);
+
+    svg.select('g.vertexlabels').remove();
+
+    if (! display) {
+        return;
+    }
+
+    svg.append('svg:g')
+        .attr('class', 'vertexlabels')
+        .selectAll('text')
+        .data(vertices)
+        .enter()
+        .append('svg:text')
+        .attr('class', 'vlabel')
+        .attr('x', function(key) { return pos[key]['x']; })
+        .attr('y', function(key) { return pos[key]['y'] + 3; })
+        .text(function(key, index) { return index; });
+}

@@ -1,6 +1,8 @@
 import json
 import ast
 
+from collections import deque
+
 from copy import deepcopy
 
 from compas.files.obj import OBJ
@@ -657,6 +659,19 @@ network: {0}
             nbrs.append(nbr)
         return nbrs
 
+    def neighbourhood(self, key, ring=1):
+        nbrs = set(self.neighbours(key))
+        i = 1
+        while True:
+            if i == ring:
+                break
+            temp = []
+            for key in nbrs:
+                temp += self.neighbours(key)
+            nbrs.update(temp)
+            i += 1
+        return nbrs
+
     def neighbours_out(self, key):
         return list(self.edge[key])
 
@@ -1274,4 +1289,9 @@ if __name__ == '__main__':
     # network.to_json('lines.json')
     # network = Network.from_json('lines.json')
 
-    network.plot(vlabel={key: key for key in network}, vsize=0.2)
+    keys = network.neighbourhood(0, ring=3)
+
+    network.plot(
+        vlabel={key: key for key in network},
+        vsize=0.2,
+        vcolor={key: '#ff0000' for key in keys})

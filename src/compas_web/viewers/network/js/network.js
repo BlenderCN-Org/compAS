@@ -313,8 +313,10 @@ Network.prototype.xy = function() {
 
 
 Network.prototype.draw = function() {
-
 	draw_network(this);
 };
 
 
+Network.prototype.display_vertex_keys = function(display) {
+	display_network_vertex_keys(this, display);
+};
