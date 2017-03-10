@@ -529,7 +529,7 @@ mesh summary
         return mesh
 
     @classmethod
-    def from_lines(cls, lines, precision='3f'):
+    def from_lines(cls, lines, boundary_face=False, precision='3f'):
         
         from compas.datastructures.network.algorithms.duality import _sort_neighbours
         from compas.datastructures.network.algorithms.duality import _find_first_neighbour
@@ -566,13 +566,16 @@ mesh summary
          
         u = sorted(mesh.vertices_iter(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
         v = _find_first_neighbour(u, mesh)
-        _find_edge_face(u, v, mesh)
+        key_boundary_face = _find_edge_face(u, v, mesh)
+        print (key_boundary_face) 
         for u, v in mesh.edges_iter():
             if mesh.halfedge[u][v] is None:
                 _find_edge_face(u, v, mesh)
             if mesh.halfedge[v][u] is None:
                 _find_edge_face(v, u, mesh)
      
+        if not boundary_face:
+            mesh.delete_face(key_boundary_face)
         return mesh
 
     @classmethod
