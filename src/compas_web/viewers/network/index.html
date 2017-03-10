@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="css/app.css">
+		<link rel="stylesheet" type="text/css" href="css/network.css">
+	</head>
+	<body>
+
+		<div id="app">
+			<div id="container">
+				<div id="menu">
+					<input type="file" name="fileinput" id="fileinput" value="" />
+				</div>
+
+				<div id="toolbar">
+					<button>tool 1</button>
+					<button>tool 2</button>
+				</div>
+
+				<div id="view">
+					<div id="viewport"></div>
+					<div id="controls">
+						<input type="checkbox" name="toggle_vertexlabels" id="toggle_vertexlabels" value="1" />
+						<label for="toggle_vertexlabels">vertex labels</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>				
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.1/d3.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sprintf/1.0.3/sprintf.min.js"></script>
+
+		<script src="js/utilities.js"></script>
+		<script src="js/helpers.js"></script>
+		<script src="js/network.js"></script>
+		<script>
+
+// create a network
+var network = new Network({
+	'viewport': {'element': d3.select('#viewport'),
+	             'width'  : 640,
+	             'height' : 320,
+	             'padding': 36}
+});
+
+
+// listen to the file input field
+// update the network on change
+// i.e. when a file is loaded
+$('#fileinput').on('change', function(event) {
+
+	network.update_from_file(event.target.files[0]);
+	network.draw();
+
+});
+
+// listen to the checkboxes
+$('#toggle_vertexlabels').on('change', function(event) {
+
+	network.display_vertex_keys(this.checked);
+});
+
+		</script>
+	</body>
+</html>

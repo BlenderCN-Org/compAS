@@ -1,0 +1,29 @@
+#menu {
+	width: 640px;
+	height: 36px;
+	background-color: #eee;
+}
+
+#toolbar {
+	width: 640px;
+	height: 36px;
+	background-color: #eee;
+}
+
+#view {
+	width: 640px;
+	height: 356px;
+}
+
+#viewport {
+	width: 640px;
+	height: 320px;
+	background-color: #fff;
+}
+
+#controls {
+	width: 640px;
+	height: 36px;
+	background-color: #eee;
+}
+
