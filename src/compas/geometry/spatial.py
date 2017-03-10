@@ -2010,7 +2010,9 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
             
             print(polyline)  
             
-        .. image:: /_images/gif_refelction_01.*
+
+    .. image:: /_images/gif_reflection_01.*
+
 
     Note:
         The directions of the line and triangular face are important! The line will only be

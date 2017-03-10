@@ -192,6 +192,8 @@ transformations
     mirror_points_line
     mirror_point_plane
     mirror_points_plane
+    reflect_line_plane
+    reflect_line_triangle
     project_point_plane
     project_points_plane
     project_point_line

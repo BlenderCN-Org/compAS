@@ -1,0 +1,26 @@
+.edges {
+    stroke-width: 1px;
+    stroke: rgb(83, 83, 83);
+}
+
+.edgelabels {
+    font-family: Arial;
+    font-size: 8px;
+    text-anchor: middle;
+}
+
+.vertices {
+    stroke: rgb(255, 255, 255);
+    stroke-width: 1px;
+    fill: rgb(83, 83, 83);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.vertexlabels {
+    font-family: Arial;
+    font-size: 8px;
+    text-anchor: middle;
+    fill: rgb(255, 255, 255);
+    cursor: pointer;
+}

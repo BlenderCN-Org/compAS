@@ -36,3 +36,7 @@
 .rst-content a.reference code {
     color: #2980b9;
 }
+
+.rst-content img {
+    margin-bottom: 32px;
+}

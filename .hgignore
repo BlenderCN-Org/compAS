@@ -18,6 +18,7 @@ syntax: glob
 
 __temp
 __recover
+__old
 
 docs/build
 docs/source/pages/reference
