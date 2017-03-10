@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link href="js/vendor/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+
+		<script>
+			var now = Date.now();
+			document.write('<link href="css/app.css?v=' + now + '" rel="stylesheet" type="text/css">');
+			document.write('<link href="css/network.css?v=' + now + '" rel="stylesheet" type="text/css">');
+		</script>
+		
+	</head>
+	<body>
+
+		<div id="app">
+			<div id="container">
+				<div id="menu">
+					<input type="file" name="fileinput" id="fileinput" value="" />
+					<!-- save, export, reset, settings?, ... -->
+				</div>
+
+				<div id="toolbar">
+					<button>is planar</button>
+
+					<button>shortest path</button>
+					<button>dijkstra path</button>
+
+					<button>force layout</button>
+					<button>smooth</button>
+				</div>
+
+				<div id="view">
+					<div id="viewport"></div>
+					<div id="controls">
+						<div id="toggles">
+							<input type="checkbox" name="toggle_vertex-keys" id="toggle_vertex-keys" value="1" />
+							<label for="toggle_vertexkeys">vertex keys</label>
+
+							<input type="checkbox" name="toggle_edge-indices" id="toggle_edge-indices" value="1" />
+							<label for="toggle_edgeindices">edge indices</label>
+						</div>
+						<div id="sliders">
+							<div id="scale_vertices"></div>
+							<div id="scale_edges"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>				
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.1/d3.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sprintf/1.0.3/sprintf.min.js"></script>
+
+		<script src="js/vendor/jquery-ui-1.12.1/jquery-ui.js"></script>
+
+		<script src="js/utilities.js"></script>
+		<script src="js/files.js"></script>
+		<script src="js/helpers.js"></script>
+		<script src="js/network.js"></script>
+		<script>
+
+// create a network
+var network = new Network({
+	'viewport': {'element': d3.select('#viewport'),
+	             'width'  : 640,
+	             'height' : 320,
+	             'padding': 36}
+});
+
+
+// listen to the file input field
+// update the network on change
+// i.e. when a file is loaded
+$('#fileinput').on('change', function(event) {
+
+	network.update_from_file(event.target.files[0]);
+	network.draw();
+
+});
+
+
+// listen to the checkboxes
+$('#toggle_vertex-keys').on('change', function(event) {
+
+	network.display_vertex_keys(this.checked);
+});
+
+
+$('#toggle_edge-indices').on('change', function(event) {
+
+	network.display_edge_indices(this.checked);
+});
+
+
+// listen to the sliders
+$('#scale_vertices').slider({
+	value : 7,
+	min   : 1,
+	max   : 20,
+	step  : 1,
+	slide : function(event, ui) {
+		
+		network.attributes['vertexsize'] = parseInt(ui.value);
+		scale_network_vertices(network);
+	}
+});
+
+		</script>
+	</body>
+</html>
