@@ -1997,7 +1997,7 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
  
      This example visualized in Rhino: 
             
-    .. image:: /_images/intersection_line_plane.*       
+    .. image:: /_images/reflect_line_plane.*       
         
     """  
     intx_pt = intersection_line_plane(line, plane, epsilon)
