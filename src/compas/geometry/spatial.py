@@ -1994,8 +1994,10 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
             
             print(polyline_projection)
  
- 
-     This example visualized in Rhino: 
+
+    Note:
+        This example visualized in Rhino: 
+
             
     .. image:: /_images/reflect_line_plane.*       
         
@@ -2059,8 +2061,10 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
             
             print(polyline)  
             
-            
-    This example visualized in Rhino: 
+
+    Note:
+        This example visualized in Rhino: 
+
             
     .. image:: /_images/reflect_line_triangle.*
 
