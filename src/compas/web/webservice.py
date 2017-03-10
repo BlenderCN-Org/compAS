@@ -16,7 +16,10 @@ __email__      = 'vanmelet@ethz.ch'
 
 __all__ = [
     'Dispatcher',
-    'list_methods_wrapper', 'method_help_wrapper', 'method_signature_wrapper',
+    'list_methods_wrapper',
+    'method_help_wrapper',
+    'method_signature_wrapper',
+    'test_connection'
 ]
 
 
@@ -64,7 +67,7 @@ For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})
         return odict
 
 
-def test():
+def test_connection():
     """Return a message containing the client's IP address."""
     return 'You have reached our server from IP {0}'.format(os.environ['REMOTE_ADDR'])
 

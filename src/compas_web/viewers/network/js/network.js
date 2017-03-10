@@ -322,6 +322,23 @@ Network.prototype.display_vertex_keys = function(display) {
 	display_network_vertex_keys(this, display);
 };
 
+
 Network.prototype.display_edge_indices = function(display) {
 	display_network_edge_indices(this, display);
+};
+
+
+Network.prototype.is_planar = function() {
+
+	var data = this.to_data();
+
+    $.ajax({
+
+    	'data': JSON.stringify(data),
+
+    }).done(function(output, status, xhr) {
+
+    	console.log(output);
+
+    });
 };
