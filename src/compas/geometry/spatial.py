@@ -1939,7 +1939,7 @@ def mirror_vector_vector(v1, v2):
     """
     return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
 
-def reflect_line_plane(line, plane):
+def reflect_line_plane(line, plane, epsilon=1e-6):
     """Reflects a line at plane.
 
     Parameters:
@@ -1958,8 +1958,51 @@ def reflect_line_plane(line, plane):
     
     Resources:
         http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
-    """   
-    intx_pt = intersection_line_plane(line, plane)
+        
+    Examples:
+
+        .. code-block:: python
+          
+            from math import pi, sin, cos
+            
+            from compas.geometry.spatial import rotate_points
+            from compas.geometry.spatial import intersection_line_plane
+            from compas.geometry.spatial import reflect_line_plane
+            
+            # planes
+            mirror_plane = [(0.0, 0.0, 0.0),(1.0, 0.0, 0.0)]
+            projection_plane = [(40.0, 0.0, 0.0),(1.0, 0.0, 0.0)]
+            
+            # initial line (starting laser ray)
+            line = [(30., 0.0, -10.0),(0.0, 0.0, 0.0)]
+            
+            dmax = 75 # steps (resolution)
+            deg = 12  # max rotation of mirror plane in degrees
+            axis_z = [0.0, 0.0, 1.0] # rotation z-axis of mirror plane
+            axis_y = [0.0, 1.0, 0.0] # rotation y-axis of mirror plane
+            
+            polyline_projection = []
+            for i in range(dmax):
+                plane_norm = rotate_points([mirror_plane[1]], axis_z, deg * pi / 180 * sin(i / dmax * 2 * pi))[0]
+                plane_norm = rotate_points([plane_norm], axis_y, deg * pi / 180 * sin(i / dmax * 4 * pi))[0]
+                reflected_line = reflect_line_plane(line, [mirror_plane[0],plane_norm])
+                if not reflected_line:
+                    continue
+                intx_pt = intersection_line_plane(reflected_line,projection_plane)
+                if intx_pt:
+                    polyline_projection.append(intx_pt)
+            
+            print(polyline_projection)
+ 
+ 
+     This example visualized in Rhino: 
+            
+    .. image:: /_images/intersection_line_plane.*       
+        
+    """  
+    intx_pt = intersection_line_plane(line, plane, epsilon)
+    if not intx_pt: 
+        return None
     vec_line = subtract_vectors(line[1], line[0])
     vec_reflect = mirror_vector_vector(vec_line, plane[1])
     if angle_smallest_vectors(plane[1], vec_reflect) > 90.:
@@ -1976,18 +2019,24 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
     Returns:
         line (tuple): The reflected line starting at the reflection point on the plane,
         None otherwise.
+       
+    Note:
+        The directions of the line and triangular face are important! The line will only be
+        reflected if it points (direction start -> end) in the direction of the triangular 
+        face and if the line intersects with the front face of the triangular face (normal 
+        direction of the face).     
         
     Examples:
 
         .. code-block:: python
     
-            # prism points
+            # tetrahedron points
             pt1 = (0.0, 0.0, 0.0)
             pt2 = (6.0, 0.0, 0.0) 
             pt3 = (3.0, 5.0, 0.0) 
             pt4 = (3.0, 2.0, 4.0)
             
-            # triangular prism faces
+            # triangular tetrahedron faces
             tris = []
             tris.append([pt4,pt2,pt1])
             tris.append([pt4,pt3,pt2])
@@ -2010,16 +2059,11 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
             
             print(polyline)  
             
+            
+    This example visualized in Rhino: 
+            
+    .. image:: /_images/reflect_line_triangle.*
 
-    .. image:: /_images/gif_reflection_01.*
-
-
-    Note:
-        The directions of the line and triangular face are important! The line will only be
-        reflected if it points (direction start -> end) in the direction of the triangular 
-        face and if the line intersects with the front face of the triangular face (normal 
-        direction of the face). 
-    
     """   
     intx_pt = intersection_line_triangle(line, triangle, epsilon)
     if not intx_pt:
