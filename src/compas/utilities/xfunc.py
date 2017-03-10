@@ -13,7 +13,7 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['XFuncIO']
+__all__ = ['XFunc']
 
 
 WRAPPER = """
@@ -94,7 +94,7 @@ with open(opath, 'wb+') as fp:
 #     return decorator
 
 
-def _xecuteio(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
+def _xecute(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
     """Execute a function with optional positional and named arguments.
 
     Parameters:
@@ -172,7 +172,7 @@ def _xecuteio(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
     return odict
 
 
-class XFuncIO(object):
+class XFunc(object):
     """"""
     
     def __init__(self, basedir='.', tmpdir='.', delete_files=True, mode=0):
@@ -211,13 +211,13 @@ class XFuncIO(object):
         self._tmpdir = tmpdir
 
     def __call__(self, funcname, *args, **kwargs):
-        odict = _xecuteio(funcname,
-                          self.basedir,
-                          self.tmpdir,
-                          self.delete_files,
-                          self.mode,
-                          *args,
-                          **kwargs)
+        odict = _xecute(funcname,
+                        self.basedir,
+                        self.tmpdir,
+                        self.delete_files,
+                        self.mode,
+                        *args,
+                        **kwargs)
 
         self.data       = odict['data']
         self.profile    = odict['profile']
@@ -231,7 +231,7 @@ class XFuncIO(object):
 
 if __name__ == '__main__':
 
-    xfunc = XFuncIO(mode=1)
+    xfunc = XFunc(mode=1)
 
     xfname = 'compas.utilities.animation.test'
 
