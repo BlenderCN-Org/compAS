@@ -7,10 +7,11 @@ from math import fabs
 from math import cos
 from math import sin
 
+
 from compas.geometry.utilities import multiply_matrix_vector
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Matthias Rippmann <rippmann@ethz.ch>']
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
@@ -96,6 +97,9 @@ __all__ = [
 
     'intersection_lines',
     'intersection_planes',
+
+    'offset_line',
+    'offset_polygon',
 
     'translate_points',
     'translate_lines',
@@ -1843,6 +1847,44 @@ def translate_lines(lines, vector):
     eps = translate_points(eps, vector)
     return zip(sps, eps)
 
+
+def offset_line(line, distances, normal=[0. ,0. ,1.]):
+    pt1, pt2 = line[1], line[0]
+    vec = subtract_vectors(pt2, pt1)
+    dir_vec = normalize_vector(cross_vectors(vec, normal))
+    vec_pt1 = scale_vector(dir_vec, distances[0])
+    vec_pt2 = scale_vector(dir_vec, distances[1])
+    pt1_new = add_vectors(pt1, vec_pt1)
+    pt2_new = add_vectors(pt2, vec_pt2)
+    return pt1_new, pt2_new
+
+def offset_polygon(polygon, distance, distances_lines=None):
+    
+    normal = normal_polygon(polygon)
+    
+    distances = []
+    if not distances_lines:
+        distances = [[distance, distance]] * len(polygon)
+    else:
+        distances = distances_lines
+         
+    
+    lines = [polygon[i:i+2] for i in xrange(len(polygon[:-1]))]
+    lines_offset = []
+    for i, line in enumerate(lines):
+        lines_offset.append(offset_line(line, distances[i], normal))
+
+    polygon_offset = []
+    for i in xrange(len(lines_offset)):
+        intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i-1], lines_offset[i])
+        if intx_pt1 and intx_pt2:
+            polygon_offset.append(centroid_points([intx_pt1, intx_pt2]))
+        else:
+            polygon_offset.append(lines_offset[i][1])
+    
+    polygon_offset.append(polygon_offset[0])
+    return polygon_offset
+            
 
 # ------------------------------------------------------------------------------
 # rotate

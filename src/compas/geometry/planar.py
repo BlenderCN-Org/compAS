@@ -12,7 +12,7 @@ from math import cos
 from compas.geometry.utilities import multiply_matrix_vector
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Matthias Rippmann <rippmann@ethz.ch>']
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
