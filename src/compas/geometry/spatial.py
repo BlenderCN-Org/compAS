@@ -1729,6 +1729,7 @@ def intersection_line_plane(line, plane, epsilon=1e-6):
     Parameters:
         line (tuple): Two points defining the line.
         plane (tuple): The base point and normal defining the plane.
+        
     Returns:
         point (tuple) if the line (ray) intersects with the plane, None otherwise.
 
@@ -1756,6 +1757,7 @@ def intersection_segment_plane(segment, plane, epsilon=1e-6):
     Parameters:
         segment (tuple): Two points defining the line segment.
         plane (tuple): The base point and normal defining the plane.
+        
     Returns:
         point (tuple) if the line segment intersects with the plane, None otherwise.
 
@@ -1785,6 +1787,7 @@ def intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     Parameters:
         plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
         plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+        
     Returns:
         line (tuple): Two points defining the intersection line. None if planes are parallel.
 
@@ -1807,6 +1810,7 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, epsilon=1e-6):
     Parameters:
         plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
         plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+        
     Returns:
         point (tuple): The intersection point. None if two (or all three) planes are parallel.
 
@@ -1848,26 +1852,106 @@ def translate_lines(lines, vector):
     return zip(sps, eps)
 
 
-def offset_line(line, distances, normal=[0. ,0. ,1.]):
-    pt1, pt2 = line[1], line[0]
-    vec = subtract_vectors(pt2, pt1)
+def offset_line(line, distance, normal=[0. ,0. ,1.]):
+    """Offset a line by a distance
+
+    Parameters:
+        line (tuple): Two points defining the line.
+        distances (float or tuples of floats): The offset distance as float.
+            A single value determines a constant offset. Alternatively, two
+            offset values for the start and end point of the line can be used to 
+            a create variable offset.
+        normal (tuple): The normal of the offset plane.
+        
+    Returns:
+        offset line (tuple): Two points defining the offset line.
+    
+    Examples:
+
+        .. code-block:: python
+
+            line = [(0.0, 0.0, 0.0), (3.0, 3.0, 0.0)]
+            
+            distance = 0.2 # constant offset
+            line_offset = offset_line(line, distance)
+            print(line_offset)
+            
+            distance = [0.2, 0.1] # variable offset
+            line_offset = offset_line(line, distance)
+            print(line_offset)
+            
+    """
+    pt1, pt2 = line[0], line[1]
+    vec = subtract_vectors(pt1, pt2)
     dir_vec = normalize_vector(cross_vectors(vec, normal))
+    if isinstance(distance, list):
+        distances = distance
+    else:
+        distances = [distance, distance] 
+        
+    print(distances)
     vec_pt1 = scale_vector(dir_vec, distances[0])
     vec_pt2 = scale_vector(dir_vec, distances[1])
     pt1_new = add_vectors(pt1, vec_pt1)
     pt2_new = add_vectors(pt2, vec_pt2)
     return pt1_new, pt2_new
 
-def offset_polygon(polygon, distance, distances_lines=None):
+def offset_polygon(polygon, distance):
+    """Offset a polygon (closed) by a distance.
+
+    Parameters:
+        polygon (sequence of sequence of floats): The XYZ coordinates of the
+            corners of the polygon. The first and last coordinates must be identical.
+        distance (float or list of tuples of floats): The offset distance as float.
+            A single value determines a constant offset globally. Alternatively, pairs of local
+            offset values per line segment can be used to create variable offsets.
+            Distance > 0: offset to the outside, distance < 0: offset to the inside
+            
+    Returns:
+        offset polygon (sequence of sequence of floats): The XYZ coordinates of the
+            corners of the offset polygon. The first and last coordinates are identical.
     
+    
+    Note:
+        The offset direction is determined by the normal of the polygon. The 
+        algorithm works also for spatial polygons that do not perfectly fit a plane.
+        
+    Examples:
+
+        .. code-block:: python
+
+            polygon = [
+                (0.0, 0.0, 0.0),
+                (3.0, 0.0, 1.0),
+                (3.0, 3.0, 2.0),
+                (1.5, 1.5, 2.0),
+                (0.0, 3.0, 1.0),
+                (0.0, 0.0, 0.0)
+                ]
+            
+            distance = 0.5 # constant offset
+            polygon_offset = offset_polygon(polygon, distance)
+            print(polygon_offset)
+            
+            distance = [
+                (0.1, 0.2), 
+                (0.2, 0.3), 
+                (0.3, 0.4), 
+                (0.4, 0.3), 
+                (0.3, 0.1)
+                ] # variable offset
+            polygon_offset = offset_polygon(polygon, distance)
+            print(polygon_offset)
+
+    """
     normal = normal_polygon(polygon)
     
-    distances = []
-    if not distances_lines:
-        distances = [[distance, distance]] * len(polygon)
+    if isinstance(distance, list):
+        distances = distance
+        if len(distances) < len(polygon):
+            distances = distances + [distances[-1]] * (len(polygon) - len(distances) - 1)
     else:
-        distances = distances_lines
-         
+        distances = [[distance, distance]] * len(polygon)
     
     lines = [polygon[i:i+2] for i in xrange(len(polygon[:-1]))]
     lines_offset = []
@@ -1880,7 +1964,7 @@ def offset_polygon(polygon, distance, distances_lines=None):
         if intx_pt1 and intx_pt2:
             polygon_offset.append(centroid_points([intx_pt1, intx_pt2]))
         else:
-            polygon_offset.append(lines_offset[i][1])
+            polygon_offset.append(lines_offset[i][0])
     
     polygon_offset.append(polygon_offset[0])
     return polygon_offset
