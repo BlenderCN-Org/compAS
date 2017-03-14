@@ -1,3 +1,6 @@
+"use strict";
+
+
 function OBJ(text) {
     this.text = text;
 

@@ -5,21 +5,19 @@
  *
  * @constructor
  */
-function Network(attributes) {
+function Network(config) {
 
 	this._max_int_key = -1;
 	this._max_int_fkey = -1;
 
 	/** @member {Object} - Miscellaneous attributes of the network. */
 	this.attributes = {
-		'name'      : 'Network',
-		'viewport'  : _.get(attributes, 'viewport', {}),
-		'vertexsize': 7
+		'name'       : _.get(config, 'name', 'Network'),
+		'viewport'   : _.get(config, 'viewport', {}),
+		'vertexsize' : _.get(config, 'vertexsize', 5),
+		'vertexcolor': _.get(config, 'vertexcolor', {})
 	};
 
-	/** @member {Object} - Configuation settings of the network. */
-	this.settings = {};
-	
 	/** @member {Object} - Default attributes of all vertices. */
 	this.default_vertex_attributes = {'x': 0.0, 'y': 0.0};
 
@@ -46,6 +44,25 @@ function Network(attributes) {
 /**
  *
  */
+Network.prototype.to_data = function() {
+	return {
+		'_max_in_key'               : this._max_int_key,
+		'_max_in_fkey'              : this._max_int_fkey,
+		'attributes'                : this.attributes,
+		'default_vertex_attributes' : this.default_vertex_attributes,
+		'default_edge_attributes'   : this.default_edge_attributes,
+		'default_face_attributes'   : this.default_face_attributes,
+		'vertex'                    : this.vertex,
+		'edge'                      : this.edge,
+		'face'                      : this.face,
+		'halfedge'                  : this.halfedge
+	};
+};
+
+
+/**
+ *
+ */
 Network.prototype.clear = function() {
 	this.vertex = {};
 	this.edge = {};
@@ -60,6 +77,8 @@ Network.prototype.clear = function() {
 Network.prototype.update_from_file = function(file) {
 
 	var type, reader;
+	var height = this.attributes['viewport']['height'];
+
 	var self = this;
 
     if (! file) {
@@ -77,7 +96,7 @@ Network.prototype.update_from_file = function(file) {
             case 'obj':
 
             	var obj, data;
-            	var index, xyz;
+            	var index, key, xyz;
                 var u, v;
                 
 			    self.clear();
@@ -101,6 +120,50 @@ Network.prototype.update_from_file = function(file) {
 
                 	self.add_edge(u, v);
                 }
+
+                // this is a bit of a hack
+			    // y = self.y();
+
+			    // ymin = d3.min(y);
+			    // ymax = d3.max(y);
+
+			    // for (key in self.vertex) {
+
+			    // 	self.vertex[key]['y'] = -self.vertex[key]['y'] + (ymin + ymax);
+			    // }
+			    // -----------------------
+
+			    // this is another hack
+			    var scale;
+
+			    var x = self.x();
+			    var y = self.y();
+
+			    var xmin = d3.min(x);
+			    var xmax = d3.max(x);
+			    var ymin = d3.min(y);
+			    var ymax = d3.max(y);
+
+			    var width = self.attributes['viewport']['width'];
+			    var height = self.attributes['viewport']['height'];
+			    var padding = self.attributes['viewport']['padding'];
+
+			    var xspan = xmax - xmin;
+			    var yspan = ymax - ymin;
+
+			    if (xspan / width > yspan / height) {
+			        scale = (width - 2 * padding) / xspan;
+			    }
+			    else {
+			        scale = (height - 2 * padding) / yspan;
+			    }
+
+			    for (key in self.vertex) {
+
+			        self.vertex[key]['x'] = (self.vertex[key]['x'] - xmin) * scale + padding;
+			        self.vertex[key]['y'] = height + ((ymin - self.vertex[key]['y']) * scale - padding);
+			    }
+			    // --------------------
 
                 self.draw();
 
@@ -247,6 +310,12 @@ Network.prototype.neighbours = function(key) {
 };
 
 
+Network.prototype.is_leaf = function(key) {
+
+	return this.neighbours(key).length == 1;
+};
+
+
 Network.prototype.connected_edges = function(key) {
 	var edges = [];
 	var nbrs = this.neighbours(key);
@@ -328,17 +397,194 @@ Network.prototype.display_edge_indices = function(display) {
 };
 
 
+/**
+ * Wrapper for call to WebService function.
+ *
+ */
 Network.prototype.is_planar = function() {
 
-	var data = this.to_data();
+	var idict = {
+		'function': 'is_planar',
+		'args'    : [this.to_data()],
+		'kwargs'  : {}
+	};
 
     $.ajax({
+    
+    	data: JSON.stringify(idict)
 
-    	'data': JSON.stringify(data),
+    }).done(function(odict) {
 
-    }).done(function(output, status, xhr) {
+    	console.log(odict);
 
-    	console.log(output);
+    	if ('error' in odict && 'data' in odict) {
+
+    		if (odict['error']) {
+    			alert(odict['error']);
+    		}
+    		else {
+    			alert(odict['data']);
+    		}
+    	}
 
     });
+};
+
+
+/**
+ *
+ */
+Network.prototype.shortest_path = function() {
+
+	alert('Sorry, not implemented yet...');
+};
+
+
+/**
+ *
+ */
+Network.prototype.dijkstra_path = function() {
+
+	alert('Sorry, not implemented yet...');
+};
+
+
+/**
+ *
+ */
+Network.prototype.vertex_coloring = function() {
+
+	var idict = {
+		'function': 'vertex_coloring',
+		'args'    : [this.to_data()],
+		'kwargs'  : {}
+	};
+	var self = this;
+
+    $.ajax({
+    
+    	data: JSON.stringify(idict)
+
+    }).done(function(odict) {
+
+    	var key;
+    	var color;
+    	var colors = [
+    		tinycolor('red'),
+    		tinycolor('green'),
+    		tinycolor('blue'),
+    		tinycolor('yellow'),
+    		tinycolor('cyan'),
+    	];
+
+    	console.log(odict);
+
+    	if ('error' in odict && 'data' in odict) {
+
+    		if (odict['error']) {
+    			alert(odict['error']);
+    		}
+    		else {
+
+    			for (key in odict['data']) {
+    				color = odict['data'][key];
+
+    				set_network_vertex_color(self, key, colors[color]);
+    			}
+    		}
+    	}
+
+    });
+};
+
+
+/**
+ *
+ */
+Network.prototype.smooth = function() {
+
+	alert('Sorry, not implemented yet...');
+};
+
+
+/**
+ *
+ */
+Network.prototype.forcelayout = function() {
+
+	var svg;
+	var force;
+
+	var index, key, u, v, node, link;
+
+    var name     = this.attributes['name'];
+    var viewport = this.attributes['viewport']['element'];
+	var width    = this.attributes['viewport']['width'];
+	var height   = this.attributes['viewport']['height'];
+
+	var nodes = [];
+	var links = [];
+
+	var key_index = {};
+
+    var vertices = network.vertices();
+
+    var svg = viewport.select('#' + name);
+    var circles = svg.selectAll('.vertex');
+    var lines = svg.selectAll('.edge');
+
+	index = 0;
+
+	for (key in this.vertex) {
+		nodes.push({
+			'x'  : this.vertex[key]['x'],
+			'y'  : this.vertex[key]['y'],
+			'key': key,
+		});
+
+		key_index[key] = index;
+
+		index = index + 1;
+	}
+
+	for (u in this.edge) {
+		for (v in this.edge[u]) {
+			links.push({
+				'source': key_index[u],
+				'target': key_index[v],
+				'u'     : u,
+				'v'     : v
+			});
+		}
+	}
+
+	force = d3.layout.force()
+		.size([width, height])
+		.nodes(nodes)
+		.links(links);
+
+	// force.linkDistance(...);
+
+	force.on('end', function() {
+
+		for (index in nodes) {
+			node = nodes[index];
+
+			d3.select('#' + name + '_vertex_' + node['key'])
+				.attr('x', node['x'])
+				.attr('y', node['y']);
+		}
+
+		for (index in edges) {
+			edge = edges[index];
+
+			d3.select('#' + name + '_edge_' + edge['u'] + '-' + edge['v'])
+				.attr('x1', edge['source']['x'])
+				.attr('y1', edge['source']['y'])
+				.attr('x2', edge['target']['x'])
+				.attr('y2', edge['target']['y']);
+		}
+	});
+
+	force.start();
 };
