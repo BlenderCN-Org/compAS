@@ -947,31 +947,67 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
 
-    def get_attribute(self, name, default):
-        return self.attributes.get(name, default)
-
-    def update_default_vertex_attributes(self, attr_dict=None, **kwargs):
+    def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
         if not attr_dict:
             attr_dict = {}
-        attr_dict.update(kwargs)
+        attr_dict.update(kwattr)
         self.default_vertex_attributes.update(attr_dict)
         for key in self.vertex:
             attr = attr_dict.copy()
             attr.update(self.vertex[key])
             self.vertex[key] = attr
 
+    def set_vertex_attribute(self, key, name, value):
+        self.vertex[key][name] = value
+
+    def set_vertex_attributes(self, key, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        self.vertex[key].update(attr_dict)
+
+    def set_vertices_attribute(self, name, value, keys=None):
+        if not keys:
+            for key, attr in self.vertices_iter(True):
+                attr[name] = value
+        else:
+            for key in keys:
+                self.vertex[key][name] = value
+
+    def set_vertices_attributes(self, keys=None, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        if not keys:
+            for key, attr in self.vertices_iter(True):
+                attr.update(attr_dict)
+        else:
+            for key in keys:
+                self.vertex[key].update(attr_dict)
+
     def get_vertex_attribute(self, key, name, default=None):
         return self.vertex[key].get(name, default)
 
-    def get_vertex_attributes(self, key, names, default=None):
-        attr = self.vertex[key]
-        return [attr.get(name, default) for name in names]
+    def get_vertex_attributes(self, key, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        return [self.vertex[key].get(name, default) for name, default in zip(names, defaults)]
 
-    def get_vertices_attribute(self, name, default=None):
-        return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+    def get_vertices_attribute(self, name, default=None, keys=None):
+        if not keys:
+            return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+        return [self.vertex[key].get(name, default) for key in keys]
 
-    def get_vertices_attributes(self, names, default=None):
-        return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
+    def get_vertices_attributes(self, names, defaults=None, keys=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        temp = zip(names, defaults)
+        if not keys:
+            return [[attr.get(name, default) for name, default in temp] for key, attr in self.vertices_iter(True)]
+        return [[self.vertex[key].get(name, default) for name, default in temp] for key in keys]
+
+    # ==========================================================================
+    # face attributes
+    # need further updating!!
+    # ==========================================================================
 
     def update_default_face_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:

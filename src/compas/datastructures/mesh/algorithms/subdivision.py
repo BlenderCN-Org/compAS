@@ -161,6 +161,36 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
 
     Examples:
 
+        .. plot::
+            :include-source:
+
+            from compas.datastructures.mesh import Mesh
+            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+
+            vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+            faces = [[0, 1, 2, 3], ]
+
+            mesh = Mesh.from_vertices_and_faces(vertices, faces)
+            subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=mesh.vertices())
+
+            subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
+
+
+        .. plot::
+            :include-source:
+
+            from compas.datastructures.mesh import Mesh
+            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+
+            vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+            faces = [[0, 1, 2, 3], ]
+
+            mesh = Mesh.from_vertices_and_faces(vertices, faces)
+            subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=None)
+
+            subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
+
+
         .. code-block:: python
 
             from compas.datastructures.mesh import Mesh
@@ -553,29 +583,28 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
-    import compas
     from compas.datastructures.mesh import Mesh
 
-    # vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-    # faces = [[0, 1, 2, 3], ]
+    vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+    faces = [[0, 1, 2, 3], ]
 
-    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    # subd = subdivide_mesh_catmullclark(mesh, k=1, fixed=mesh.vertices())
+    subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=None)
 
-    # subd.plot(vertexlabel={key: key for key in subd})
+    subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
 
-    from compas.geometry.elements.polyhedron import Polyhedron
-    from compas.datastructures.mesh.viewer import SubdMeshViewer
+    # from compas.geometry.elements.polyhedron import Polyhedron
+    # from compas.datastructures.mesh.viewer import SubdMeshViewer
 
-    cube = Polyhedron.generate(6)
+    # cube = Polyhedron.generate(6)
 
-    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+    # mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+    # viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
 
-    viewer.axes_on = False
-    viewer.grid_on = False
+    # viewer.axes_on = False
+    # viewer.grid_on = False
 
-    viewer.setup()
-    viewer.show()
+    # viewer.setup()
+    # viewer.show()
