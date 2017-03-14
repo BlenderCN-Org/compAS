@@ -2034,28 +2034,29 @@ def orient_points(points, reference_plane=None, target_plane=None):
         .. code-block:: python
           
             
-        
-            reference_plane = [(1.0, 1.0, 1.0),(1.0, 1.0, 1.0)]
-            line_a = [ 
-                (0.288675,0.288675,1.1547) 
-                (0.0773503,1.07735,0.57735)
-                ] 
-            line_b = [     
-                (1.07735,0.0773503,0.57735), 
-                (0.866025,0.866025, 0.)
-                ]
-
+            reference_plane = [(0.57735,0.57735,0.57735),(1.0, 1.0, 1.0)]
             
+            line_a = [ 
+                (0.288675,0.288675,1.1547),
+                (0.866025,0.866025, 0.)
+                ] 
+            
+            line_b = [     
+                (1.07735,0.0773503,0.57735),
+                (0.0773503,1.07735,0.57735)
+                ]
+                
+            # orient lines to lie in the xy-plane
             line_a_xy = orient_points(line_a, reference_plane)
             line_b_xy = orient_points(line_b, reference_plane)
             
+            # compute intersection in 2d in the xy-plane
             intx_point_xy = intersection_segment_segment_2d(line_a_xy, line_b_xy)
-        
-            intx_point = orient_points([point], target_plane=reference_plane)
             
+            # re-orient resulting intersection point to lie in the reference plane
+            intx_point = orient_points([intx_point_xy], target_plane=reference_plane)[0]
             print(intx_point)
-             
-        
+
     """
     
     if not target_plane:
