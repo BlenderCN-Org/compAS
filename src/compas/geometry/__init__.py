@@ -176,6 +176,7 @@ intersections
     intersection_plane_plane_plane
     intersection_lines
     intersection_planes
+    
 
 transformations
 ---------------
@@ -198,7 +199,9 @@ transformations
     project_points_plane
     project_point_line
     project_points_line
-
+    offset_line
+    offset_polygon
+    
 
 planar
 ======================================
