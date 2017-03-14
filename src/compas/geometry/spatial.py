@@ -2034,6 +2034,7 @@ def orient_points(points, reference_plane=None, target_plane=None):
         .. code-block:: python
           
             
+        
             reference_plane = [(1.0, 1.0, 1.0),(1.0, 1.0, 1.0)]
             line_a = [ 
                 (0.288675,0.288675,1.1547) 
