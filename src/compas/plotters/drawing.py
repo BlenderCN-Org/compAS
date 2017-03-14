@@ -212,7 +212,7 @@ def draw_xpoints_2d(points, axes):
         facecolor.append(fcolor)
         edgecolor.append(ecolor)
         linewidth.append(lwidth)
-        if text:
+        if text is not None:
             axes.text(
                 pos[0] - 0.01,
                 pos[1] - 0.01,

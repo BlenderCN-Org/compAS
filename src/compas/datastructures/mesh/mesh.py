@@ -295,8 +295,8 @@ mesh summary
         edge         = data.get('edge')
         _vkey        = data.get('vkey', 0)
         _fkey        = data.get('fkey', 0)
-        max_int_key  = data.get('max_int_key') or _vkey - 1
-        max_int_fkey = data.get('max_int_fkey') or _fkey - 1
+        max_int_key  = data.get('max_int_key', _vkey - 1)
+        max_int_fkey = data.get('max_int_fkey', _fkey - 1)
 
         if not vertex or not halfedge or not face:
             return
@@ -530,11 +530,11 @@ mesh summary
 
     @classmethod
     def from_lines(cls, lines, boundary_face=False, precision='3f'):
-        
+        """"""
         from compas.datastructures.network.algorithms.duality import _sort_neighbours
         from compas.datastructures.network.algorithms.duality import _find_first_neighbour
         from compas.datastructures.network.algorithms.duality import _find_edge_face
-        
+
         mesh = cls()
         edges   = []
         vertex  = {}
@@ -550,30 +550,30 @@ mesh summary
         for key, xyz in vertex.iteritems():
             i = key_index[key]
             mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
-        edges_uv = []    
+        edges_uv = []
         for u, v in edges:
             i = key_index[u]
             j = key_index[v]
             edges_uv.append((i, j))
-        #the clear commands below are from the network equivalent. Needed?  
-        #network.clear_facedict()
-        #network.clear_halfedgedict()
+        # the clear commands below are from the network equivalent. Needed?
+        # network.clear_facedict()
+        # network.clear_halfedgedict()
         mesh.halfedge = dict((key, {}) for key in mesh.vertex)
         for u, v in edges_uv:
             mesh.halfedge[u][v] = None
             mesh.halfedge[v][u] = None
         _sort_neighbours(mesh)
-         
+
         u = sorted(mesh.vertices_iter(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
         v = _find_first_neighbour(u, mesh)
         key_boundary_face = _find_edge_face(u, v, mesh)
-        print (key_boundary_face) 
+        print(key_boundary_face)
         for u, v in mesh.edges_iter():
             if mesh.halfedge[u][v] is None:
                 _find_edge_face(u, v, mesh)
             if mesh.halfedge[v][u] is None:
                 _find_edge_face(v, u, mesh)
-     
+
         if not boundary_face:
             mesh.delete_face(key_boundary_face)
         return mesh
@@ -704,7 +704,6 @@ mesh summary
                     ixs.append('{0}'.format(vkey))
                 fh.write(' '.join(ixs) + '\n')
 
-
     def to_json(self, filepath):
         """Serialize the mesh data to a JSON file.
 
@@ -729,7 +728,7 @@ mesh summary
 #             vertices = self.face_vertices(fkey)
 #             mesh.add_face(vertices, fkey=fkey)
 #         return mesh
-# 
+
 #     # only valid for poly
 #     def to_quadmesh(self):
 #         from quad import QuadMesh
@@ -762,6 +761,32 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
+
+    def _get_vertexkey(self, key):
+        if key is None:
+            key = self._max_int_key = self._max_int_key + 1
+        else:
+            try:
+                int(key)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if int(key) > self._max_int_key:
+                    self._max_int_key = int(key)
+        return key
+
+    def _get_facekey(self, fkey):
+        if fkey is None:
+            fkey = self._max_int_fkey = self._max_int_fkey + 1
+        else:
+            try:
+                int(fkey)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if int(fkey) > self._max_int_fkey:
+                    self._max_int_fkey = int(fkey)
+        return fkey
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
         """Add a single vertex.
@@ -797,16 +822,7 @@ mesh summary
         if attr_dict:
             attr.update(attr_dict)
         attr.update(kwattr)
-        if key is None:
-            key = self._max_int_key = self._max_int_key + 1
-        else:
-            try:
-                int(key)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if int(key) > self._max_int_key:
-                    self._max_int_key = int(key)
+        key = self._get_vertexkey(key)
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
@@ -848,16 +864,7 @@ mesh summary
         if len(vertices) < 3:
             return
         # get the correct face key
-        if fkey is None:
-            fkey = self._max_int_fkey = self._max_int_fkey + 1
-        else:
-            try:
-                int(fkey)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if int(fkey) > self._max_int_fkey:
-                    self._max_int_fkey = int(fkey)
+        fkey = self._get_facekey(fkey)
         self.face[fkey] = {}
         for i in range(-1, len(vertices) - 1):
             u = vertices[i]
@@ -940,31 +947,67 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
 
-    def get_attribute(self, name, default):
-        return self.attributes.get(name, default)
-
-    def update_default_vertex_attributes(self, attr_dict=None, **kwargs):
+    def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
         if not attr_dict:
             attr_dict = {}
-        attr_dict.update(kwargs)
+        attr_dict.update(kwattr)
         self.default_vertex_attributes.update(attr_dict)
         for key in self.vertex:
             attr = attr_dict.copy()
             attr.update(self.vertex[key])
             self.vertex[key] = attr
 
+    def set_vertex_attribute(self, key, name, value):
+        self.vertex[key][name] = value
+
+    def set_vertex_attributes(self, key, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        self.vertex[key].update(attr_dict)
+
+    def set_vertices_attribute(self, name, value, keys=None):
+        if not keys:
+            for key, attr in self.vertices_iter(True):
+                attr[name] = value
+        else:
+            for key in keys:
+                self.vertex[key][name] = value
+
+    def set_vertices_attributes(self, keys=None, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        if not keys:
+            for key, attr in self.vertices_iter(True):
+                attr.update(attr_dict)
+        else:
+            for key in keys:
+                self.vertex[key].update(attr_dict)
+
     def get_vertex_attribute(self, key, name, default=None):
         return self.vertex[key].get(name, default)
 
-    def get_vertex_attributes(self, key, names, default=None):
-        attr = self.vertex[key]
-        return [attr.get(name, default) for name in names]
+    def get_vertex_attributes(self, key, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        return [self.vertex[key].get(name, default) for name, default in zip(names, defaults)]
 
-    def get_vertices_attribute(self, name, default=None):
-        return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+    def get_vertices_attribute(self, name, default=None, keys=None):
+        if not keys:
+            return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+        return [self.vertex[key].get(name, default) for key in keys]
 
-    def get_vertices_attributes(self, names, default=None):
-        return [[attr.get(name, default) for name in names] for key, attr in self.vertices_iter(True)]
+    def get_vertices_attributes(self, names, defaults=None, keys=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        temp = zip(names, defaults)
+        if not keys:
+            return [[attr.get(name, default) for name, default in temp] for key, attr in self.vertices_iter(True)]
+        return [[self.vertex[key].get(name, default) for name, default in temp] for key in keys]
+
+    # ==========================================================================
+    # face attributes
+    # need further updating!!
+    # ==========================================================================
 
     def update_default_face_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:

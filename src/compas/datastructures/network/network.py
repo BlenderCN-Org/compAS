@@ -260,10 +260,10 @@ network: {0}
         halfedge     = rdata.get('halfedge') or {}
         face         = rdata.get('face') or {}
         facedata     = rdata.get('facedata') or {}
-        vcount       = rdata.get('vcount') or 0
-        fcount       = rdata.get('fcount') or 0
-        max_int_key  = rdata.get('max_int_key') or vcount - 1
-        max_int_fkey = rdata.get('max_int_fkey') or fcount - 1
+        vcount       = rdata.get('vcount', 0)
+        fcount       = rdata.get('fcount', 0)
+        max_int_key  = rdata.get('max_int_key', vcount - 1)
+        max_int_fkey = rdata.get('max_int_fkey', fcount - 1)
 
         if not vertex or not edge or not halfedge:
             return
@@ -1284,7 +1284,7 @@ if __name__ == '__main__':
 
     import compas
 
-    network = Network.from_obj(compas.get_data('lines.obj'))
+    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     # network.to_json('lines.json')
     # network = Network.from_json('lines.json')

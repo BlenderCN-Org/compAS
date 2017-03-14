@@ -161,6 +161,36 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
 
     Examples:
 
+        .. plot::
+            :include-source:
+
+            from compas.datastructures.mesh import Mesh
+            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+
+            vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+            faces = [[0, 1, 2, 3], ]
+
+            mesh = Mesh.from_vertices_and_faces(vertices, faces)
+            subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=mesh.vertices())
+
+            subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
+
+
+        .. plot::
+            :include-source:
+
+            from compas.datastructures.mesh import Mesh
+            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+
+            vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+            faces = [[0, 1, 2, 3], ]
+
+            mesh = Mesh.from_vertices_and_faces(vertices, faces)
+            subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=None)
+
+            subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
+
+
         .. code-block:: python
 
             from compas.datastructures.mesh import Mesh
@@ -202,7 +232,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
         bkey_edgepoints = {}
         keys            = subd.vertices()
         key_fkeys       = dict((key, subd.vertex_faces(key)) for key in keys)
-        fkey_vertices   = dict((fkey, subd.face_vertices(fkey, ordered=True)) for fkey in subd.faces())
+        fkey_vertices   = dict((fkey, subd.face_vertices(fkey, ordered=True)) for fkey in subd.face)
         fkey_centroid   = dict((fkey, subd.face_centroid(fkey)) for fkey in subd.face)
 
         # ----------------------------------------------------------------------
@@ -233,12 +263,13 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
             edgepoints.append(w)
 
         for fkey in subd.faces():
+            face = subd.face[fkey]
+            rface = dict((j, i) for i, j in face.items())
             x, y, z = fkey_centroid[fkey]
             c = subd.add_vertex(x=x, y=y, z=z)
             for key in fkey_vertices[fkey]:
-                rface = dict((j, i) for i, j in subd.face[fkey].items())
                 a = rface[key]
-                d = subd.face[fkey][key]
+                d = face[key]
                 subd.add_face([a, key, d, c])
             del subd.face[fkey]
         # ----------------------------------------------------------------------
@@ -437,7 +468,7 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
             subd.vertex[key]['z'] = xyz[2]
 
         for u, v in subd.edges():
-            w = split_edge_mesh(subd, u, v)
+            w = split_edge_mesh(subd, u, v, allow_boundary=True)
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w
             v1 = key_xyz[u]
@@ -463,87 +494,87 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
     return subd
 
 
-# this was used as a basis for the implementation of doo-sabin
-# and the update of catmull-clark
-# don't use this for anything other then an example...
-# this implementation assumes the mesh is closed
-# when extraordinary vertices exist in the control mesh, any subd mesh has gas faces with more than 4 vertices
-def subdivide_quadmesh_quad(mesh, k=1):
-    """Subdivide a quad mesh using the quad algorithm.
-    """
-    c1 = 3. / 16.
-    c2 = 9. / 16.
-    c3 = 3. / 16.
-    c4 = 1. / 16.
+# # this was used as a basis for the implementation of doo-sabin
+# # and the update of catmull-clark
+# # don't use this for anything other then an example...
+# # this implementation assumes the mesh is closed
+# # when extraordinary vertices exist in the control mesh, any subd mesh has gas faces with more than 4 vertices
+# def subdivide_quadmesh_quad(mesh, k=1):
+#     """Subdivide a quad mesh using the quad algorithm.
+#     """
+#     c1 = 3. / 16.
+#     c2 = 9. / 16.
+#     c3 = 3. / 16.
+#     c4 = 1. / 16.
 
-    cls = type(mesh)
+#     cls = type(mesh)
 
-    for _ in range(k):
-        old_xyz = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
-        fkey_old_new = dict((fkey, {}) for fkey in mesh.face)
-        subd = cls()
+#     for _ in range(k):
+#         old_xyz = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
+#         fkey_old_new = dict((fkey, {}) for fkey in mesh.face)
+#         subd = cls()
 
-        for fkey in mesh.face:
-            vertices = mesh.face_vertices(fkey, ordered=True)
-            if len(vertices) != 4:
-                raise BRGMeshAlgorithmError
-            o1 = old_xyz[vertices[0]]
-            o2 = old_xyz[vertices[1]]
-            o3 = old_xyz[vertices[2]]
-            o4 = old_xyz[vertices[3]]
-            n1 = [c1 * o4[i] + c2 * o1[i] + c3 * o2[i] + c4 * o3[i] for i in range(3)]
-            n2 = [c1 * o1[i] + c2 * o2[i] + c3 * o3[i] + c4 * o4[i] for i in range(3)]
-            n3 = [c1 * o2[i] + c2 * o3[i] + c3 * o4[i] + c4 * o1[i] for i in range(3)]
-            n4 = [c1 * o3[i] + c2 * o4[i] + c3 * o1[i] + c4 * o2[i] for i in range(3)]
-            a = subd.add_vertex(x=n1[0], y=n1[1], z=n1[2])
-            b = subd.add_vertex(x=n2[0], y=n2[1], z=n2[2])
-            c = subd.add_vertex(x=n3[0], y=n3[1], z=n3[2])
-            d = subd.add_vertex(x=n4[0], y=n4[1], z=n4[2])
-            fkey_old_new[fkey][vertices[0]] = a
-            fkey_old_new[fkey][vertices[1]] = b
-            fkey_old_new[fkey][vertices[2]] = c
-            fkey_old_new[fkey][vertices[3]] = d
+#         for fkey in mesh.face:
+#             vertices = mesh.face_vertices(fkey, ordered=True)
+#             if len(vertices) != 4:
+#                 raise BRGMeshAlgorithmError
+#             o1 = old_xyz[vertices[0]]
+#             o2 = old_xyz[vertices[1]]
+#             o3 = old_xyz[vertices[2]]
+#             o4 = old_xyz[vertices[3]]
+#             n1 = [c1 * o4[i] + c2 * o1[i] + c3 * o2[i] + c4 * o3[i] for i in range(3)]
+#             n2 = [c1 * o1[i] + c2 * o2[i] + c3 * o3[i] + c4 * o4[i] for i in range(3)]
+#             n3 = [c1 * o2[i] + c2 * o3[i] + c3 * o4[i] + c4 * o1[i] for i in range(3)]
+#             n4 = [c1 * o3[i] + c2 * o4[i] + c3 * o1[i] + c4 * o2[i] for i in range(3)]
+#             a = subd.add_vertex(x=n1[0], y=n1[1], z=n1[2])
+#             b = subd.add_vertex(x=n2[0], y=n2[1], z=n2[2])
+#             c = subd.add_vertex(x=n3[0], y=n3[1], z=n3[2])
+#             d = subd.add_vertex(x=n4[0], y=n4[1], z=n4[2])
+#             fkey_old_new[fkey][vertices[0]] = a
+#             fkey_old_new[fkey][vertices[1]] = b
+#             fkey_old_new[fkey][vertices[2]] = c
+#             fkey_old_new[fkey][vertices[3]] = d
 
-        for fkey in mesh.face:
-            if len(vertices) != 4:
-                raise BRGMeshAlgorithmError
-            vertices = mesh.face_vertices(fkey, ordered=True)
-            old_new = fkey_old_new[fkey]
-            subd.add_face([old_new[old] for old in vertices])
+#         for fkey in mesh.face:
+#             if len(vertices) != 4:
+#                 raise BRGMeshAlgorithmError
+#             vertices = mesh.face_vertices(fkey, ordered=True)
+#             old_new = fkey_old_new[fkey]
+#             subd.add_face([old_new[old] for old in vertices])
 
-        for key in mesh.vertex:
-            if mesh.is_vertex_on_boundary(key):
-                continue
-            face = []
-            for nbr in mesh.vertex_neighbours(key, ordered=True):
-                fkey = mesh.halfedge[key][nbr]
-                if fkey is not None:
-                    face.append(fkey_old_new[fkey][key])
-            if len(face) > 2:
-                subd.add_face(face[::-1])
+#         for key in mesh.vertex:
+#             if mesh.is_vertex_on_boundary(key):
+#                 continue
+#             face = []
+#             for nbr in mesh.vertex_neighbours(key, ordered=True):
+#                 fkey = mesh.halfedge[key][nbr]
+#                 if fkey is not None:
+#                     face.append(fkey_old_new[fkey][key])
+#             if len(face) > 2:
+#                 subd.add_face(face[::-1])
 
-        edges = set()
+#         edges = set()
 
-        for u in mesh.halfedge:
-            for v in mesh.halfedge[u]:
-                if (u, v) in edges:
-                    continue
-                edges.add((u, v))
-                edges.add((v, u))
-                uv_fkey = mesh.halfedge[u][v]
-                vu_fkey = mesh.halfedge[v][u]
-                if uv_fkey is None or vu_fkey is None:
-                    continue
-                face = []
-                face.append(fkey_old_new[uv_fkey][u])
-                face.append(fkey_old_new[vu_fkey][u])
-                face.append(fkey_old_new[vu_fkey][v])
-                face.append(fkey_old_new[uv_fkey][v])
-                subd.add_face(face)
+#         for u in mesh.halfedge:
+#             for v in mesh.halfedge[u]:
+#                 if (u, v) in edges:
+#                     continue
+#                 edges.add((u, v))
+#                 edges.add((v, u))
+#                 uv_fkey = mesh.halfedge[u][v]
+#                 vu_fkey = mesh.halfedge[v][u]
+#                 if uv_fkey is None or vu_fkey is None:
+#                     continue
+#                 face = []
+#                 face.append(fkey_old_new[uv_fkey][u])
+#                 face.append(fkey_old_new[vu_fkey][u])
+#                 face.append(fkey_old_new[vu_fkey][v])
+#                 face.append(fkey_old_new[uv_fkey][v])
+#                 subd.add_face(face)
 
-        mesh = subd
+#         mesh = subd
 
-    return mesh
+#     return mesh
 
 
 # ==============================================================================
@@ -554,17 +585,26 @@ if __name__ == "__main__":
 
     from compas.datastructures.mesh import Mesh
 
-    from compas.geometry.elements.polyhedron import Polyhedron
-    from compas.datastructures.mesh.viewer import SubdMeshViewer
+    vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+    faces = [[0, 1, 2, 3], ]
 
-    cube = Polyhedron.generate(6)
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+    subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=None)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+    subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
 
-    viewer.axes_on = False
-    viewer.grid_on = False
+    # from compas.geometry.elements.polyhedron import Polyhedron
+    # from compas.datastructures.mesh.viewer import SubdMeshViewer
 
-    viewer.setup()
-    viewer.show()
+    # cube = Polyhedron.generate(6)
+
+    # mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+
+    # viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+
+    # viewer.axes_on = False
+    # viewer.grid_on = False
+
+    # viewer.setup()
+    # viewer.show()

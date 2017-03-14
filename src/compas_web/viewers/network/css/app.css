@@ -1,47 +1,73 @@
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	line-height: 1em;
+}
+
+#app {
+	width: 1024px;
+	margin: 0 auto;
+}
+
 #menu {
-	width: 640px;
-	height: 36px;
+	box-sizing: border-box;
+	width: 100%;
+	height: 44px;
+	padding: 12px;
+	line-height: 20px;
 	background-color: #eee;
 }
 
 #toolbar {
-	width: 640px;
-	height: 36px;
+	box-sizing: border-box;
+	width: 100%;
+	height: 44px;
+	padding: 12px;
+	line-height: 20px;
 	background-color: #eee;
+	margin-top: 1px;
 }
 
 #view {
-	width: 640px;
-	height: 356px;
 }
 
 #viewport {
-	width: 640px;
-	height: 320px;
+	width: 1024px;
+	height: 640px;
 	background-color: #fff;
 }
 
 #controls {
-	width: 640px;
-	height: 72px;
+	width: 100%;
+	background-color: #fff;
+}
+
+#toggles {
+	box-sizing: border-box;
+	width: 100%;
+	height: 36px;
+	line-height: 12px;
+	padding: 12px;
 	background-color: #eee;
 }
 
 #sliders {
-	width: 640px;
+	box-sizing: border-box;
+	width: 100%;
 	height: 36px;
+	padding: 13px 16px;
+	margin-top: 1px;
 	background-color: #eee;
 }
 
-#toggles {
-	width: 640px;
-	height: 36px;
-	background-color: #eee;
-}
-
-.ui-slider {
+.ui-slider,
+.ui-slider-horizontal {
 	width: 120px;
-	margin-left: 12px;
+	height: 6px;
 }
 
-.ui-slider-handle {}
+.ui-slider .ui-slider-handle {
+	width: 12px;
+	height: 12px;
+	border-radius: 6px;
+}

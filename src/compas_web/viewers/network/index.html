@@ -24,22 +24,23 @@ document.write('<link href="css/network.css?v=' + now + '" rel="stylesheet" type
 	<div id="toolbar">
 		<button class="tool" data-function="is_planar">is planar</button>
 
-		<button>shortest path</button>
-		<button>dijkstra path</button>
+		<button class="tool" data-function="shortest_path">shortest path</button>
+		<button class="tool" data-function="dijkstra_path">dijkstra path</button>
+		<button class="tool" data-function="vertex_coloring">vertex coloring</button>
 
-		<button>force layout</button>
-		<button>smooth</button>
+		<button class="tool" data-function="forcelayout">force layout</button>
+		<button class="tool" data-function="smooth">smooth</button>
 	</div>
 
 	<div id="view">
 		<div id="viewport"></div>
 		<div id="controls">
 			<div id="toggles">
-				<input type="checkbox" id="toggle_vertex-keys" value="1" />
-				<label for="toggle_vertexkeys">vertex keys</label>
+				<input type="checkbox" id="toggle_vertex-keys" name="toggle_vertex-keys" value="1" />
+				<label for="toggle_vertex-keys">vertex keys</label>
 
 				<input type="checkbox" id="toggle_edge-indices" value="1" />
-				<label for="toggle_edgeindices">edge indices</label>
+				<label for="toggle_edge-indices">edge indices</label>
 			</div>
 			<div id="sliders">
 				<div id="scale_vertices"></div>
@@ -54,6 +55,7 @@ document.write('<link href="css/network.css?v=' + now + '" rel="stylesheet" type
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.1/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sprintf/1.0.3/sprintf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.4.1/tinycolor.min.js"></script>
 
 <script src="js/vendor/jquery-ui-1.12.1/jquery-ui.js"></script>
 
@@ -63,17 +65,26 @@ document.write('<link href="css/network.css?v=' + now + '" rel="stylesheet" type
 <script src="js/network.js"></script>
 <script>
 
+// TODO
+// - unimplemented buttons => grey
+// - connect to server at startup
+// - vertex/edge colors?
+// - cross-domain?
+// - right-click context menu
+// - **clear** upon new file load
+// - keep attributes in sync
+// - uncheck all boxes on load (as part of clearing the drawing)
+// - reset button
+
 
 // set up all future ajax calls
 $.ajaxSetup({
     type        : 'post',
     cache       : false,
-    url         : 'http://block.arch.ethz.ch/api/brg_private/venice.py',
+    url         : 'http://block.arch.ethz.ch/api/network.py',
     dataType    : 'json',
     async       : false,
     processData : false,
-
-    beforeSend : function(xhr, settings) {},
 
     error : function(xhr, status, error) {
         console.log(xhr);
@@ -85,9 +96,9 @@ $.ajaxSetup({
 
 // create a network
 var network = new Network({'viewport': {'element': d3.select('#viewport'),
-	                                    'width'  : 640,
-	                                    'height' : 320,
-	                                    'padding': 36}});
+	                                    'width'  : 1024,
+	                                    'height' : 640,
+	                                    'padding': 72}});
 
 
 // listen to the file input field
@@ -96,7 +107,6 @@ var network = new Network({'viewport': {'element': d3.select('#viewport'),
 $('#fileinput').on('change', function(event) {
 
 	network.update_from_file(event.target.files[0]);
-	network.draw();
 
 });
 
@@ -116,13 +126,13 @@ $('#toggle_edge-indices').on('change', function(event) {
 
 // listen to the sliders
 $('#scale_vertices').slider({
-	value : 7,
-	min   : 1,
+	value : 5,
+	min   : 2,
 	max   : 20,
 	step  : 1,
 	slide : function(event, ui) {
 		
-		network.attributes['vertexsize'] = parseInt(ui.value);
+		network.attributes['vertexsize'] = parseFloat(ui.value);
 		scale_network_vertices(network);
 	}
 });

@@ -294,7 +294,7 @@ class NetworkPlotter2D(object):
                         'start': line['start'],
                         'end'  : line['end'],
                         'color': line.get('color', self.default_linecolor),
-                        'width': line.get('width', self.default_linedgewidth),
+                        'width': line.get('width', self.default_linewidth),
                         'arrow': line.get('arrow', 'end')
                     })
                 else:
@@ -302,7 +302,7 @@ class NetworkPlotter2D(object):
                         'start': line['start'],
                         'end'  : line['end'],
                         'color': line.get('color', self.default_linecolor),
-                        'width': line.get('width', self.default_linedgewidth),
+                        'width': line.get('width', self.default_linewidth),
                     })
             if lines:
                 draw_xlines_2d(lines, axes)
