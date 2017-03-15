@@ -132,14 +132,14 @@ class Octahedron(Polyhedron):
     def __init__(self):
         super(Octahedron, self).__init__()
         self.compute()
-    
+
     #      5
     #      |
     #   4--|---3
     # 0----------1
     #      |
     #      2
-    #      
+    #
     #      4
     #    /   \
     #   /     \
@@ -213,18 +213,18 @@ class Dodecahedron(Polyhedron):
                     vertices.append([i * 1., j * 1., k * 1.])
         self.vertices = vertices
         self.faces = faces
-        
+
 
 class Icosahedron(Polyhedron):
     """
     V = 12
     F = 20
-    E = 30 
+    E = 30
     """
     def __init__(self):
         super(Icosahedron, self).__init__()
         self.compute()
-    
+
     # (    0,   +-1, +-phi)
     # (  +-1, +-phi,     0)
     # (+-phi,     0,   +-1)
@@ -237,7 +237,7 @@ class Icosahedron(Polyhedron):
         r = l * sqrt(phi * sqrt(5)) / 2.
         c = 1. / r
         for i in -1., +1.:
-            i *= c 
+            i *= c
             for j in -1., +1.:
                 j *= c 
                 vertices.append([     0.,       i, j * phi])
@@ -245,15 +245,11 @@ class Icosahedron(Polyhedron):
                 vertices.append([j * phi,      0.,       i])
         self.vertices = vertices
         self.faces = faces
-        
 
-#===============================================================================
+
+# ==============================================================================
 # Debugging
-#===============================================================================
+# ==============================================================================
 
 if __name__ == '__main__':
     pass
-    
-    
-    
-    
