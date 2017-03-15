@@ -1,0 +1,20 @@
+.edges {
+    stroke-width: 1;
+}
+
+.edgelabels {
+    text-anchor: middle;
+}
+
+.vertices {
+    stroke-width: 1;
+    stroke-opacity: 1.0;
+    fill-opacity: 1.0;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.vertexlabels {
+    text-anchor: middle;
+    cursor: pointer;
+}
