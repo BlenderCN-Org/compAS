@@ -237,6 +237,8 @@ planar
     angles_vectors_2d
     angle_smallest_points_2d
     angle_smallest_vectors_2d
+    angle_smallest_points_degrees_2d
+    angle_smallest_vectors_degrees_2d
     midpoint_point_point_2d
     centroid_points_2d
     center_of_mass_polygon_2d

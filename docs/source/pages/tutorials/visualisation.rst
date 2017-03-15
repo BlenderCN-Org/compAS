@@ -81,7 +81,7 @@ can be used from inside Rhino (IronPython) through a subprocess using the XFuncI
     import os
     import math
     
-    from compas.utilities.xfuncio import XFuncIO
+    from compas.utilities.xfunc import XFunc
     from compas.geometry.spatial import subtract_vectors
     
     from compas_rhino.utilities.misc import screenshot_current_view
@@ -116,25 +116,25 @@ can be used from inside Rhino (IronPython) through a subprocess using the XFuncI
         # take a screenshot of the current view and sve it in the temp folder
         files.append(temp_path + str(i).zfill(5) + ".png")
         screenshot_current_view(files[-1], width, height, scale=0.5, draw_grid=True)
-        
+    
     try:
         # use XFuncIO to run a external process in CPython to compute the gif (imageio is required)
         print "Computing gif..."
-        xrun = XFuncIO()
+        xrun = XFunc()
         fname = 'compas.utilities.animation.gif_from_images'
         xrun(fname, files, gif_path, fps , loop=0, reverse=True, pingpong=False, subrectangles=True)
-        
+    
         if xrun.error:
             print xrun.error
         else:
             print "Gif saved: {0}".format(gif_path)
-        
+    
     except:
         pass
     finally:
         # remove the individual screenshots PNGs and the temp folder
         for file in files:
-            os.remove(file) 
+            os.remove(file)
         os.rmdir(temp_path)
 
 
