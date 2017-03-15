@@ -91,9 +91,13 @@ angles
     :toctree: generated/
 
     angles_points
+    angles_points_degrees
     angles_vectors
+    angles_vectors_degrees
     angle_smallest_points
+    angle_smallest_points_degrees
     angle_smallest_vectors
+    angle_smallest_vectors_degrees
 
 average
 -------
