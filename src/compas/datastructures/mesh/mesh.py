@@ -2,6 +2,9 @@ from __future__ import print_function
 
 import os
 import json
+import ast
+
+from ast import literal_eval as _eval
 
 from copy import deepcopy
 
@@ -60,7 +63,7 @@ class Mesh(object):
             Every key in the dictionary corresponds to a vertex.
             With every key corresponds a dictionary of neighbours pointing to attribute dictionaries.
         attributes (dict) : General mesh attributes.
-        dualdata (Mesh, optional) : A ``Mesh`` object for keeping track of face attributes
+        facedata (Mesh, optional) : A ``Mesh`` object for keeping track of face attributes
             by storing them on dual vertices.
 
     Examples:
@@ -136,13 +139,12 @@ class Mesh(object):
     def __init__(self):
         self._max_int_fkey = -1
         self._max_int_key  = -1
-        self._key_to_str   = False
         self._plotter      = None
         self.vertex        = {}
         self.face          = {}
         self.halfedge      = {}
         self.edge          = {}
-        self.dualdata      = None
+        self.facedata      = {}
         self.attributes    = {
             'name'         : 'Mesh',
             'color.vertex' : (0, 0, 0),
@@ -272,16 +274,48 @@ mesh summary
         always be used in combination with each other. They are also used by the
         Mesh.from_data() class method and the mesh.to_data() instance method.
         """
-        return {'attributes'  : self.attributes,
+        data = {'attributes'  : self.attributes,
                 'dva'         : self.default_vertex_attributes,
                 'dea'         : self.default_edge_attributes,
                 'dfa'         : self.default_face_attributes,
-                'vertex'      : self.vertex,
-                'halfedge'    : self.halfedge,
-                'face'        : self.face,
-                'edge'        : self.edge,
+                'vertex'      : {},
+                'edge'        : {},
+                'halfedge'    : {},
+                'face'        : {},
+                'facedata'    : {},
                 'max_int_key' : self._max_int_key,
-                'max_int_fkey': self._max_int_fkey}
+                'max_int_fkey': self._max_int_fkey, }
+
+        key_rkey = {}
+
+        for key in self.vertex:
+            rkey = repr(key)
+            key_rkey[key] = rkey
+            data['vertex'][rkey] = self.vertex[key]
+            data['edge'][rkey] = {}
+            data['halfedge'][rkey] = {}
+
+        for u in self.edge:
+            ru = key_rkey[u]
+            for v in self.edge[u]:
+                rv = key_rkey[v]
+                data['edge'][ru][rv] = self.edge[u][v]
+
+        for u in self.halfedge:
+            ru = key_rkey[u]
+            for v in self.halfedge[u]:
+                rv = key_rkey[v]
+                data['halfedge'][ru][rv] = self.halfedge[u][v]
+
+        for fkey in self.face:
+            rfkey = repr(fkey)
+            data['face'][rfkey] = self.face[fkey]
+
+        for fkey in self.facedata:
+            rfkey = repr(fkey)
+            data['facedata'][rfkey] = self.facedata[fkey]
+
+        return data
 
     @data.setter
     def data(self, data):
@@ -292,48 +326,54 @@ mesh summary
         vertex       = data.get('vertex')
         halfedge     = data.get('halfedge')
         face         = data.get('face')
+        facedata     = data.get('facedata')
         edge         = data.get('edge')
-        _vkey        = data.get('vkey', 0)
-        _fkey        = data.get('fkey', 0)
-        max_int_key  = data.get('max_int_key', _vkey - 1)
-        max_int_fkey = data.get('max_int_fkey', _fkey - 1)
+        max_int_key  = data.get('max_int_key', -1)
+        max_int_fkey = data.get('max_int_fkey', -1)
 
         if not vertex or not halfedge or not face:
             return
 
-        del self.vertex
-        del self.edge
-        del self.halfedge
-        del self.face
-        del self.dualdata
+        self.clear()
 
         self.attributes.update(attributes)
         self.default_vertex_attributes.update(dva)
         self.default_face_attributes.update(dfa)
         self.default_edge_attributes.update(dea)
 
-        self.vertex     = {}
-        self.halfedge   = {}
-        self.face       = {}
-        self.dualdata   = {}
-
-        self.edge = edge or {}
-
-        for key, attr in vertex.items():
+        for rkey, attr in vertex.iteritems():
+            key = _eval(rkey)
             self.vertex[key] = self.default_vertex_attributes.copy()
             if attr:
                 self.vertex[key].update(attr)
+            self.edge[key] = {}
+            self.halfedge[key] = {}
 
-        for key, nbrs in halfedge.iteritems():
-            if key not in self.halfedge:
-                self.halfedge[key] = {}
+        for ru, nbrs in edge.iteritems():
+            nbrs = nbrs or {}
+            u = _eval(ru)
+            for rv, attr in nbrs.iteritems():
+                v = _eval(rv)
+                self.edge[u][v] = self.default_edge_attributes.copy()
+                if attr:
+                    self.edge[u][v].update(attr)
+
+        for rkey, nbrs in halfedge.iteritems():
             if not nbrs:
                 nbrs = {}
-            for nbr, fkey in nbrs.iteritems():
+            key = _eval(rkey)
+            for rnbr, fkey in nbrs.iteritems():
+                nbr = _eval(rnbr)
                 self.halfedge[key][nbr] = fkey
 
-        for fkey, cycle in face.items():
-            self.face[fkey] = cycle or {}
+        for rfkey, vertices in face.iteritems():
+            fkey = _eval(rfkey)
+            self.face[fkey] = vertices
+
+        # make a separate facedata key dict?
+        for rfkey, attr in facedata.iteritems():
+            fkey = _eval(rfkey)
+            self.facedata[fkey] = attr
 
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
@@ -450,7 +490,18 @@ mesh summary
         return mesh
 
     def clear(self):
-        raise NotImplementedError
+        del self.vertex
+        del self.edge
+        del self.halfedge
+        del self.face
+        del self.facedata
+        self.vertex     = {}
+        self.halfedge   = {}
+        self.face       = {}
+        self.facedata   = {}
+        self.edge       = {}
+        self._max_int_key = -1
+        self._max_int_fkey = -1
 
     def get_any_vertex(self):
         return next(self.vertices_iter())
@@ -620,50 +671,6 @@ mesh summary
         mesh.attributes.update(kwargs)
         return mesh
 
-    # # differentiate between delaunay of boundary and delaunay in boundary
-    # # use nurbs curves?
-    # # differentiate between config and **kwargs
-    # @classmethod
-    # def from_boundary(cls,
-    #                   boundary,
-    #                   holes=None,
-    #                   spacing=1.0,
-    #                   do_smooth=False,
-    #                   **kwargs):
-    #     from compas.utilities.scriptserver import ScriptServer
-    #     scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
-    #     server = ScriptServer(scriptdir)
-    #     config = {
-    #         'do_smooth': do_smooth,
-    #     }
-    #     config.update(kwargs)
-    #     res = server.mesh_from_boundary(
-    #         boundary=boundary,
-    #         holes=holes,
-    #         spacing=spacing,
-    #         config=config,
-    #     )
-    #     return cls.from_data(res['data'], **kwargs)
-
-    # # differentiate between config and **kwargs
-    # @classmethod
-    # def from_points(cls,
-    #                 points,
-    #                 do_smooth=False,
-    #                 **kwargs):
-    #     from compas.utilities.scriptserver import ScriptServer
-    #     scriptdir = os.path.join(os.path.dirname(__file__), '_scripts')
-    #     server = ScriptServer(scriptdir)
-    #     config = {
-    #         'do_smooth': do_smooth,
-    #     }
-    #     config.update(kwargs)
-    #     res = server.mesh_from_points(
-    #         points=points,
-    #         config=config
-    #     )
-    #     return cls.from_data(res['data'], **kwargs)
-
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
@@ -717,30 +724,6 @@ mesh summary
         with open(filepath, 'wb+') as fh:
             json.dump(data, fh)
 
-#     # only valid for poly and quad
-#     def to_trimesh(self):
-#         from tri import TriMesh
-#         mesh = TriMesh()
-#         for key in self.vertex:
-#             attr = self.vertex[key]
-#             mesh.add_vertex(key=key, attr_dict=attr)
-#         for fkey in self.face:
-#             vertices = self.face_vertices(fkey)
-#             mesh.add_face(vertices, fkey=fkey)
-#         return mesh
-
-#     # only valid for poly
-#     def to_quadmesh(self):
-#         from quad import QuadMesh
-#         mesh = QuadMesh()
-#         for key in self.vertex:
-#             attr = self.vertex[key]
-#             mesh.add_vertex(key=key, attr_dict=attr)
-#         for fkey in self.face:
-#             vertices = self.face_vertices(fkey)
-#             mesh.add_face(vertices, fkey=fkey)
-#         return mesh
-
     def to_lines(self, axes='xyz'):
         return [(self.vertex_coordinates(u, axes), self.vertex_coordinates(v, axes))
                 for u, v in self.edges_iter()]
@@ -766,26 +749,26 @@ mesh summary
         if key is None:
             key = self._max_int_key = self._max_int_key + 1
         else:
-            try:
-                int(key)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if int(key) > self._max_int_key:
-                    self._max_int_key = int(key)
+            # try:
+            #     int(key)
+            # except (ValueError, TypeError):
+            #     pass
+            # else:
+            if int(key) > self._max_int_key:
+                self._max_int_key = int(key)
         return key
 
     def _get_facekey(self, fkey):
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         else:
-            try:
-                int(fkey)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if int(fkey) > self._max_int_fkey:
-                    self._max_int_fkey = int(fkey)
+            # try:
+            #     int(fkey)
+            # except (ValueError, TypeError):
+            #     pass
+            # else:
+            if int(fkey) > self._max_int_fkey:
+                self._max_int_fkey = int(fkey)
         return fkey
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
@@ -1004,29 +987,90 @@ mesh summary
             return [[attr.get(name, default) for name, default in temp] for key, attr in self.vertices_iter(True)]
         return [[self.vertex[key].get(name, default) for name, default in temp] for key in keys]
 
-    # ==========================================================================
-    # face attributes
-    # need further updating!!
-    # ==========================================================================
+    # --------------------------------------------------------------------------
+    # attributes: face
+    # --------------------------------------------------------------------------
 
     def update_default_face_attributes(self, attr_dict=None, **kwargs):
         if not attr_dict:
             attr_dict = {}
         attr_dict.update(kwargs)
         self.default_face_attributes.update(attr_dict)
-        if not self.dualdata:
-            self.dualdata = Mesh()
-            for fkey in self.face:
-                self.dualdata.add_vertex(key=fkey)
         for fkey in self.face:
             attr = attr_dict.copy()
-            attr.update(self.dualdata.vertex[fkey])
-            self.dualdata.vertex[fkey] = attr
+            attr.update(self.facedata[fkey])
+            self.facedata[fkey] = attr
+
+    def set_face_attribute(self, fkey, name, value):
+        if fkey not in self.facedata:
+            self.facedata[fkey] = self.default_face_attributes.copy()
+        self.facedata[fkey][name] = value
+
+    def set_face_attributes(self, fkey, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        if fkey not in self.facedata:
+            self.facedata[fkey] = self.default_face_attributes.copy()
+        self.facedata[fkey].update(attr_dict)
+
+    def set_faces_attribute(self, name, value, fkeys=None):
+        if not fkeys:
+            for fkey, attr in self.faces_iter(True):
+                attr[name] = value
+        else:
+            for fkey in fkeys:
+                if fkey not in self.facedata:
+                    self.facedata[fkey] = self.default_face_attributes.copy()
+                self.facedata[fkey][name] = value
+
+    def set_faces_attributes(self, fkeys=None, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        if not fkeys:
+            for fkey, attr in self.faces_iter(True):
+                attr.update(attr_dict)
+        else:
+            for fkey in fkeys:
+                if fkey not in self.facedata:
+                    self.facedata[fkey] = self.default_face_attributes.copy()
+                self.facedata[fkey].update(attr_dict)
 
     def get_face_attribute(self, fkey, name, default=None):
-        if not self.dualdata:
+        if not self.facedata:
             return default
-        return self.dualdata.vertex[fkey].get(name, default)
+        if fkey not in self.facedata:
+            return default
+        return self.facedata[fkey].get(name, default)
+
+    def get_face_attributes(self, fkey, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        if not self.facedata:
+            return defaults
+        if fkey not in self.facedata:
+            return defaults
+        return [self.facedata[fkey].get(name, default) for name, default in zip(names, defaults)]
+
+    def get_faces_attribute(self, name, default=None, fkeys=None):
+        if not fkeys:
+            if not self.facedata:
+                return [default for fkey in self.face]
+            return [self.get_face_attribute(fkey, name, default) for fkey in self.face]
+        if not self.facedata:
+            return [default for fkey in fkeys]
+        return [self.get_face_attribute(fkey, name, default) for fkey in fkeys]
+
+    def get_faces_attributes(self, names, defaults=None, fkeys=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        temp = zip(names, defaults)
+        if not fkeys:
+            if not self.facedata:
+                return [[default for name, default in temp] for fkey in self.face]
+            return [[self.get_face_attribute(fkey, name, default) for name, default in temp] for fkey in self.face]
+        if not self.facedata:
+            return [[default for name, default in temp] for fkey in fkeys]
+        return [[self.get_face_attribute(fkey, name, default) for name, default in temp] for fkey in fkeys]
 
     # ..........................................................................
     # edge attributes
@@ -1046,18 +1090,6 @@ mesh summary
             attr = attr_dict.copy()
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
-
-    # def set_edge_attribute(self, u, v, name, value):
-    #     if u in self.edge and v in self.edge[u]:
-    #         self.edge[u][v][name] = value
-    #         return
-    #     if v in self.edge and u in self.edge[v]:
-    #         self.edge[v][u][name] = value
-    #         return
-    #     if u not in self.edge:
-    #         self.edge[u] = {}
-    #     self.edge[u][v] = {}
-    #     self.edge[u][v][name] = value
 
     def get_edge_attribute(self, u, v, name, default=None):
         if u in self.edge:
@@ -1614,12 +1646,12 @@ mesh summary
             p1   = self.vertex_coordinates(nbr)
             v01  = [p1[i] - p0[i] for i in range(3)]
             fkey = self.halfedge[key][nbr]
-            if fkey:
+            if fkey is not None:
                 p2  = self.face_centroid(fkey)
                 v02 = [p2[i] - p0[i] for i in range(3)]
                 a  += 0.25 * length(cross(v01, v02))
             fkey = self.halfedge[nbr][key]
-            if fkey:
+            if fkey is not None:
                 p3  = self.face_centroid(fkey)
                 v03 = [p3[i] - p0[i] for i in range(3)]
                 a  += 0.25 * length(cross(v01, v03))
@@ -1745,7 +1777,7 @@ mesh summary
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
-    # environment-specific
+    # visualisation
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************

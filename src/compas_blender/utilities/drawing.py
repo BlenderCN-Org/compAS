@@ -73,6 +73,7 @@ def draw_pipe(start, end, radius, n=4):
     bpy.context.object.rotation_euler[1] = theta
     bpy.context.object.rotation_euler[2] = phi
     object = bpy.context.object
+    object.show_wire = True
     return object
 
 
@@ -195,6 +196,14 @@ def xdraw_lines(lines):
     return objects
 
 
+def draw_network(network):
+    vertices = [[network.vertex[key][i] for i in 'xyz'] for key in sorted(network.vertices(), key=int)]  # Temp fix
+    k_i = network.key_index()
+    edges = [(k_i[u], k_i[v]) for u, v in network.edges()]
+    bmesh = xdraw_mesh('bmesh', vertices, edges)
+    return bmesh
+
+
 def xdraw_points(points):
     """ Draw a set of points.
 
@@ -308,18 +317,19 @@ def xdraw_cubes(cubes):
     return objects
 
 
-def xdraw_texts(texts):
+def xdraw_texts(texts, layer=0):
     """ Draw a set of text objects.
 
     Parameters:
         texts (dic): 'radius', 'pos', 'color', 'name', 'text' as the keys.
+        layer (int): Layer to plot on.
 
     Returns:
         list: Created text objects.
     """
     objects = []
     bpy.ops.object.text_add(radius=1, view_align=True, location=[0, 0, 0],
-                            layers=layer_mask(0))
+                            layers=layer_mask(layer))
     object = bpy.context.object
     for t in texts:
         copy = object.copy()
@@ -333,6 +343,7 @@ def xdraw_texts(texts):
     delete_objects([object])
     for object in objects:
         bpy.context.scene.objects.link(object)
+    object_layer(objects, layer)
     return objects
 
 

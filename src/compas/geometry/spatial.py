@@ -118,7 +118,7 @@ __all__ = [
     'mirror_point_plane',
     'mirror_points_plane',
     'mirror_vector_vector',
-    
+
     'reflect_line_plane',
     'reflect_line_triangle',
 
@@ -648,7 +648,7 @@ def distance_line_line(l1, l2, tol=0.0):
     n = cross_vectors(ab, cd)
     l = length_vector(n)
     if l <= tol:
-        return distance_point_point(closest_point_on_line(l1[0],l2),l1[0])
+        return distance_point_point(closest_point_on_line(l1[0], l2), l1[0])
     n = scale_vector(n, 1.0 / l)
     return fabs(dot_vectors(n, ac))
 
@@ -1013,6 +1013,42 @@ def volume_polyhedron(polyhedron):
 # ------------------------------------------------------------------------------
 
 
+def _normal_polygon(points, unitized=True):
+    """Compute the normal of a polygon defined by a sequence of points.
+
+    Note:
+        The points in the list should be unique. For example, the first and last
+        point in the list should not be the same.
+
+    Parameters:
+        points (sequence): A sequence of points.
+
+    Returns:
+        list: The normal vector.
+
+    Raises:
+        ValueError: If less than three points are provided.
+    """
+    p = len(points)
+    assert p > 2, "At least three points required"
+    nx = 0
+    ny = 0
+    nz = 0
+    o = centroid_points(points)
+    a = subtract_vectors(points[-1], o)
+    for i in range(p):
+        b = subtract_vectors(points[i], o)
+        n = cross_vectors(a, b)
+        a = b
+        nx += n[0]
+        ny += n[1]
+        nz += n[2]
+    if not unitized:
+        return nx, ny, nz
+    l = length_vector([nx, ny, nz])
+    return nx / l, ny / l, nz / l
+
+
 def normal_polygon(points, unitized=True):
     """Compute the normal of a polygon defined by a sequence of points.
 
@@ -1045,11 +1081,9 @@ def normal_polygon(points, unitized=True):
         ny += n[1]
         nz += n[2]
     if not unitized:
-        # since the length of the cross product vector is twice the area of the
-        # triangle formed by vectors involved in the cross product
-        return 0.5 * nx, 0.5 * ny, 0.5 * nz
-    a2 = length_vector([nx, ny, nz])
-    return nx / a2, ny / a2, nz / a2
+        return nx, ny, nz
+    l = length_vector([nx, ny, nz])
+    return nx / l, ny / l, nz / l
 
 
 def normal_triangle(triangle, unitized=True):
@@ -1463,30 +1497,30 @@ def is_intersection_line_line(ab, cd, epsilon=1e-6):
     """Verifies if two lines intersection in one point.
 
     Parameters:
-        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing 
-        two points on the line.
-        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing 
-        two points on the line.
+        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing
+            two points on the line.
+        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing
+            two points on the line.
 
     Returns:
-        True (bool): if the lines intersect in one point, False is the lines are 
+        True (bool): if the lines intersect in one point, False is the lines are
         skew, parallel or lie on top of each other.
-    """      
+    """
     a, b = ab
     c, d = cd
-    
+
     line_vector_1 = normalize_vector(vector_from_points(a, b))
     line_vector_2 = normalize_vector(vector_from_points(c, d))
-    #check for parallel lines
+    # check for parallel lines
     print(abs(dot_vectors(line_vector_1, line_vector_2)))
     if abs(dot_vectors(line_vector_1, line_vector_2)) > 1.0 - epsilon:
         return False
-    #check for intersection
+    # check for intersection
     d_vector = cross_vectors(line_vector_1, line_vector_2)
     if dot_vectors(d_vector, subtract_vectors(c, a)) == 0:
         return True
     return False
-    
+
 
 def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
     """Verify if a line segment intersects with a plane.
@@ -1554,10 +1588,11 @@ def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     return True
 
 
-def is_intersection_line_triangle(line, triangle,  epsilon=1e-6):
-    """
-    Verifies if a line (ray) intersects with a triangle
-    based on the Moeller Trumbore intersection algorithm
+def is_intersection_line_triangle(line, triangle, epsilon=1e-6):
+    """Verifies if a line (ray) intersects with a triangle.
+
+    Note:
+        Based on the Moeller Trumbore intersection algorithm.
 
     Parameters:
         line (tuple): Two points defining the line.
@@ -1721,16 +1756,16 @@ def intersection_line_line(ab, cd):
     skew the points marking the shortest distance between both lines are computed.
 
     Parameters:
-        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing 
-        two points on the line.
-        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing 
-        two points on the line.
+        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing
+            two points on the line.
+        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing
+            two points on the line.
 
     Returns:
-        point (tuple), point (tuple) as list: The two points marking the shortest 
-        distance between both lines.  
-        None, None (list): if the two lines are parallel.
-        
+        point (tuple), point (tuple) as list:
+        The two points marking the shortest distance between both lines.
+
+        None, None (list): If the two lines are parallel.
 
     Note:
 
@@ -1743,21 +1778,21 @@ def intersection_line_line(ab, cd):
                 print('The two lines intersect')
             else:
                 print('The two lines do not intersect')
- 
-         Alternative: is_intersection_line_line
-    """    
+
+        Alternative: is_intersection_line_line
+    """
     a, b = ab
     c, d = cd
-    
+
     line_vector_1 = vector_from_points(a, b)
     line_vector_2 = vector_from_points(c, d)
     d_vector = cross_vectors(line_vector_1, line_vector_2)
-    
+
     normal_1 = cross_vectors(line_vector_1, d_vector)
     normal_2 = cross_vectors(line_vector_2, d_vector)
     plane_1 = (a, normal_1)
     plane_2 = (c, normal_2)
-    
+
     intx_point_line_1 = intersection_line_plane(ab, plane_2)
     intx_point_line_2 = intersection_line_plane(cd, plane_1)
 
@@ -1824,7 +1859,7 @@ def intersection_line_plane(line, plane, epsilon=1e-6):
     Parameters:
         line (tuple): Two points defining the line.
         plane (tuple): The base point and normal defining the plane.
-        
+
     Returns:
         point (tuple) if the line (ray) intersects with the plane, None otherwise.
 
@@ -1852,7 +1887,7 @@ def intersection_segment_plane(segment, plane, epsilon=1e-6):
     Parameters:
         segment (tuple): Two points defining the line segment.
         plane (tuple): The base point and normal defining the plane.
-        
+
     Returns:
         point (tuple) if the line segment intersects with the plane, None otherwise.
 
@@ -1882,7 +1917,7 @@ def intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     Parameters:
         plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
         plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
-        
+
     Returns:
         line (tuple): Two points defining the intersection line. None if planes are parallel.
 
@@ -1905,7 +1940,7 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, epsilon=1e-6):
     Parameters:
         plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
         plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
-        
+
     Returns:
         point (tuple): The intersection point. None if two (or all three) planes are parallel.
 
@@ -1947,49 +1982,50 @@ def translate_lines(lines, vector):
     return zip(sps, eps)
 
 
-def offset_line(line, distance, normal=[0. ,0. ,1.]):
+def offset_line(line, distance, normal=[0., 0., 1.]):
     """Offset a line by a distance
 
     Parameters:
         line (tuple): Two points defining the line.
         distances (float or tuples of floats): The offset distance as float.
             A single value determines a constant offset. Alternatively, two
-            offset values for the start and end point of the line can be used to 
+            offset values for the start and end point of the line can be used to
             a create variable offset.
         normal (tuple): The normal of the offset plane.
-        
+
     Returns:
         offset line (tuple): Two points defining the offset line.
-    
+
     Examples:
 
         .. code-block:: python
 
             line = [(0.0, 0.0, 0.0), (3.0, 3.0, 0.0)]
-            
+
             distance = 0.2 # constant offset
             line_offset = offset_line(line, distance)
             print(line_offset)
-            
+
             distance = [0.2, 0.1] # variable offset
             line_offset = offset_line(line, distance)
             print(line_offset)
-            
+
     """
     pt1, pt2 = line[0], line[1]
     vec = subtract_vectors(pt1, pt2)
     dir_vec = normalize_vector(cross_vectors(vec, normal))
+
     if isinstance(distance, list):
         distances = distance
     else:
-        distances = [distance, distance] 
-        
-    print(distances)
+        distances = [distance, distance]
+
     vec_pt1 = scale_vector(dir_vec, distances[0])
     vec_pt2 = scale_vector(dir_vec, distances[1])
     pt1_new = add_vectors(pt1, vec_pt1)
     pt2_new = add_vectors(pt2, vec_pt2)
     return pt1_new, pt2_new
+
 
 def offset_polygon(polygon, distance):
     """Offset a polygon (closed) by a distance.
@@ -2001,16 +2037,15 @@ def offset_polygon(polygon, distance):
             A single value determines a constant offset globally. Alternatively, pairs of local
             offset values per line segment can be used to create variable offsets.
             Distance > 0: offset to the outside, distance < 0: offset to the inside
-            
+
     Returns:
         offset polygon (sequence of sequence of floats): The XYZ coordinates of the
             corners of the offset polygon. The first and last coordinates are identical.
-    
-    
+
     Note:
-        The offset direction is determined by the normal of the polygon. The 
+        The offset direction is determined by the normal of the polygon. The
         algorithm works also for spatial polygons that do not perfectly fit a plane.
-        
+
     Examples:
 
         .. code-block:: python
@@ -2023,16 +2058,16 @@ def offset_polygon(polygon, distance):
                 (0.0, 3.0, 1.0),
                 (0.0, 0.0, 0.0)
                 ]
-            
+
             distance = 0.5 # constant offset
             polygon_offset = offset_polygon(polygon, distance)
             print(polygon_offset)
-            
+
             distance = [
-                (0.1, 0.2), 
-                (0.2, 0.3), 
-                (0.3, 0.4), 
-                (0.4, 0.3), 
+                (0.1, 0.2),
+                (0.2, 0.3),
+                (0.3, 0.4),
+                (0.4, 0.3),
                 (0.3, 0.1)
                 ] # variable offset
             polygon_offset = offset_polygon(polygon, distance)
@@ -2040,30 +2075,30 @@ def offset_polygon(polygon, distance):
 
     """
     normal = normal_polygon(polygon)
-    
+
     if isinstance(distance, list):
         distances = distance
         if len(distances) < len(polygon):
             distances = distances + [distances[-1]] * (len(polygon) - len(distances) - 1)
     else:
         distances = [[distance, distance]] * len(polygon)
-    
-    lines = [polygon[i:i+2] for i in xrange(len(polygon[:-1]))]
+
+    lines = [polygon[i:i + 2] for i in xrange(len(polygon[:-1]))]
     lines_offset = []
     for i, line in enumerate(lines):
         lines_offset.append(offset_line(line, distances[i], normal))
 
     polygon_offset = []
     for i in xrange(len(lines_offset)):
-        intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i-1], lines_offset[i])
+        intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i - 1], lines_offset[i])
         if intx_pt1 and intx_pt2:
             polygon_offset.append(centroid_points([intx_pt1, intx_pt2]))
         else:
             polygon_offset.append(lines_offset[i][0])
-    
+
     polygon_offset.append(polygon_offset[0])
     return polygon_offset
-            
+
 
 
 # ------------------------------------------------------------------------------
@@ -2235,11 +2270,12 @@ def mirror_vector_vector(v1, v2):
 
     Returns:
         Tuple: mirrored vector
-        
+
     Resources:
         http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
     """
     return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
+
 
 def reflect_line_plane(line, plane, epsilon=1e-6):
     """Reflects a line at plane.
@@ -2247,7 +2283,7 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
     Parameters:
         line (tuple): Two points defining the line.
         plane (tuple): The base point and normal (normalized) defining the plane.
-        
+
     Returns:
         line (tuple): The reflected line starting at the reflection point on the plane,
         None otherwise.
@@ -2255,34 +2291,34 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
     Note:
         The directions of the line and plane are important! The line will only be
         reflected if it points (direction start -> end) in the direction of the plane
-        and if the line intersects with the front face of the plane (normal direction 
-        of the plane). 
-    
+        and if the line intersects with the front face of the plane (normal direction
+        of the plane).
+
     Resources:
         http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
-        
+
     Examples:
 
         .. code-block:: python
-          
+
             from math import pi, sin, cos, radians
-            
+
             from compas.geometry.spatial import rotate_points
             from compas.geometry.spatial import intersection_line_plane
             from compas.geometry.spatial import reflect_line_plane
-            
+
             # planes
             mirror_plane = [(0.0, 0.0, 0.0),(1.0, 0.0, 0.0)]
             projection_plane = [(40.0, 0.0, 0.0),(1.0, 0.0, 0.0)]
-            
+
             # initial line (starting laser ray)
             line = [(30., 0.0, -10.0),(0.0, 0.0, 0.0)]
-            
+
             dmax = 75 # steps (resolution)
             angle = radians(12)  # max rotation of mirror plane in degrees
             axis_z = [0.0, 0.0, 1.0] # rotation z-axis of mirror plane
             axis_y = [0.0, 1.0, 0.0] # rotation y-axis of mirror plane
-            
+
             polyline_projection = []
             for i in range(dmax):
                 plane_norm = rotate_points([mirror_plane[1]], axis_z, angle * sin(i / dmax * 2 * pi))[0]
@@ -2293,63 +2329,64 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
                 intx_pt = intersection_line_plane(reflected_line,projection_plane)
                 if intx_pt:
                     polyline_projection.append(intx_pt)
-            
+
             print(polyline_projection)
- 
+
 
     Note:
-        This example visualized in Rhino: 
+        This example visualized in Rhino:
 
-            
-    .. image:: /_images/reflect_line_plane.*       
-        
-    """  
+
+    .. image:: /_images/reflect_line_plane.*
+
+    """
     intx_pt = intersection_line_plane(line, plane, epsilon)
-    if not intx_pt: 
+    if not intx_pt:
         return None
     vec_line = subtract_vectors(line[1], line[0])
     vec_reflect = mirror_vector_vector(vec_line, plane[1])
     if angle_smallest_vectors(plane[1], vec_reflect) > 90.:
         return None
-    return [intx_pt,add_vectors(intx_pt, vec_reflect)]
-    
+    return [intx_pt, add_vectors(intx_pt, vec_reflect)]
+
+
 def reflect_line_triangle(line, triangle, epsilon=1e-6):
     """Reflects a line at a triangle.
 
     Parameters:
         line (tuple): Two points defining the line.
         triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.
-        
+
     Returns:
         line (tuple): The reflected line starting at the reflection point on the plane,
         None otherwise.
-       
+
     Note:
         The directions of the line and triangular face are important! The line will only be
-        reflected if it points (direction start -> end) in the direction of the triangular 
-        face and if the line intersects with the front face of the triangular face (normal 
-        direction of the face).     
-        
+        reflected if it points (direction start -> end) in the direction of the triangular
+        face and if the line intersects with the front face of the triangular face (normal
+        direction of the face).
+
     Examples:
 
         .. code-block:: python
-    
+
             # tetrahedron points
             pt1 = (0.0, 0.0, 0.0)
-            pt2 = (6.0, 0.0, 0.0) 
-            pt3 = (3.0, 5.0, 0.0) 
+            pt2 = (6.0, 0.0, 0.0)
+            pt3 = (3.0, 5.0, 0.0)
             pt4 = (3.0, 2.0, 4.0)
-            
+
             # triangular tetrahedron faces
             tris = []
             tris.append([pt4,pt2,pt1])
             tris.append([pt4,pt3,pt2])
             tris.append([pt4,pt1,pt3])
             tris.append([pt1,pt2,pt3])
-            
+
             # initial line (starting ray)
             line = [(1.0,1.0,0.0),(1.0,1.0,1.0)]
-            
+
             # start reflection cycle inside the prism
             polyline = []
             polyline.append(line[0])
@@ -2360,17 +2397,17 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
                         line = reflected_line
                         polyline.append(line[0])
                         break
-            
-            print(polyline)  
-            
+
+            print(polyline)
+
 
     Note:
-        This example visualized in Rhino: 
+        This example visualized in Rhino:
 
-            
+
     .. image:: /_images/reflect_line_triangle.*
 
-    """   
+    """
     intx_pt = intersection_line_triangle(line, triangle, epsilon)
     if not intx_pt:
         return None
@@ -2379,7 +2416,8 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
     vec_reflect = mirror_vector_vector(vec_line, vec_normal)
     if angle_smallest_vectors(vec_normal, vec_reflect) > 90.:
         return None
-    return [intx_pt,add_vectors(intx_pt, vec_reflect)]
+    return [intx_pt, add_vectors(intx_pt, vec_reflect)]
+
 
 # ------------------------------------------------------------------------------
 # project (not the same as pull) => projection direction is required

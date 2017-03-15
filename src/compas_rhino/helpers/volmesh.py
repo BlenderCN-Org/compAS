@@ -29,14 +29,37 @@ __all__ = [
 
 
 def volmesh_from_polysurfaces(cls, guids):
+    """Construct a volumetric mesh from given polysurfaces.
+
+    Essentially, this function does the following:
+
+    * find each of the polysurfaces and check if they have a boundary representation (b-rep)
+    * convert to b-rep and extract the edge loops
+    * 
+
+
+    Parameters:
+        cls (compas.datastructures.volmesh.VolMesh):
+            The class of volmesh.
+        guids (sequence of str or System.Guid):
+            The *globally unique identifiers* of the polysurfaces.
+
+    Returns:
+        compas.datastructures.volmesh.Volmesh: The volumetric mesh object.
+
+    """
     gkey_xyz = {}
     cells = []
+
     for guid in guids:
         cell = []
         obj = sc.doc.Objects.Find(guid)
+
         if not obj.Geometry.HasBrepForm:
             continue
+
         brep = Rhino.Geometry.Brep.TryConvertBrep(obj.Geometry)
+
         for loop in brep.Loops:
             curve = loop.To3dCurve()
             segments = curve.Explode()
@@ -56,9 +79,11 @@ def volmesh_from_polysurfaces(cls, guids):
                 gkey_xyz[ep_gkey] = ep
             cell.append(face)
         cells.append(cell)
+
     gkey_index = dict((gkey, index) for index, gkey in enumerate(gkey_xyz))
-    vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
-    cells = [[[gkey_index[gkey] for gkey in f] for f in c] for c in cells]
+    vertices   = [list(xyz) for gkey, xyz in gkey_xyz.items()]
+    cells      = [[[gkey_index[gkey] for gkey in face] for face in cell] for cell in cells]
+
     return cls.from_vertices_and_cells(vertices, cells)
 
 
