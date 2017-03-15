@@ -229,10 +229,25 @@ def embed_network_in_plane(network, fix=None, straightline=True):
         raise
     count = 100
     is_embedded = False
-    edges = network.edges()
+    edges = [(u, v) for u, v in network.edges_iter() if not network.is_vertex_leaf(u) and not network.is_vertex_leaf(v)]
+    #
+    x = network.get_vertices_attribute('x')
+    y = network.get_vertices_attribute('y')
+    xmin, xmax = min(x), max(x)
+    ymin, ymax = min(y), max(y)
+    xspan = xmax - xmin
+    yspan = ymax - ymin
+    n = len(network)
+    # k = 15. / (n ** 0.5)
+    #
     while count:
         graph = nx.Graph(edges)
-        pos = nx.spring_layout(graph)
+        pos = nx.spring_layout(graph,
+                               2,
+                               iterations=100,
+                               # fixed=fix,
+                               # pos={key: network.vertex_coordinates(key, 'xy') for key in network if not network.is_vertex_leaf(key)},
+                               scale=max(xspan, yspan))
         if not are_network_edges_crossed(edges, pos):
             is_embedded = True
             break
@@ -266,8 +281,9 @@ def embed_network_in_plane(network, fix=None, straightline=True):
             pos[key][1] += t[1]
     # update network vertex coordinates
     for key in network:
-        network[key]['x'] = pos[key][0]
-        network[key]['y'] = pos[key][1]
+        if key in pos:
+            network[key]['x'] = pos[key][0]
+            network[key]['y'] = pos[key][1]
     return True
 
 
@@ -286,7 +302,18 @@ if __name__ == '__main__':
 
     fix = (1, 12)
 
+    x = network.get_vertices_attribute('x')
+    y = network.get_vertices_attribute('y')
+
+    xmin, xmax = min(x), max(x)
+    ymin, ymax = min(y), max(y)
+
+    xspan = xmax - xmin
+    yspan = ymax - ymin
+
     if embed_network_in_plane(embedding, fix=fix):
+
+        print 'yes'
 
         points = []
         for key in embedding:
