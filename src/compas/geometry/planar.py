@@ -944,12 +944,45 @@ def is_polygon_convex_2d(polygon, colinear=False):
     return True
 
 
-def is_point_on_line_2d():
-    raise NotImplementedError
+def is_point_on_line_2d(point, line, tol=0.0):
+    """Verify if a point lies on a line in the XY-plane.
+
+    Parameters:
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        line (tuple): Two 2D or 3D points defining a line (Z components will be ignored).
+        tol (float): Optional. A tolerance. Default is ``0.0``.
+
+    Returns:
+        (bool): True if the point is in on the line, False otherwise.
+
+    """
+    d = distance_point_line_2d(point, line)
+    return d <= tol
 
 
-def is_point_on_segment_2d():
-    raise NotImplementedError
+def is_point_on_segment_2d(point, segment, tol=0.0):
+    """Verify if a point lies on a given line segment in the XY-plane.
+
+    Parameters:
+        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+        segment (tuple): Two 2D or 3D points defining the start and end points of 
+        the line segment (Z components will be ignored).
+
+    Returns:
+        (bool): True if the point is on the line segment, False otherwise.
+
+    """
+    a, b = segment
+    if not is_point_on_line_2d(point, segment, tol=tol):
+        return False
+    d_ab = distance_point_point_2d(a, b)
+    if d_ab == 0:
+        return False
+    d_pa = distance_point_point_2d(a, point)
+    d_pb = distance_point_point_2d(b, point)
+    if d_pa + d_pb <= d_ab + tol:
+        return True
+    return False
 
 
 def is_point_on_polygon_2d():
@@ -1161,9 +1194,16 @@ def intersection_lines_2d(lines):
     return None
 
 
-def intersection_segment_segment_2d(ab, cd):
-    raise NotImplementedError
-
+def intersection_segment_segment_2d(ab, cd, tol=0.):
+    
+    intx_pt = intersection_line_line_2d(ab, cd)
+    if not intx_pt:
+        return None
+    if not is_point_on_segment_2d(intx_pt, ab, tol):
+        return None
+    if not is_point_on_segment_2d(intx_pt, cd, tol):
+        return None   
+    return intx_pt
 
 def intersection_segments_2d(segments):
     raise NotImplementedError

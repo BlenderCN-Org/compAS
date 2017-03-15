@@ -6,7 +6,8 @@ from math import sqrt
 from math import fabs
 from math import cos
 from math import sin
-
+from math import radians
+from math import degrees
 
 from compas.geometry.utilities import multiply_matrix_vector
 
@@ -45,9 +46,13 @@ __all__ = [
     'distance_line_line',
 
     'angles_points',
+    'angles_points_degrees',
     'angles_vectors',
+    'angles_vectors_degrees',
     'angle_smallest_points',
+    'angle_smallest_points_degrees',
     'angle_smallest_vectors',
+    'angle_smallest_vectors_degrees',
 
     'midpoint_line',
     'centroid_points',
@@ -654,24 +659,41 @@ def distance_line_line(l1, l2, tol=0.0):
 
 
 def angles_vectors(u, v):
-    """Compute the the 2 angles formed by a pair of vectors.
+    """Compute the the 2 angles (radians) formed by a pair of vectors.
 
     Parameters:
         u (sequence of float) : XYZ components of the first vector.
         v (sequence of float) : XYZ components of the second vector.
 
     Returns:
-        tuple: The two angles.
+        tuple: The two angles in radians.
 
         The smallest angle is returned first.
 
     """
     a = angle_smallest_vectors(u, v)
-    return a, 360 - a
+    return a, pi * 2 - a
+
+
+def angles_vectors_degrees(u, v):
+    """Compute the the 2 angles (degrees) formed by a pair of vectors.
+
+    Parameters:
+        u (sequence of float) : XYZ components of the first vector.
+        v (sequence of float) : XYZ components of the second vector.
+
+    Returns:
+        tuple: The two angles in degrees.
+
+        The smallest angle is returned first.
+
+    """
+    a = angle_smallest_vectors_degrees(u, v)
+    return a, 360. - a
 
 
 def angles_points(a, b, c):
-    """Compute the two angles define by three points.
+    """Compute the two angles (radians) define by three points.
 
     Parameters:
         a (sequence of float): XYZ coordinates.
@@ -679,9 +701,9 @@ def angles_points(a, b, c):
         c (sequence of float): XYZ coordinates.
 
     Returns:
-        tuple: The two angles.
+        tuple: The two angles in radians.
 
-        The smallest angle is returned first.
+        The smallest angle in radians is returned first.
 
     Notes:
         The vectors are defined in the following way
@@ -699,30 +721,8 @@ def angles_points(a, b, c):
     return angles_vectors(u, v)
 
 
-def angle_smallest_vectors(u, v):
-    """Compute the smallest angle between two vectors.
-
-    Parameters:
-        u (sequence of float) : XYZ components of the first vector.
-        v (sequence of float) : XYZ components of the second vector.
-
-    Returns:
-        float: The smallest angle.
-
-        The angle is always positive.
-
-    Examples:
-        >>> angle_smallest([0.0, 1.0, 0.0], [1.0, 0.0, 0.0])
-        90
-
-    """
-    a = dot_vectors(u, v) / (length_vector(u) * length_vector(v))
-    a = max(min(a, 1), -1)
-    return 180. * acos(a) / pi
-
-
-def angle_smallest_points(a, b, c):
-    """Compute the smallest angle between the vectors defined by three points.
+def angles_points_degrees(a, b, c):
+    """Compute the two angles (degrees) define by three points.
 
     Parameters:
         a (sequence of float): XYZ coordinates.
@@ -730,7 +730,80 @@ def angle_smallest_points(a, b, c):
         c (sequence of float): XYZ coordinates.
 
     Returns:
-        float: The smallest angle.
+        tuple: The two angles in degrees.
+
+        The smallest angle in degrees is returned first.
+
+    Notes:
+        The vectors are defined in the following way
+
+        .. math::
+
+            \mathbf{u} = \mathbf{b} - \mathbf{a} \\
+            \mathbf{v} = \mathbf{c} - \mathbf{a}
+
+        Z components may be provided, but are simply ignored.
+
+    """
+    u = subtract_vectors(b, a)
+    v = subtract_vectors(c, a)
+    return angles_vectors_degrees(u, v)
+
+
+def angle_smallest_vectors(u, v):
+    """Compute the smallest angle (radians) between two vectors.
+
+    Parameters:
+        u (sequence of float) : XYZ components of the first vector.
+        v (sequence of float) : XYZ components of the second vector.
+
+    Returns:
+        float: The smallest angle in radians.
+
+        The angle is always positive.
+
+    Examples:
+        >>> angle_smallest([0.0, 1.0, 0.0], [1.0, 0.0, 0.0])
+        
+
+    """
+    a = dot_vectors(u, v) / (length_vector(u) * length_vector(v))
+    a = max(min(a, 1), -1)
+    return acos(a)
+
+
+def angle_smallest_vectors_degrees(u, v):
+    """Compute the smallest angle (degrees) between two vectors.
+
+    Parameters:
+        u (sequence of float) : XYZ components of the first vector.
+        v (sequence of float) : XYZ components of the second vector.
+
+    Returns:
+        float: The smallest angle in degrees.
+
+        The angle is always positive.
+
+    Examples:
+        >>> angle_smallest([0.0, 1.0, 0.0], [1.0, 0.0, 0.0])
+        
+
+    """
+    a = dot_vectors(u, v) / (length_vector(u) * length_vector(v))
+    a = max(min(a, 1), -1)
+    return degrees(acos(a))
+
+
+def angle_smallest_points(a, b, c):
+    """Compute the smallest angle (radians) between the vectors defined by three points.
+
+    Parameters:
+        a (sequence of float): XYZ coordinates.
+        b (sequence of float): XYZ coordinates.
+        c (sequence of float): XYZ coordinates.
+
+    Returns:
+        float: The smallest angle in radians.
 
         The angle is always positive.
 
@@ -749,6 +822,34 @@ def angle_smallest_points(a, b, c):
     v = subtract_vectors(c, a)
     return angle_smallest_vectors(u, v)
 
+
+def angle_smallest_points_degrees(a, b, c):
+    """Compute the smallest angle (degrees) between the vectors defined by three points.
+
+    Parameters:
+        a (sequence of float): XYZ coordinates.
+        b (sequence of float): XYZ coordinates.
+        c (sequence of float): XYZ coordinates.
+
+    Returns:
+        float: The smallest angle in degrees.
+
+        The angle is always positive.
+
+    Note:
+        The vectors are defined in the following way
+
+        .. math::
+
+            \mathbf{u} = \mathbf{b} - \mathbf{a} \\
+            \mathbf{v} = \mathbf{c} - \mathbf{a}
+
+        Z components may be provided, but are simply ignored.
+
+    """
+    u = subtract_vectors(b, a)
+    v = subtract_vectors(c, a)
+    return angle_smallest_vectors_degrees(u, v)
 
 # ------------------------------------------------------------------------------
 # average
@@ -2005,13 +2106,33 @@ def offset_polygon(polygon, distance):
     return polygon_offset
 
 
+
 # ------------------------------------------------------------------------------
-# rotate
+# rotate and orient
 # ------------------------------------------------------------------------------
+
+def rotate_points_degrees(points, axis, angle, origin=None):
+    """Rotates points around an arbitrary axis in 3D (degrees).
+
+    Parameters:
+        points (sequence of sequence of float): XYZ coordinates of the points.
+        axis (sequence of float): The rotation axis.
+        angle (float): the angle of rotation in degrees.
+        origin (sequence of float): Optional. The origin of the rotation axis.
+            Default is ``[0.0, 0.0, 0.0]``.
+
+    Returns:
+        list: the rotated points
+
+    References:
+        https://en.wikipedia.org/wiki/Rotation_matrix
+
+    """   
+    return rotate_points(points, radians(axis), angle, origin)
 
 
 def rotate_points(points, axis, angle, origin=None):
-    """Rotates points around an arbitrary axis in 3D.
+    """Rotates points around an arbitrary axis in 3D (radians).
 
     Parameters:
         points (sequence of sequence of float): XYZ coordinates of the points.
@@ -2045,6 +2166,65 @@ def rotate_points(points, axis, angle, origin=None):
     points = [multiply_matrix_vector(R, point) for point in points]
     # translate points back
     points = translate_points(points, origin)
+    return points
+
+
+def orient_points(points, reference_plane=None, target_plane=None):
+    """Orient points from one plane to another.
+
+    Parameters:
+        points (sequence of sequence of float): XYZ coordinates of the points.
+        reference_plane (tuple): Base point and normal defining a reference plane.
+        target_plane (tuple): Base point and normal defining a target plane.
+
+    Returns:
+        points (sequence of sequence of float): XYZ coordinates of the oriented points.
+
+    Note:
+        This function is useful to orient a planar problem in the xy-plane to simplify
+        the calculation (see example).  
+        
+    Examples:
+
+        .. code-block:: python
+          
+            
+            reference_plane = [(0.57735,0.57735,0.57735),(1.0, 1.0, 1.0)]
+            
+            line_a = [ 
+                (0.288675,0.288675,1.1547),
+                (0.866025,0.866025, 0.)
+                ] 
+            
+            line_b = [     
+                (1.07735,0.0773503,0.57735),
+                (0.0773503,1.07735,0.57735)
+                ]
+                
+            # orient lines to lie in the xy-plane
+            line_a_xy = orient_points(line_a, reference_plane)
+            line_b_xy = orient_points(line_b, reference_plane)
+            
+            # compute intersection in 2d in the xy-plane
+            intx_point_xy = intersection_segment_segment_2d(line_a_xy, line_b_xy)
+            
+            # re-orient resulting intersection point to lie in the reference plane
+            intx_point = orient_points([intx_point_xy], target_plane=reference_plane)[0]
+            print(intx_point)
+
+    """
+    
+    if not target_plane:
+        target_plane = [(0., 0., 0.,), (0., 0., 1.)]
+        
+    if not reference_plane:
+        reference_plane = [(0., 0., 0.,), (0., 0., 1.)]
+    
+    vec_rot = cross_vectors(reference_plane[1], target_plane[1])
+    angle = angle_smallest_vectors(reference_plane[1], target_plane[1])
+    points = rotate_points(points, vec_rot, radians(angle), reference_plane[0])
+    vec_trans = subtract_vectors(target_plane[0], reference_plane[0])
+    points = translate_points(points, vec_trans)
     return points
 
 
