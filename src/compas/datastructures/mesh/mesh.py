@@ -1388,17 +1388,15 @@ mesh summary
         if not self.face:
             return False
         for fkey in self.face:
-            if len(self.face[fkey]) > 3:
+            if len(self.face[fkey]) != 3:
                 return False
         return True
 
-    def is_quadmesh(self, strict=False):
+    def is_quadmesh(self):
         if not self.face:
             return False
         for fkey in self.face:
-            if len(self.face[fkey]) > 4:
-                return False
-            if strict and len(self.face[fkey]) < 4:
+            if len(self.face[fkey]) != 4:
                 return False
         return True
 
