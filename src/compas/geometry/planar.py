@@ -482,7 +482,7 @@ def angles_vectors_2d(u, v):
 
     """
     a = angle_smallest_vectors_2d(u, v)
-    return a, 360 - a
+    return a, 2. * pi - a
 
 
 def angles_points_2d(a, b, c):
@@ -513,7 +513,7 @@ def angles_points_2d(a, b, c):
     u = subtract_vectors_2d(b, a)
     v = subtract_vectors_2d(c, a)
     a = angle_smallest_vectors_2d(u, v)
-    return a, 360 - a
+    return a, 2. * pi - a
 
 
 def angle_smallest_vectors_2d(u, v):
@@ -531,7 +531,7 @@ def angle_smallest_vectors_2d(u, v):
     """
     a = dot_vectors_2d(u, v) / (length_vector_2d(u) * length_vector_2d(v))
     a = max(min(a, 1), -1)
-    return acos(a) 
+    return acos(a)
 
 
 def angle_smallest_vectors_degrees_2d(u, v):
@@ -547,7 +547,7 @@ def angle_smallest_vectors_degrees_2d(u, v):
         The angle is always positive.
 
     """
-    return degrees(angle_smallest_vectors_2d) 
+    return degrees(angle_smallest_vectors_2d)
 
 
 def angle_smallest_points_2d(a, b, c):
@@ -608,6 +608,8 @@ def angle_smallest_points_degrees_2d(a, b, c):
     """
     a = degrees(angle_smallest_points_2d(a, b, c))
     return a
+
+
 # ------------------------------------------------------------------------------
 # average
 # ------------------------------------------------------------------------------

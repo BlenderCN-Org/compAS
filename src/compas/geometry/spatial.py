@@ -1339,7 +1339,7 @@ def is_polygon_convex(polygon):
         v2 = subtract_vectors(p2, p0)
         a1 = angle_smallest_vectors(v1, v0)
         a2 = angle_smallest_vectors(v0, v2)
-        if a1 + a2 > 180:
+        if a1 + a2 > pi:
             return False
     return True
 
@@ -2100,10 +2100,10 @@ def offset_polygon(polygon, distance):
     return polygon_offset
 
 
-
 # ------------------------------------------------------------------------------
 # rotate and orient
 # ------------------------------------------------------------------------------
+
 
 def rotate_points_degrees(points, axis, angle, origin=None):
     """Rotates points around an arbitrary axis in 3D (degrees).
@@ -2121,7 +2121,7 @@ def rotate_points_degrees(points, axis, angle, origin=None):
     References:
         https://en.wikipedia.org/wiki/Rotation_matrix
 
-    """   
+    """
     return rotate_points(points, axis, radians(angle), origin)
 
 
@@ -2176,46 +2176,46 @@ def orient_points(points, reference_plane=None, target_plane=None):
 
     Note:
         This function is useful to orient a planar problem in the xy-plane to simplify
-        the calculation (see example).  
-        
+        the calculation (see example).
+
     Examples:
 
         .. code-block:: python
-          
+
             from compas.geometry.spatial import orient_points
             from compas.geometry.planar import intersection_segment_segment_2d
-            
+
             reference_plane = [(0.57735,0.57735,0.57735),(1.0, 1.0, 1.0)]
-            
-            line_a = [ 
+
+            line_a = [
                 (0.288675,0.288675,1.1547),
                 (0.866025,0.866025, 0.)
-                ] 
-            
-            line_b = [     
+                ]
+
+            line_b = [
                 (1.07735,0.0773503,0.57735),
                 (0.0773503,1.07735,0.57735)
                 ]
-                
+
             # orient lines to lie in the xy-plane
             line_a_xy = orient_points(line_a, reference_plane)
             line_b_xy = orient_points(line_b, reference_plane)
-            
+
             # compute intersection in 2d in the xy-plane
             intx_point_xy = intersection_segment_segment_2d(line_a_xy, line_b_xy)
-            
+
             # re-orient resulting intersection point to lie in the reference plane
             intx_point = orient_points([intx_point_xy], target_plane=reference_plane)[0]
             print(intx_point)
 
     """
-    
+
     if not target_plane:
         target_plane = [(0., 0., 0.,), (0., 0., 1.)]
-        
+
     if not reference_plane:
         reference_plane = [(0., 0., 0.,), (0., 0., 1.)]
-    
+
     vec_rot = cross_vectors(reference_plane[1], target_plane[1])
     angle = angle_smallest_vectors(reference_plane[1], target_plane[1])
     points = rotate_points(points, vec_rot, angle, reference_plane[0])
@@ -2345,7 +2345,7 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
         return None
     vec_line = subtract_vectors(line[1], line[0])
     vec_reflect = mirror_vector_vector(vec_line, plane[1])
-    if angle_smallest_vectors(plane[1], vec_reflect) > 90.:
+    if angle_smallest_vectors(plane[1], vec_reflect) > 0.5 * pi:
         return None
     return [intx_pt, add_vectors(intx_pt, vec_reflect)]
 
@@ -2414,7 +2414,7 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
     vec_line = subtract_vectors(line[1], line[0])
     vec_normal = normal_triangle(triangle, unitized=True)
     vec_reflect = mirror_vector_vector(vec_line, vec_normal)
-    if angle_smallest_vectors(vec_normal, vec_reflect) > 90.:
+    if angle_smallest_vectors(vec_normal, vec_reflect) > 0.5 * pi:
         return None
     return [intx_pt, add_vectors(intx_pt, vec_reflect)]
 
