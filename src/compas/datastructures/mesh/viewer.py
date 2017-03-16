@@ -1,3 +1,6 @@
+import os
+import compas
+
 from compas.viewers.viewer import Viewer
 from compas.viewers.drawing import xdraw_polygons
 from compas.viewers.drawing import xdraw_lines
@@ -56,6 +59,9 @@ class MeshViewer(Viewer):
             return
         if key == 's':
             self.mesh.subdivide('quad')
+            return
+        if key == 'c':
+            self.screenshot(os.path.join(compas.TEMP, 'screenshot.jpg'))
             return
 
     def special(self, key, x, y):
@@ -160,6 +166,11 @@ class SubdMeshViewer(Viewer):
             self.subd = self.subdfunc(self.mesh, k=4)
         if key == '5':
             self.subd = self.subdfunc(self.mesh, k=5)
+        if key == 'c':
+            self.screenshot(os.path.join(compas.TEMP, 'screenshot.jpg'))
+
+    def subdivide(self, k=1):
+        self.subd = self.subdfunc(self.mesh, k=k)
 
 
 class MultiMeshViewer(Viewer):

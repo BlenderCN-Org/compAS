@@ -1907,9 +1907,13 @@ if __name__ == '__main__':
     mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_vertex_attributes({'is_fixed': False})
 
-    print(mesh)
+    # print(mesh)
+
+    mesh.set_edge_attribute(30, 31, 'test', 'a')
+
+    print(mesh.get_edge_attribute(30, 31, 'test', 'b'))
 
     mesh.plot(
         vertexsize=0.2,
-        vertexlabel={key: '{0:.1f}'.format(mesh.vertex_area(key)) for key in mesh}
+        vertexlabel={key: key for key in mesh}
     )

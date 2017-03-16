@@ -203,6 +203,14 @@ class ScreenWidget(QGLWidget):
             self.subd = self.subdfunc(self.mesh, k=5)
         self.updateGL()
 
+    # ==========================================================================
+    # helpers
+    # ==========================================================================
+
+    def capture(self, filename, filetype):
+        qimage = self.grabFrameBuffer()
+        qimage.save(filename, filetype)
+
 
 # ==============================================================================
 # Debugging
