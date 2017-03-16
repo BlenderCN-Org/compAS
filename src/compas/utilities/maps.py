@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
@@ -37,7 +40,7 @@ def geometric_key(xyz, precision='3f', tolerance=1e-9, sanitize=True):
             from math import pi
             from compas.utilities import geometric_key
 
-            print geometric_key([pi, pi / 2.0, 2.0 * pi], '3f')
+            print(geometric_key([pi, pi / 2.0, 2.0 * pi], '3f'))
 
             # 3.142,3.142,3.142
 
@@ -75,7 +78,7 @@ def geometric_key2(xy, precision='3f', tolerance=1e-9, sanitize=True):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     from math import pi
 
-    print geometric_key([pi, pi, pi], '3f')
+    print(geometric_key([pi, pi, pi], '3f'))

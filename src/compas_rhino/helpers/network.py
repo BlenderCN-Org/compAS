@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import ast
 
 from compas.utilities.colors import color_to_colordict
@@ -190,7 +192,7 @@ def select_network_vertices(network, message="Select network vertices."):
 
             keys = rhino.select_network_vertices(network)
 
-            print keys
+            print(keys)
 
 
     See Also:
@@ -353,7 +355,7 @@ def select_network_faces(network, message='Select network faces.'):
 
             fkeys = rhino.select_network_faces(network)
 
-            print fkeys
+            print(fkeys)
 
 
     See Also:
@@ -430,9 +432,9 @@ def update_network_attributes(network):
             network = Network.from_obj(compas.get_data('lines.obj'))
 
             if compas_rhino.update_network_attributes(network):
-                print 'network attributes updated'
+                print('network attributes updated')
             else:
-                print 'network attributres not updated'
+                print('network attributres not updated')
 
 
     See Also:
@@ -482,9 +484,9 @@ def update_network_vertex_attributes(network, keys, names=None):
             keys = network.vertices()
 
             if compas_rhino.update_network_vertex_attributes(network, keys):
-                print 'network vertex attributes updated'
+                print('network vertex attributes updated')
             else:
-                print 'network vertex attributes not updated'
+                print('network vertex attributes not updated')
 
 
     See Also:
@@ -546,9 +548,9 @@ def update_network_edge_attributes(network, keys, names=None):
             keys = network.edges()
 
             if compas_rhino.update_network_edge_attributes(network, keys):
-                print 'network edge attributes updated'
+                print('network edge attributes updated')
             else:
-                print 'network edge attributes not updated'
+                print('network edge attributes not updated')
 
 
     See Also:
@@ -610,9 +612,9 @@ def update_network_face_attributes(network, fkeys, names=None):
             keys = network.faces()
 
             if compas_rhino.update_network_face_attributes(network, keys):
-                print 'network face attributes updated'
+                print('network face attributes updated')
             else:
-                print 'network face attributes not updated'
+                print('network face attributes not updated')
 
 
     See Also:

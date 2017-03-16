@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import cStringIO
 import cProfile
 import pstats
@@ -34,9 +36,9 @@ def print_profile(func):
                 \"\"\"Sum up all integers below n.\"\"\"
                 return sum(for i in range(n))
 
-            print f(100)
-            print f.__doc__
-            print f.__name__
+            print(f(100))
+            print(f.__doc__)
+            print(f.__name__)
 
     """
     @wraps(func)
@@ -52,7 +54,7 @@ def print_profile(func):
         stats.strip_dirs()
         stats.sort_stats(1)
         stats.print_stats(20)
-        print stream.getvalue()
+        print(stream.getvalue())
         #
         return res
     return wrapper

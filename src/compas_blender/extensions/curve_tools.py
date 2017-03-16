@@ -16,6 +16,13 @@
 #
 # #####END GPL LICENSE BLOCK #####
 
+from __future__ import print_function
+
+import bpy
+from mathutils import *
+from bpy.props import *
+
+
 bl_info = {
     "name": "Curve Tools",
     "author": "Zak",
@@ -24,214 +31,213 @@ bl_info = {
     "location": "Properties > Object data",
     "description": "Creates driven Lofts or Birails between curves",
     "warning": "may be buggy or incomplete",
-    "wiki_url": "http://wiki.blender.org/index.php/Extensions:2.6/Py/"\
-        "Scripts/Curve/Curve_Tools",
-    "tracker_url": "https://projects.blender.org/tracker/index.php?"\
-        "func=detail&aid=27720",
+    "wiki_url": "http://wiki.blender.org/index.php/Extensions:2.6/Py/Scripts/Curve/Curve_Tools",
+    "tracker_url": "https://projects.blender.org/tracker/index.php?func=detail&aid=27720",
     "category": "Add Curve"}
 
-### UPDATES
-#1.5
+# UPDATES
+# 1.5
 
-#-Fixed birail function
-#-Added Curve Snap to W key specials menu.
-#-Removed some functions that arent needed and wrapped into the operators.
-#-nurbs with weights for loft and birail
-#-Panel Moved to view 3d tools
-#-inserted TODO comments
-#-tried to implement live tension and bias for Hermite interpolation by driving the mesh but
-#i dont know why, the code is executed all the time even if you dont change the variables.
-#-snap to curves affects all the curves on the scene
-#-i was able to preserve handle types when split or subdivide
+# - Fixed birail function
+# - Added Curve Snap to W key specials menu.
+# - Removed some functions that arent needed and wrapped into the operators.
+# - nurbs with weights for loft and birail
+# - Panel Moved to view 3d tools
+# - inserted TODO comments
+# - tried to implement live tension and bias for Hermite interpolation by driving the mesh but
+# - i dont know why, the code is executed all the time even if you dont change the variables.
+# - snap to curves affects all the curves on the scene
+# - i was able to preserve handle types when split or subdivide
 
 
-#1.4
-#-incorporate curve snap
-#assign a copy transform to helper
-#-nurbs implemented (in progress)
-
-import bpy
-from mathutils import *
-from bpy.props import *
+# 1.4
+# - incorporate curve snap
+# - assign a copy transform to helper
+# - nurbs implemented (in progress)
 
 print("----------")
 
 
-### PROPERTIES
+# PROPERTIES
 class sprops(bpy.types.PropertyGroup):
     pass
 
 
 bpy.utils.register_class(sprops)
 
-#bpy.selection will store objects names in the order they were selected
-bpy.selection=[]
+# bpy.selection will store objects names in the order they were selected
+bpy.selection = []
 
 
-#dodriver a simple checker to chosse whether  you want a driven mesh or not.
-bpy.types.Scene.dodriver = BoolProperty(name = "dodriver",                                      default=False)
+# dodriver a simple checker to chosse whether  you want a driven mesh or not.
+bpy.types.Scene.dodriver = BoolProperty(name="dodriver", default=False)
 
-#interpolation types
-myitems = (('0','Linear', ''),('1','Cubic',''),('2','Catmull',''), ('3','Hermite',''))
-bpy.types.Scene.intype = EnumProperty(name="intype", items = myitems, default='3')
+# interpolation types
+myitems = (('0', 'Linear', ''), ('1', 'Cubic', ''), ('2', 'Catmull', ''), ('3', 'Hermite', ''))
+bpy.types.Scene.intype = EnumProperty(name="intype", items=myitems, default='3')
 
-#number of steps and spans to be created
+# number of steps and spans to be created
 bpy.types.Scene.steps = IntProperty(name="steps", default=12, min=2)
 bpy.types.Scene.spans = IntProperty(name="spans", default=12, min=2)
 
-#parameters for Hermite interpolation
-bpy.types.Scene.tension = FloatProperty(name = "tension", min=0.0, default=0.0)
-bpy.types.Scene.bias = FloatProperty(name = "bias", min=0.0, default = 0.5)
+# parameters for Hermite interpolation
+bpy.types.Scene.tension = FloatProperty(name="tension", min=0.0, default=0.0)
+bpy.types.Scene.bias = FloatProperty(name="bias", min=0.0, default=0.5)
 
-#proportional birail
+# proportional birail
 bpy.types.Scene.proportional = BoolProperty(name="proportional", default=False)
 
-#this stores the result of calculating the curve length
+# this stores the result of calculating the curve length
 bpy.types.Scene.clen = FloatProperty(name="clen", default=0.0, precision=5)
 
-#minimun distance for merge curve tool
+# minimun distance for merge curve tool
 bpy.types.Scene.limit = FloatProperty(name="limit", default=0.1, precision=3)
 
 
-### SELECT BY ORDER BLOCK
+# SELECT BY ORDER BLOCK
 
-#i dont know what to do with this. Im not using it yet.
+
+# i dont know what to do with this. Im not using it yet.
 def selected_points(curve):
-
     selp = []
     for spl in curve.splines:
-        if spl.type=="BEZIER":
+        if spl.type == "BEZIER":
             points = spl.bezier_points
             for p in points:
                 if p.select_control_point:
                     selp.append(p)
-
-        elif spl.type=="NURBS":
+        elif spl.type == "NURBS":
             points = spl.points
             for p in points:
                 if p.select:
                     selp.append(p)
     return selp
 
-#writes bpy.selection when a new object is selected or deselected
-#it compares bpy.selection with bpy.context.selected_objects
 
+# writes bpy.selection when a new object is selected or deselected
+# it compares bpy.selection with bpy.context.selected_objects
 def select():
-
-    #print(bpy.context.mode)
-    if bpy.context.mode=="OBJECT":
+    # print(bpy.context.mode)
+    if bpy.context.mode == "OBJECT":
         obj = bpy.context.object
         sel = len(bpy.context.selected_objects)
-
-        if sel==0:
-            bpy.selection=[]
+        if sel == 0:
+            bpy.selection = []
         else:
-            if sel==1:
-                bpy.selection=[]
+            if sel == 1:
+                bpy.selection = []
                 bpy.selection.append(obj)
-            elif sel>len(bpy.selection):
+            elif sel > len(bpy.selection):
                 for sobj in bpy.context.selected_objects:
-                    if (sobj in bpy.selection)==False:
+                    if sobj not in bpy.selection:
                         bpy.selection.append(sobj)
 
-            elif sel<len(bpy.selection):
+            elif sel < len(bpy.selection):
                 for it in bpy.selection:
-                    if (it in bpy.context.selected_objects)==False:
+                    if it not in bpy.context.selected_objects:
                         bpy.selection.remove(it)
 
-    #on edit mode doesnt work well
+    # on edit mode doesnt work well
 
 
-#executes selection by order at 3d view
+# executes selection by order at 3d view
 class Selection(bpy.types.Header):
     bl_label = "Selection"
     bl_space_type = "VIEW_3D"
 
     def __init__(self):
-        #print("hey")
         select()
 
     def draw(self, context):
         layout = self.layout
         row = layout.row()
-        row.label("Sel: "+str(len(bpy.selection)))
+        row.label("Sel: " + str(len(bpy.selection)))
 
-### GENERAL CURVE FUNCTIONS
 
-#distance between 2 points
+# GENERAL CURVE FUNCTIONS
+
+
+# distance between 2 points
 def dist(p1, p2):
-    return (p2-p1).magnitude
+    return (p2 - p1).magnitude
 
-#sets cursors position for debugging porpuses
+
+# sets cursors position for debugging porpuses
 def cursor(pos):
     bpy.context.scene.cursor_location = pos
 
-#cuadratic bezier value
+
+# cuadratic bezier value
 def quad(p, t):
-    return p[0]*(1.0-t)**2.0 + 2.0*t*p[1]*(1.0-t) + p[2]*t**2.0
+    return p[0] * (1.0 - t) ** 2.0 + 2.0 * t * p[1] * (1.0 - t) + p[2] * t ** 2.0
 
-#cubic bezier value
+
+# cubic bezier value
 def cubic(p, t):
-    return p[0]*(1.0-t)**3.0 + 3.0*p[1]*t*(1.0-t)**2.0 + 3.0*p[2]*(t**2.0)*(1.0-t) + p[3]*t**3.0
+    return p[0] * (1.0 - t) ** 3.0 + 3.0 * p[1] * t * (1.0 - t) ** 2.0 + 3.0 * p[2] * (t ** 2.0) * (1.0 - t) + p[3] * t ** 3.0
 
-#gets a bezier segment's control points on global coordinates
+
+# gets a bezier segment's control points on global coordinates
 def getbezpoints(spl, mt, seg=0):
     points = spl.bezier_points
     p0 = mt * points[seg].co
     p1 = mt * points[seg].handle_right
-    p2 = mt * points[seg+1].handle_left
-    p3 = mt * points[seg+1].co
+    p2 = mt * points[seg + 1].handle_left
+    p3 = mt * points[seg + 1].co
     return p0, p1, p2, p3
 
-#gets nurbs polygon control points on global coordinates
+
+# gets nurbs polygon control points on global coordinates
 def getnurbspoints(spl, mw):
     pts = []
     ws = []
     for p in spl.points:
-        v = Vector(p.co[0:3])*mw
+        v = Vector(p.co[0: 3]) * mw
         pts.append(v)
         ws.append(p.weight)
     return pts , ws
 
-#calcs a nurbs knot vector
-def knots(n, order, type=0):#0 uniform 1 endpoints 2 bezier
+
+# calcs a nurbs knot vector
+def knots(n, order, type=0):
 
     kv = []
 
-    t = n+order
-    if type==0:
+    t = n + order
+    if type == 0:
         for i in range(0, t):
-            kv.append(1.0*i)
-
-    elif type==1:
-        k=0.0
-        for i in range(1, t+1):
+            kv.append(1.0 * i)
+    elif type == 1:
+        k = 0.0
+        for i in range(1, t + 1):
             kv.append(k)
-            if i>=order and i<=n:
-                k+=1.0
-    elif type==2:
-        if order==4:
-            k=0.34
-            for a in range(0,t):
-                if a>=order and a<=n: k+=0.5
-                kv.append(floor(k))
-                k+=1.0/3.0
-
-        elif order==3:
-            k=0.6
+            if i >= order and i <= n:
+                k += 1.0
+    elif type == 2:
+        if order == 4:
+            k = 0.34
             for a in range(0, t):
-                if a >=order and a<=n: k+=0.5
+                if a >= order and a <= n:
+                    k += 0.5
+                kv.append(floor(k))
+                k += 1.0 / 3.0
+        elif order == 3:
+            k = 0.6
+            for a in range(0, t):
+                if a >= order and a <= n:
+                    k += 0.5
                 kv.append(floor(k))
 
-    ##normalize the knot vector
+    # normalize the knot vector
     for i in range(0, len(kv)):
-        kv[i]=kv[i]/kv[-1]
+        kv[i] = kv[i] / kv[-1]
 
     return kv
 
-#nurbs curve evaluation
+
+# nurbs curve evaluation
 def C(t, order, points, weights, knots):
-    #c = Point([0,0,0])
+    # c = Point([0,0,0])
     c = Vector()
     rational = 0
     i = 0
@@ -239,19 +245,20 @@ def C(t, order, points, weights, knots):
         b = B(i, order, t, knots)
         p = points[i] * (b * weights[i])
         c = c + p
-        rational = rational + b*weights[i]
+        rational = rational + b * weights[i]
         i = i + 1
 
-    return c * (1.0/rational)
+    return c * (1.0 / rational)
 
-#nurbs basis function
-def B(i,k,t,knots):
+
+# nurbs basis function
+def B(i, k, t, knots):
     ret = 0
-    if k>0:
-        n1 = (t-knots[i])*B(i,k-1,t,knots)
-        d1 = knots[i+k] - knots[i]
-        n2 = (knots[i+k+1] - t) * B(i+1,k-1,t,knots)
-        d2 = knots[i+k+1] - knots[i+1]
+    if k > 0:
+        n1 = (t - knots[i]) * B(i, k - 1, t, knots)
+        d1 = knots[i + k] - knots[i]
+        n2 = (knots[i + k + 1] - t) * B(i + 1, k - 1, t, knots)
+        d2 = knots[i + k + 1] - knots[i + 1]
         if d1 > 0.0001 or d1 < -0.0001:
             a = n1 / d1
         else:
@@ -261,50 +268,48 @@ def B(i,k,t,knots):
         else:
             b = 0
         ret = a + b
-        #print "B i = %d, k = %d, ret = %g, a = %g, b = %g\n"%(i,k,ret,a,b)
     else:
-        if knots[i] <= t and t <= knots[i+1]:
+        if knots[i] <= t and t <= knots[i + 1]:
             ret = 1
         else:
             ret = 0
     return ret
 
-#calculates a global parameter t along all control points
-#t=0 begining of the curve
-#t=1 ending of the curve
 
+# calculates a global parameter t along all control points
+# t = 0 begining of the curve
+# t = 1 ending of the curve
 def calct(obj, t):
-
-    spl=None
+    spl = None
     mw = obj.matrix_world
-    if obj.data.splines.active==None:
-        if len(obj.data.splines)>0:
-            spl=obj.data.splines[0]
+    if obj.data.splines.active is None:
+        if len(obj.data.splines) > 0:
+            spl = obj.data.splines[0]
     else:
         spl = obj.data.splines.active
 
-    if spl==None:
+    if spl is None:
         return False
 
-    if spl.type=="BEZIER":
+    if spl.type == "BEZIER":
         points = spl.bezier_points
-        nsegs = len(points)-1
+        nsegs = len(points) - 1
 
-        d = 1.0/nsegs
-        seg = int(t/d)
-        t1 = t/d - int(t/d)
+        d = 1.0 / nsegs
+        seg = int(t / d)
+        t1 = t / d - int(t / d)
 
-        if t==1:
-            seg-=1
+        if t == 1:
+            seg -= 1
             t1 = 1.0
 
-        p = getbezpoints(spl,mw, seg)
+        p = getbezpoints(spl, mw, seg)
 
         coord = cubic(p, t1)
 
         return coord
 
-    elif spl.type=="NURBS":
+    elif spl.type == "NURBS":
         data = getnurbspoints(spl, mw)
         pts = data[0]
         ws = data[1]
@@ -313,11 +318,12 @@ def calct(obj, t):
         ctype = spl.use_endpoint_u
         kv = knots(n, order, ctype)
 
-        coord = C(t, order-1, pts, ws, kv)
+        coord = C(t, order - 1, pts, ws, kv)
 
         return coord
 
-#length of the curve
+
+# length of the curve
 def arclength(objs):
     length = 0.0
 

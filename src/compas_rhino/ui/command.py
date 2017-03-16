@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
@@ -68,11 +70,11 @@ def command_line_menu(interface):
     Examples:
 
         .. code-block:: python
-            
+
             # ...
 
     """
-    if rs.GetDocumentData(interface["ID"], interface["ID"]): 
+    if rs.GetDocumentData(interface["ID"], interface["ID"]):
         interface["default"] = rs.GetDocumentData(interface["ID"], interface["ID"])
     new_options = []
     sub_menus = {}
@@ -88,7 +90,7 @@ def command_line_menu(interface):
     if result in sub_menus:
         result = command_line_menu(sub_menus[result])
     return result
-    
+
 
 # ==============================================================================
 # Debugging
@@ -103,19 +105,21 @@ if __name__ == "__main__":
         "show"    : "sub_sub_menu",
         "ID"      : "interface_3",
     }
-    
+
     interface_2 = {
         "options" : ["sub_option_1", interface_3, ],
         "message" : "Select B",
         "default" : "sub_option_1",
         "show"    : "sub_menu",
-        "ID"      :"interface_2",
+        "ID"      : "interface_2",
     }
-    
-    interface_1 =   {"options":["option_1","option_2",interface_2],
-                    "message":"Select A",
-                    "default":"option_1",
-                    "show":None,
-                    "ID":"interface_1"}
-    
-    print command_line_menu(interface_1)
+
+    interface_1 = {
+        "options" : ["option_1", "option_2", interface_2],
+        "message" : "Select A",
+        "default" : "option_1",
+        "show"    : None,
+        "ID"      : "interface_1"
+    }
+
+    print(command_line_menu(interface_1))

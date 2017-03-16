@@ -902,8 +902,8 @@ def center_of_mass_polygon(polygon):
 
     Examples:
         >>> pts = [(0.,0.,0.),(1.,0.,0.),(0.,10.,0.)]
-        >>> print "Center of mass: {0}".format(center_of_mass(pts))
-        >>> print "Centroid: {0}".format(centroid(pts))
+        >>> print("Center of mass: {0}".format(center_of_mass(pts)))
+        >>> print("Centroid: {0}".format(centroid(pts)))
 
     """
     L  = 0
@@ -1675,9 +1675,9 @@ def is_intersection_box_box(box_1, box_2):
                 (0.5, 1.5, 1.0)
             ]
             if is_box_intersecting_box(box_a, box_b):
-                print "intersection found"
+                print("intersection found")
             else:
-                print "no intersection found"
+                print("no intersection found")
 
     Warning:
         Does not check if one box is completely enclosed by the other.

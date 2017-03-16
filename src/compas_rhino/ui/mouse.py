@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 try:
     from Rhino.UI import MouseCallback
 except ImportError:
@@ -58,7 +60,6 @@ if __name__ == '__main__':
 
     import rhinoscriptsyntax as rs
 
-
     # calculate "right angle distance" from point to frustum line
     # to check if mouse is hovering over that point
     # the distance from a point P to a line defined by points A, B
@@ -83,7 +84,6 @@ if __name__ == '__main__':
                     e.Display.DrawDot(Point3d(*p0), str(i), self.dotcolor, self.textcolor)
                     break
 
-
     points = [[i, i, 0] for i in range(10)]
 
     try:
@@ -95,11 +95,10 @@ if __name__ == '__main__':
         rs.GetString(message='Do some hovering')
 
     except Exception as e:
-        print e
+        print(e)
 
     finally:
         inspector.mouse.Enabled = False
         inspector.Enabled = False
         del inspector.mouse
         del inspector
-

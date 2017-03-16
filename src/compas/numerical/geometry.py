@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from numpy import asarray
 from numpy import array
 from numpy import meshgrid
@@ -96,10 +98,10 @@ def scalarfield_contours(xy, s, N=50):
             for i in range(len(contours)):
                 level = levels[i]
                 contour = contours[i]
-                print level
+                print(level)
                 for path in contour:
                     for polygon in path:
-                        print polygon
+                        print(polygon)
 
 
     See Also:

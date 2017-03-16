@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import json
 
@@ -174,7 +176,7 @@ def _xecute(funcname, basedir, tmpdir, delete_files, mode, *args, **kwargs):
 
 class XFunc(object):
     """"""
-    
+
     def __init__(self, basedir='.', tmpdir='.', delete_files=True, mode=0):
         self._basedir     = None
         self._tmpdir      = None
@@ -238,5 +240,5 @@ if __name__ == '__main__':
     xfunc(xfname)
 
     print(xfunc.data)
-    # print(xfunc.error)
-    # print(xfunc.profile)
+    print(xfunc.error)
+    print(xfunc.profile)

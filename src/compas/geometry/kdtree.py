@@ -1,6 +1,8 @@
 # Wikipedia KDTree <http://en.wikipedia.org/wiki/Kd-tree>
 # ActiveState KDTree <http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space>
 
+from __future__ import print_function
+
 import collections
 import math
 
@@ -127,10 +129,11 @@ if __name__ == '__main__':
 
     nnbrs = tree.nearest_neighbours(point, 10, distance_sort=True)
 
-    print point
+    print(point)
+
     for nnbr in nnbrs:
-        print nnbr
+        print(nnbr)
 
     tock = time.clock()
 
-    print "{0} CPU seconds for {1} nearest neighbor(s)".format(tock - tick, n)
+    print("{0} CPU seconds for {1} nearest neighbor(s)".format(tock - tick, n))

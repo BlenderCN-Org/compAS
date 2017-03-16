@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from random import choice
 
 from math import cos
@@ -53,7 +55,7 @@ def translation_matrix(direction, rtype='list'):
          [0, 1, 0, direction[1]],
          [0, 0, 1, direction[2]],
          [0, 0, 0, 1]]
-    if  rtype == 'list':
+    if rtype == 'list':
         return T
     elif rtype == 'array':
         return array(T)
@@ -173,7 +175,7 @@ if __name__ == "__main__":
 
     t1 = time.time()
 
-    print t1 - t0
+    print(t1 - t0)
 
     plt.plot(points[:, 0], points[:, 1], 'bo')
     plt.plot(rpoints[:, 0], rpoints[:, 1], 'ro')
