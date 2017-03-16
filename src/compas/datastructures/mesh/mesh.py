@@ -739,8 +739,9 @@ mesh summary
                 XYZ coordinates, and a list of faces. Each face is a list of
                 indices referencing the list of vertex coordinates.
         """
+        vertices = [self.vertex_coordinates(key) for key in self.vertex]
         faces = [self.face_vertices(fkey, ordered=True) for fkey in self.face]
-        return self.xyz, faces
+        return vertices, faces
 
     # **************************************************************************
     # **************************************************************************
