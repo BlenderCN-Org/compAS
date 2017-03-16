@@ -237,8 +237,7 @@ mesh summary
 - is connected: {8}
 - is manifold: {9}
 - is tri mesh: {10}
-- is quad mesh (contains faces with max 4 vertices): {11}
-- is quad mesh (contains only faces with 4 vertices): {12}
+- is quad mesh: {11}
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 \n""".format(len(self.vertex),
@@ -252,8 +251,7 @@ mesh summary
              ('True' if self.is_connected() else 'False'),
              ('True' if self.is_manifold() else 'False'),
              ('True' if self.is_trimesh() else 'False'),
-             ('True' if self.is_quadmesh() else 'False'),
-             ('True' if self.is_quadmesh(True) else 'False'))
+             ('True' if self.is_quadmesh() else 'False'))
 
     # **************************************************************************
     # **************************************************************************
