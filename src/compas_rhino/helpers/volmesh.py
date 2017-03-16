@@ -176,7 +176,7 @@ def draw_volmesh(volmesh,
 # ==============================================================================
 
 
-def display_volmesh_vertex_labels(volmesh, attr_name=None, layer=None, color=None, formatter=None):
+# def display_volmesh_vertex_labels(volmesh, attr_name=None, layer=None, color=None, formatter=None):
     
 
 

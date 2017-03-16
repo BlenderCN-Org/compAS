@@ -47,5 +47,5 @@ class ImageForm(Form):
 
 if __name__ == '__main__':
 
-    form = ImageForm('./data/image.gif')
+    form = ImageForm('../../../docs/source/_images/smoothing_01.jpg')
     form.show()
