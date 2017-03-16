@@ -11,9 +11,5 @@ and others will follow soon.
 
 * `compAS AGS <http://block.arch.ethz.ch/docs/compAS/packages/compas_ags>`_
 * `compAS FEA <http://block.arch.ethz.ch/docs/compAS/packages/compas_fea>`_
-
-
-* compAS RhinoVault
+* compAS TNA
 * compAS RBE
-* compAS KnitWork
-* compAS Bender

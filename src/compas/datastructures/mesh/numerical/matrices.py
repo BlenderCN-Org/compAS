@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
@@ -136,6 +138,6 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-    # print mesh_adjacency_matrix(mesh, 'list')
-    # print mesh_connectivity_matrix(mesh, 'list')
-    print mesh_laplacian_matrix(mesh, 'list')
+    # print(mesh_adjacency_matrix(mesh, 'list'))
+    # print(mesh_connectivity_matrix(mesh, 'list'))
+    print(mesh_laplacian_matrix(mesh, 'list'))

@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
@@ -17,7 +20,7 @@ class DXFReader(object):
     def read(self):
         with open(self.filepath, 'rb') as fp:
             for line in fp:
-                print line.strip()
+                print(line.strip())
 
 
 class DXFParser(object):

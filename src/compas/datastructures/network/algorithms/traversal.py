@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from collections import deque
 
 
@@ -68,7 +70,7 @@ def network_dfs(adjacency, root, callback=None):
     Examples:
         >>> import compas
         >>> network = Network.from_obj(compas.get_data('lines.obj'))
-        >>> print network_dfs(network, network.get_any_vertex())
+        >>> print(network_dfs(network, network.get_any_vertex()))
 
     See Also:
         ...

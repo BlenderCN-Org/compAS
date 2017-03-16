@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from math import cos
 from math import sin
 
@@ -311,9 +313,6 @@ if __name__ == '__main__':
     yspan = ymax - ymin
 
     if embed_network_in_plane(embedding, fix=fix):
-
-        print 'yes'
-
         points = []
         for key in embedding:
             points.append({

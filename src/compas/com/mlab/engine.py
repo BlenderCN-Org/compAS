@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -26,7 +29,7 @@ class MatlabEngine(object):
 
     For more information,
     see `MATLAB Engine API for Python <https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html?s_tid=gn_loc_drop>`_.
-    
+
     Examples:
         >>> m = MatlabEngine()
         >>> m.isprime(37)
@@ -46,26 +49,28 @@ class MatlabEngine(object):
             import matlab.engine
         except ImportError:
             raise MatlabEngineError()
-        self.matlab = matlab.engine    
+        self.matlab = matlab.engine
 
     def __getattr__(self, name):
         if self.engine:
             method = getattr(self.engine, name)
+
             def wrapper(*args, **kwargs):
                 return method(*args, **kwargs)
+
             return wrapper
         else:
             raise MatlabEngineError()
 
     def start(self):
-        print 'starting engine. this may take a few seconds...'
+        print('starting engine. this may take a few seconds...')
         self.engine = self.matlab.start_matlab()
-        print 'engine started!'
+        print('engine started!')
 
     def stop(self):
-        print 'stopping engine...'
+        print('stopping engine...')
         self.engine.quit()
-        print 'engine stopped!'
+        print('engine stopped!')
 
 
 # ==============================================================================
@@ -76,5 +81,4 @@ if __name__ == "__main__":
 
     m = MatlabEngine()
 
-    print m.isprime(37)
-
+    print(m.isprime(37))

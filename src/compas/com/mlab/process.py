@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import time
 
 from subprocess import Popen
@@ -42,7 +44,7 @@ class MatlabProcess(object):
         >>> m.run_command('tf = isprime(a);')
         >>> m.read_workspace()
         >>> m.stop()
-        >>> print m.ws_data
+        >>> print(m.ws_data)
 
         >>> m.write_value('a', 17)
         >>> m.run_command('res = isprime(a);')
@@ -81,17 +83,17 @@ class MatlabProcess(object):
         """
         options = options or self.matlab_options
         if self.verbose:
-            print 'create workspace file.'
+            print('create workspace file.')
         with open(self.ws_filename, 'wb'):
             pass
         if self.verbose:
-            print 'starting Matlab process...'
+            print('starting Matlab process...')
         pargs = [self.matlab_exec]
         pargs.extend(options)
         self.process = Popen(pargs, stdout=PIPE, stderr=PIPE, stdin=PIPE)
         self._wait_until('__READY__')
         if self.verbose:
-            print '=' * 79
+            print('=' * 79)
 
     def _wait_until(self, str_to_wait_for):
         self.process.stdin.write("'{0}'\n".format(str_to_wait_for))
@@ -105,12 +107,12 @@ class MatlabProcess(object):
 
     def stop(self):
         if self.verbose:
-            print '=' * 79
-            print 'stopping Matlab process...'
+            print('=' * 79)
+            print('stopping Matlab process...')
         self.process.stdin.write("exit;\n")
         self.process.terminate()
         if self.verbose:
-            print 'closing streams...'
+            print('closing streams...')
         self.process.stdin.close()
         self.process.stdout.close()
         self.process.stderr.close()
@@ -125,7 +127,7 @@ class MatlabProcess(object):
 
         """
         if self.verbose:
-            print 'run Matlab command: {0}'.format(command)
+            print('run Matlab command: {0}'.format(command))
         if ivars:
             for name, value in ivars.items():
                 self.write_value(name, value)
@@ -139,12 +141,12 @@ class MatlabProcess(object):
 
     def write_value(self, name, value):
         if self.verbose:
-            print 'write Matlab value: {0} => {1}'.format(name, value)
+            print('write Matlab value: {0} => {1}'.format(name, value))
         self.process.stdin.write("{0}={1};\n".format(name, value))
 
     def read_value(self, name, default=None):
         if self.verbose:
-            print 'read Matlab value: {0}'.format(name)
+            print('read Matlab value: {0}'.format(name))
         self.process.stdin.write("save('{0}', '{1}');\n".format(self.ws_filename, name))
         self._wait_until('__SAVED__')
         loadmat(self.ws_filename, mdict=self.ws_data)
@@ -157,14 +159,14 @@ class MatlabProcess(object):
         if not self.ws_data:
             return
         if self.verbose:
-            print 'write Matlab workspace.'
+            print('write Matlab workspace.')
         savemat(self.ws_filename, self.ws_data)
         self.process.stdin.write("load({0});\n".format(self.ws_filename))
         self._wait_until('__LOADED__')
 
     def read_workspace(self):
         if self.verbose:
-            print 'read Matlab workspace.'
+            print('read Matlab workspace.')
         self.process.stdin.write("save('{0}');\n".format(self.ws_filename))
         self._wait_until('__SAVED__')
         loadmat(self.ws_filename, mdict=self.ws_data)
@@ -183,10 +185,10 @@ if __name__ == "__main__":
     m.write_value('a', 37)
     m.run_command('res = isprime(a);')
 
-    print m.read_value('res')
-    print m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
+    print(m.read_value('res'))
+    print(m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None}))
 
     m.read_workspace()
     m.stop()
 
-    print m.ws_data
+    print(m.ws_data)

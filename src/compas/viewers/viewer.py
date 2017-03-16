@@ -2,6 +2,8 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
+from PIL import Image
+
 from compas.viewers.helpers import Camera
 from compas.viewers.helpers import Mouse
 from compas.viewers.helpers import Grid
@@ -437,6 +439,20 @@ class Viewer(object):
         z = glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
         pos = gluUnProject(x, y, z, modelview, projection, viewport)
         # print pos
+
+    # --------------------------------------------------------------------------
+    # helpers
+    # --------------------------------------------------------------------------
+
+    def screenshot(self, filename):
+        """"""
+        width = self.width
+        height = self.height
+        glReadBuffer(GL_FRONT)
+        pixels = glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE)
+        image = Image.frombytes("RGB", (width, height), pixels)
+        image = image.transpose(Image.FLIP_TOP_BOTTOM)
+        image.save(filename)
 
 
 # ==============================================================================

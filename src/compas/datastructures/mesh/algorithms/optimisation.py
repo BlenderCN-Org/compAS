@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas.datastructures.mesh.algorithms import smooth_mesh_centroid
 
 from compas.datastructures.mesh.operations import split_edge_trimesh
@@ -92,7 +94,7 @@ def optimise_trimesh_topology(mesh,
 
     """
     if verbose:
-        print target
+        print(target)
 
     lmin = (1 - tol) * (4.0 / 5.0) * target
     lmax = (1 + tol) * (4.0 / 3.0) * target
@@ -123,7 +125,7 @@ def optimise_trimesh_topology(mesh,
             dlmax = 0
 
         if verbose:
-            print k
+            print(k)
 
         count += 1
 
@@ -142,7 +144,7 @@ def optimise_trimesh_topology(mesh,
                 if mesh.edge_length(u, v) <= lmax + dlmax:
                     continue
                 if verbose:
-                    print 'split edge: {0} - {1}'.format(u, v)
+                    print('split edge: {0} - {1}'.format(u, v))
 
                 split_edge_trimesh(mesh, u, v, allow_boundary=allow_boundary)
 
@@ -162,7 +164,7 @@ def optimise_trimesh_topology(mesh,
                     continue
 
                 if verbose:
-                    print 'collapse edge: {0} - {1}'.format(u, v)
+                    print('collapse edge: {0} - {1}'.format(u, v))
 
                 collapse_edge_trimesh(mesh, u, v)
 
@@ -208,7 +210,7 @@ def optimise_trimesh_topology(mesh,
                 if current_error <= flipped_error:
                     continue
                 if verbose:
-                    print 'swap edge: {0} - {1}'.format(u, v)
+                    print('swap edge: {0} - {1}'.format(u, v))
 
                 swap_edge_trimesh(mesh, u, v)
                 visited.add(u)
@@ -272,6 +274,6 @@ if __name__ == '__main__':
 
     t1 = time.time()
 
-    print t1 - t0
+    print(t1 - t0)
 
     mesh.plot(vertexsize=0.05)

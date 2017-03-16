@@ -165,7 +165,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
             :include-source:
 
             from compas.datastructures.mesh import Mesh
-            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+            from compas.datastructures.mesh.algorithms import subdivide_mesh_catmullclark
 
             vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
             faces = [[0, 1, 2, 3], ]
@@ -180,7 +180,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
             :include-source:
 
             from compas.datastructures.mesh import Mesh
-            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+            from compas.datastructures.mesh.algorithms import subdivide_mesh_catmullclark
 
             vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
             faces = [[0, 1, 2, 3], ]
@@ -195,7 +195,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
 
             from compas.datastructures.mesh import Mesh
 
-            from compas.datastructures.mesh.algorithsm import subdivide_mesh_catmullclark
+            from compas.datastructures.mesh.algorithms import subdivide_mesh_catmullclark
             from compas.geometry.elements.polyhedron import Polyhedron
             from compas.datastructures.mesh.viewer import SubdMeshViewer
 
@@ -203,7 +203,7 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
 
             mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-            viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_catmullclark, width=600, height=600)
+            viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_catmullclark, width=1440, height=900)
 
             viewer.axes_on = False
             viewer.grid_on = False
@@ -211,8 +211,16 @@ def subdivide_mesh_catmullclark(mesh, k=1, fixed=None):
             for _ in range(10):
                viewer.camera.zoom_in()
 
+            viewer.subdivide(k=4)
+
             viewer.setup()
             viewer.show()
+
+    .. image:: /_images/subdivide_mesh_catmullclark-screenshot.*
+
+    .. note::
+
+        Image generated with ``SubdMeshViewer.screenshot()``.
 
     """
     def average(points):
@@ -431,7 +439,7 @@ def subdivide_trimesh_loop(mesh, k=1, fixed=None):
             viewer.grid_on = False
 
             for _ in range(10):
-               viewer.camera.zoom_in()
+                viewer.camera.zoom_in()
 
             viewer.setup()
             viewer.show()
@@ -585,26 +593,31 @@ if __name__ == "__main__":
 
     from compas.datastructures.mesh import Mesh
 
-    vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-    faces = [[0, 1, 2, 3], ]
+    # vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+    # faces = [[0, 1, 2, 3], ]
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=None)
+    # subd = subdivide_mesh_catmullclark(mesh, k=3, fixed=None)
 
-    subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
+    # subd.plot(vertexcolor={key: '#ff0000' for key in mesh}, vertexsize=0.01)
 
-    # from compas.geometry.elements.polyhedron import Polyhedron
-    # from compas.datastructures.mesh.viewer import SubdMeshViewer
+    from compas.geometry.elements.polyhedron import Polyhedron
+    from compas.datastructures.mesh.viewer import SubdMeshViewer
 
-    # cube = Polyhedron.generate(6)
+    cube = Polyhedron.generate(6)
 
-    # mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-    # viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+    viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=1440, height=900)
 
-    # viewer.axes_on = False
-    # viewer.grid_on = False
+    viewer.axes_on = False
+    viewer.grid_on = False
 
-    # viewer.setup()
-    # viewer.show()
+    for _ in range(10):
+        viewer.camera.zoom_in()
+
+    viewer.subdivide(k=4)
+
+    viewer.setup()
+    viewer.show()

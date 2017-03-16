@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import time
 
 try:
@@ -29,7 +31,7 @@ class RhinoClient(object):
     Parameters:
         delay_start (bool, optional) : Delay the creation of a COM interface.
             Default is ``False``.
-    
+
     Examples:
         >>> r = RhinoApp()
         >>> r.AddPoint(0, 0, 0)
@@ -48,8 +50,10 @@ class RhinoClient(object):
     def __getattr__(self, name):
         if self.rsi:
             method = getattr(self.rsi, name)
+
             def wrapper(*args, **kwargs):
                 return method(*args, **kwargs)
+
             return wrapper
         else:
             raise RhinoClientError()
@@ -57,11 +61,11 @@ class RhinoClient(object):
     def start(self):
         self.app = CreateObject('Rhino5.Application')
         self.rsm = GetModule(['{75B1E1B4-8CAA-43C3-975E-373504024FDB}', 1, 0])
-        print 'loading script interface...'
+        print('loading script interface...')
         attempts = 20
         while attempts:
             try:
-                print 'attempt %s' % attempts
+                print('attempt %s' % attempts)
                 self.rsi = self.app.GetScriptObject.QueryInterface(self.rsm.IRhinoScript)
                 break
             except Exception:
@@ -69,7 +73,7 @@ class RhinoClient(object):
             attempts -= 1
         if self.rsi is None:
             raise Exception('error loading script interface...')
-        print 'script interface loaded!'
+        print('script interface loaded!')
 
     def stop(self):
         raise NotImplementedError
