@@ -731,6 +731,17 @@ mesh summary
     def to_points(self, axes='xyz'):
         return [self.vertex_coordinates(key, axes) for key in self]
 
+    def to_vertices_and_faces(self):
+        """Return the vertices and faces of a mesh.
+
+        Returns:
+            (list, list): A tuple with a list of vertices, represented by their
+                XYZ coordinates, and a list of faces. Each face is a list of
+                indices referencing the list of vertex coordinates.
+        """
+        faces = [self.face_vertices(fkey, ordered=True) for fkey in self.face]
+        return self.xyz, faces
+
     # **************************************************************************
     # **************************************************************************
     # **************************************************************************
