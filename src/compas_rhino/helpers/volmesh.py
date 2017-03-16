@@ -18,8 +18,10 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'volmesh_from_polysurfaces', 'volmesh_from_wireframe',
-    'draw_volmesh'
+    'volmesh_from_polysurfaces',
+    'volmesh_from_wireframe',
+    'draw_volmesh',
+
 ]
 
 
@@ -35,8 +37,10 @@ def volmesh_from_polysurfaces(cls, guids):
 
     * find each of the polysurfaces and check if they have a boundary representation (b-rep)
     * convert to b-rep and extract the edge loops
-    * 
-
+    * make a face of each loop by referring to vertices using their geometric keys
+    * add a cell per brep
+    * and add the faces of a brep to the cell
+    * create a volmesh from the found vertices and cells
 
     Parameters:
         cls (compas.datastructures.volmesh.VolMesh):
@@ -165,6 +169,16 @@ def draw_volmesh(volmesh,
     # redraw if requested
     if redraw:
         rs.Redraw()
+
+
+# ==============================================================================
+# labels
+# ==============================================================================
+
+
+def display_volmesh_vertex_labels(volmesh, attr_name=None, layer=None, color=None, formatter=None):
+    
+
 
 
 # ==============================================================================

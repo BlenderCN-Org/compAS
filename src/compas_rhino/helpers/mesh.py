@@ -864,7 +864,7 @@ def display_mesh_edge_labels(mesh, attr_name=None, layer=None, color=None, forma
 
     colordict = color_to_colordict(color,
                                    mesh.edges(),
-                                   default=mesh.attributes['color.vertex'],
+                                   default=mesh.attributes['color.edge'],
                                    colorformat='rgb',
                                    normalize=False)
     if formatter:
