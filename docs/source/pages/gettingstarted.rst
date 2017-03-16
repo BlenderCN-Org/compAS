@@ -5,38 +5,61 @@ Getting started
 ********************************************************************************
 
 
-Tools
-=====
+What do i need?
+===============
 
-Before getting started, make sure you have the necessary tools installed on your
-system. At the very least, you will need a code editor and a source control
-management tool.
+* A version control system (Git, Mercurial, ...).
+* A repository manager (for example, SourceTree).
+* A code editor or and IDE (Eclipse, Sublime Text, Notepad++, ...).
+* A +2.6 version of the CPython implementation.
 
-Some installation instructions for different editors and repo managers, and a
-few other helpful bits and pieces can be found here: :doc:`/pages/devenv`.
+Any other requirements are either optional, or related to specific environments,
+and will be further discussed where relevant throughout this page.
 
 
-Download
-========
+Installation
+============
 
 Currently, we do not provide an installer. This may change in the future, but then
 again, it may not :)
 
-The mercurial repo can be cloned from::
+The Mercurial repo can be cloned from https://bitbucket.org/brgbits/compAS, and
+a Git fork is available at https://bitbucket.org/GramazioKohlerResearch/compAS.
 
-    https://bitbucket.org/brgbits/compAS
+Obviously you are entirely free to choose where to place these clones on your system,
+but a folder structure that seems to make a lot of sense is this:
 
-A Git fork is available here::
+::
 
-    https://bitbucket.org/GramazioKohlerResearch/compAS
+    .../compAS/core
+    .../compAS/packages
+
+After pulling one of the above repositories into core, that folder should contain
+the following:
+
+* data
+* docs
+
+  * build
+  * source
+
+* src
+
+  * compas
+  * compas_blender
+  * compas_dynamo
+  * compas_grasshopper
+  * compas_maya
+  * compas_rhino
+  * compas_web
 
 
 Dependencies
 ============
 
 The BRG framework has very few dependencies, and most of them are optional. If
-you are happy working in Rhino or Blender, and are not interested in any of the
-numerical stuff, then everything should work out of the box;
+you are happy working in Rhino or Blender, and you are not interested in or don't
+need any of the numerical stuff, then everything should work out of the box;
 provided you have Python installed, of course.
 
 .. note::
@@ -45,30 +68,38 @@ provided you have Python installed, of course.
     Python 3.x, but not everything, yet.
 
 
-Optional dependencies
-=====================
+The current version of compAS has the following optional dependencies:
 
-For plotting two-dimensional representations of data structures (and to some extent
-three-dimensional as well), we use `Matplotlib <http://matplotlib.org/>`_.
-For three-dimensional visualisations, we use `PyOpenGL <http://pyopengl.sourceforge.net/>`_ 
-and `PySide <https://wiki.qt.io/PySide>`_. Installation instructions for both, 
-and for the libraries they depend on are under construction and will be available
-here :doc:`/pages/devenv`.
+* Numpy & Scipy (http://www.numpy.org/ and https://www.scipy.org/):
+  For all numerical calculations and algorithms.
 
-For all numerical calculations and algorithms, we rely on `NumPy <http://www.numpy.org/>`_ 
-and `SciPy <https://www.scipy.org/>`_.
+* Matplotlib (http://matplotlib.org/):
+  For two-dimensional visualisations.
 
-Some network algorithms use `NetworkX <https://networkx.github.io/>`_ and
-`Planarity <https://github.com/hagberg/planarity>`_.
-In future versions, `Triangle <http://www.cs.cmu.edu/~quake/triangle.html>`_ and
-`TetGen <http://wias-berlin.de/software/tetgen/>`_ might be used through
-`MeshPy <https://mathema.tician.de/software/meshpy/>`_ for some of the mesh
-algorithms, especially those relating to meshing for FE Analysis, but this is not
-case now.
+* PyOpenGL (http://pyopengl.sourceforge.net/>):
+  For three-dimensional visualisations.
 
+* PySide (https://wiki.qt.io/PySide):
+  For some of the standalone tools.
 
-Setup
-=====
+* NetworkX (https://networkx.github.io/):
+* Planarity (https://github.com/hagberg/planarity):
+
+* Cython (http://cython.org/):
+  For performance optimisation.
+
+* Numba (http://numba.pydata.org/):
+  For just-in-time compilation.
+
+* PyCuda (https://mathema.tician.de/software/pycuda/):
+  For parallel computation through Nvidia's CUDA.
+
+* PyOpenCL (https://mathema.tician.de/software/pyopencl/):
+  For parallel computation though OpenCL.
+
+* CVXPY (http://www.cvxpy.org/):
+  For convex optimisation problems.
+
 
 Scientific Python distributions like `Anaconda <https://www.continuum.io/>`_ or
 `Enthought EPD <https://www.enthought.com/products/epd/>`_ provide most of the
@@ -84,8 +115,8 @@ relatively easy with a package manager like `macports <https://www.macports.org/
 or `homebrew <http://brew.sh/>`_.
 
 
-Further Setup
-=============
+Setup
+=====
 
 Once you have pulled the code from one of the repositories, the only thing
 left to do is to set a few environment variables. This simplifies importing modules
@@ -164,38 +195,49 @@ and try the following
     >>> print network
 
 
-Rhino
-=====
+Working in Rhino
+================
 
 Rhino uses IronPython to interpret your Python scripts. It ships with its own
 version of IronPython, but, at least in Rhino 5, this bundled IronPython is a buggy
-beta version. Therefore, if you are using Rhino 5, you should install your own
+beta version. For example, using the version of IronPython that ships with Rhino,
+you will not be able to import the *Abstract Syntax Tree* (``ast``) module. To
+verify which version of IronPython you have, try this:
+
+.. code-block:: python
+
+    import sys
+
+    print sys.version_info
+
+
+This is likely to result in the following::
+
+    sys.version_info()
+
+
+Therefore, if you are using Rhino 5, you should install your own
 copy of IronPython and add it to your system path  and to Rhino's search paths.
 Make sure to install IronPython 2.7.5, and not the latest version.
 
 .. note::
     
-    If you are test driving Rhino 6, the bundled IronPython should work fine
+    If you are test driving Rhino 6, the bundled IronPython should work fine as it is.
 
 
-In Rhino, open the *ScriptEditor*, and go to::
+To fix this, open the *ScriptEditor* in Rhino, and go to::
 
     Tools > Options > Files
 
 
-Add the following to the *Modules Search Paths* for IronPython::
+Add the following to the *Modules Search Paths*::
 
     C:\IronPython27
     C:\IronPython27\Lib
     C:\IronPython27\DLLs
 
 
-and this path for the framework library::
-
-    C:\path\to\compAS\src
-
-
-Then restart Rhino and run the following scripts
+Then restart Rhino and try running the previous snippet again
 
 
 .. code-block:: python
@@ -205,18 +247,18 @@ Then restart Rhino and run the following scripts
     print sys.version_info
 
 
-This should print something like this::
+Now, this should print something like this::
 
     sys.version_info(major=2, minor=7, micro=5, releaselevel='final', serial=0)
 
 
-.. code-block:: python
+Rhino also doesn't use your Windows System Variables, so you will have to tell it
+where compAS is as well. Therefore, also add that to your *Modules Search Paths*::
 
-    import ast
+    C:\path\to\compAS\src
 
 
-This should not throw an error.
-
+After that you should be able to run the following script.
 
 .. code-block:: python
 
@@ -241,4 +283,5 @@ If this draws a network without throwing an error, you are all set.
     machine, you can't use the Mac Python installation from that side.
     This means that you will need to install the same Python setup on both sides,
     to be able to access the all functionality from Rhino.
+
 

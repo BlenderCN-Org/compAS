@@ -40,5 +40,5 @@ for name in modules:
 
     print obj
 
-    with open('source/pages/reference/{0}.rst'.format(name), 'wb+') as fp:
+    with open('source/pages/core/{0}.rst'.format(name), 'wb+') as fp:
         fp.write(obj.__doc__)

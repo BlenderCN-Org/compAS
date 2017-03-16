@@ -107,31 +107,31 @@ class Mesh(object):
 
 
         >>> for key in mesh.vertex:
-        ...     print key
+        ...     print(key)
         ...
 
         >>> for key in mesh.vertices():
-        ...     print key
+        ...     print(key)
         ...
 
         >>> for key in mesh.vertices_iter():
-        ...     print key
+        ...     print(key)
         ...
 
         >>> for index, key in mesh.vertices_enum():
-        ...     print index, key
+        ...     print(index, key)
         ...
 
         >>> for key, attr in mesh.vertices(True):
-        ...     print key, attr
+        ...     print(key, attr)
         ...
 
         >>> for key, attr in mesh.vertices_iter(True):
-        ...     print key, attr
+        ...     print(key, attr)
         ...
 
         >>> for index, key, attr in mesh.vertices_enum(True):
-        ...     print index, key, attr
+        ...     print(index, key, attr)
         ...
 
     """
@@ -185,7 +185,7 @@ class Mesh(object):
         >>> mesh = Mesh()
         >>> mesh.add_vertex()
         >>> mesh.add_vertex()
-        >>> for key in mesh: print key
+        >>> for key in mesh: print(key)
         '0'
         '1'
         """
@@ -216,7 +216,7 @@ class Mesh(object):
         printed, or used by :obj:`format`.
 
         >>> str(mesh)
-        >>> print mesh
+        >>> print(mesh)
         >>> "{}".format(mesh)
         """
         return """
@@ -1251,11 +1251,11 @@ mesh summary
             iter : The enumerating iterator of vertex keys.
 
         >>> for index, key in mesh.vertices_enum():
-        ...     print index, key
+        ...     print(index, key)
         ...
 
         >>> for index, key, attr in mesh.vertices_enum(data=True):
-        ...     print index, key, attr
+        ...     print(index, key, attr)
         ...
 
         """

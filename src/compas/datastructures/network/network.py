@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import json
 import ast
 
@@ -77,27 +79,27 @@ class Network(object):
             # structure of the vertex dict
 
             for key in network.vertex:
-                print key, network.vertex[key]
+                print(key, network.vertex[key])
 
             # structure of the edge dict
 
             for u in network.edge:
                 for v in network.edge[u]:
-                    print u, v, network.edge[u][v]
+                    print(u, v, network.edge[u][v])
 
             # structure of the halfedge dict
 
             for u in network.halfedge:
                 for v in network.halfedge[u]:
                     if network.halfedge[u][v] is not None:
-                        print network.face[network.halfedge[u][v]]
+                        print(network.face[network.halfedge[u][v]])
                     if network.halfedge[v][u] is not None:
-                        print network.face[network.halfedge[v][u]]
+                        print(network.face[network.halfedge[v][u]])
 
             # structure of the face dict
 
             for fkey in network.face:
-                print fkey, network.face[fkey], network.facedata[fkey]
+                print(fkey, network.face[fkey], network.facedata[fkey])
 
     """
 

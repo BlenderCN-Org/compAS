@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 __author__    = 'Tom Van Mele'
 __copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__   = 'MIT license'
@@ -54,7 +57,7 @@ if __name__ == "__main__":
     mesh.vertex['36']['y'] = xyz[1]
     mesh.vertex['36']['z'] = xyz[2]
 
-    print mesh
+    print(mesh)
 
     mesh.draw(
         show_vertices=True,

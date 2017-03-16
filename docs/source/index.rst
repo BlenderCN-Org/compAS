@@ -18,12 +18,12 @@ Contents
 
    pages/intro
    pages/gettingstarted
-   pages/applications
-   pages/reference
+   pages/casestudy
+   pages/examples
+   pages/core
    pages/packages
-   pages/tutorials
-   pages/devenv
-   pages/python
+   pages/notes
+   pages/guidelines
    pages/license
 
 
