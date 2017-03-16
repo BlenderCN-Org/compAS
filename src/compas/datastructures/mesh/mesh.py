@@ -1103,6 +1103,42 @@ mesh summary
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
 
+    def set_edge_attribute(self, u, v, name, value):
+        if u in self.halfedge and v in self.halfedge[u]:
+            if u not in self.edge:
+                self.edge[u] = {}
+            if v not in self.edge[u]:
+                self.edge[u][v] = {}
+            self.edge[u][v][name] = value
+
+    def set_edge_attributes(self, u, v, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or kwattr
+        attr_dict.update(kwattr)
+        if u in self.halfedge and v in self.halfedge[u]:
+            if u not in self.edge:
+                self.edge[u] = {}
+            if v not in self.edge[u]:
+                self.edge[u][v] = {}
+            self.edge[u][v].update(attr_dict)
+
+    def set_edges_attribute(self, name, value, keys=None):
+        if not keys:
+            for u, v, attr in self.edges_iter(True):
+                attr[name] = value
+        else:
+            for u, v in keys:
+                self.set_edge_attribute(u, v, name, value)
+
+    def set_edges_attributes(self, keys=None, attr_dict=None, **kwattr):
+        attr_dict = attr_dict or {}
+        attr_dict.update(kwattr)
+        if not keys:
+            for u, v, attr in self.edges_iter(True):
+                attr.update(attr_dict)
+        else:
+            for u, v in keys:
+                self.edge_attributes(u, v, attr_dict=attr_dict)
+
     def get_edge_attribute(self, u, v, name, default=None):
         if u in self.edge:
             if v in self.edge[u]:
@@ -1112,11 +1148,25 @@ mesh summary
                 return self.edge[v][u].get(name, default)
         return default
 
-    def get_edges_attribute(self, name, default=None):
-        return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
+    def get_edge_attributes(self, u, v, names, defaults=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        if v in self.edge[u]:
+            return [self.edge[u][v].get(name, default) for name, default in zip(names, defaults)]
+        return [self.edge[v][u].get(name, default) for name, default in zip(names, defaults)]
 
-    def get_edges_attributes(self, names, default=None):
-        return [[attr.get(name, default) for name in names] for u, v, attr in self.edges_iter(True)]
+    def get_edges_attribute(self, name, default=None, keys=None):
+        if not keys:
+            return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
+        return [self.edge[u][v].get(name, default) for u, v in keys]
+
+    def get_edges_attributes(self, names, defaults=None, keys=None):
+        if not defaults:
+            defaults = [None] * len(names)
+        temp = zip(names, defaults)
+        if not keys:
+            return [[attr.get(name, default) for name, default in temp] for u, v, attr in self.edges_iter(True)]
+        return [[self.edge[u][v].get(name, default) for name, default in temp] for u, v in keys]
 
     # **************************************************************************
     # **************************************************************************

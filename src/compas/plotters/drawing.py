@@ -353,7 +353,7 @@ def draw_xarrows_2d(lines, axes):
         'connectionstyle' : 'arc3,rad=0.0',
         'linewidth'       : 1.0,
         'color'           : '#000000',
-        'shrinkB'         : 5,
+        'shrinkB'         : 0.05,
     }
     for line in lines:
         sp        = line['start']
