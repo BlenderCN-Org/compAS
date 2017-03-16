@@ -171,18 +171,18 @@ class ScreenWidget(QGLWidget):
 
     def mouseMoveEvent(self, event):
         p = event.pos()
-        print('@')
-        print(p)
+        # print('@')
+        # print(p)
 
     def mousePressEvent(self, event):
         p = event.pos()
-        print('press @')
-        print(p)
+        # print('press @')
+        # print(p)
 
     def mouseReleaseEvent(self, event):
         p = event.pos()
-        print('release @')
-        print(p)
+        # print('release @')
+        # print(p)
 
     # ==========================================================================
     # keyboard events

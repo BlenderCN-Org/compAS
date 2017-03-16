@@ -436,7 +436,7 @@ class Viewer(object):
         y = viewport[3] - y
         z = glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
         pos = gluUnProject(x, y, z, modelview, projection, viewport)
-        print pos
+        # print pos
 
 
 # ==============================================================================
