@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 import os
 
@@ -35,9 +37,9 @@ if __name__ == "__main__":
         html = fp.read()
 
     baseurl = QUrl().fromLocalFile(os.path.dirname(html_file))
-    print baseurl
+    print(baseurl)
 
-    browser = Browser()
+    browser = BrowserWidget()
 
     settings = browser.settings()
     settings.setAttribute(QWebSettings.LocalContentCanAccessRemoteUrls, True)

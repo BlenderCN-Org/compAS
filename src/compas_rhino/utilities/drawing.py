@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from functools import wraps
 
 from compas_rhino.utilities import clear_layers
@@ -573,10 +575,10 @@ if __name__ == '__main__':
 
     t6 = time.time()
 
-    print
-    print 'faces', t1 - t0
-    print 'lines', t2 - t1
-    print 'polylines', t3 - t2
-    print 'cylinders', t4 - t3
-    print 'pipes', t5 - t4
-    print 'spheres', t6 - t5
+    print()
+    print('faces', t1 - t0)
+    print('lines', t2 - t1)
+    print('polylines', t3 - t2)
+    print('cylinders', t4 - t3)
+    print('pipes', t5 - t4)
+    print('spheres', t6 - t5)

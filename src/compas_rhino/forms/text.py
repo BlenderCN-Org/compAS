@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas_rhino.forms import Form
 
 try:
@@ -56,8 +58,8 @@ if __name__ == '__main__':
     from this import d
     from this import s
 
-    print d
-    print s
+    print(d)
+    print(s)
 
     zen = ''.join([x if x not in d else d[x] for x in s])
     zen = zen.split('\n')

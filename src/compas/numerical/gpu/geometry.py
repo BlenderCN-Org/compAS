@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from numpy import asarray
 from numpy import float32
 
@@ -52,4 +54,4 @@ if __name__ == '__main__':
     a = [(1, 0, 0), (1, 0, 0), (1, 0, 0)]
     b = [(0, 1, 0), (0, 0, 1), (1, 0, 0)]
 
-    print gpu_cross(a, b)
+    print(gpu_cross(a, b))

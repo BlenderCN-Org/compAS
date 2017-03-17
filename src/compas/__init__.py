@@ -38,7 +38,8 @@ HERE = os.path.dirname(__file__)
 
 HOME = os.path.abspath(os.path.join(HERE, '../../'))
 DATA = os.path.abspath(os.path.join(HOME, 'data'))
-DOCS = os.path.abspath(os.path.join(HOME, 'docs3'))
+DOCS = os.path.abspath(os.path.join(HOME, 'docs'))
+TEMP = os.path.abspath(os.path.join(HOME, '__temp'))
 
 
 def _find_resource(filename):

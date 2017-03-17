@@ -1,4 +1,4 @@
-"""compas_blender.geometry.curve : Manipulating Blender curves."""
+from __future__ import print_function
 
 from mathutils.geometry import interpolate_bezier
 

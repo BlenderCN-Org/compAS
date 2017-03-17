@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 from compas.numerical.geometry import scalarfield_contours
 from compas.numerical.geometry import plot_scalarfield_contours
@@ -41,7 +42,7 @@ def mesh_contours(mesh, N=50):
             from compas.datastructures.mesh import Mesh
 
             mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
-            print mesh_contours(mesh)
+            print(mesh_contours(mesh))
 
     See Also:
         :func:`compas.numerical.geometry.scalarfield_contours`

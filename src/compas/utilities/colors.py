@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
@@ -209,12 +211,12 @@ def is_color_light(color):
 # ==============================================================================
 
 if __name__ == '__main__':
-    
-    print hex_to_rgb('#000000')
-    print hex_to_rgb('#ffffff')
-    print rgb_to_hex(0, 0, 0)
-    print rgb_to_hex(1, 1, 1)
-    print rgb_to_hex(1.0, 1.0, 1.0)
-    print rgb_to_hex(255, 255, 255)
-    print rgb_to_hex(255., 255., 255.0)
-    print is_color_hex('#000')
+
+    print(hex_to_rgb('#000000'))
+    print(hex_to_rgb('#ffffff'))
+    print(rgb_to_hex(0, 0, 0))
+    print(rgb_to_hex(1, 1, 1))
+    print(rgb_to_hex(1.0, 1.0, 1.0))
+    print(rgb_to_hex(255, 255, 255))
+    print(rgb_to_hex(255., 255., 255.0))
+    print(is_color_hex('#000'))

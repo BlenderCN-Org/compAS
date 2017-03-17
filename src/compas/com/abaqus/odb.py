@@ -1,5 +1,7 @@
 """Abaqus .odb data extraction file."""
 
+from __future__ import print_function
+
 from abaqus import *
 from abaqusConstants import *
 from job import *
@@ -32,7 +34,6 @@ def odb_results(temp, name, output):
     """
     odb = '{0}{1}.odb'.format(temp, name)
     od = openOdb(path=odb)
-    # print od.steps['S2_LOADS'].frames[-1].fieldOutputs['SF'].values[4]
     for step in od.steps.keys():
         frames = od.steps[step].frames
         for frame in [frames[-1]]:

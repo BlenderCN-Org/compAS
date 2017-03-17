@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 
 from functools import wraps
@@ -284,11 +286,6 @@ def rref(A, algo='qr', tol=None, **kwargs):
 #             # check if the rows below for the highest value at this column
 #             # swap rows to put the higher row on top
 #             j = argmax(abs(u[i : m, col]))
-#             if j > 0:
-#                 print col
-#                 print u[i, col]
-#                 print u[i + j, col]
-#                 print
 #             if j > 0:
 #                 u[i], u[i + j] = u[i + j], u[i]
 #                 row = u[i]

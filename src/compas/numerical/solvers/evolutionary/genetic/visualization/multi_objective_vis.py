@@ -1,8 +1,11 @@
+from __future__ import print_funtion
+
 import matplotlib
 import re
 import json
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
+
 
 __author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
@@ -24,8 +27,7 @@ class MULTI_VIS:
         self.num_gen = 0
         self.num_fit_func = 0
         self.boundaries   = {}
-        self.parent_pop   = {'binary': {}, 'decoded': {}, 'scaled': {},
-                             'fit_values': {}, 'pf': {}}
+        self.parent_pop   = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}, 'pf': {}}
         self.input_path = ''
         self.output_path = ''
         self.fit_names = []
@@ -54,14 +56,14 @@ class MULTI_VIS:
         for name in self.fit_names:
             filename += name + '_'
         filename += '.pdf'
-        print filename
+        print(filename)
         with PdfPages(filename) as pdf:
             for k in range(self.num_gen):
                 self.generation = k
                 self.pop = self.get_pop_from_pf_file()
                 if not self.pop:
-                    print ('the last generation file found is ' + str(self.generation - 1))
-                    print ('pdf file written')
+                    print('the last generation file found is ' + str(self.generation - 1))
+                    print('pdf file written')
                     return
                 for j in range(len(func_combinations)):
                     combination = func_combinations[j]
@@ -86,7 +88,7 @@ class MULTI_VIS:
                             f2_values.extend([self.fixed_individuals['fit_values'][i][f2] for i in range(num_fixed)])
                         df1 = (max(f1_values) - min(f1_values)) / 10.0
                         df2 = (max(f2_values) - min(f2_values)) / 10.0
-                        bound = ((min(f1_values) - df1,max(f1_values) + df1),(min(f2_values) - df2,max(f2_values) + df2))
+                        bound = ((min(f1_values) - df1, max(f1_values) + df1), (min(f2_values) - df2, max(f2_values) + df2))
 
                     a = (bound[0][1] - bound[0][0]) / 10.0
                     a_ = (bound[1][1] - bound[1][0]) / 10.0
@@ -224,6 +226,7 @@ class MULTI_VIS:
 
 
 if __name__ == '__main__':
+
     vis = MULTI_VIS()
     vis.input_path = '/out/'
     filename = 'fitness1_fitness2_.json'

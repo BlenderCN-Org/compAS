@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas_rhino.forms import Form
 
 try:
@@ -79,7 +81,6 @@ if __name__ == '__main__':
 
     from Rhino.Display import DisplayMaterial
 
-
     class Pipe(Rhino.Display.DisplayConduit):
         """"""
 
@@ -100,7 +101,6 @@ if __name__ == '__main__':
             brep     = cylinder.ToBrep(True, True)
             e.Display.DrawBrepShaded(brep, self.material)
 
-
     try:
         slider = SliderForm(0, 10, 1, 3)
         pipe = Pipe(slider)
@@ -109,7 +109,7 @@ if __name__ == '__main__':
         slider.show()
 
     except Exception as e:
-        print e
+        print(e)
 
     finally:
         pipe.Enabled = False

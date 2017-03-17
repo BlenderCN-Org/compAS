@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas.geometry.elements import Line
 
 
@@ -177,13 +179,13 @@ if __name__ == "__main__":
 
     split_edge_mesh(mesh, 17, 32)
 
-    print mesh.face_vertices(11, ordered=True)
-    print mesh.face_vertices(16, ordered=True)
+    print(mesh.face_vertices(11, ordered=True))
+    print(mesh.face_vertices(16, ordered=True))
 
-    print mesh.halfedge[32][36]
-    print mesh.halfedge[36][32]
+    print(mesh.halfedge[32][36])
+    print(mesh.halfedge[36][32])
 
-    print mesh.halfedge[36][17]
-    print mesh.halfedge[17][36]
+    print(mesh.halfedge[36][17])
+    print(mesh.halfedge[17][36])
 
     mesh.plot()

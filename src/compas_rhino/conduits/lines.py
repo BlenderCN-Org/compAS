@@ -102,7 +102,7 @@ if __name__ == "__main__":
             time.sleep(0.1)
 
     except Exception as e:
-        print e
+        print(e)
 
     finally:
         conduit.Enabled = False

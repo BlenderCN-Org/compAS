@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas_rhino.forms import Form
 
 try:
@@ -181,10 +183,10 @@ class AttributesForm(Form):
 # #     def on_key_down(self, sender, e):
 # #         if e.KeyCode == Keys.Tab:
 # #             e.SuppressKeyPress = True
-# #             print sender.CurrentCell
+# #             print(sender.CurrentCell)
 # #             i = sender.CurrentCell.RowIndex
 # #             j = sender.CurrentCell.ColumnIndex
-# #             print i, j
+# #             print(i, j)
 # #             if i == sender.Rows.Count - 1:
 # #                 sender.CurrentCell = sender[1, 0]
 # #             else:
@@ -298,4 +300,4 @@ if __name__ == "__main__":
     form = SettingsForm(settings)
     form.show()
 
-    print form.settings
+    print(form.settings)

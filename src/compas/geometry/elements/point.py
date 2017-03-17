@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas.geometry.elements.vector import Vector
 
 from compas.geometry import distance_point_point
@@ -226,7 +228,7 @@ if __name__ == '__main__':
     # v1.normalize()
 
     # p2.translate(v1)
-    # print p2
+    # print(p2)
 
     # from compas.geometry.elements import Plane
     # plane = Plane.from_points_and_vector([0., 0., 0.], [1., 0., 0.], [0., 0., 1.])
@@ -243,12 +245,3 @@ if __name__ == '__main__':
     t1 = timeit.timeit('points = [[i, i, i] for i in xrange(100000)]', 'from __main__ import Point', number=100)
 
     print(t0 / t1)
-
-
-
-
-
-
-
-
-

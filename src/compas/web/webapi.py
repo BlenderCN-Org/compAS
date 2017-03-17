@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import json
 
 from xmlrpclib import ServerProxy
@@ -94,7 +96,7 @@ class WebAPI(object):
                 string = self._func(idump)
             except IOError as e:
                 if not attempts:
-                    print e
+                    print(e)
             else:
                 result = json.loads(string)
                 break
@@ -110,38 +112,38 @@ class WebAPI(object):
         return self.data
 
     def print_error(self):
-        print '=' * 80
-        print 'Error'
-        print '-' * 80
-        print self.error
-        print
+        print('=' * 80)
+        print('Error')
+        print('-' * 80)
+        print(self.error)
+        print()
 
     def print_profile(self):
-        print '=' * 80
-        print 'Profile'
-        print '-' * 80
-        print self.profile
-        print
+        print('=' * 80)
+        print('Profile')
+        print('-' * 80)
+        print(self.profile)
+        print()
 
     def print_data(self):
-        print '=' * 80
-        print 'Data'
-        print '-' * 80
-        print self.data
-        print
+        print('=' * 80)
+        print('Data')
+        print('-' * 80)
+        print(self.data)
+        print()
 
     def print_iterations(self):
-        print '=' * 80
-        print 'Iterations'
-        print '-' * 80
-        print self.iterations
-        print
+        print('=' * 80)
+        print('Iterations')
+        print('-' * 80)
+        print(self.iterations)
+        print()
 
     def print_output(self, title=None):
         if title:
-            print '#' * 80
-            print title
-            print
+            print('#' * 80)
+            print(title)
+            print()
         self.print_error()
         self.print_data()
         self.print_iterations()
@@ -157,15 +159,15 @@ if __name__ == '__main__':
     api = WebAPI()
     api.url = 'http://block.arch.ethz.ch/api/compas_private/tna.py'
 
-    print api.test()
-    print api.info()
-    print
+    print(api.test())
+    print(api.info())
+    print()
 
     for method in api.list_methods():
-        print method
+        print(method)
         sig = api.method_signature(method)
-        print 'args:', sig[0]
-        print 'kwargs:', sig[1]
-        print
-        print api.method_help(method)
-        print
+        print('args:', sig[0])
+        print('kwargs:', sig[1])
+        print()
+        print(api.method_help(method))
+        print()

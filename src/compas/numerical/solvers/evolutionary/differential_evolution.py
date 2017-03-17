@@ -1,4 +1,4 @@
-"""compas.numerical.solvers.evolutionary : Differential evolution."""
+from __future__ import print_function
 
 from numpy import array
 from numpy import argmin

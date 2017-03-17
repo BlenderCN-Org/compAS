@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import ast
 
 from compas.utilities import geometric_key
@@ -191,7 +193,7 @@ def draw_mesh(mesh,
             face = mesh.face_vertices(fkey, ordered=True)
             v = len(face)
             if v < 3:
-                print 'Degenerate face: {0} => {1}'.format(fkey, face)
+                print('Degenerate face: {0} => {1}'.format(fkey, face))
                 continue
             if v == 3:
                 faces.append([key_index[k] for k in face + [face[-1]]])
@@ -237,6 +239,7 @@ def draw_mesh(mesh,
         rhino.xdraw_points(points, layer=layer, clear=False, redraw=False)
     rs.Redraw()
 
+
 # ==============================================================================
 # selection
 # ==============================================================================
@@ -273,7 +276,7 @@ def select_mesh_vertices(mesh, message="Select mesh vertices."):
 
             keys = rhino.select_mesh_vertices(mesh)
 
-            print keys
+            print(keys)
 
 
     See Also:
@@ -435,7 +438,7 @@ def select_mesh_faces(mesh, message='Select mesh faces.'):
 
             fkeys = rhino.select_mesh_faces(mesh)
 
-            print fkeys
+            print(fkeys)
 
 
     See Also:
@@ -512,9 +515,9 @@ def update_mesh_attributes(mesh):
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
             if compas_rhino.update_mesh_attributes(mesh):
-                print 'mesh attributes updated'
+                print('mesh attributes updated')
             else:
-                print 'mesh attributres not updated'
+                print('mesh attributres not updated')
 
 
     See Also:
@@ -564,9 +567,9 @@ def update_mesh_vertex_attributes(mesh, keys, names=None):
             keys = mesh.vertices()
 
             if compas_rhino.update_mesh_vertex_attributes(mesh, keys):
-                print 'mesh vertex attributes updated'
+                print('mesh vertex attributes updated')
             else:
-                print 'mesh vertex attributes not updated'
+                print('mesh vertex attributes not updated')
 
 
     See Also:
@@ -628,9 +631,9 @@ def update_mesh_edge_attributes(mesh, keys, names=None):
             keys = mesh.edges()
 
             if compas_rhino.update_mesh_edge_attributes(mesh, keys):
-                print 'mesh edge attributes updated'
+                print('mesh edge attributes updated')
             else:
-                print 'mesh edge attributes not updated'
+                print('mesh edge attributes not updated')
 
 
     See Also:
@@ -692,9 +695,9 @@ def update_mesh_face_attributes(mesh, fkeys, names=None):
             keys = mesh.faces()
 
             if compas_rhino.update_mesh_face_attributes(mesh, keys):
-                print 'mesh face attributes updated'
+                print('mesh face attributes updated')
             else:
-                print 'mesh face attributes not updated'
+                print('mesh face attributes not updated')
 
 
     See Also:

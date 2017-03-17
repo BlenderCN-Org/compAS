@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from numpy import array
 
 from compas.numerical.matrices import adjacency_matrix
@@ -193,6 +195,6 @@ if __name__ == '__main__':
     centroids2 = xy - d
     centroids3 = A.dot(xy) / D.diagonal().reshape((-1, 1))
 
-    print allclose(centroids1, centroids2)
-    print allclose(centroids2, centroids3)
-    print allclose(centroids1, centroids3)
+    print(allclose(centroids1, centroids2))
+    print(allclose(centroids2, centroids3))
+    print(allclose(centroids1, centroids3))

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from numpy import array
 from numpy import asarray
 from numpy import argmax
@@ -406,10 +408,10 @@ if __name__ == "__main__":
     centroids, _ = kmeans(cloud, 8)
     idx, _ = vq(cloud, centroids)
 
-    print idx
+    print(idx)
 
     for i, point in zip(idx, cloud):
-        print i, point
+        print(i, point)
 
     axes = create_axes_3d()
 

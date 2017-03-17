@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 
 from PySide.QtCore import Qt
@@ -202,6 +204,14 @@ class ScreenWidget(QGLWidget):
         if key == Qt.Key_5:
             self.subd = self.subdfunc(self.mesh, k=5)
         self.updateGL()
+
+    # ==========================================================================
+    # helpers
+    # ==========================================================================
+
+    def capture(self, filename, filetype):
+        qimage = self.grabFrameBuffer()
+        qimage.save(filename, filetype)
 
 
 # ==============================================================================

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas.datastructures.network.algorithms import network_bfs
 
 
@@ -79,4 +81,4 @@ if __name__ == "__main__":
     # run_profile(unify_mesh_cycles)(mesh)
     # profiled(unify_mesh_cycles)(mesh)
 
-    print mesh
+    print(mesh)

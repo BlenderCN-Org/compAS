@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from compas_rhino.conduits import Conduit
 
 try:
@@ -91,7 +93,7 @@ if __name__ == "__main__":
         time.sleep(5.0)
 
     except Exception as e:
-        print e
+        print(e)
 
     finally:
         conduit.disable()

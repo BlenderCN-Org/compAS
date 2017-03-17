@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re
 import random
 import json
@@ -44,8 +46,7 @@ class MOGA:
         self.output_path = []
         self.additional_data = {}
         self.parent_combined_dict = {}
-        self.parent_pop   = {'binary': {}, 'decoded': {}, 'scaled': {},
-                             'fit_values': {}, 'pf': {}}
+        self.parent_pop   = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}, 'pf': {}}
         self.current_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}}
         self.combined_pop = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}}
         self.new_pop_cd = []
@@ -67,14 +68,14 @@ class MOGA:
 
             if self.fixed_start_pop:
                 for i in range(self.fixed_start_pop['num_pop']):
-                    print ('fixed start individual ', i)
-                    print (self.fixed_start_pop['binary'][i])
+                    print('fixed start individual', i)
+                    print(self.fixed_start_pop['binary'][i])
                     self.parent_pop['binary'][i] = self.fixed_start_pop['binary'][i]
                     self.parent_pop['decoded'][i] = self.fixed_start_pop['decoded'][i]
-                    print (self.fixed_start_pop['decoded'][i])
+                    print(self.fixed_start_pop['decoded'][i])
                     self.parent_pop['scaled'][i] = self.fixed_start_pop['scaled'][i]
-                    print (self.fixed_start_pop['scaled'][i])
-                    print ('')
+                    print(self.fixed_start_pop['scaled'][i])
+                    print('')
 
             for i in range(self.num_pop):
                 self.parent_pop['fit_values'][i] = {}
@@ -85,7 +86,7 @@ class MOGA:
         self.current_pop['binary'] = self.generate_random_bin_pop()
 
         for generation in range(start_gen_number, self.num_gen):
-            print ('generation ', generation)
+            print('generation ', generation)
 
             self.current_pop['decoded'] = self.decode_binary_pop(self.current_pop['binary'])
             self.current_pop['scaled'] = self.scale_population(self.current_pop['decoded'])
@@ -113,7 +114,7 @@ class MOGA:
                 self.simple_crossover()
                 self.random_mutation()
             else:
-                print ('end of MOGA')
+                print('end of MOGA')
 
     def write_out_file(self, generation):
         """This function writes a file containing all of the population data for
@@ -392,7 +393,7 @@ class MOGA:
             cd_sorted_last_pf_index.append(self.i_pareto_front[sorting_index[i]])
 
         self.new_pop_cd[len(self.new_pop_cd) - self.num_i_pareto_front:len(self.new_pop_cd)] = sorted_last_pf_cd[:]
-        self.pareto_front_individuals[len(self.new_pop_cd) - self.num_i_pareto_front:len(self.new_pop_cd)] = cd_sorted_last_pf_index[:]
+        self.pareto_front_individuals[len(self.new_pop_cd) - self.num_i_pareto_front: len(self.new_pop_cd)] = cd_sorted_last_pf_index[:]
 
     def parent_reseting(self):
         """This function updates the patent population, selecting the individuals that are higher
@@ -438,7 +439,7 @@ class MOGA:
             # t emp_pf_individuals_b = np.delete(tempPFindividualsB,0,0)
 
         for j in range(len(self.pareto_front_indices) - 1):
-            pf_indices_a[self.pareto_front_indices[j]:self.pareto_front_indices[j+1]] = [j]*(self.pareto_front_indices[j+1]-self.pareto_front_indices[j])
+            pf_indices_a[self.pareto_front_indices[j]: self.pareto_front_indices[j + 1]] = [j] * (self.pareto_front_indices[j + 1] - self.pareto_front_indices[j])
 
         for i in range(len(pf_individuals_2)):
             for u in range(len(temp_pf_individuals_a)):
