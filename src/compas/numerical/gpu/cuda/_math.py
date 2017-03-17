@@ -36,10 +36,10 @@ def cuda_abs(a):
         gpu: abs(GPUArray)
 
     Examples:
-        >>> a = abs(give([-0.1, -1.7]))
+        >>> a = cuda_abs(cuda_give([-0.1, -1.7]))
         array([0.1, 1.7])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.fabs(a)
 
@@ -49,17 +49,17 @@ def cuda_argmax(a, axis):
 
     Parameters:
         a (gpu): GPUArray with the elements to find maximum values.
-        axis (int): The dimension to evaluate across.
+        axis (int): The dimension to evaluate through.
 
     Returns:
         gpu: Location of maximum values.
 
     Examples:
-        >>> a = argmax(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        >>> a = cuda_argmax(cuda_give([[1, 2, 3], [6, 5, 4]]), axis=1)
         array([[2],
                [0]], dtype=uint32)
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.misc.argmax(a, axis, keepdims=True)
 
@@ -69,17 +69,17 @@ def cuda_argmin(a, axis):
 
     Parameters:
         a (gpu): GPUArray with the elements to find minimum values.
-        axis (int): The dimension to evaluate across.
+        axis (int): The dimension to evaluate through.
 
     Returns:
         gpu: Location of minimum values.
 
     Examples:
-        >>> a = argmin(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        >>> a = cuda_argmin(cuda_give([[1, 2, 3], [6, 5, 4]]), axis=1)
         array([[0],
                [2]], dtype=uint32)
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.misc.argmin(a, axis, keepdims=True)
 
@@ -94,10 +94,10 @@ def cuda_acos(a):
         gpu: acos(GPUArray)
 
     Examples:
-        >>> a = acos(give([0.5, 1]))
+        >>> a = cuda_acos(cuda_give([0.5, 1]))
         array([ 1.04719755,  0.])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.acos(a)
 
@@ -112,10 +112,10 @@ def cuda_asin(a):
         gpu: asin(GPUArray)
 
     Examples:
-        >>> a = asin(give([0.5, 1]))
+        >>> a = cuda_asin(cuda_give([0.5, 1]))
         array([ 0.52359878,  1.57079633])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.asin(a)
 
@@ -130,10 +130,10 @@ def cuda_atan(a):
         gpu: atan(GPUArray)
 
     Examples:
-        >>> a = atan(give([0.5, 1]))
+        >>> a = cuda_atan(cuda_give([0.5, 1]))
         array([ 0.46364761,  0.78539816])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.atan(a)
 
@@ -148,10 +148,10 @@ def cuda_ceil(a):
         gpu: ceil(GPUArray)
 
     Examples:
-        >>> a = ceil(give([0.5, 0.1, 0.9]))
-        array([ 1.,  1.,  1.])
+        >>> a = cuda_ceil(cuda_give([0.5, 0.1, 1.9]))
+        array([ 1.,  1.,  2.])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.ceil(a)
 
@@ -166,10 +166,10 @@ def cuda_cos(a):
         gpu: cos(GPUArray)
 
     Examples:
-        >>> a = cos(give([0, pi/4]))
+        >>> a = cuda_cos(cuda_give([0, pi / 4]))
         array([ 1.,  0.70710678])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.cos(a)
 
@@ -184,10 +184,10 @@ def cuda_cosh(a):
         gpu: cosh(GPUArray)
 
     Examples:
-        >>> a = cosh(give([0, pi/4]))
+        >>> a = cuda_cosh(cuda_give([0, pi / 4]))
         array([ 1.,  1.32460909])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.cosh(a)
 
@@ -202,10 +202,10 @@ def cuda_exp(a):
         gpu: exp(GPUArray)
 
     Examples:
-        >>> a = exp(give([0, 1]))
+        >>> a = cuda_exp(cuda_give([0, 1]))
         array([ 1.,  2.71828183])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.exp(a)
 
@@ -220,10 +220,10 @@ def cuda_floor(a):
         b = floor(GPUArray)
 
     Examples:
-        >>> a = floor(give([0.5, 0.1, 0.9]))
-        array([ 0.,  0.,  0.])
+        >>> a = cuda_floor(cuda_give([0.5, 0.1, 1.9]))
+        array([ 0.,  0.,  1.])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.floor(a)
 
@@ -238,10 +238,10 @@ def cuda_log(a):
         gpu: log(GPUArray)
 
     Examples:
-        >>> a = log(give([1, 10]))
+        >>> a = cuda_log(cuda_give([1, 10]))
         array([ 0.,  2.30258509])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.log(a)
 
@@ -256,50 +256,50 @@ def cuda_log10(a):
         gpu: log10(GPUArray)
 
     Examples:
-        >>> a = log10(give([1, 10]))
+        >>> a = cuda_log10(cuda_give([1, 10]))
         array([ 0.,  1.])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.log10(a)
 
 
 def cuda_max(a, axis):
-    """ Values of maximum GPUArray elements.
+    """ Maximum values of GPUArray elements.
 
     Parameters:
         a (gpu): GPUArray with the elements to find maximum values.
-        axis (int): The dimension to evaluate across.
+        axis (int): The dimension to evaluate through.
 
     Returns:
         gpu: Maximum values.
 
     Examples:
-        >>> a = max(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        >>> a = cuda_max(cuda_give([[1, 2, 3], [6, 5, 4]]), axis=1)
         array([[3],
-               [6]], dtype=uint32)
+               [6]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.misc.max(a, axis, keepdims=True)
 
 
 def cuda_min(a, axis):
-    """ Values of minimum GPUArray elements.
+    """ Minimum values of GPUArray elements.
 
     Parameters:
         a (gpu): GPUArray with the elements to find minimum values.
-        axis (int): The dimension to evaluate across.
+        axis (int): The dimension to evaluate through.
 
     Returns:
         gpu: Minimum values.
 
     Examples:
-        >>> a = min(give([[1, 2, 3], [6, 5, 4]]), axis=1)
+        >>> a = cuda_min(cuda_give([[1, 2, 3], [6, 5, 4]]), axis=1)
         array([[1],
-               [4]], dtype=uint32)
+               [4]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.misc.min(a, axis, keepdims=True)
 
@@ -309,14 +309,16 @@ def cuda_mean(a, axis):
 
     Parameters:
         a (gpu): GPUArray with elements to be operated on.
-        axis (int): Axis direction to mean average across.
+        axis (int): Axis direction to mean average through.
 
     Returns:
-        gpu: GPUArray mean across dimension specified.
+        gpu: GPUArray mean through specified dimension.
 
     Examples
-        >>> mean(give([[1, 2], [3, 4]]), axis=0)
+        >>> cuda_mean(cuda_give([[1, 2], [3, 4]]), axis=0)
         array([ 2.,  3.])
+        >>> type(a)
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.misc.mean(a, axis)
 
@@ -331,10 +333,10 @@ def cuda_sin(a):
         gpu: sin(GPUArray)
 
     Examples:
-        >>> a = sin(give([0, pi/4]))
+        >>> a = cuda_sin(cuda_give([0, pi / 4]))
         array([ 0.,  0.70710678])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.sin(a)
 
@@ -349,10 +351,10 @@ def cuda_sinh(a):
         gpu: sinh(GPUArray)
 
     Examples:
-        >>> a = sinh(give([0, pi/4]))
+        >>> a = cuda_sinh(cuda_give([0, pi / 4]))
         array([ 0.,  0.86867096])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.sinh(a)
 
@@ -367,27 +369,29 @@ def cuda_sqrt(a):
         gpu: sqrt(GPUArray)
 
     Examples:
-        >>> a = sqrt(give([4, 9]))
+        >>> a = cuda_sqrt(cuda_give([4, 9]))
         array([ 2.,  3.])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.sqrt(a)
 
 
 def cuda_sum(a, axis):
-    """ Sum of GPUArray elements in given axis direction.
+    """ Sum of GPUArray elements in a given axis direction.
 
     Parameters:
         a (gpu): GPUArray with elements to be operated on.
         axis (int) : Axis direction to sum through.
 
     Returns:
-        gpu: GPUArray sum across dimension specified.
+        gpu: GPUArray sum across the specified dimension.
 
     Examples:
-        >>> sum(give([[1, 2], [3, 4]]), axis=0)
+        >>> cuda_sum(cuda_give([[1, 2], [3, 4]]), axis=0)
         array([ 4.,  6.])
+        >>> type(a)
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.misc.sum(a, axis=axis)
 
@@ -402,10 +406,10 @@ def cuda_tan(a):
         gpu: tan(GPUArray)
 
     Examples:
-        >>> a = tan(give([0, pi/4]))
+        >>> a = cuda_tan(cuda_give([0, pi / 4]))
         array([ 0.,  1])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.tan(a)
 
@@ -420,10 +424,10 @@ def cuda_tanh(a):
         gpu: tanh(GPUArray)
 
     Examples:
-        >>> a = tanh(give([0, pi/4]))
+        >>> a = cuda_tanh(cuda_give([0, pi / 4]))
         array([ 0.,  0.6557942])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return pycuda.cumath.tanh(a)
 
@@ -433,4 +437,25 @@ def cuda_tanh(a):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    from compas.numerical.gpu.cuda._array import cuda_give
+    from numpy import pi
+
+    a = cuda_sqrt(cuda_give([4, 9]))
+    b = cuda_sum(cuda_give([[1, 2], [3, 4]]), axis=0)
+    c = cuda_tan(cuda_give([0, pi / 4]))
+    d = cuda_tanh(cuda_give([0, pi / 4]))
+    e = cuda_sin(cuda_give([0, pi / 4]))
+    f = cuda_sinh(cuda_give([0, pi / 4]))
+    g = cuda_mean(cuda_give([[1, 2], [3, 4]]), axis=0)
+    h = cuda_min(cuda_give([[1, 2, 3], [6, 5, 4]]), axis=1)
+    i = cuda_max(cuda_give([[1, 2, 3], [6, 5, 4]]), axis=1)
+    j = cuda_log10(cuda_give([1, 10]))
+    k = cuda_log(cuda_give([1, 10]))
+    l = cuda_floor(cuda_give([0.5, 0.1, 1.9]))
+    m = cuda_exp(cuda_give([0, 1]))
+    n = cuda_cosh(cuda_give([0, pi / 4]))
+    o = cuda_cos(cuda_give([0, pi / 4]))
+    p = cuda_ceil(cuda_give([0.5, 0.1, 1.9]))
+    q = cuda_argmax(cuda_give([[1, 2, 3], [6, 5, 4]]), axis=1)
+    r = cuda_abs(cuda_give([-0.1, -1.7]))

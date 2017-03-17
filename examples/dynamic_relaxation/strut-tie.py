@@ -4,7 +4,7 @@ from compas_blender.utilities.layers import layer_clear
 from compas_blender.utilities.objects import get_objects_by_layer
 from compas_blender.utilities.objects import select_objects_none
 
-from compas_blender.geometry.mesh import network_from_mesh
+from compas_blender.geometry.mesh import network_from_bmesh
 
 from compas.utilities import geometric_key
 
@@ -26,7 +26,7 @@ select_objects_none()
 layer_clear(19)
 
 # Construct Network
-network = network_from_mesh(get_objects_by_layer(0)[0])
+network = network_from_bmesh(get_objects_by_layer(0)[0])
 
 # Make gkey_key dictionary
 gkey_key = {}

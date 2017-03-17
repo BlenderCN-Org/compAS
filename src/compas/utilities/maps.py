@@ -75,7 +75,7 @@ def geometric_key2(xy, precision='3f', tolerance=1e-9, sanitize=True):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     from math import pi
 
-    print geometric_key([pi, pi, pi], '3f')
+    print(geometric_key([pi, pi, pi], '3f'))
