@@ -17,9 +17,7 @@ def gif_from_images(files, gif_path, fps=10, loop=0, reverse=False, pingpong=Fal
         files.reverse()
 
     if pingpong:
-        rev_files = files[:]
-        rev_files.reverse()
-        files += rev_files 
+        files += files[::-1]
      
     with imageio.get_writer(gif_path, 
                             mode = 'I', 

@@ -1137,7 +1137,7 @@ mesh summary
                 attr.update(attr_dict)
         else:
             for u, v in keys:
-                self.edge_attributes(u, v, attr_dict=attr_dict)
+                self.set_edge_attributes(u, v, attr_dict=attr_dict)
 
     def get_edge_attribute(self, u, v, name, default=None):
         if u in self.edge:

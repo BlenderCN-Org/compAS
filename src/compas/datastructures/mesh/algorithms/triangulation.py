@@ -20,10 +20,10 @@ from compas.geometry.planar import circle_from_points_2d
 from compas.geometry.planar import scatter_points_2d
 
 
-__author__    = 'Tom Van Mele'
+__author__    = 'Matthias Rippmann, Tom Van Mele'
 __copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__   = 'MIT license'
-__email__     = 'vanmelet@ethz.ch'
+__email__     = 'rippmann@ethz.ch, vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -247,31 +247,35 @@ def voronoi_from_points(points, boundary=None, holes=None, return_delaunay=False
 
 if __name__ == "__main__":
 
-    from numpy import random
-    from numpy import hstack
-    from numpy import zeros
-
-    points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
+    import random
+    import math
+    
+    points = []
+    radius = 5.5
+    for i in range(1000):
+        q = random.random() * (math.pi * 2)
+        r = math.sqrt(random.random())
+        points.append(((radius * r) * math.cos(q), (radius * r) * math.sin(q), 0.))
 
     mesh = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
 
-    optimise_trimesh_topology(mesh, 1.0, allow_boundary=True)
+    #optimise_trimesh_topology(mesh, 1.0, allow_boundary=True)
 
     points = [mesh.vertex_coordinates(key) for key in mesh]
 
     voronoi, delaunay = voronoi_from_points(points, return_delaunay=True)
 
     lines = []
-    for u, v in voronoi.edges():
-        lines.append({
-            'start': voronoi.vertex_coordinates(u, 'xy'),
-            'end'  : voronoi.vertex_coordinates(v, 'xy')
-        })
+#     for u, v in voronoi.edges():
+#         lines.append({
+#             'start': voronoi.vertex_coordinates(u, 'xy'),
+#             'end'  : voronoi.vertex_coordinates(v, 'xy')
+#         })
 
     boundary = set(delaunay.vertices_on_boundary())
 
     delaunay.plot(
-        vertexsize=0.075,
+        vertexsize=0.035,
         faces_on=False,
         edgecolor='#cccccc',
         vertexcolor={key: '#0092d2' for key in delaunay if key not in boundary},
