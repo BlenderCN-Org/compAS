@@ -2,7 +2,10 @@ from __future__ import print_function
 
 from mathutils.geometry import interpolate_bezier
 
-import bpy
+try:
+    import bpy
+except ImportError:
+    pass
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -65,6 +68,7 @@ def curve_to_bmesh(curve, divisions=10, delete=False):
     bmesh = bpy.data.objects.new(name, mesh)
     bmesh.location = [0, 0, 0]
     bpy.context.scene.objects.link(bmesh)
+    bmesh.select = False
     return bmesh
 
 

@@ -1,4 +1,4 @@
-"""compas_blender.utilities.layers : Manipulating Blender layers."""
+"""compas_blender.utilities.layers : Functions for manipulating Blender layers."""
 
 from compas_blender.utilities.objects import delete_objects
 from compas_blender.utilities.objects import get_objects_by_layer
@@ -10,9 +10,9 @@ except ImportError:
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__date__       = 'Oct 17, 2016'
+__email__      = 'liew@arch.ethz.ch'
 
 
 def layer_clear(layer):
@@ -26,11 +26,9 @@ def layer_clear(layer):
     """
     if layer == 'all':
         for i in range(20):
-            objects = get_objects_by_layer(i)
-            delete_objects(objects)
+            delete_objects(get_objects_by_layer(i))
     else:
-        objects = get_objects_by_layer(layer)
-        delete_objects(objects)
+        delete_objects(get_objects_by_layer(layer))
 
 
 def layer_mask(layer):
@@ -43,3 +41,12 @@ def layer_mask(layer):
         tuple: With True at given layer number and False elsewhere.
     """
     return tuple(i == layer for i in range(20))
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    pass

@@ -1,11 +1,14 @@
 """compas_blender.geometry.mesh : Manipulating Blender meshes."""
 
 from numpy import array
+from numpy import sum
 
 from compas.datastructures.network import Network
 from compas.datastructures.mesh import Mesh
 
 from compas.numerical.linalg import normrow
+
+from compas_blender.utilities.objects import select_objects
 
 try:
     import bpy
@@ -14,56 +17,82 @@ except ImportError:
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__date__       = 'Oct 17, 2016'
+__email__      = 'liew@arch.ethz.ch'
 
 
-def mesh_edge_lengths(mesh):
-    """ Retrieve the edge legnths of a mesh.
+def colour_bmesh_vertices(bmesh, vertices, colours):
+    """ Colour the vertices of a Blender mesh.
 
     Parameters:
-        mesh (obj): Mesh object.
+        bmesh (obj): Blender mesh object.
+        vertices (list): List of vertices to colour.
+        colour (list): List of RGB colours [0, 1] (list).
+
+    Returns:
+        None
+    """
+    mesh = bmesh.data
+    bpy.context.scene.objects.active = bmesh
+    bmesh.select = True
+    if mesh.vertex_colors:
+        col = mesh.vertex_colors.active
+    else:
+        col = mesh.vertex_colors.new()
+    for face in mesh.polygons:
+        for i in face.loop_indices:
+            j = mesh.loops[i].vertex_index
+            if j in vertices:
+                ind = vertices.index(j)
+                col.data[i].color = colours[ind]
+
+
+def bmesh_data(bmesh):
+    """ Return the Blender mesh's vertices, edges and faces data.
+
+    Parameters:
+        bmesh (obj): Blender mesh object.
+
+    Returns:
+        list: Vertices.
+        list: Edges.
+        list: Faces.
+    """
+    vertices = [list(vertex.co) for vertex in bmesh.data.vertices]
+    edges = [list(edge.vertices) for edge in bmesh.data.edges]
+    faces = [list(face.vertices) for face in bmesh.data.polygons]
+    return vertices, edges, faces
+
+
+def bmesh_edge_lengths(bmesh):
+    """ Retrieve the edge legnths of a Blender mesh.
+
+    Parameters:
+        bmesh (obj): Blender mesh object.
 
     Returns:
         array: Lengths of each edge.
         float: Total length.
     """
-    vertices, edges, _ = mesh_data(mesh)
+    vertices, edges, _ = bmesh_data(bmesh)
     X = array(vertices)
     uv = array(edges)
-    dL = normrow(X[uv[:, 1], :] - X[uv[:, 0], :])
-    L = sum(dL)[0]
-    return dL, L
+    lengths = normrow(X[uv[:, 1], :] - X[uv[:, 0], :])
+    L = sum(lengths)[0]
+    return lengths, L
 
 
-def mesh_data(mesh):
-    """ Return the mesh's nodes, edges and faces data.
-
-    Parameters:
-        mesh (obj): Blender mesh object.
-
-    Returns:
-        list: Mesh vertices.
-        list: Mesh edges.
-        list: Mesh faces.
-    """
-    vertices = [list(vertex.co) for vertex in mesh.data.vertices]
-    edges = [list(edge.vertices) for edge in mesh.data.edges]
-    faces = [list(face.vertices) for face in mesh.data.polygons]
-    return vertices, edges, faces
-
-
-def mesh_remove_duplicate_vertices(mesh):
-    """ Remove duplicate overlapping vertices of a mesh object.
+def bmesh_remove_duplicate_vertices(bmesh):
+    """ Remove duplicate overlapping vertices of a Blender mesh object.
 
     Parameters:
-        mesh (obj): Mesh object to remove vertex duplicates.
+        bmesh (obj): Blender mesh object.
 
     Returns:
-        None
+        obj: New Blender mesh.
     """
-    select_objects([mesh])
+    select_objects([bmesh])
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='VERT')
     mesh = bmesh.from_edit_mesh(bpy.context.object.data)
@@ -71,31 +100,41 @@ def mesh_remove_duplicate_vertices(mesh):
         vertex.select = True
     bpy.ops.mesh.remove_doubles()
     bpy.ops.object.mode_set(mode='OBJECT')
+    return mesh
 
 
-def network_from_mesh(mesh):
-    """ Create a Network datastructure from a mesh's edges.
-
-    Parameters:
-        mesh (obj): Blender mesh object.
-
-    Returns:
-        obj: Network object.
-    """
-    vertices, edges, faces = mesh_data(mesh)
-    network = Network.from_vertices_and_edges(vertices, edges)
-    return network
-
-
-def mesh_from_mesh(mesh):
-    """ Create a Mesh datastructure from a mesh's faces.
+def mesh_from_bmesh(bmesh):
+    """ Create a Mesh datastructure from a Blender mesh's faces.
 
     Parameters:
-        mesh (obj): Blender mesh object.
+        bmesh (obj): Blender mesh object.
 
     Returns:
         obj: Mesh object.
     """
-    vertices, edges, faces = mesh_data(mesh)
+    vertices, edges, faces = bmesh_data(bmesh)
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
     return mesh
+
+
+def network_from_bmesh(bmesh):
+    """ Create a Network datastructure from a Blender mesh's edges.
+
+    Parameters:
+        bmesh (obj): Blender mesh object.
+
+    Returns:
+        obj: Network object.
+    """
+    vertices, edges, faces = bmesh_data(bmesh)
+    network = Network.from_vertices_and_edges(vertices, edges)
+    return network
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    pass

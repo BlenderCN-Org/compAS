@@ -1,9 +1,9 @@
 #"""An example of dynamic relaxation for controlling beam elements."""
 
 from compas_blender.geometry.curve import bezier_curve_interpolate
-from compas_blender.geometry.mesh import network_from_mesh
+from compas_blender.geometry.mesh import network_from_bmesh
 
-from compas_blender.utilities.drawing import xdraw_mesh
+from compas_blender.utilities.drawing import draw_bmesh
 from compas_blender.utilities.drawing import xdraw_lines
 from compas_blender.utilities.layers import layer_clear
 from compas_blender.utilities.objects import get_objects_by_layer
@@ -70,25 +70,25 @@ x = array([i * dx for i in range(nx + 1)])[:, newaxis]
 xyz = [[x[i], 0, 0] for i in range(len(x))]
 edges = [[i, i + 1] for i in range(nx)]
 beams = {'beam': {'nodes': list(range(nx + 1))}}
-bmesh = xdraw_mesh('beam', xyz, edges)
+bmesh = draw_bmesh('beam', xyz, edges)
 target = get_objects_by_layer(1)[0]
 Xt = array(bezier_curve_interpolate(target, nx + 1))
 
 # Network
-network = network_from_mesh(bmesh)
+network = network_from_bmesh(bmesh)
 network.set_vertices_attributes(network.vertices(), {'BC': [1, 1, 1], 'P': [0, 0, 0], 'EIx': 300, 'EIy': 300})
-network.set_edges_attributes(network.edges(), {'E': 5 * 10**9, 'A': 0.001, 's0': 0, 'CT': 'CT'})
+network.set_edges_attributes(network.edges(), {'E': 5 * 10**9, 'A': 0.001, 's0': 0, 'CT': 'CT', 'L0': None})
 for fixed in [0, 1, nx - 1, nx]:
     network.set_vertex_attributes(fixed, {'BC': [0, 0, 0]})
 
 layer_clear(0)
 
 # Manual run
-manual = 0
+manual = 1
 if manual:
     x1 = -0.35
-    x2 = 0.5
-    z1 = 0.0
+    x2 = 0.3
+    z1 = -0.1
     z2 = 0.0
     r1 = 100 * pi / 180
     r2 = 140 * pi / 180
@@ -96,7 +96,7 @@ if manual:
     X = update(dofs, network, dx, factor, tol, refresh, beams, Xt, scale=0.01, bmesh=True)
 
 # Optimise
-optimise = 1
+optimise = 0
 if optimise:
     bnds = [(Xt[0, 0] - du, Xt[0, 0] + du), (Xt[0, 2] - du, Xt[0, 2] + du),
               (arctan2(Xt[1, 2] - Xt[0, 2], Xt[1, 0] - Xt[0, 0]) - dr,
@@ -112,18 +112,18 @@ if optimise:
     al, au = bnds[3]
     bl, bu = bnds[4]
     lines = [
-        {'color': col, 'start': [xl, 0, zl], 'end': [xu, 0, zl], 'name': 'b1', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [xl, 0, zu], 'end': [xu, 0, zu], 'name': 't1', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [xl, 0, zl], 'end': [xl, 0, zu], 'name': 'l1', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [xu, 0, zl], 'end': [xu, 0, zu], 'name': 'r1', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [al, 0, bl], 'end': [au, 0, bl], 'name': 'b2', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [al, 0, bu], 'end': [au, 0, bu], 'name': 't2', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [al, 0, bl], 'end': [al, 0, bu], 'name': 'l2', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [au, 0, bl], 'end': [au, 0, bu], 'name': 'r2', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [Xt[0, 0], 0, Xt[0, 2]], 'end': [xu, 0, +du * sin(dr)], 'name': 'rp1', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [Xt[0, 0], 0, Xt[0, 2]], 'end': [xu, 0, -du * sin(dr)], 'name': 'rm1', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [Xt[-1, 0], 0, Xt[-1, 2]], 'end': [al, 0, Xt[-1, 2] + du * sin(dr)], 'name': 'rp2', 'radius': r, 'layer': 0},
-        {'color': col, 'start': [Xt[-1, 0], 0, Xt[-1, 2]], 'end': [al, 0, Xt[-1, 2] - du * sin(dr)], 'name': 'rm2', 'radius': r, 'layer': 0}]
+        {'colour': col, 'start': [xl, 0, zl], 'end': [xu, 0, zl], 'name': 'b1', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [xl, 0, zu], 'end': [xu, 0, zu], 'name': 't1', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [xl, 0, zl], 'end': [xl, 0, zu], 'name': 'l1', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [xu, 0, zl], 'end': [xu, 0, zu], 'name': 'r1', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [al, 0, bl], 'end': [au, 0, bl], 'name': 'b2', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [al, 0, bu], 'end': [au, 0, bu], 'name': 't2', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [al, 0, bl], 'end': [al, 0, bu], 'name': 'l2', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [au, 0, bl], 'end': [au, 0, bu], 'name': 'r2', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [Xt[0, 0], 0, Xt[0, 2]], 'end': [xu, 0, +du * sin(dr)], 'name': 'rp1', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [Xt[0, 0], 0, Xt[0, 2]], 'end': [xu, 0, -du * sin(dr)], 'name': 'rm1', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [Xt[-1, 0], 0, Xt[-1, 2]], 'end': [al, 0, Xt[-1, 2] + du * sin(dr)], 'name': 'rp2', 'radius': r, 'layer': 0},
+        {'colour': col, 'start': [Xt[-1, 0], 0, Xt[-1, 2]], 'end': [al, 0, Xt[-1, 2] - du * sin(dr)], 'name': 'rm2', 'radius': r, 'layer': 0}]
     xdraw_lines(lines)
     args = network, dx, factor, tol, refresh, beams, Xt, 0, bmesh
     tic = time()

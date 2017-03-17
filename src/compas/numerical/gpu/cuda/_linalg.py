@@ -40,10 +40,10 @@ def cuda_conj(a):
         gpu: The complex conjugate of the GPUArray.
 
     Examples:
-        a = conj(give([1 + 2j, 3 - 4j], type='complex'))
+        a = cuda_conj(cuda_give([1 + 2.j, 3 - 4.j], type='complex'))
         array([ 1.-2.j,  3.+4.j], dtype=complex64)
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.linalg.conj(a)
 
@@ -93,14 +93,17 @@ def cuda_cross(a, b, bsize):
 def cuda_det(a):
     """ GPUArray square matrix determinant.
 
+    Notes
+        - Requires CULA.
+
     Parameters:
-        a (gpu): GPUArray matrix of size (n x n).
+        a (gpu): GPUArray matrix of size (m x m).
 
     Returns:
-        Determinant of the square matrix.
+        float: Determinant of the square matrix.
 
     Examples:
-        >>> det(give([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))
+        >>> a = cuda_det(cuda_give([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))
         103
     """
     return skcuda.linalg.det(a)
@@ -117,13 +120,13 @@ def cuda_dot(a, b):
         gpu: [c] = [a][b] of size (m x o)
 
     Examples:
-        >>> a = give([[0, 1], [2, 3]])
-        >>> b = give([[0, 1], [1, 0]])
-        >>> c = dot(a, b)
+        >>> a = cuda_give([[0, 1], [2, 3]])
+        >>> b = cuda_give([[0, 1], [1, 0]])
+        >>> c = cuda_dot(a, b)
         array([[ 1.,  0.],
                [ 3.,  2.]])
         >>> type(c)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.linalg.dot(a, b)
 
@@ -131,8 +134,9 @@ def cuda_dot(a, b):
 def cuda_eig(a):
     """ Matrix Eigenvectors and Eigenvalues of GPUArray.
 
-    Note:
-        Input GPUArray is a square matrix, either real or complex.
+    Notes
+        - Requires CULA.
+        - Input GPUArray is a square matrix, either real or complex.
 
     Parameters:
         a (gpu): GPUArray of a square matrix (m x m).
@@ -156,11 +160,11 @@ def cuda_hermitian(a):
         gpu: The complex conjugate transpose of the GPUArray.
 
     Examples:
-        >>> a = hermitian(give([[1 + 2j, 3 - 4j],[0 - 5j, 6 - 1j]], type='complex'))
+        >>> a = cuda_hermitian(cuda_give([[1 + 2.j, 3 - 4.j],[0 - 5.j, 6 - 1.j]], type='complex'))
         array([[ 1.-2.j,  0.+5.j],
                [ 3.+4.j,  6.+1.j]], dtype=complex64)
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.linalg.hermitian(a)
 
@@ -168,18 +172,21 @@ def cuda_hermitian(a):
 def cuda_inv(a):
     """ Inverse of GPUArray matrix.
 
+    Notes
+        - Requires CULA.
+
     Parameters:
-        a (gpu): Input square GPUArray.
+        a (gpu): Input square GPUArray (m x m).
 
     Returns:
-        gpu: Matrix inverse as GPUArray.
+        gpu: Matrix inverse as a GPUArray (m x m).
 
     Examples:
-        >>> a = inv(give([[4, 7], [2, 6]]))
+        >>> a = cuda_inv(cuda_give([[4, 7], [2, 6]]))
         array([[ 0.6, -0.7],
                [-0.2,  0.4]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.linalg.inv(a)
 
@@ -194,39 +201,43 @@ def cuda_normrow(a):
         gpu: Vector lengths (m,).
 
     Examples:
-        >>> a = normrow(give([[1, 2], [3, 4]]))
+        >>> a = cuda_normrow(cuda_give([[1, 2], [3, 4]]))
         array([ 2.23606798,  5.])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return cuda_sqrt(cuda_sum(a * a, axis=1))
 
 
 def cuda_pinv(a):
-    """ Moore-Penrose pseudo inverse of GPUArray matrix.
+    """ Moore-Penrose pseudo inverse of the GPUArray.
 
     Notes:
-        Singular values smaller than 10^-15 are set to zero.
+        - Singular values smaller than 10^-15 are set to zero.
+        - Requires CULA.
 
     Parameters:
-        a (gpu): Input matrix (m x n).
+        a (gpu): Input GPUArray (m x n).
 
     Returns:
-        gpu: Matrix pseudoinverse inverse.
+        gpu: Pseudo inverse.
 
     Examples:
-        >>> a = pinv(give([[1, 3, -1], [2, 0, 3]]))
+        >>> a = cuda_pinv(cuda_give([[1, 3, -1], [2, 0, 3]]))
         array([[ 0.1056338 ,  0.16197183],
                [ 0.27464789,  0.02112676],
                [-0.07042254,  0.22535211]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.linalg.pinv(a)
 
 
 def cuda_svd(a, jobu='S', jobvt='S'):
     """ GPUArray Singular Value Decomposition.
+
+    Notes
+        - Requires CULA.
 
     Parameters:
         a (gpu): GPUArray (m x n) to decompose.
@@ -241,7 +252,7 @@ def cuda_svd(a, jobu='S', jobvt='S'):
 
 
 def cuda_trace(a):
-    """ GPUArray trace, sum along main diagonal.
+    """ GPUArray trace, the sum along the main diagonal.
 
     Parameters:
         a (gpu): Input GPUArray.
@@ -250,16 +261,16 @@ def cuda_trace(a):
         float: tr(GPUArray).
 
     Examples:
-        >>> a = trace(give([[0, 1], [2, 3]]))
+        >>> a = cuda_trace(cuda_give([[0, 1], [2, 3]]))
         3.0
         >>> type(a)
-        numpy.float64
+        <class 'numpy.float64'>
     """
     return skcuda.linalg.trace(a)
 
 
 def cuda_transpose(a):
-    """ Transpose of GPUArray matrix.
+    """ Transpose a GPUArray.
 
     Parameters:
         a (gpu): GPUArray of size (m x n).
@@ -268,11 +279,11 @@ def cuda_transpose(a):
         gpu: GPUArray transpose (n x m).
 
     Examples:
-        >>> a = transpose(give([[0, 1], [2, 3]]))
+        >>> a = cuda_transpose(cuda_give([[0, 1], [2, 3]]))
         array([[ 0.,  2.],
                [ 1.,  3.]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.linalg.transpose(a)
 
@@ -282,4 +293,14 @@ def cuda_transpose(a):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    from compas.numerical.gpu.cuda._array import cuda_give
+
+    a = cuda_transpose(cuda_give([[0, 1], [2, 3]]))
+    b = cuda_trace(cuda_give([[0, 1], [2, 3]]))
+    # c = cuda_pinv(cuda_give([[1, 3, -1], [2, 0, 3]]))
+    d = cuda_normrow(cuda_give([[1, 2], [3, 4]]))
+    # e = cuda_inv(cuda_give([[4, 7], [2, 6]]))
+    f = cuda_hermitian(cuda_give([[1 + 2.j, 3 - 4.j],[0 - 5.j, 6 - 1.j]], type='complex'))
+    # g = cuda_det(cuda_give([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))
+    h = cuda_conj(cuda_give([1 + 2.j, 3 - 4.j], type='complex'))
