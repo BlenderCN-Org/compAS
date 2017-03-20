@@ -4,7 +4,7 @@
 Delaunay Triangulation from Points and Boundary
 ********************************************************************************
 
-.. image:: /_images/delaunay-from-points-and-boundary.*
+.. image:: /_images/examples_delaunay-from-points-and-boundary.*
 
 :download:`geometry.3dm </_downloads/geometry_tests.3dm>`.
 

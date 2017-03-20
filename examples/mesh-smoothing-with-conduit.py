@@ -19,6 +19,8 @@ def ufunc(mesh, i, args):
     if i % vis == 0:
         print("Iteration {0}".format(i))
         conduit.redraw()
+        # to create an animated gif for the documentation later
+        rhino.screenshot_current_view()
 
 
 guid = rhino.select_mesh()

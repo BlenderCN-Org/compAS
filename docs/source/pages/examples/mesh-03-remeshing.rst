@@ -4,7 +4,7 @@
 Mesh remeshing
 ********************************************************************************
 
-.. image:: /_images/mesh-remeshing.*
+.. image:: /_images/examples_mesh-remeshing.*
 
 :download:`geometry.3dm </_downloads/geometry_tests.3dm>`.
 

@@ -4,7 +4,7 @@
 Mesh smoothing
 ********************************************************************************
 
-.. image:: /_images/mesh-smoothing.*
+.. image:: /_images/examples_mesh-smoothing.*
 
 :download:`geometry.3dm </_downloads/geometry_tests.3dm>`
 

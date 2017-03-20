@@ -4,7 +4,7 @@
 Delaunay Triangulation from Points
 ********************************************************************************
 
-.. image:: /_images/delaunay-from-points.*
+.. image:: /_images/examples_delaunay-from-points.*
 
 :download:`geometry.3dm </_downloads/geometry_tests.3dm>`.
 

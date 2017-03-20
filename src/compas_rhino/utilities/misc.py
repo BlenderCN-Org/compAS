@@ -29,6 +29,7 @@ __all__ = [
     'print_display_on',
     'display_message', 'display_text', 'display_image', 'display_html',
     'update_settings', 'update_attributes', 'update_named_values',
+    'screenshot_current_view',
 ]
 
 
