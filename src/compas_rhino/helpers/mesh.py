@@ -134,7 +134,8 @@ def draw_mesh(mesh,
               show_edges=True,
               vertexcolor=None,
               edgecolor=None,
-              facecolor=None):
+              facecolor=None,
+              redraw=True):
     """
     Draw a mesh object in Rhino.
 
@@ -212,7 +213,7 @@ def draw_mesh(mesh,
         rhino.xdraw_mesh(xyz,
                          faces,
                          color,
-                         mesh.attributes['name'],
+                         '{0}.mesh'.format(mesh.attributes['name']),
                          layer=layer,
                          clear=False,
                          redraw=False)
@@ -237,7 +238,8 @@ def draw_mesh(mesh,
                 'color': vertexcolor.get(key, color),
             })
         rhino.xdraw_points(points, layer=layer, clear=False, redraw=False)
-    rs.Redraw()
+    if redraw:  
+        rs.Redraw()
 
 
 # ==============================================================================
