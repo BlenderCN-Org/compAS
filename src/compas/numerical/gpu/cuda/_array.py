@@ -1,7 +1,7 @@
+from numpy import array
 from numpy import float32
 from numpy import float64
 from numpy import complex64
-from numpy import array
 
 try:
     import pycuda
@@ -14,6 +14,7 @@ except ImportError as e:
 try:
     import skcuda
     import skcuda.autoinit
+    import skcuda.linalg
 except ImportError as e:
     pass
 
@@ -34,7 +35,7 @@ def cuda_diag(a):
     """ Construct or extract GPUArray diagonal.
 
     Note:
-        If a is 1D, GPUArray is constructed, if 2D, the diagonal is extracted.
+        If a is 1D, a GPUArray is constructed, if 2D, the diagonal is extracted.
 
     Parameters:
         a (gpu): GPUArray (1D or 2D).
@@ -43,14 +44,14 @@ def cuda_diag(a):
         gpu: GPUArray with inserted diagonal, or vector of diagonal.
 
     Examples:
-        >>> a = diag(give([1, 2, 3]))
+        >>> a = cuda_diag(cuda_give([1, 2, 3]))
         array([[ 1.,  0.,  0.],
                [ 0.,  2.,  0.],
                [ 0.,  0.,  3.]])
-        >>> b = diag(a)
+        >>> b = cuda_diag(a)
         array([ 1.,  2.,  3.])
         >>> type(b)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     return skcuda.linalg.diag(a)
 
@@ -66,37 +67,54 @@ def cuda_eye(n, bit=64):
         gpu: Identity matrix (n x n) as GPUArray.
 
     Examples:
-        >>> a = eye(3)
+        >>> a = cuda_eye(3)
         array([[ 1.,  0.,  0.],
                [ 0.,  1.,  0.],
                [ 0.,  0.,  1.]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     if bit == 32:
-        a = skcuda.linalg.eye(n, dtype=float32)
+        return skcuda.linalg.eye(n, dtype=float32)
     elif bit == 64:
-        a = skcuda.linalg.eye(n, dtype=float64)
-    return a
+        return skcuda.linalg.eye(n, dtype=float64)
+
+
+def cuda_flatten(a):
+    """ Flatten/ravel out a GPUArray.
+
+    Parameters:
+        a (gpu): GPUArray.
+
+    Returns:
+        gpu: 1D version of original GPUArray.
+
+    Examples:
+        >>> a = cuda_flatten(cuda_eye(3))
+        array([ 1.,  0.,  0.,  0.,  1.,  0.,  0.,  0.,  1.])
+        >>> type(a)
+        <class 'pycuda.gpuarray.GPUArray'>
+    """
+    return a.ravel()
 
 
 def cuda_get(a):
-    """ Get GPUArray back from GPU memory.
+    """ Get back GPUArray from GPU memory as NumPy array.
 
     Parameters:
         a (gpu): Data on the GPU memory to retrieve.
 
     Returns:
-        array: The GPUArray returned to RAM.
+        array: The GPUArray returned to RAM as NumPy array.
 
     Examples:
-        >>> a = give([1, 2, 3], bit=64)
-        >>> b = a.get()
+        >>> a = cuda_give([1, 2, 3], bit=64)
+        >>> b = cuda_get(a)
+        array([ 1.,  2.,  3.])
         >>> type(b)
-        numpy.ndarray
+        <class 'numpy.ndarray'>
     """
-    b = a.get()
-    return b
+    return a.get()
 
 
 def cuda_give(a, bit=64, type='real'):
@@ -114,11 +132,11 @@ def cuda_give(a, bit=64, type='real'):
     memory.
 
     Examples:
-        >>> a = give([[1, 2, 3], [4, 5, 6]], bit=64)
+        >>> a = cuda_give([[1, 2, 3], [4, 5, 6]], bit=64)
         array([[ 1.,  2.,  3.],
                [ 4.,  5.,  6.]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
         >>> a.shape
         (2, 3)
         >>> a.dtype
@@ -128,16 +146,30 @@ def cuda_give(a, bit=64, type='real'):
     """
     if type == 'real':
         if bit == 32:
-            b = pycuda.gpuarray.to_gpu(array(a).astype(float32))
+            return pycuda.gpuarray.to_gpu(array(a).astype(float32))
         elif bit == 64:
-            b = pycuda.gpuarray.to_gpu(array(a).astype(float64))
+            return pycuda.gpuarray.to_gpu(array(a).astype(float64))
     elif type == 'complex':
         if bit == 32:
-            raise NotImplementedError
-            # b = pycuda.gpuarray.to_gpu(array(a).astype(complex32))
+            print('Complex numbers in 32 bit are not supported')
         elif bit == 64:
-            b = pycuda.gpuarray.to_gpu(array(a).astype(complex64))
-    return b
+            return pycuda.gpuarray.to_gpu(array(a).astype(complex64))
+
+
+def cuda_imag(a):
+    """ Return the imaginary parts of GPUArray.
+
+    Parameters:
+        a (gpu): Complex GPUArray.
+
+    Returns:
+        gpu: Real parts of the input GPUArray.
+
+    Examples:
+        >>> cuda_imag(cuda_give([1 + 2.j, 2 - 4.j], type='complex'))
+        array([ 2., -4.], dtype=float32)
+    """
+    return a.imag
 
 
 def cuda_ones(shape, bit=64):
@@ -145,24 +177,23 @@ def cuda_ones(shape, bit=64):
 
     Parameters:
         shape (tuple): Dimensions of the GPUArray.
-        bit (int, str): 32 or 64 for corresponding float precision.
+        bit (int): 32 or 64 for corresponding float precision.
 
     Returns:
         gpu: GPUArray of ones.
 
     Examples:
-        >>> a = ones((3, 2), bit=64)
+        >>> a = cuda_ones((3, 2), bit=64)
         array([[ 1.,  1.],
                [ 1.,  1.],
                [ 1.,  1.]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     if bit == 32:
-        a = skcuda.misc.ones(shape, float32)
+        return skcuda.misc.ones(shape, float32)
     if bit == 64:
-        a = skcuda.misc.ones(shape, float64)
-    return a
+        return skcuda.misc.ones(shape, float64)
 
 
 def cuda_random(shape, bit=64):
@@ -170,42 +201,85 @@ def cuda_random(shape, bit=64):
 
     Parameters:
         shape (tuple): Size of the random array.
+        bit (int): 32 or 64 for corresponding float precision.
 
     Returns:
         gpu: Random floats from 0 to 1 in GPUArray.
 
     Examples:
-        >>> a = random((2, 2), bit=64)
+        >>> a = cuda_random((2, 2), bit=64)
         array([[ 0.80916596,  0.82687163],
                [ 0.03921388,  0.44197764]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
-
+        <class 'pycuda.gpuarray.GPUArray'>
     """
     if bit == 32:
-        a = pycuda.curandom.rand(shape, dtype=float32)
-    if bit == 64:
-        a = pycuda.curandom.rand(shape, dtype=float64)
-    return a
+        return pycuda.curandom.rand(shape, float32)
+    elif bit == 64:
+        return pycuda.curandom.rand(shape, float64)
 
 
 def cuda_real(a):
+    """ Return the real parts of GPUArray.
+
+    Parameters:
+        a (gpu): Complex GPUArray.
+
+    Returns:
+        gpu: Real parts of the input GPUArray.
+
+    Examples:
+        >>> cuda_real(cuda_give([1 + 2.j, 2 - 4.j], type='complex'))
+        array([ 1.,  2.], dtype=float32)
+    """
     return a.real
 
 
 def cuda_reshape(a, shape):
+    """ Reshape a GPUArray.
+
+    Parameters:
+        a (gpu): GPUArray.
+        shape (tuple): Dimension of new reshaped GPUArray.
+
+    Returns:
+        gpu: Reshaped GPUArray.
+
+    Examples:
+        >>> a = cuda_reshape(cuda_give([[1, 2], [3, 4]]), (4, 1))
+        array([[ 1.],
+               [ 2.],
+               [ 3.],
+               [ 4.]])
+        >>> type(a)
+        <class 'pycuda.gpuarray.GPUArray'>
+    """
     return a.reshape(shape)
 
 
-def cuda_flatten(a):
-    return a.ravel()
+def cuda_squeeze(a):
+    """ Removes dimensions of length 1 from GPUArray.
+
+    Parameters:
+        a (gpu): The GPUArray to squeeze.
+
+    Returns:
+        gpu: Squeezed GPUArray.
+
+    Examples:
+        >>> a = cuda_squeeze(cuda_give([[1], [2]]))
+        array([ 1.,  2.])
+        >>> type(a)
+        <class 'pycuda.gpuarray.GPUArray'>
+    """
+    return a.squeeze()
 
 
 def cuda_tile(a, shape):
     """ Horizontally and vertically tile a GPUArray.
 
     Notes:
-        May be slow for large tiling shapes as for loops are used.
+        May be slow for large tiling shapes as For loops are used.
 
     Parameters:
         a (gpu): GPUArray to tile.
@@ -215,17 +289,16 @@ def cuda_tile(a, shape):
         gpu: Tiled GPUArray.
 
     Examples:
-        >>> a = tile([[1, 2], [3, 4]], (2, 2))
+        >>> a = cuda_tile(cuda_give([[1, 2], [3, 4]]), (2, 2))
         array([[ 1.,  2.,  1.,  2.],
                [ 3.,  4.,  3.,  4.],
                [ 1.,  2.,  1.,  2.],
                [ 3.,  4.,  3.,  4.]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
 
     """
-    m = a.shape[0]
-    n = a.shape[1]
+    m, n = a.shape
     b = cuda_zeros((m * shape[0], n))
     for i in range(shape[0]):
         b[i * m:i * m + m, :] = a
@@ -240,21 +313,20 @@ def cuda_zeros(shape, bit=64):
 
     Parameters:
         shape (tuple): Dimensions of the GPUArray.
-        bit (int, str): 32 or 64 for corresponding float precision.
+        bit (int): 32 or 64 for corresponding float precision.
 
     Returns:
         gpu: GPUArray of zeros.
 
     Examples:
-        >>> a = zeros((3, 2), bit=64)
+        >>> a = cuda_zeros((3, 2), bit=64)
         array([[ 0.,  0.],
                [ 0.,  0.],
                [ 0.,  0.]])
         >>> type(a)
-        pycuda.gpuarray.GPUArray
+        <class 'pycuda.gpuarray.GPUArray'>
     """
-    a = pycuda.gpuarray.zeros(shape, dtype='float' + str(bit))
-    return a
+    return pycuda.gpuarray.zeros(shape, dtype='float' + str(bit))
 
 
 # ==============================================================================
@@ -262,4 +334,15 @@ def cuda_zeros(shape, bit=64):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    a = cuda_give([[1, 2, 3], [4, 5, 6]], bit=64, type='complex')
+    b = cuda_ones((3, 2), bit=64)
+    c = cuda_random((2, 2), bit=64)
+    d = cuda_real(cuda_give([1 + 2.j, 2 - 4.j], type='complex'))
+    e = cuda_zeros((3, 2), bit=64)
+    f = cuda_eye(3)
+    g = cuda_diag(cuda_give([1, 2, 3]))
+    h = cuda_tile(cuda_give([[1, 2], [3, 4]]), (2, 2))
+    i = cuda_squeeze(cuda_give([[1], [2]]))
+    j = cuda_imag(cuda_give([1 + 2.j, 2 - 4.j], bit=64, type='complex'))
+

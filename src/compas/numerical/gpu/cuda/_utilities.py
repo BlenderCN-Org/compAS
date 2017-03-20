@@ -19,7 +19,7 @@ __all__ = [
 
 
 def cuda_device():
-    """ Displays the GPU CUDA device details.
+    """ Displays the CUDA GPU device details.
 
     Parameters:
         None
@@ -28,7 +28,7 @@ def cuda_device():
         None
 
     Examples:
-        >>> device()
+        >>> cuda_device()
         Device: GeForce GTX 980
         Compute Capability: 5.2
         Total Memory: 4194 MB
@@ -55,4 +55,5 @@ def cuda_device():
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    cuda_device()

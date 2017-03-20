@@ -7,9 +7,9 @@ except ImportError:
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__date__       = 'Oct 17, 2016'
+__email__      = 'liew@arch.ethz.ch'
 
 
 def cursor_xyz():
@@ -19,6 +19,15 @@ def cursor_xyz():
         None
 
     Returns:
-        list: x, y and z position.
+        list: [x, y and z] position.
     """
     return list(bpy.context.scene.cursor_location.copy())
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    print(cursor_xyz())

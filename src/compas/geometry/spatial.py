@@ -110,6 +110,7 @@ __all__ = [
     'translate_lines',
 
     'rotate_points',
+    'orient_points',
 
     'mirror_point_point',
     'mirror_points_point',

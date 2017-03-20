@@ -191,6 +191,7 @@ transformations
     translate_points
     translate_lines
     rotate_points
+    orient_points
     mirror_point_point
     mirror_points_point
     mirror_point_line

@@ -59,7 +59,7 @@ def get_objects_by_layer(layer, names=False):
         return objects
 
 
-def object_layer(objects, layer):
+def objects_layer(objects, layer):
     """ Changes the layer of the objects.
 
     Parameters:
