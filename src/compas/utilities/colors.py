@@ -144,19 +144,22 @@ def hex_to_rgb(value, normalize=False):
 def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=False):
     color = color or default
 
+    if color is None:
+        return {key: None for key in keys}
+
     # if input is hex
     # and output should be rgb
     if isinstance(color, basestring):
         if colorformat == 'rgb':
             color = hex_to_rgb(color, normalize=normalize)
-        return dict((key, color) for key in keys)
+        return {key: color for key in keys}
 
     # if input is rgb
     # and output should be hex
     if isinstance(color, (tuple, list)) and len(color) == 3:
         if colorformat == 'hex':
             color = rgb_to_hex(color)
-        return dict((key, color) for key in keys)
+        return {key: color for key in keys}
 
     if isinstance(color, dict):
         for k, c in color.items():
@@ -173,7 +176,7 @@ def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=F
                 if colorformat == 'hex':
                     color[k] = rgb_to_hex(c)
 
-        return dict((key, default if key not in color else color[key]) for key in keys)
+        return {key: (default if key not in color else color[key]) for key in keys}
 
     raise Exception('This is not a valid color format: {0}'.format(type(color)))
 

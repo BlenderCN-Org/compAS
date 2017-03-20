@@ -100,7 +100,7 @@ def smooth_mesh_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None):
 
 
 # rename to something involving dual?
-def smooth_mesh_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
+def smooth_mesh_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None, ufunc_args=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -135,7 +135,7 @@ def smooth_mesh_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
         # are updated
         # don't know which option makes more sense...
         if ufunc:
-            ufunc(mesh, k)
+            ufunc(mesh, k, ufunc_args)
 
 
 # d is used in the algorithm

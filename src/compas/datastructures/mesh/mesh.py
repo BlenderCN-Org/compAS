@@ -147,9 +147,9 @@ class Mesh(object):
         self.facedata      = {}
         self.attributes    = {
             'name'         : 'Mesh',
-            'color.vertex' : (0, 0, 0),
-            'color.edge'   : (0, 0, 0),
-            'color.face'   : (0, 0, 0),
+            'color.vertex' : None,
+            'color.edge'   : None,
+            'color.face'   : None,
         }
         self.default_vertex_attributes = {'x': 0, 'y': 0, 'z': 0}
         self.default_face_attributes   = {}

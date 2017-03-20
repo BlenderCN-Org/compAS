@@ -129,9 +129,9 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
 def draw_mesh(mesh,
               layer=None,
               clear_layer=False,
-              show_faces=False,
-              show_vertices=True,
-              show_edges=True,
+              show_faces=True,
+              show_vertices=False,
+              show_edges=False,
               vertexcolor=None,
               edgecolor=None,
               facecolor=None):
@@ -172,11 +172,11 @@ def draw_mesh(mesh,
                                    default=mesh.attributes['color.edge'],
                                    colorformat='rgb',
                                    normalize=False)
-    facecolor = color_to_colordict(facecolor,
-                                   mesh.faces(),
-                                   default=mesh.attributes['color.face'],
-                                   colorformat='rgb',
-                                   normalize=False)
+    # facecolor = color_to_colordict(facecolor,
+    #                                mesh.faces(),
+    #                                default=mesh.attributes['color.face'],
+    #                                colorformat='rgb',
+    #                                normalize=False)
     guids = rhino.get_objects(name='{0}.*'.format(mesh.attributes['name']))
     rhino.delete_objects(guids)
     if clear_layer:
@@ -212,7 +212,7 @@ def draw_mesh(mesh,
         rhino.xdraw_mesh(xyz,
                          faces,
                          color,
-                         mesh.attributes['name'],
+                         '{0}.mesh'.format(mesh.attributes['name']),
                          layer=layer,
                          clear=False,
                          redraw=False)

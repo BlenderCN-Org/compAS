@@ -74,7 +74,7 @@ if __name__ == "__main__":
             s += i
         return s
 
-    print f(100)
+    print(f(100))
 
-    print f.__doc__
-    print f.__name__
+    print(f.__doc__)
+    print(f.__name__)

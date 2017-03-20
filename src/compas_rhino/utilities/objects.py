@@ -325,6 +325,10 @@ def get_polygons(layer=None):
     return guids
 
 
+def get_curve_coordinates():
+    pass
+
+
 def get_line_coordinates(guids):
     if isinstance(guids, System.Guid):
         sp = map(float, rs.CurveStartPoint(guids))
@@ -336,6 +340,10 @@ def get_line_coordinates(guids):
         ep = map(float, rs.CurveEndPoint(guid))
         lines.append((sp, ep))
     return lines
+
+
+def get_polycurve_coordinates():
+    pass
 
 
 def get_polyline_coordinates(guids):
