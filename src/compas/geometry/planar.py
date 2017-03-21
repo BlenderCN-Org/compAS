@@ -432,7 +432,7 @@ def distance_point_line_2d(point, line):
     ab   = subtract_vectors_2d(b, a)
     pa   = subtract_vectors_2d(a, point)
     pb   = subtract_vectors_2d(b, point)
-    l    = length_vector_2d(cross_vectors_2d(pa, pb))
+    l    = abs(cross_vectors_2d(pa, pb)[2])
     l_ab = length_vector_2d(ab)
     return l / l_ab
 
@@ -459,7 +459,7 @@ def distance_point_line_sqrd_2d(point, line):
     ab   = subtract_vectors_2d(b, a)
     pa   = subtract_vectors_2d(a, point)
     pb   = subtract_vectors_2d(b, point)
-    l    = length_vector_sqrd_2d(cross_vectors_2d(pa, pb))
+    l    = cross_vectors_2d(pa, pb)[2]**2
     l_ab = length_vector_sqrd_2d(ab)
     return l / l_ab
 
@@ -711,12 +711,12 @@ def area_polygon_2d(polygon):
     o = centroid_points_2d(polygon)
     u = subtract_vectors_2d(polygon[-1], o)
     v = subtract_vectors_2d(polygon[0], o)
-    a = 0.5 * length_vector_2d(cross_vectors_2d(u, v))
+    a = 0.5 * cross_vectors_2d(u, v)[2]
     for i in range(0, len(polygon) - 1):
         u = v
         v = subtract_vectors_2d(polygon[i + 1], o)
-        a += 0.5 * length_vector_2d(cross_vectors_2d(u, v))
-    return a
+        a += 0.5 * cross_vectors_2d(u, v)[2]
+    return abs(a)
 
 
 # shall we use a, b, c or triangle as a special type (kind of polygon)?
