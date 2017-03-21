@@ -191,8 +191,8 @@ class RhinoSurface(object):
         return projections
 
     def closest_point(self, point, maxdist=None):
-        rc, u, v = self.geometry.ClosestPoint(Point3d(*point))
-        return list(self.geoemtry.PointAt(u, v))
+        point = self.geometry.ClosestPoint(Point3d(*point))
+        return list(point)
 
     def closest_points(self, points, maxdist=None):
         return [self.closest_point(point) for point in points]

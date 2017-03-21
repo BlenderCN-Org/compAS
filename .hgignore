@@ -4,11 +4,14 @@ syntax: glob
 .pydevproject
 .settings
 
+Thumbs.db
+
 *.sublime-project
 *.sublime-workspace
 
 *.orig
 *.3dmbak
+*.rhl
 *.rui
 *.rui_bak
 *.pyc
