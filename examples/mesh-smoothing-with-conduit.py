@@ -6,6 +6,10 @@
 
 from __future__ import print_function
 
+import os
+
+import compas
+
 from compas.datastructures.mesh import Mesh
 from compas.datastructures.mesh.algorithms import smooth_mesh_area
 
@@ -19,8 +23,10 @@ def ufunc(mesh, i, args):
     if i % vis == 0:
         print("Iteration {0}".format(i))
         conduit.redraw()
-        # to create an animated gif for the documentation later
-        rhino.screenshot_current_view()
+        # animated gif for the docs
+        n = str(i).zfill(4)
+        filename = os.path.join(compas.TEMP, 'screenshots/mesh-smoothing-with-conduit-' + n + '.png')
+        rhino.screenshot_current_view(filename, draw_grid=True)
 
 
 guid = rhino.select_mesh()
@@ -29,7 +35,7 @@ mesh = rhino.mesh_from_guid(Mesh, guid)
 fixed = mesh.vertices_on_boundary()
 
 for key in [161, 256]:
-    mesh.vertex[key]['z'] -= 20
+    mesh.vertex[key]['z'] -= 15
     fixed.add(key)
 
 try:
@@ -43,6 +49,9 @@ except Exception as e:
 
 else:
     rhino.draw_mesh(mesh)
+    # screenshot for the docs
+    filename = os.path.join(compas.TEMP, 'screenshots/mesh-smoothing-with-conduit-0100.png')
+    rhino.screenshot_current_view(filename, draw_grid=True)
 
 finally:
     conduit.Enabled = False

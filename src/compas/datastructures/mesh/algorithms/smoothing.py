@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-def smooth_mesh_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
+def smooth_mesh_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None, ufunc_args=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -34,14 +34,11 @@ def smooth_mesh_centroid(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             attr['x'] += d * (c[0] - p[0])
             attr['y'] += d * (c[1] - p[1])
             attr['z'] += d * (c[2] - p[2])
-        # in my implementation the ufunc is called before the coordinates
-        # are updated
-        # don't know which optio makes more sense...
         if ufunc:
-            ufunc(mesh, k)
+            ufunc(mesh, k, ufunc_args)
 
 
-def smooth_mesh_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
+def smooth_mesh_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None, ufunc_args=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -58,18 +55,14 @@ def smooth_mesh_centerofmass(mesh, fixed=None, kmax=1, d=1.0, ufunc=None):
             attr['x'] += d * (c[0] - p[0])
             attr['y'] += d * (c[1] - p[1])
             attr['z'] += d * (c[2] - p[2])
-        # in my implementation the ufunc is called before the coordinates
-        # are updated
-        # don't know which optio makes more sense...
         if ufunc:
-            ufunc(mesh, k)
-
+            ufunc(mesh, k, ufunc_args)
 
 
 # my local implementation is based on per-edge-defined min/max values
 # this is not compatible with smoothing in combination with subdivision though
 # therefore, is made the min/max values global
-def smooth_mesh_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None):
+def smooth_mesh_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None, ufunc_args=None):
     for k in range(kmax):
         key_xyz = dict((key, mesh.vertex_coordinates(key)) for key in mesh)
         for key in mesh:
@@ -92,11 +85,8 @@ def smooth_mesh_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, ufunc=None):
             attr['x'] += d * (c[0] - ep[0])
             attr['y'] += d * (c[1] - ep[1])
             attr['z'] += d * (c[2] - ep[2])
-        # in my implementation the ufunc is called before the coordinates
-        # are updated
-        # don't know which optio makes more sense...
         if ufunc:
-            ufunc(mesh, k)
+            ufunc(mesh, k, ufunc_args)
 
 
 # rename to something involving dual?
@@ -131,16 +121,13 @@ def smooth_mesh_area(mesh, fixed=None, kmax=1, d=1.0, ufunc=None, ufunc_args=Non
             attr['x'] += d * (x - p[0])
             attr['y'] += d * (y - p[1])
             attr['z'] += d * (z - p[2])
-        # in my implementation the ufunc is called before the coordinates
-        # are updated
-        # don't know which option makes more sense...
         if ufunc:
             ufunc(mesh, k, ufunc_args)
 
 
 # d is used in the algorithm
 # so some renaming is required
-def smooth_mesh_angle(mesh, fixed=None, kmax=1, ufunc=None):
+def smooth_mesh_angle(mesh, fixed=None, kmax=1, ufunc=None, ufunc_args=None):
     fixed = fixed or []
     fixed = set(fixed)
     for k in range(kmax):
@@ -172,11 +159,8 @@ def smooth_mesh_angle(mesh, fixed=None, kmax=1, ufunc=None):
             attr['x'] += 0.5 * do[0]
             attr['y'] += 0.5 * do[1]
             attr['z'] += 0.5 * do[2]
-        # in my implementation the ufunc is called before the coordinates
-        # are updated
-        # don't know which optio makes more sense...
         if ufunc:
-            ufunc(mesh, k)
+            ufunc(mesh, k, ufunc_args)
 
 
 # ==============================================================================

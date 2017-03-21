@@ -27,7 +27,8 @@ def optimise_trimesh_topology(mesh,
                               divergence=0.01,
                               verbose=False,
                               allow_boundary=False,
-                              ufunc=None):
+                              ufunc=None,
+                              ufunc_args=None):
     """Remesh until all edges have a specified target length.
 
     This involves three operations:
@@ -230,7 +231,7 @@ def optimise_trimesh_topology(mesh,
         smooth_mesh_centroid(mesh, fixed=boundary, kmax=1)
 
         if ufunc:
-            ufunc(mesh, k)
+            ufunc(mesh, k, ufunc_args)
 
 
 # ==============================================================================
