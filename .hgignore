@@ -11,7 +11,7 @@ Thumbs.db
 
 *.orig
 *.3dmbak
-*.rhl
+*.3dm.rhl
 *.rui
 *.rui_bak
 *.pyc
