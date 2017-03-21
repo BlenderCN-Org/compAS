@@ -1,0 +1,6 @@
+cuda_get
+==================================
+
+.. currentmodule:: compas.numerical.gpu.cuda
+
+.. autofunction:: cuda_get
