@@ -16,7 +16,6 @@ Contents
 .. toctree::
    :maxdepth: 1
 
-   pages/intro
    pages/gettingstarted
    pages/casestudy
    pages/examples
@@ -25,6 +24,14 @@ Contents
    pages/notes
    pages/python
    pages/license
+
+
+Resources
+=========
+
+* Google group: https://groups.google.com/forum/#!forum/compas-framework
+* Overview presentation: https://docs.google.com/presentation/d/1TRHyvVIhgMKekvHFy8xsqcr-42jN2342e7NBOAPiaMY/edit?usp=sharing
+* NCCR presentation: https://docs.google.com/presentation/d/1E0dhpBcHwijpdUIfR23WIvMJ7xyO36GDK1E9Q8ofgtI/edit?usp=sharing
 
 
 Indices and tables

@@ -13,7 +13,8 @@ Vectorisation
 Example 1
 ---------
 
-.. code-block:: python
+.. plot::
+    :include-source:
     
     # 1D - Example 1
     #
@@ -72,7 +73,8 @@ Example 1
 Example 2
 ---------
 
-.. code-block:: python
+.. plot::
+    :include-source:
 
     # Tiling - Example 2
     #
@@ -122,7 +124,8 @@ Example 2
 Example 3
 ---------
 
-.. code-block:: python
+.. plot::
+    :include-source:
 
     # 2D  - Example 3
     #
@@ -180,7 +183,8 @@ Example 3
 Example 4
 ---------
 
-.. code-block:: python
+.. plot::
+    :include-source:
 
     # 3D - Example 4
     #
@@ -301,6 +305,9 @@ Example 6
     # Grid size
     n = 100
 
+
+.. code-block:: python
+
     # Diagonals
     z = np.zeros((n, n))
     ind = list(range(n))
@@ -311,6 +318,33 @@ Example 6
     plt.imshow(z, interpolation='none')
     plt.show()
 
+
+.. plot::
+
+    # Slicing - Example 6
+    #
+    # Demonstrate a variety of ways to slice an array.
+    #
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # Grid size
+    n = 100
+
+    # Diagonals
+    z = np.zeros((n, n))
+    ind = list(range(n))
+    z[ind, ind] = 1
+    z[ind[::-1], ind] = 1
+
+    fig = plt.figure(facecolor='white')
+    plt.imshow(z, interpolation='none')
+    plt.show()
+
+
+.. code-block:: python
+
     # Columns and rows
     z = np.zeros((n, n))
     z[:, 20:25] = 1
@@ -319,6 +353,32 @@ Example 6
     fig = plt.figure(facecolor='white')
     plt.imshow(z, interpolation='none')
     plt.show()
+
+
+.. plot::
+
+    # Slicing - Example 6
+    #
+    # Demonstrate a variety of ways to slice an array.
+    #
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # Grid size
+    n = 100
+
+    # Columns and rows
+    z = np.zeros((n, n))
+    z[:, 20:25] = 1
+    z[80:90, :] = 1
+
+    fig = plt.figure(facecolor='white')
+    plt.imshow(z, interpolation='none')
+    plt.show()
+
+
+.. code-block:: python
 
     # Points
     z = np.zeros((n, n))
@@ -330,6 +390,33 @@ Example 6
     plt.imshow(z, interpolation='none')
     plt.show()
 
+
+.. plot::
+
+    # Slicing - Example 6
+    #
+    # Demonstrate a variety of ways to slice an array.
+    #
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # Grid size
+    n = 100
+
+    # Points
+    z = np.zeros((n, n))
+    r = [10, 15, 66]
+    c = [22, 9, 4]
+    z[r, c] = 1
+
+    fig = plt.figure(facecolor='white')
+    plt.imshow(z, interpolation='none')
+    plt.show()
+
+
+.. code-block:: python
+
     # Block
     z = np.zeros((n, n))
     r = range(10, 40)
@@ -339,6 +426,56 @@ Example 6
     fig = plt.figure(facecolor='white')
     plt.imshow(z, interpolation='none')
     plt.show()
+
+
+.. plot::
+
+    # Slicing - Example 6
+    #
+    # Demonstrate a variety of ways to slice an array.
+    #
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # Grid size
+    n = 100
+
+    # Block
+    z = np.zeros((n, n))
+    r = range(10, 40)
+    c = range(20, 30)
+    z[np.ix_(r, c)] = 1
+
+    fig = plt.figure(facecolor='white')
+    plt.imshow(z, interpolation='none')
+    plt.show()
+
+
+.. code-block:: python
+
+    # Corners
+    z = np.zeros((n, n))
+    ind = list(range(10)) + list(range(90, 100))
+    z[np.ix_(ind, ind)] = 1
+
+    fig = plt.figure(facecolor='white')
+    plt.imshow(z, interpolation='none')
+    plt.show()
+
+
+.. plot::
+
+    # Slicing - Example 6
+    #
+    # Demonstrate a variety of ways to slice an array.
+    #
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # Grid size
+    n = 100
 
     # Corners
     z = np.zeros((n, n))
@@ -403,16 +540,4 @@ Example 7
     # Plot
     fig = plt.figure(facecolor='white')
     plt.imshow(z3)
-    plt.show()
-
-    # Multiple conditions
-    log1 = (z > 0.1) & (z < 0.9)
-    log2 = (z > 0.1) * (z < 0.9)
-    log3 = np.abs(z-0.5) < 0.4
-    z4 = log1
-    print(str(np.allclose(log1, log3)) + '\n\n')
-
-    # Plot
-    fig = plt.figure(facecolor='white')
-    plt.imshow(z4)
     plt.show()

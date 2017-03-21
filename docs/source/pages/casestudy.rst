@@ -1,5 +1,5 @@
-.. _notes_iterative-vs-vectorised-algorithms:
+.. _casestudy:
 
 ********************************************************************************
-Iterative vs Vectorised algorithms
+Case study
 ********************************************************************************
