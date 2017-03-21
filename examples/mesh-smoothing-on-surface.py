@@ -35,7 +35,7 @@ def ufunc(mesh, i, args):
 guid = rhino.select_mesh()
 mesh = rhino.mesh_from_guid(Mesh, guid)
 
-mesh.set_default_vertex_attributes({'guide_srf': None})
+mesh.update_default_vertex_attributes({'guide_srf': None})
 
 fixed = mesh.vertices_on_boundary()
 
