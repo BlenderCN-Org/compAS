@@ -106,35 +106,33 @@ sub_level = 2   # steps of subdivisions
 # create network from lines in Rhino
 lines = [(rs.CurveStartPoint(obj), rs.CurveEndPoint(obj)) for obj in objs]
 network = Network.from_lines(lines)
-#rs.DeleteObjects(objs)
-
-draw_network(network)
+rs.DeleteObjects(objs)
 
 # start interactive loop
-#while True:
-    # rs.EnableRedraw(False)
-#    for key in network.vertices():
-#        # skip if node is not connected to any neighbor (leaf)
-#        if network.is_vertex_leaf(key):
-#            continue
-#        # generate mesh per node
-#        mesh = generate_node(network, key, radius, fac)
-#        # subdivide mesh
-#        mesh = subdivide_mesh_catmullclark(mesh, sub_level)
-#        # draw mesh
-#        draw_mesh(mesh,
-#                  show_faces=True,
-#                  show_vertices=False,
-#                  show_edges=False,
-#                  redraw=False)
+while True:
+    rs.EnableRedraw(False)
+    for key in network.vertices():
+        # skip if node is not connected to any neighbor (leaf)
+        if network.is_vertex_leaf(key):
+            continue
+        # generate mesh per node
+        mesh = generate_node(network, key, radius, fac)
+        # subdivide mesh
+        mesh = subdivide_mesh_catmullclark(mesh, sub_level)
+        # draw mesh
+        draw_mesh(mesh,
+                  show_faces=True,
+                  show_vertices=False,
+                  show_edges=False,
+                  redraw=False)
     # draw network as a control skeleton
-    # draw_network(network)
-    # rs.EnableRedraw(True)
+    draw_network(network)
+    rs.EnableRedraw(True)
     # let the user a node
-    # key = select_network_vertex(network)
+    key = select_network_vertex(network)
 
-#    if key is not None:
-#        # let the user move the selected node
-#        move_network_vertex(network, key)
-#    else:
-#        break
+    if key is not None:
+        # let the user move the selected node
+        move_network_vertex(network, key)
+    else:
+        break
