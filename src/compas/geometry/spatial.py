@@ -1014,7 +1014,7 @@ def volume_polyhedron(polyhedron):
 # ------------------------------------------------------------------------------
 
 
-def _normal_polygon(points, unitized=True):
+def normal_polygon(points, unitized=True):
     """Compute the normal of a polygon defined by a sequence of points.
 
     Note:
@@ -1050,7 +1050,7 @@ def _normal_polygon(points, unitized=True):
     return nx / l, ny / l, nz / l
 
 
-def normal_polygon(points, unitized=True):
+def _normal_polygon(points, unitized=True):
     """Compute the normal of a polygon defined by a sequence of points.
 
     Note:
