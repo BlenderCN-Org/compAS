@@ -4,9 +4,7 @@
 Getting started
 ********************************************************************************
 
-
-What do i need?
-===============
+Before getting started, make sure the following tools are available on your system:
 
 * A version control system (Git, Mercurial, ...).
 * A repository manager (for example, SourceTree).
@@ -39,12 +37,9 @@ the following:
 
 * data
 * docs
-
-  * build
-  * source
-
+* examples
+* libs
 * src
-
   * compas
   * compas_blender
   * compas_dynamo
@@ -52,6 +47,8 @@ the following:
   * compas_maya
   * compas_rhino
   * compas_web
+
+* tools
 
 
 Dependencies
@@ -68,7 +65,7 @@ provided you have Python installed, of course.
     Python 3.x, but not everything, yet.
 
 
-The current version of compAS has the following optional dependencies:
+The current version of compAS has the following **optional** dependencies:
 
 * Numpy & Scipy (http://www.numpy.org/ and https://www.scipy.org/):
   For all numerical calculations and algorithms.
@@ -99,6 +96,12 @@ The current version of compAS has the following optional dependencies:
 
 * CVXPY (http://www.cvxpy.org/):
   For convex optimisation problems.
+
+* Imageio (https://imageio.github.io/):
+  For reading and writing of image data.
+
+* PIL (http://www.pythonware.com/products/pil):
+  For general image processing.
 
 
 Scientific Python distributions like `Anaconda <https://www.continuum.io/>`_ or

@@ -4,6 +4,11 @@
 FEA triangulation
 ********************************************************************************
 
+.. warning::
+
+    This is an old example that has not yet been reworked...
+
+
 .. contents::
 
 
@@ -44,5 +49,3 @@ Example 3
     </video>
 
     <p></p>
-
-

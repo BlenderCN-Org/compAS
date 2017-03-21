@@ -1,13 +1,8 @@
-.. _python-references:
+.. _python-resources:
 
 ********************************************************************************
-References
+Resources
 ********************************************************************************
-
-
-.. note::
-    
-    More references will be added in the future.
 
 
 * `The Official Python Documentation <https://docs.python.org/2/index.html>`_

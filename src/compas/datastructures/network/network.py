@@ -1381,7 +1381,9 @@ if __name__ == '__main__':
 
     keys = network.neighbourhood(0, ring=3)
 
-    network.plot(
-        vlabel={key: key for key in network},
-        vsize=0.2,
-        vcolor={key: '#ff0000' for key in keys})
+    print(keys)
+
+    # network.plot(
+    #     vlabel={key: key for key in network},
+    #     vsize=0.2,
+    #     vcolor={key: '#ff0000' for key in keys})

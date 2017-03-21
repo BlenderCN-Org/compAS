@@ -23,7 +23,7 @@ Contents
    pages/core
    pages/packages
    pages/notes
-   pages/guidelines
+   pages/python
    pages/license
 
 
